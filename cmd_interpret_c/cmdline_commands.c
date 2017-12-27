@@ -23,37 +23,12 @@ SOFTWARE.
  */
 
 /*
- * cmd_interpret.h
+ * cmdline_commands.c
  *
  *  Created on: Dec 27, 2017
  *      Author: abilos
  *
- * Simple command interpreter library, accepts commands in the shape of a string
- * with 0 or more arguments, each argument is a decimal or hex number.
+ * List of commands in the program
  *
  *
  */
-
-#ifndef INC_CMD_INTERPRET_H_
-#define INC_CMD_INTERPRET_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// all the data one command should include
-typedef struct {
-    // trigger string
-
-    // help string (always useful
-    // argument count
-    // function(int arglist)
-} cmd;
-
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* INC_CMD_INTERPRET_H_ */
