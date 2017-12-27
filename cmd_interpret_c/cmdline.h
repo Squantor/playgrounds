@@ -23,7 +23,7 @@ SOFTWARE.
  */
 
 /*
- * cmd_interpret.h
+ * cmdline.h
  *
  *  Created on: Dec 27, 2017
  *      Author: abilos
@@ -46,13 +46,13 @@ extern "C" {
 // all the data one command should include
 typedef struct {
     // trigger string
-    const char * strTrigger;
+    char * strTrigger;
     // help string (always useful
-    const char * strHelp;
+    char * strHelp;
     // argument count
     uint8_t argCnt;
     // function(int arglist)
-} cmd;
+} cmdLineEntry;
 
 
 

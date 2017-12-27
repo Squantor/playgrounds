@@ -23,7 +23,7 @@ SOFTWARE.
  */
 
 /*
- * cmdline_commands.c
+ * cmdline_test.h
  *
  *  Created on: Dec 27, 2017
  *      Author: abilos
@@ -32,15 +32,12 @@ SOFTWARE.
  *
  *
  */
-#include <stdlib.h>
 
-#include "cmdline.h"
-// all command line constants
-#include "cmdline_test.h"
+#ifndef CMDLINE_TEST_H_
+#define CMDLINE_TEST_H_
 
-// table of allowed commands
-cmdLineEntry cmdLineEntries[] =
-{
-    {strCmdTestTrigger, strTestHelp, ARGCNTTESTHELP},
-    {NULL, NULL, 0},
-};
+extern char strCmdTestTrigger[];
+extern char strTestHelp[];
+#define ARGCNTTESTHELP  2
+
+#endif /* CMDLINE_TEST_H_ */

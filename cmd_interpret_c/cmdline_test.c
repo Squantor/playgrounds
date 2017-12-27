@@ -32,15 +32,8 @@ SOFTWARE.
  *
  *
  */
-#include <stdlib.h>
 
-#include "cmdline.h"
-// all command line constants
-#include "cmdline_test.h"
+#include <stdint.h>
 
-// table of allowed commands
-cmdLineEntry cmdLineEntries[] =
-{
-    {strCmdTestTrigger, strTestHelp, ARGCNTTESTHELP},
-    {NULL, NULL, 0},
-};
+char strCmdTestTrigger[] = "test";
+char strTestHelp[] = "Basic test command\n";
