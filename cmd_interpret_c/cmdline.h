@@ -38,10 +38,13 @@ SOFTWARE.
 #define INC_CMD_INTERPRET_H_
 
 #include <stdint.h>
+#include "results.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define CMDLINE_MAX_ARGS    6
 
 // all the data one command should include
 typedef struct {
@@ -54,7 +57,7 @@ typedef struct {
     // function(int arglist)
 } cmdLineEntry;
 
-
+result cmdlineParse(char * line);
 
 #ifdef __cplusplus
 }

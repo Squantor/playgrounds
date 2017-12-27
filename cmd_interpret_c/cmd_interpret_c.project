@@ -8,6 +8,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="results.h"/>
+    <File Name="cmdline.c"/>
     <File Name="main.c"/>
     <File Name="cmdline_test.h"/>
     <File Name="cmdline_test.c"/>
