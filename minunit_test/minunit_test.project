@@ -13,8 +13,6 @@
   <VirtualDirectory Name="src">
     <File Name="main.c"/>
   </VirtualDirectory>
-  <Dependencies Name="debug"/>
-  <Dependencies Name="release"/>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="" Assembler="">
@@ -105,4 +103,6 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="debug"/>
+  <Dependencies Name="release"/>
 </CodeLite_Project>

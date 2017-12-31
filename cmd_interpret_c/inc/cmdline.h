@@ -45,6 +45,7 @@ extern "C" {
 #endif
 
 #define CMDLINE_MAX_ARGS    6
+#define STRTOK_DELIM        (" \n")
 
 // all the data one command should include
 typedef struct {

@@ -6,12 +6,15 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
+    <File Name="src/cmdline_help.c"/>
     <File Name="src/cmdline_commands.c"/>
     <File Name="src/cmdline_test.c"/>
     <File Name="src/main.c"/>
     <File Name="src/cmdline.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
+    <File Name="inc/cmdline_commands.h"/>
+    <File Name="inc/cmdline_help.h"/>
     <File Name="inc/results.h"/>
     <File Name="inc/cmdline_test.h"/>
     <File Name="inc/cmdline.h"/>
@@ -20,8 +23,6 @@
   <Dependencies/>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
-  <Dependencies Name="debug"/>
-  <Dependencies Name="release"/>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="" Assembler="">
@@ -112,4 +113,6 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="debug"/>
+  <Dependencies Name="release"/>
 </CodeLite_Project>

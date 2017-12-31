@@ -37,10 +37,12 @@ SOFTWARE.
 #include "cmdline.h"
 // all command line constants
 #include "cmdline_test.h"
+#include "cmdline_help.h"
 
 // table of allowed commands
 cmdLineEntry cmdLineEntries[] =
 {
-    {strCmdTestTrigger, strTestHelp, ARGCNTTESTHELP},
+    {strCmdTestTrigger, strTestHelp, ARGCNTTEST},
+    {strCmdHelpTrigger, strHelpHelp, ARGCNTHELP},
     {NULL, NULL, 0},
 };

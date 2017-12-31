@@ -1,6 +1,6 @@
 # Project settings
 BIN_NAME = cmd_interpret_c
-SOURCES = src/cmdline.c src/cmdline_commands.c src/cmdline_test.c src/main.c 
+SOURCES = src/cmdline.c src/cmdline_commands.c src/cmdline_test.c src/main.c src/cmdline_help.c
 INCLUDES = -Iinc
 
 # Toolchain settings
