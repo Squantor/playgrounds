@@ -41,6 +41,36 @@ result cmdlineParseInt(char * token, int * value)
 
 result cmdlineParseHex(char * token, int * value)
 {
+    int tokenLength = strlen(token);
+    unsigned int multiplier = 1;
+    int i = tokenLength;
+    unsigned parsedValue = 0;
+    while(i != 2)
+    {
+        i--;
+        switch(token[i])
+        {
+            case '0':  break;
+            case '1': parsedValue = parsedValue + (0x1 * multiplier); break;
+            case '2': parsedValue = parsedValue + (0x2 * multiplier); break;
+            case '3': parsedValue = parsedValue + (0x3 * multiplier); break;
+            case '4': parsedValue = parsedValue + (0x4 * multiplier); break;
+            case '5': parsedValue = parsedValue + (0x5 * multiplier); break;
+            case '6': parsedValue = parsedValue + (0x6 * multiplier); break;
+            case '7': parsedValue = parsedValue + (0x7 * multiplier); break;
+            case '8': parsedValue = parsedValue + (0x8 * multiplier); break;
+            case '9': parsedValue = parsedValue + (0x9 * multiplier); break;
+            case 'A': case 'a': parsedValue = parsedValue + (0xA * multiplier); break;
+            case 'B': case 'b': parsedValue = parsedValue + (0xB * multiplier); break;
+            case 'C': case 'c': parsedValue = parsedValue + (0xC * multiplier); break;
+            case 'D': case 'd': parsedValue = parsedValue + (0xD * multiplier); break;
+            case 'E': case 'e': parsedValue = parsedValue + (0xE * multiplier); break;
+            case 'F': case 'f': parsedValue = parsedValue + (0xF * multiplier); break;
+            default: return cmdlineInvalidArg;
+        }
+        multiplier = multiplier << 4;
+    }
+    *value = (int) parsedValue;
     return noError;
 }
 

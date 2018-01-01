@@ -14,13 +14,13 @@ MU_TEST(test_fail) {
 
 char positiveIntArg[] = "123";
 char negativeIntArg[] = "-123";
-char hexArg[] = "0xCafeBaB3";
+char hexArg[] = "0x1a3b";
 
 MU_TEST(testParseHex)
 {
     int output;
     mu_assert(cmdlineParseHex(hexArg, &output) == noError, "cmdlineParseHex should return noError");
-    mu_assert_int_eq(0xCafeBaB3, output);
+    mu_assert_int_eq(0x1a3b, output);
 }
 
 MU_TEST(testParsePositiveInt)
