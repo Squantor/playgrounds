@@ -42,7 +42,7 @@ SOFTWARE.
 // table of allowed commands
 cmdLineEntry cmdLineEntries[] =
 {
-    {strCmdTestTrigger, strTestHelp, ARGCNTTEST},
-    {strCmdHelpTrigger, strHelpHelp, ARGCNTHELP},
-    {NULL, NULL, 0},
+    {strCmdTestTrigger, strTestHelp, ARGCNTTEST, CmdTestHandler},
+    {strCmdHelpTrigger, strHelpHelp, ARGCNTHELP, CmdHelpHandler},
+    {NULL, NULL, 0, NULL},
 };

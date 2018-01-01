@@ -48,15 +48,18 @@ extern "C" {
 #define CMDLINE_MAX_ARGS    6
 #define STRTOK_DELIM        (" \n")
 
+typedef result (*cmdlineHandler)(int * arglist);
+
 // all the data one command should include
 typedef struct {
     // trigger string
     char * strTrigger;
-    // help string (always useful
+    // help string
     char * strHelp;
-    // argument count
+    // argument count for command
     uint8_t argCnt;
     // function(int arglist)
+    cmdlineHandler argHandler;
 } cmdLineEntry;
 
 result cmdlineParseInt(char * token, int * value);

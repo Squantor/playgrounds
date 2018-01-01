@@ -8,19 +8,29 @@ void test_teardown(void) {
 	/* Nothing */
 }
 
-MU_TEST(test_fail) {
-	mu_fail("Fail now!");
+char commandHelp[] = "help\n";
+
+MU_TEST(testParseHelpCommand)
+{
+    mu_assert(cmdlineParse(commandHelp) == noError, "cmdlineParse should return noError");
+}
+
+char commandTest[] = "test 0x100 1024\n";
+
+MU_TEST(testParseTestCommand)
+{
+    mu_assert(cmdlineParse(commandTest) == noError, "cmdlineParse should return noError");
 }
 
 char positiveIntArg[] = "123";
 char negativeIntArg[] = "-123";
-char hexArg[] = "0x1a3b";
+char hexArg[] = "0xC4f3BaB3";
 
 MU_TEST(testParseHex)
 {
     int output;
     mu_assert(cmdlineParseHex(hexArg, &output) == noError, "cmdlineParseHex should return noError");
-    mu_assert_int_eq(0x1a3b, output);
+    mu_assert_int_eq(0xC4f3BaB3, output);
 }
 
 MU_TEST(testParsePositiveInt)
@@ -43,6 +53,8 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(testParsePositiveInt);
     MU_RUN_TEST(testParseNegativeInt);
     MU_RUN_TEST(testParseHex);
+    MU_RUN_TEST(testParseTestCommand);
+    MU_RUN_TEST(testParseHelpCommand);
 }
 
 int main(int argc, char *argv[]) 

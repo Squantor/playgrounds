@@ -99,11 +99,11 @@ result cmdlineParse(char * line)
     {
         if(strcmp(trigger, cmdLineEntries[i].strTrigger) == 0)
         {
+            int arguments[CMDLINE_MAX_ARGS];
             // matched, parse arguments of commandline
             for(int j = 0; j < cmdLineEntries[i].argCnt; j++)
             {
-                int arguments[CMDLINE_MAX_ARGS];
-                char *arg = strtok(commandline,STRTOK_DELIM);
+                char *arg = strtok(NULL,STRTOK_DELIM);
                 if(arg == NULL)
                     return cmdlineInvalidArg;
                 result argparse = cmdlineParseArg(arg, &arguments[j]);
@@ -111,6 +111,7 @@ result cmdlineParse(char * line)
                     return argparse;
             }
             // call the matched command with the argument count
+            cmdLineEntries[i].argHandler(&arguments);
             return noError;
         }
     }
