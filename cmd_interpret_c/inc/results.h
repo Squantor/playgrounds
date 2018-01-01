@@ -4,6 +4,8 @@
 typedef enum {
     noError = 0,
     error,
+    cmdlineNotFound,
+    cmdlineInvalidArg,
 } result;
 
 #endif
