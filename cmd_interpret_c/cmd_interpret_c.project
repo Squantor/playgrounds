@@ -13,6 +13,7 @@
     <File Name="src/cmdline.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
+    <File Name="inc/minunit.h"/>
     <File Name="inc/cmdline_commands.h"/>
     <File Name="inc/cmdline_help.h"/>
     <File Name="inc/results.h"/>

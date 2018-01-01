@@ -7,6 +7,35 @@
 
 result cmdlineParseInt(char * token, int * value)
 {
+    int tokenLength = strlen(token);
+    int multiplier = 1;
+    int i = tokenLength;
+    int parsedValue = 0;
+    while(i != 0)
+    {
+        i--;
+        switch(token[i])
+        {
+            case '0':  break;
+            case '1': parsedValue = parsedValue + (1 * multiplier); break;
+            case '2': parsedValue = parsedValue + (2 * multiplier); break;
+            case '3': parsedValue = parsedValue + (3 * multiplier); break;
+            case '4': parsedValue = parsedValue + (4 * multiplier); break;
+            case '5': parsedValue = parsedValue + (5 * multiplier); break;
+            case '6': parsedValue = parsedValue + (6 * multiplier); break;
+            case '7': parsedValue = parsedValue + (7 * multiplier); break;
+            case '8': parsedValue = parsedValue + (8 * multiplier); break;
+            case '9': parsedValue = parsedValue + (9 * multiplier); break;
+            case '-': parsedValue = ~parsedValue; 
+                // decrement by one due to twos complement difference
+                *value = parsedValue+1;
+                return noError;
+                break;
+            default: return cmdlineInvalidArg;
+        }
+        multiplier *= 10;
+    }
+    *value = parsedValue;
     return noError;
 }
 

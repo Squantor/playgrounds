@@ -59,6 +59,9 @@ typedef struct {
     // function(int arglist)
 } cmdLineEntry;
 
+result cmdlineParseInt(char * token, int * value);
+result cmdlineParseHex(char * token, int * value);
+result cmdlineParseArg(char * token, int * value);
 result cmdlineParse(char * line);
 
 #ifdef __cplusplus
