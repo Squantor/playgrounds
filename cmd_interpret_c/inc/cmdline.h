@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2017 Bart Bilos
+Copyright (c) 2018 Bart Bilos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,22 +20,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */
+*/
 
-/*
- * cmdline.h
- *
- *  Created on: Dec 27, 2017
- *      Author: abilos
- *
- * Simple command interpreter library, accepts commands in the shape of a string
- * with 0 or more arguments, each argument is a decimal or hex number.
- *
- *
- */
-
-#ifndef INC_CMD_INTERPRET_H_
-#define INC_CMD_INTERPRET_H_
+#ifndef CMDLINE_H
+#define CMDLINE_H
 
 #include <stdint.h>
 #include "results.h"
@@ -71,4 +59,4 @@ result cmdlineParse(char * line);
 }
 #endif
 
-#endif /* INC_CMD_INTERPRET_H_ */
+#endif
