@@ -102,7 +102,6 @@ all: $(BIN_PATH)/$(BIN_NAME)
 
 # create the archive
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	# TODO: use the gnu linker instead of the comiler
 	$(TOOLCHAIN_PREFIX)$(CPP) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
 	$(TOOLCHAIN_PREFIX)$(SIZE) $@
