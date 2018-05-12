@@ -17,6 +17,7 @@ OBJDUMP = objdump
 
 # Toolchain flags
 COMPILE_CXX_FLAGS = -std=c99 -Wall -Wextra
+COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra
 DEFINES = 
 RDEFINES = -DNDEBUG
 DDEFINES = -DDEBUG
@@ -40,8 +41,10 @@ print-%: ; @echo $*=$($*)
 
 # Combine compiler and linker flags
 release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(RCOMPILE_FLAGS)
+release: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LINK_FLAGS) $(RLINK_FLAGS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(DCOMPILE_FLAGS)
+debug: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LINK_FLAGS) $(DLINK_FLAGS)
 
 # Build and output paths
@@ -111,4 +114,4 @@ $(BUILD_PATH)/%.c.o: ./%.c
 
 $(BUILD_PATH)/%.cpp.o: ./%.cpp
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CPP) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(CPP) $(CPPFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
