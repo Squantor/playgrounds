@@ -4,17 +4,16 @@
     <File Name="inc/test.hpp"/>
     <File Name="inc/test.h"/>
   </VirtualDirectory>
+  <VirtualDirectory Name="src">
+    <File Name="src/test.c"/>
+    <File Name="src/test.cpp"/>
+    <File Name="src/main.cpp"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0005debug000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="src">
-    <File Name="src/test.c"/>
-    <File Name="src/test.cpp"/>
-    <File Name="src/main.cpp"/>
-    <File Name="src/main.c"/>
-  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <Dependencies Name="Debug"/>

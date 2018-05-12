@@ -28,6 +28,13 @@ LINK_FLAGS =
 RLINK_FLAGS =
 DLINK_FLAGS =
 
+LIBDIR = 
+LIBS = 
+RLIBDIR =
+RLIBS =
+DLIBDIR =
+DLIBS =
+
 # other settings
 # SRC_EXT = c
 
@@ -42,10 +49,12 @@ print-%: ; @echo $*=$($*)
 # Combine compiler and linker flags
 release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(RCOMPILE_FLAGS)
 release: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(RCOMPILE_FLAGS)
-release: export LDFLAGS := $(LINK_FLAGS) $(RLINK_FLAGS)
+release: export LDFLAGS := $(LINK_FLAGS) $(RLINK_FLAGS) $(LIBDIR) $(RLIBDIR) 
+release: export LIBS := $(LIBS) $(RLIBS)
 debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(DCOMPILE_FLAGS)
 debug: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(DCOMPILE_FLAGS)
-debug: export LDFLAGS := $(LINK_FLAGS) $(DLINK_FLAGS)
+debug: export LDFLAGS := $(LINK_FLAGS) $(DLINK_FLAGS) $(LIBDIR) $(DLIBDIR)
+debug: export LIBS := $(LIBS) $(DLIBS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
@@ -93,7 +102,8 @@ all: $(BIN_PATH)/$(BIN_NAME)
 
 # create the archive
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	$(TOOLCHAIN_PREFIX)$(CXX) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
+	# TODO: use the gnu linker instead of the comiler
+	$(TOOLCHAIN_PREFIX)$(CPP) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
 	$(TOOLCHAIN_PREFIX)$(SIZE) $@
 	date >> size$(BUILD_TARGET).log
