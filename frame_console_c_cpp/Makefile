@@ -1,6 +1,7 @@
 # Project settings
-BIN_NAME = console_frame_c
-SOURCES = src/main.c 
+BIN_NAME = frame_console_c_cpp
+C_SOURCES = src/test.c
+CPP_SOURCES = src/main.cpp src/test.cpp
 INCLUDES = -Iinc
 
 # Toolchain settings
@@ -8,13 +9,14 @@ MAKE = make
 MKDIR = mkdir
 RM = rm
 CXX = gcc
-CXX_PREFIX = 
+CPP = g++
+TOOLCHAIN_PREFIX = 
 SIZE = size
 AR = ar
 OBJDUMP = objdump
 
 # Toolchain flags
-COMPILE_FLAGS = -std=c99 -Wall -Wextra
+COMPILE_CXX_FLAGS = -std=c99 -Wall -Wextra
 DEFINES = 
 RDEFINES = -DNDEBUG
 DDEFINES = -DDEBUG
@@ -26,7 +28,7 @@ RLINK_FLAGS =
 DLINK_FLAGS =
 
 # other settings
-SRC_EXT = c
+# SRC_EXT = c
 
 # Clear built-in rules
 .SUFFIXES:
@@ -37,9 +39,9 @@ SRC_EXT = c
 print-%: ; @echo $*=$($*)
 
 # Combine compiler and linker flags
-release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(RCOMPILE_FLAGS)
+release: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(RCOMPILE_FLAGS)
 release: export LDFLAGS := $(LINK_FLAGS) $(RLINK_FLAGS)
-debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_FLAGS) $(DCOMPILE_FLAGS)
+debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(DCOMPILE_FLAGS)
 debug: export LDFLAGS := $(LINK_FLAGS) $(DLINK_FLAGS)
 
 # Build and output paths
@@ -54,7 +56,8 @@ debug: export BUILD_TARGET := debug
 
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
-OBJECTS = $(SOURCES:%.$(SRC_EXT)=$(BUILD_PATH)/%.o)
+OBJECTS = $(C_SOURCES:%.c=$(BUILD_PATH)/%.c.o)
+OBJECTS += $(CPP_SOURCES:%.cpp=$(BUILD_PATH)/%.cpp.o)
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
 
@@ -87,13 +90,13 @@ all: $(BIN_PATH)/$(BIN_NAME)
 
 # create the archive
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
-	$(CXX_PREFIX)$(CXX) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
+	$(TOOLCHAIN_PREFIX)$(CXX) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
-	$(CXX_PREFIX)$(SIZE) $@
+	$(TOOLCHAIN_PREFIX)$(SIZE) $@
 	date >> size$(BUILD_TARGET).log
-	$(CXX_PREFIX)$(SIZE) $@ >> size$(BUILD_TARGET).log
+	$(TOOLCHAIN_PREFIX)$(SIZE) $@ >> size$(BUILD_TARGET).log
 	# create the various output files
-	$(CXX_PREFIX)$(OBJDUMP) -h -S "$@" > "$@.lss"
+	$(TOOLCHAIN_PREFIX)$(OBJDUMP) -h -S "$@" > "$@.lss"
 
 # Add dependency files, if they exist
 -include $(DEPS)
@@ -102,6 +105,10 @@ $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)
 # After the first compilation they will be joined with the rules from the
 # dependency files to provide header dependencies
 # if the source file is in a subdir, create this subdir in the build dir
-$(BUILD_PATH)/%.o: ./%.$(SRC_EXT)
+$(BUILD_PATH)/%.c.o: ./%.c
 	$(MKDIR) -p $(dir $@) 
-	$(CXX_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+
+$(BUILD_PATH)/%.cpp.o: ./%.cpp
+	$(MKDIR) -p $(dir $@) 
+	$(TOOLCHAIN_PREFIX)$(CPP) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
