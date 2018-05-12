@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="console_frame_c_cpp" Version="10.0.0" InternalType="">
+<CodeLite_Project Name="frame_console_c_cpp" Version="10.0.0" InternalType="">
   <VirtualDirectory Name="inc">
     <File Name="inc/test.hpp"/>
     <File Name="inc/test.h"/>
