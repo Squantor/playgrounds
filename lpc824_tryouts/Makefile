@@ -2,7 +2,7 @@
 BIN_NAME = lpc824_tryouts
 MCU = lpc824
 BOARD = 
-C_SOURCES = src/crp.c src/mtb.c src/sysinit.c
+C_SOURCES = src/crp.c src/mtb.c src/sysinit.c src/boardinit.c
 CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp src/template_lpc824_c_cpp.cpp
 S_SOURCES = src/aeabi_romdiv_patch.s 
 INCLUDES = -Iinc -I../lpc_chip_8xx/inc

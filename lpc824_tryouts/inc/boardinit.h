@@ -21,43 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-/*
-Main program entry/file.
-*/
+#ifndef BOARDINIT_H
+#define BOARDINIT_H
 
-#include "chip.h"
-#include <cr_section_macros.h>
-#include <boardinit.h>
+void boardInit(void);
 
-// TODO: insert other definitions and declarations here
-#define TICKRATE_HZ (10)	/* 10 ticks per second */
-
-/**
- * @brief	Handle interrupt from SysTick timer
- * @return	Nothing
- */
-extern "C"
-{
-	void SysTick_Handler(void)
-	{
-		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
-	}
-}
-
-int main(void)
-{
-
-    // Read clock settings and update SystemCoreClock variable
-    SystemCoreClockUpdate();
-
-	/* Enable SysTick Timer */
-	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
-
-	/* Loop forever */
-	while (1)
-	{
-		__WFI();
-	}
-
-    return 0 ;
-}
+#endif
