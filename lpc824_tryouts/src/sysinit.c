@@ -55,5 +55,5 @@ const uint32_t ExtRateIn = 0;
 void SystemInit(void)
 {
 	/* Chip specific SystemInit */
-	Chip_SystemInit();
+	//Chip_SystemInit();
 }

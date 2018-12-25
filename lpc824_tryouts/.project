@@ -3,7 +3,6 @@
 	<name>lpc824_tryouts</name>
 	<comment></comment>
 	<projects>
-		<project>lpc_chip_82x</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

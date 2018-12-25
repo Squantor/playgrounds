@@ -36,10 +36,11 @@ static inline void swmInit(void)
 {
 	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
 
-	// why?
+	// disable existing functionality
 	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
-	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC9);
-	// this is probably needed Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
+	Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
+	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALIN, true);
+	Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
 
 	// use UART0 for debug output
 	Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 7);
@@ -58,18 +59,29 @@ static inline void uartInit(void)
 	Chip_UART_TXEnable(LPC_USART0);
 }
 
+static inline void ioconInit(void)
+{
+	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_IOCON);
+	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO8, PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
+	Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_IOCON);
+}
+
 static inline void gpioInit(void)
 {
 	/* Initialize GPIO */
 	Chip_GPIO_Init(LPC_GPIO_PORT);
 	// setup led
-	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 27);
-	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0, 27, true);
+	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 12);
+	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0, 12, true);
 }
 
 void boardInit(void)
 {
 	swmInit();
+	ioconInit();
+	Chip_SetupXtalClocking();
+    SystemCoreClockUpdate();
 	gpioInit();
 	uartInit();
 }

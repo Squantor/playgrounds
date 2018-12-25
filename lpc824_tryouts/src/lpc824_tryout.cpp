@@ -30,7 +30,7 @@ Main program entry/file.
 #include <boardinit.h>
 
 // TODO: insert other definitions and declarations here
-#define TICKRATE_HZ (10)	/* 10 ticks per second */
+#define TICKRATE_HZ (2)	/* 10 ticks per second */
 
 /**
  * @brief	Handle interrupt from SysTick timer
@@ -46,16 +46,19 @@ extern "C"
 
 int main(void)
 {
+	char string[] = "hi!\n";
 
-    // Read clock settings and update SystemCoreClock variable
-    SystemCoreClockUpdate();
+	boardInit();
 
 	/* Enable SysTick Timer */
 	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
 
+
+
 	/* Loop forever */
 	while (1)
 	{
+		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
 		__WFI();
 	}
 
