@@ -1,5 +1,5 @@
 # Project settings
-BIN_NAME = template_lpc824_c_cpp
+BIN_NAME = lpc824_tryouts
 MCU = lpc824
 BOARD = 
 C_SOURCES = src/crp.c src/mtb.c src/sysinit.c

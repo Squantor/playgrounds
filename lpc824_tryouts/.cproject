@@ -328,7 +328,7 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/template_lpc824_c_cpp"/>
+			<resource resourceType="PROJECT" workspacePath="/lpc824_tryouts"/>
 		</configuration>
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/template_lpc824_c_cpp"/>
