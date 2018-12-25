@@ -43,7 +43,7 @@ void *operator new[](size_t size)
 {
     return malloc(size);
 }
-
+#pragma GCC diagnostic ignored "-Wunused-parameter" "-Wsized-deallocation"
 void operator delete(void *p)
 {
     free(p);
@@ -60,6 +60,8 @@ extern "C" int __aeabi_atexit(void *object,
 {
 	return 0;
 }
+#pragma GCC diagnostic pop
+
 
 extern "C" void *malloc(size_t) {
 	return (void *)0;
