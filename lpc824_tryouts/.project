@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>template_lpc824_c_cpp</name>
+	<name>lpc824_tryouts</name>
 	<comment></comment>
 	<projects>
 		<project>lpc_chip_82x</project>
