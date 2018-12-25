@@ -43,7 +43,8 @@ void *operator new[](size_t size)
 {
     return malloc(size);
 }
-#pragma GCC diagnostic ignored "-Wunused-parameter" "-Wsized-deallocation"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wsized-deallocation"
 void operator delete(void *p)
 {
     free(p);
