@@ -32,3 +32,6 @@ bin/
 
 #miscellanious generated files
 *.log
+
+#eclipse stuff
+.settings/
