@@ -6,11 +6,12 @@ C_SOURCES = src/crp.c src/mtb.c src/sysinit.c
 CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp \
 src/lpc824_tryout.cpp src/boardinit.cpp
 S_SOURCES = src/aeabi_romdiv_patch.s 
-INCLUDES = -Iinc -I../lpc_chip_82x/inc
-RLIBDIR = -L"../lpc_chip_82x/bin/release"
-RLIBS = -llpc_chip_82x
-DLIBDIR = -L"../lpc_chip_82x/bin/debug"
-DLIBS = -llpc_chip_82x
+INCLUDES = -Iinc -I../lpc_chip_82x/inc -I../sqlibembedded_c/inc
+LIBS = -llpc_chip_82x -lsqlibembedded_c
+RLIBDIR = -L"../lpc_chip_82x/bin/release" -L"../squantorCodeLibraries/sqlibembedded_c/bin/cortexM0/release"
+RLIBS = $(LIBS)
+DLIBDIR = -L"../lpc_chip_82x/bin/debug" -L"../squantorCodeLibraries/sqlibembedded_c/bin/cortexM0/debug"
+DLIBS = $(LIBS)
 
 # Toolchain settings
 MAKE = make
@@ -87,12 +88,14 @@ DEPS = $(OBJECTS:.o=.d)
 release: dirs
 	# make lpc_chip library if needed
 	$(MAKE) -C ../lpc_chip_82x release
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c/ PLATFORM=cortexM0 release
 	$(MAKE) all --no-print-directory
 
 # Debug build for gdb debugging
 debug: dirs
 	# make lpc_chip library if needed
 	$(MAKE) -C ../lpc_chip_82x debug
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c/ PLATFORM=cortexM0 debug
 	$(MAKE) all --no-print-directory
 
 # Create the directories used in the build
