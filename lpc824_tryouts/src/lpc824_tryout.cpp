@@ -29,13 +29,8 @@ Main program entry/file.
 #include <cr_section_macros.h>
 #include <boardinit.h>
 
-// TODO: insert other definitions and declarations here
 #define TICKRATE_HZ (2)	/* 10 ticks per second */
 
-/**
- * @brief	Handle interrupt from SysTick timer
- * @return	Nothing
- */
 extern "C"
 {
 	void SysTick_Handler(void)
