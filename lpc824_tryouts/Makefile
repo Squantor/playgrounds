@@ -40,7 +40,7 @@ CPP_DEBUG_COMPILE_FLAGS = -Og -g3
 ASM_RELEASE_COMPILE_FLAGS = -mcpu=cortex-m0 -mthumb
 ASM_DEBUG_COMPILE_FLAGS = -g3 -mcpu=cortex-m0 -mthumb
 
-LINK_FLAGS = -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0 -mthumb
+LINK_FLAGS = -flto -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0 -mthumb
 LINK_FLAGS_RELEASE =
 LINK_FLAGS_DEBUG =
 LDSCRIPT = -T"ld/nxp_$(MCU).ld"
