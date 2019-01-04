@@ -2,7 +2,7 @@
 BIN_NAME = lpc824_cpp_tests
 MCU = lpc824
 BOARD = 
-C_SOURCES = src/crp.c src/mtb.c src/sysinit.c
+C_SOURCES = src/crp.c src/mtb.c src/sysinit.c src/assert.c
 CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp \
 src/lpc824_tryout.cpp src/boardinit.cpp \
 src/PeripSystick_cm0.cpp
