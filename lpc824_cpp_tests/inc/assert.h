@@ -21,22 +21,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#ifndef ASSERT_H
+#define ASSERT_H
 
-#include <chip.h>
-#include <PeripSystick_cm0.hpp>
-#include <assert.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace system_tick::detail
-{
-	void Configure(SysTick_Type& peripheral, uint32_t ticks)
-	{
-		assert((peripheral.CTRL & (1 << 0)) == 0 && "Already configured");
+void assertion_failure();
 
-		peripheral.LOAD  = ticks - 1;                                  /* set reload register */
-		NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
-		peripheral.VAL   = 0;                                          /* Load the SysTick Counter Value */
-		peripheral.CTRL  = 0x01 << 2 |
-					   0x01 << 1   |
-					   0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
-	}
+#ifdef NDEBUG
+#define assert(x)
+#else
+#define assert(x) \
+	!(x) ? assertion_failure() : (void)0
+#endif
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif
