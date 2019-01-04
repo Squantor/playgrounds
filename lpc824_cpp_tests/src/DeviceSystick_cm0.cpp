@@ -25,20 +25,17 @@ SOFTWARE.
 #include <chip.h>
 #include <DeviceSystick_cm0.hpp>
 
-DeviceSystick::DeviceSystick(SysTickRegistersType * peripheral)
+namespace system_tick::detail
 {
-	this->peripheral = peripheral;
-}
+	void Configure(Whatever& peripheral, uint32_t ticks)
+	{
+		assert((periperal.CTRL & (1 << 0)) == 0 && "Already configured");
 
-uint32_t DeviceSystick::SysTick_Config(uint32_t ticks)
-{
-  if ((ticks - 1) > 0xFFFFFFUL)  return (1);      /* Reload value impossible */
-
-  this->peripheral->LOAD  = ticks - 1;                                  /* set reload register */
-  NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
-  this->peripheral->VAL   = 0;                                          /* Load the SysTick Counter Value */
-  this->peripheral->CTRL  = 0x01 << 2 |
-				   0x01 << 1   |
-				   0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
-  return (0);                                                  /* Function successful */
+		peripheral.LOAD  = ticks - 1;                                  /* set reload register */
+		NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
+		peripheral.VAL   = 0;                                          /* Load the SysTick Counter Value */
+		peripheral.CTRL  = 0x01 << 2 |
+					   0x01 << 1   |
+					   0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
+	}
 }

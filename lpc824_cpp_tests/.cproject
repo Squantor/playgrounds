@@ -42,8 +42,8 @@
 								<option id="com.crt.advproject.cpp.hdrlib.917666771" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" value="Newlib" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1469167469" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_8xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/sqlibembedded_c/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_82x/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.cpp.misc.dialect.1675597493" name="Language standard" superClass="com.crt.advproject.cpp.misc.dialect" value="com.crt.advproject.misc.dialect.gnu++14" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.dialect.flags.252646750" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags"/>
@@ -260,8 +260,8 @@
 								<option id="com.crt.advproject.cpp.hdrlib.664920950" name="Library headers" superClass="com.crt.advproject.cpp.hdrlib" useByScannerDiscovery="false" value="Newlib" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.942246648" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_8xx/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/sqlibembedded_c/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_82x/inc}&quot;"/>
 								</option>
 								<option id="com.crt.advproject.cpp.misc.dialect.2063797219" name="Language standard" superClass="com.crt.advproject.cpp.misc.dialect" useByScannerDiscovery="true" value="com.crt.advproject.misc.dialect.gnu++14" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.dialect.flags.571277246" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags"/>
