@@ -88,14 +88,14 @@ DEPS = $(OBJECTS:.o=.d)
 release: dirs
 	# make lpc_chip library if needed
 	$(MAKE) -C ../lpc_chip_82x release
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c/ PLATFORM=cortexM0 release
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 release
 	$(MAKE) all --no-print-directory
 
 # Debug build for gdb debugging
 debug: dirs
 	# make lpc_chip library if needed
 	$(MAKE) -C ../lpc_chip_82x debug
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c/ PLATFORM=cortexM0 debug
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 debug
 	$(MAKE) all --no-print-directory
 
 # Create the directories used in the build
@@ -107,6 +107,8 @@ dirs:
 clean_debug:
 clean_release:
 clean:
+	$(MAKE) -C ../lpc_chip_82x clean
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c clean
 	$(RM) -r build
 	$(RM) -r bin
 
