@@ -5,7 +5,7 @@ BOARD =
 C_SOURCES = src/crp.c src/mtb.c src/sysinit.c
 CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp \
 src/lpc824_tryout.cpp src/boardinit.cpp \
-src/systick_cm0.cpp
+src/PeripSystick_cm0.cpp
 S_SOURCES = src/aeabi_romdiv_patch.s 
 INCLUDES = -Iinc -I../lpc_chip_82x/inc -I../sqlibembedded_c/inc
 LIBS = -llpc_chip_82x -lsqlibembedded_c

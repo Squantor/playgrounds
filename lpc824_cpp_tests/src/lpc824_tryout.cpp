@@ -28,7 +28,7 @@ Main program entry/file.
 #include "chip.h"
 #include <cr_section_macros.h>
 #include <boardinit.h>
-#include <DeviceSystick_cm0.hpp>
+#include <PeripSystick_cm0.hpp>
 
 #define TICKRATE_HZ (2)	/* 10 ticks per second */
 
@@ -39,8 +39,6 @@ extern "C"
 		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
 	}
 }
-
-DeviceSystick systick;
 
 int main(void)
 {

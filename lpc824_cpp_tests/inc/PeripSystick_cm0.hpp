@@ -25,18 +25,19 @@ SOFTWARE.
 #define SYSTICK_CM0_H
 
 #include <stdint.h>
+#include <chip.h>
 
 namespace system_tick
 {
 	namespace detail
 	{
-		void Configure(Whatever& peripheral, uint32_t ticks);
+		void Configure(SysTick_Type& peripheral, uint32_t ticks);
 	}
 
 	template<uint32_t Ticks>
-	bool Configure(Whatever& periperal);
+	void Configure(SysTick_Type& peripheral)
 	{
-		static_assert((ticks - 1) <= 0xFFFFFFUL, "Reload value out of range");
+		static_assert((Ticks - 1) <= 0xFFFFFFUL, "Reload value out of range");
 		detail::Configure(peripheral, Ticks);
 	}
 }
