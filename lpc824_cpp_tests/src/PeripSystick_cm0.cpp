@@ -24,13 +24,13 @@ SOFTWARE.
 
 #include <chip.h>
 #include <PeripSystick_cm0.hpp>
-#include <assert.h>
+#include <sqassert.h>
 
 namespace system_tick::detail
 {
     void Configure(SysTick_Type& peripheral, uint32_t ticks)
     {
-        assert((peripheral.CTRL & (1 << 0)) == 0 && "Already configured");
+        sqassert((peripheral.CTRL & (1 << 0)) == 0 && "Already configured");
 
         peripheral.LOAD  = ticks - 1;                                  /* set reload register */
         NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
