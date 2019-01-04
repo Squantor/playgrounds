@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2018 Bart Bilos
+Copyright (c) 2019 Bart Bilos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,27 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-/*
-Main program entry/file.
-*/
+#ifndef SYSTICK_CM0_H
+#define SYSTICK_CM0_H
 
-#include "chip.h"
-#include <cr_section_macros.h>
-#include <boardinit.h>
-#include <DeviceSystick_cm0.hpp>
+#include <stdint.h>
 
-#define TICKRATE_HZ (2)	/* 10 ticks per second */
-
-extern "C"
+/** \brief  Structure type to access the System Timer (SysTick).
+ */
+typedef struct
 {
-	void SysTick_Handler(void)
-	{
-		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
-	}
-}
+  volatile uint32_t CTRL;                    /*!< Offset: 0x000 (R/W)  SysTick Control and Status Register */
+  volatile uint32_t LOAD;                    /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register       */
+  volatile uint32_t VAL;                     /*!< Offset: 0x008 (R/W)  SysTick Current Value Register      */
+  volatile  uint32_t CALIB;                   /*!< Offset: 0x00C (R/ )  SysTick Calibration Register        */
+} SysTickRegistersType;
 
-DeviceSystick systick;
+class DeviceSystick {
+	SysTickRegistersType *peripheral;
+public:
+	DeviceSystick(SysTickRegistersType * peripheral);
+	uint32_t SysTick_Config(uint32_t ticks);
 
-int main(void)
-{
-	char string[] = "hi!\n";
+};
 
-	boardInit();
-
-	/* Enable SysTick Timer */
-	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
-
-
-
-	/* Loop forever */
-	while (1)
-	{
-		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
-		__WFI();
-	}
-
-    return 0 ;
-}
+#endif

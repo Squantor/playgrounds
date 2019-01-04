@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2018 Bart Bilos
+Copyright (c) 2019 Bart Bilos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-/*
-Main program entry/file.
-*/
 
-#include "chip.h"
-#include <cr_section_macros.h>
-#include <boardinit.h>
+#include <chip.h>
 #include <DeviceSystick_cm0.hpp>
 
-#define TICKRATE_HZ (2)	/* 10 ticks per second */
-
-extern "C"
+DeviceSystick::DeviceSystick(SysTickRegistersType * peripheral)
 {
-	void SysTick_Handler(void)
-	{
-		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
-	}
+	this->peripheral = peripheral;
 }
 
-DeviceSystick systick;
-
-int main(void)
+uint32_t DeviceSystick::SysTick_Config(uint32_t ticks)
 {
-	char string[] = "hi!\n";
+  if ((ticks - 1) > 0xFFFFFFUL)  return (1);      /* Reload value impossible */
 
-	boardInit();
-
-	/* Enable SysTick Timer */
-	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
-
-
-
-	/* Loop forever */
-	while (1)
-	{
-		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
-		__WFI();
-	}
-
-    return 0 ;
+  this->peripheral->LOAD  = ticks - 1;                                  /* set reload register */
+  NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
+  this->peripheral->VAL   = 0;                                          /* Load the SysTick Counter Value */
+  this->peripheral->CTRL  = 0x01 << 2 |
+				   0x01 << 1   |
+				   0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
+  return (0);                                                  /* Function successful */
 }
