@@ -46,6 +46,10 @@ static inline void swmInit(void)
 	Chip_SWM_MovablePinAssign(SWM_U0_TXD_O, 7);
 	Chip_SWM_MovablePinAssign(SWM_U0_RXD_I, 18);
 
+	// I2C functionality
+	Chip_SWM_EnableFixedPin(SWM_FIXED_I2C0_SDA);
+	Chip_SWM_EnableFixedPin(SWM_FIXED_I2C0_SCL);
+
 	Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
 }
 
@@ -64,6 +68,8 @@ static inline void ioconInit(void)
 	Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_IOCON);
 	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO8, PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
+	Chip_IOCON_PinSetI2CMode(LPC_IOCON, IOCON_PIO10, PIN_I2CMODE_FASTPLUS);
+	Chip_IOCON_PinSetI2CMode(LPC_IOCON, IOCON_PIO11, PIN_I2CMODE_FASTPLUS);
 	Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_IOCON);
 }
 
@@ -76,6 +82,21 @@ static inline void gpioInit(void)
 	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0, 12, true);
 }
 
+static inline void setupI2CMaster()
+{
+	/* Enable I2C clock and reset I2C peripheral */
+	Chip_I2C_Init(LPC_I2C);
+
+	/* Setup clock rate for I2C, 100kHz */
+	Chip_I2C_SetClockDiv(LPC_I2C, 240);
+
+	/* Setup I2CM transfer rate */
+	Chip_I2CM_SetBusSpeed(LPC_I2C, 100000);
+
+	/* Enable Master Mode */
+	Chip_I2CM_Enable(LPC_I2C);
+}
+
 void boardInit(void)
 {
 	swmInit();
@@ -84,4 +105,5 @@ void boardInit(void)
     SystemCoreClockUpdate();
 	gpioInit();
 	uartInit();
+	setupI2CMaster();
 }

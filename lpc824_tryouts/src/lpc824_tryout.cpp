@@ -39,21 +39,56 @@ extern "C"
 	}
 }
 
+/* I2CM transfer record */
+static I2CM_XFER_T  i2cmXferRec;
+
+/* Function to setup and execute I2C transfer request */
+static void SetupXferRecAndExecute(uint8_t devAddr,
+								   uint8_t *txBuffPtr,
+								   uint16_t txSize,
+								   uint8_t *rxBuffPtr,
+								   uint16_t rxSize)
+{
+	/* Setup I2C transfer record */
+	i2cmXferRec.slaveAddr = devAddr;
+	i2cmXferRec.status = 0;
+	i2cmXferRec.txSz = txSize;
+	i2cmXferRec.rxSz = rxSize;
+	i2cmXferRec.txBuff = txBuffPtr;
+	i2cmXferRec.rxBuff = rxBuffPtr;
+
+	Chip_I2CM_XferBlocking(LPC_I2C, &i2cmXferRec);
+}
+
+static uint8_t txData[1];
+static uint8_t rxData[1];
+/* Function sends update to the I/O expander */
+static void sendI2CMaster(uint16_t i2c_addr, uint8_t ledStateOut)
+{
+	txData[0] = ledStateOut;
+	SetupXferRecAndExecute(i2c_addr, txData, sizeof(txData), rxData, 0);
+}
+
 int main(void)
 {
 	char string[] = "hi!\n";
+	uint8_t leds = 0;
 
 	boardInit();
+
+	/* Disable the interrupt for the I2C */
+	NVIC_DisableIRQ(I2C_IRQn);
 
 	/* Enable SysTick Timer */
 	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
 
 
-
 	/* Loop forever */
 	while (1)
 	{
+
 		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
+		sendI2CMaster(0x20, ( ~(leds++) ) | 0xF0);
 		__WFI();
 	}
 
