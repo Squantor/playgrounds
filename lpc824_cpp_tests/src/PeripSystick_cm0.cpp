@@ -28,15 +28,15 @@ SOFTWARE.
 
 namespace system_tick::detail
 {
-	void Configure(SysTick_Type& peripheral, uint32_t ticks)
-	{
-		assert((peripheral.CTRL & (1 << 0)) == 0 && "Already configured");
+    void Configure(SysTick_Type& peripheral, uint32_t ticks)
+    {
+        assert((peripheral.CTRL & (1 << 0)) == 0 && "Already configured");
 
-		peripheral.LOAD  = ticks - 1;                                  /* set reload register */
-		NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
-		peripheral.VAL   = 0;                                          /* Load the SysTick Counter Value */
-		peripheral.CTRL  = 0x01 << 2 |
-					   0x01 << 1   |
-					   0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
-	}
+        peripheral.LOAD  = ticks - 1;                                  /* set reload register */
+        NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrupt */
+        peripheral.VAL   = 0;                                          /* Load the SysTick Counter Value */
+        peripheral.CTRL  = 0x01 << 2 |
+                           0x01 << 1 |
+                           0x01 << 0;                    /* Enable SysTick IRQ and SysTick Timer */
+    }
 }

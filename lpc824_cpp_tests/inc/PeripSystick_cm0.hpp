@@ -29,8 +29,8 @@ SOFTWARE.
 
 namespace system_tick
 {
-	namespace detail
-	{
+    namespace detail
+    {
 		void Configure(SysTick_Type& peripheral, uint32_t ticks);
 	}
 

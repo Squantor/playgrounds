@@ -30,32 +30,32 @@ Main program entry/file.
 #include <boardinit.h>
 #include <PeripSystick_cm0.hpp>
 
-#define TICKRATE_HZ (2)	/* 10 ticks per second */
+#define TICKRATE_HZ (2)	/* 2 ticks per second */
 
 extern "C"
 {
-	void SysTick_Handler(void)
-	{
-		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
-	}
+    void SysTick_Handler(void)
+    {
+        Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
+    }
 }
 
 int main(void)
 {
-	char string[] = "hi!\n";
+    char string[] = "hi!\n";
 
-	boardInit();
+    boardInit();
 
-	/* Enable SysTick Timer */
-	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
+    /* Enable SysTick Timer */
+    //SysTick_Config(SystemCoreClock / TICKRATE_HZ);
+    system_tick::Configure<(30000000) / TICKRATE_HZ>(*SysTick);
 
 
-
-	/* Loop forever */
-	while (1)
-	{
-		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
-		__WFI();
+    /* Loop forever */
+    while (1)
+    {
+        Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
+        __WFI();
 	}
 
     return 0 ;
