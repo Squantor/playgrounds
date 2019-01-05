@@ -19,7 +19,7 @@
 					<folderInfo id="com.crt.advproject.config.exe.debug.352549737." name="/" resourcePath="">
 						<toolChain id="com.crt.advproject.toolchain.exe.debug.1958066529" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.exe.debug.1070414250" name="ARM-based MCU (Debug)" superClass="com.crt.advproject.platform.exe.debug"/>
-							<builder buildPath="${workspace_loc:/lpc824_tryouts}" id="com.crt.advproject.builder.exe.debug.1679126119" incrementalBuildTarget="debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.debug">
+							<builder buildPath="${workspace_loc:/lpc824_cpp_tests}" id="com.crt.advproject.builder.exe.debug.1679126119" incrementalBuildTarget="debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.debug">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/debug"/>
 								</outputEntries>
@@ -237,7 +237,7 @@
 					<folderInfo id="com.crt.advproject.config.exe.release.1577233677." name="/" resourcePath="">
 						<toolChain id="com.crt.advproject.toolchain.exe.release.1164503856" name="NXP MCU Tools" superClass="com.crt.advproject.toolchain.exe.release">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.GNU_ELF" id="com.crt.advproject.platform.exe.release.1200638982" name="ARM-based MCU (Release)" superClass="com.crt.advproject.platform.exe.release"/>
-							<builder buildPath="${workspace_loc:/lpc824_tryouts}" id="com.crt.advproject.builder.exe.release.1097232888" incrementalBuildTarget="release" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.release">
+							<builder buildPath="${workspace_loc:/lpc824_cpp_tests}" id="com.crt.advproject.builder.exe.release.1097232888" incrementalBuildTarget="release" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="com.crt.advproject.builder.exe.release">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH" kind="outputPath" name="bin/release"/>
 								</outputEntries>

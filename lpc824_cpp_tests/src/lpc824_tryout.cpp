@@ -36,7 +36,7 @@ extern "C"
 {
     void SysTick_Handler(void)
     {
-        Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
+        // Start ticking a variable
     }
 }
 
@@ -49,7 +49,6 @@ int main(void)
     /* Enable SysTick Timer */
     //SysTick_Config(SystemCoreClock / TICKRATE_HZ);
     system_tick::Configure<(30000000) / TICKRATE_HZ>(*SysTick);
-
 
     /* Loop forever */
     while (1)

@@ -22,11 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include <sqassert.h>
+#include <chip.h>
 
 void assertion_failure()
 {
     // Turn on assertion led
+    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 12);
     while(1)
-        ;
+        __NOP();
 }
 
