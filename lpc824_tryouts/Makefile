@@ -2,11 +2,11 @@
 BIN_NAME = lpc824_tryouts
 MCU = lpc824
 BOARD = 
-C_SOURCES = src/crp.c src/mtb.c src/sysinit.c
+C_SOURCES = src/crp.c src/mtb.c src/sysinit.c src/assert.c
 CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp \
 src/lpc824_tryout.cpp src/boardinit.cpp
 S_SOURCES = src/aeabi_romdiv_patch.s 
-INCLUDES = -Iinc -I../lpc_chip_82x/inc -I../sqlibembedded_c/inc
+INCLUDES = -Iinc -I../lpc_chip_82x/inc -I../squantorCodeLibraries/sqlibembedded_c/inc
 LIBS = -llpc_chip_82x -lsqlibembedded_c
 RLIBDIR = -L"../lpc_chip_82x/bin/release" -L"../squantorCodeLibraries/sqlibembedded_c/bin/cortexM0/release"
 RLIBS = $(LIBS)

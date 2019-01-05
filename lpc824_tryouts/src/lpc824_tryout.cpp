@@ -28,6 +28,7 @@ Main program entry/file.
 #include "chip.h"
 #include <cr_section_macros.h>
 #include <boardinit.h>
+#include <sqassert.h>
 
 #define TICKRATE_HZ (2)	/* 10 ticks per second */
 
@@ -35,7 +36,6 @@ extern "C"
 {
 	void SysTick_Handler(void)
 	{
-		Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, 0, 12);
 	}
 }
 
@@ -80,7 +80,7 @@ int main(void)
 	NVIC_DisableIRQ(I2C_IRQn);
 
 	/* Enable SysTick Timer */
-	SysTick_Config(SystemCoreClock / TICKRATE_HZ);
+	sqassert(SysTick_Config(SystemCoreClock / TICKRATE_HZ) == 0);
 
 
 	/* Loop forever */
