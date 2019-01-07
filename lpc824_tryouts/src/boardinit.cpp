@@ -70,6 +70,7 @@ static inline void ioconInit(void)
 	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO9, PIN_MODE_INACTIVE);
 	Chip_IOCON_PinSetI2CMode(LPC_IOCON, IOCON_PIO10, PIN_I2CMODE_FASTPLUS);
 	Chip_IOCON_PinSetI2CMode(LPC_IOCON, IOCON_PIO11, PIN_I2CMODE_FASTPLUS);
+	Chip_IOCON_PinSetMode(LPC_IOCON, IOCON_PIO16, PIN_MODE_INACTIVE);
 	Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_IOCON);
 }
 
@@ -80,6 +81,8 @@ static inline void gpioInit(void)
 	// setup led
 	Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 12);
 	Chip_GPIO_SetPinState(LPC_GPIO_PORT, 0, 12, true);
+	// setup interrupt pin
+	Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 16);
 }
 
 static inline void setupI2CMaster()
@@ -97,6 +100,21 @@ static inline void setupI2CMaster()
 	Chip_I2CM_Enable(LPC_I2C);
 }
 
+static inline void setupPinInt(void)
+{
+	Chip_PININT_Init(LPC_PININT);
+	Chip_SYSCTL_SetPinInterrupt(0, 16);
+	Chip_SYSCTL_EnablePINTWakeup(0);
+	Chip_PININT_SetPinModeEdge(LPC_PININT, PININTCH0);
+	Chip_PININT_EnableIntLow(LPC_PININT, PININTCH0);
+}
+
+static inline void setupInterrupts(void)
+{
+	NVIC_EnableIRQ(PININT0_IRQn);
+	NVIC_DisableIRQ(I2C_IRQn);
+}
+
 void boardInit(void)
 {
 	swmInit();
@@ -106,4 +124,6 @@ void boardInit(void)
 	gpioInit();
 	uartInit();
 	setupI2CMaster();
+	setupPinInt();
+	setupInterrupts();
 }

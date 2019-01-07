@@ -32,13 +32,6 @@ Main program entry/file.
 
 #define TICKRATE_HZ (2)	/* 10 ticks per second */
 
-extern "C"
-{
-	void SysTick_Handler(void)
-	{
-	}
-}
-
 /* I2CM transfer record */
 static I2CM_XFER_T  i2cmXferRec;
 
@@ -69,26 +62,45 @@ static void sendI2CMaster(uint16_t i2c_addr, uint8_t ledStateOut)
 	SetupXferRecAndExecute(i2c_addr, txData, sizeof(txData), rxData, 0);
 }
 
+volatile uint32_t ticks = 0;
+volatile uint32_t events_int0 = 0;
+
+extern "C"
+{
+	void SysTick_Handler(void)
+	{
+		ticks++;
+	}
+
+	void PIN_INT0_IRQHandler(void)
+	{
+		events_int0++;
+		Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH0);
+	}
+}
+
 int main(void)
 {
-	char string[] = "hi!\n";
+	char string[] = "int0\n\r";
 	uint8_t leds = 0;
+	uint32_t eventsInt0Current = 0;
 
 	boardInit();
-
-	/* Disable the interrupt for the I2C */
-	NVIC_DisableIRQ(I2C_IRQn);
 
 	/* Enable SysTick Timer */
 	sqassert(SysTick_Config(SystemCoreClock / TICKRATE_HZ) == 0);
 
-
 	/* Loop forever */
 	while (1)
 	{
-
-		Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
-		sendI2CMaster(0x20, ( ~(leds++) ) | 0xF0);
+		// handle I2c port expander pins
+		if(eventsInt0Current != events_int0)
+		{
+			// read out what pin is toggled to count rotary stuff
+			Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
+			sendI2CMaster(0x20, ( ~(leds++) ) | 0xF0);
+			eventsInt0Current = events_int0;
+		}
 		__WFI();
 	}
 
