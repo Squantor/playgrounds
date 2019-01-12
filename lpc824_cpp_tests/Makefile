@@ -110,6 +110,8 @@ clean_release:
 clean:
 	$(RM) -r build
 	$(RM) -r bin
+	$(MAKE) -C ../lpc_chip_82x clean
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c/ PLATFORM=cortexM0 clean
 
 # Main rule, checks the executable and symlinks to the output
 all: $(BIN_PATH)/$(BIN_NAME).axf
