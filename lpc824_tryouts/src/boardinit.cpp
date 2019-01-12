@@ -91,10 +91,10 @@ static inline void setupI2CMaster()
 	Chip_I2C_Init(LPC_I2C);
 
 	/* Setup clock rate for I2C, 100kHz */
-	Chip_I2C_SetClockDiv(LPC_I2C, 240);
+	Chip_I2C_SetClockDiv(LPC_I2C, 75);
 
 	/* Setup I2CM transfer rate */
-	Chip_I2CM_SetBusSpeed(LPC_I2C, 100000);
+	Chip_I2CM_SetBusSpeed(LPC_I2C, 400000);
 
 	/* Enable Master Mode */
 	Chip_I2CM_Enable(LPC_I2C);

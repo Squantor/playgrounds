@@ -20,7 +20,7 @@
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
-  <Settings Type="Dynamic Library">
+  <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="" Assembler="">
         <IncludePath Value="."/>
