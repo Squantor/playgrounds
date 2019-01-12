@@ -108,7 +108,7 @@ clean_debug:
 clean_release:
 clean:
 	$(MAKE) -C ../lpc_chip_82x clean
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c clean
+	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 clean
 	$(RM) -r build
 	$(RM) -r bin
 
