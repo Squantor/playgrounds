@@ -48,19 +48,25 @@ static void SetupXferRecAndExecute(uint8_t devAddr,
 	i2cmXferRec.txSz = txSize;
 	i2cmXferRec.rxSz = rxSize;
 	i2cmXferRec.txBuff = txBuffPtr;
-	i2cmXferRec.rxBuff = rxBuffPtr;
-
+    i2cmXferRec.rxBuff = rxBuffPtr;
 	Chip_I2CM_XferBlocking(LPC_I2C, &i2cmXferRec);
 }
 
 static uint8_t txData[1];
 static uint8_t rxData[1];
-/* Function sends update to the I/O expander */
-static void sendI2CMaster(uint16_t i2c_addr, uint8_t ledStateOut)
+static void setI2CExpander(uint8_t outputs)
 {
-	txData[0] = ledStateOut;
-	SetupXferRecAndExecute(i2c_addr, txData, sizeof(txData), rxData, 0);
+	txData[0] = outputs;
+	SetupXferRecAndExecute(0x20, txData, sizeof(txData), rxData, 0);
 }
+
+static void getI2CExpander(uint8_t *inputs)
+{
+	SetupXferRecAndExecute(0x20, txData, 0, rxData, sizeof(rxData));
+    *inputs = rxData[0];
+}
+
+
 
 volatile uint32_t ticks = 0;
 volatile uint32_t events_int0 = 0;
@@ -79,8 +85,11 @@ extern "C"
 	}
 }
 
+
+
 int main(void)
 {
+    static volatile uint8_t test;
 	char string[] = "int0\n\r";
 	uint8_t leds = 0;
 	uint32_t eventsInt0Current = 0;
@@ -96,9 +105,11 @@ int main(void)
 		// handle I2c port expander pins
 		if(eventsInt0Current != events_int0)
 		{
-			// read out what pin is toggled to count rotary stuff
-			Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
-			sendI2CMaster(0x20, ( ~(leds++) ) | 0xF0);
+            uint8_t pins;
+            getI2CExpander(&pins);
+            test = pins;
+            Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
+            setI2CExpander(( ~(leds++) ) | 0xF0);
 			eventsInt0Current = events_int0;
 		}
 		__WFI();
