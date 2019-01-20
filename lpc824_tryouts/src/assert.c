@@ -32,3 +32,7 @@ void assertion_failure()
         __NOP();
 }
 
+void HardFault_Handler(void)
+{
+    sqassert(1 != 0);
+}
