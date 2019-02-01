@@ -13,8 +13,9 @@ ENTRY(Reset_Handler)
 
 SECTIONS {
 
-    .text :
+    .text : ALIGN(4)
     {
+        FILL(0xff)
         KEEP(*(.vectors))
         KEEP(*(.cortex_vectors))
         KEEP(*(.vendor_vectors))
@@ -24,14 +25,16 @@ SECTIONS {
     } >flash
 
     /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
-    .data :
+    .data : ALIGN(4)
     {
+        FILL(0xff)
         _start_data = .;
+        *(.ramfunc*) /* special section for RAM functions */
         *(.data*)
         _end_data = .;
     } >sram AT >flash
 
-    .bss :
+    .bss : ALIGN(4)
     {
         _start_bss = .;
         *(.bss*)
