@@ -16,9 +16,9 @@ SECTIONS {
     .text : ALIGN(4)
     {
         FILL(0xff)
-        KEEP(*(.vectors))
         KEEP(*(.cortex_vectors))
         KEEP(*(.vendor_vectors))
+	. = ALIGN(4) ;
         *(.text*)
         *(.rodata*)
         _end_text = .;
