@@ -8,16 +8,9 @@
   <VirtualDirectory Name="mcu">
     <File Name="mcu/mcu_irq.c"/>
     <File Name="mcu/isr_lpc82x.c"/>
-    <File Name="mcu/isr_lpc824.c"/>
     <File Name="mcu/isr_lpc81X.c"/>
-    <File Name="mcu/isr_lpc812.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
-    <VirtualDirectory Name="mcu">
-      <File Name="inc/mcu/irq_lpc82x.h"/>
-      <File Name="inc/mcu/irq_lpc81x.h"/>
-    </VirtualDirectory>
-    <File Name="inc/mcu_irqs.h"/>
     <File Name="inc/cortexm_irqs.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
