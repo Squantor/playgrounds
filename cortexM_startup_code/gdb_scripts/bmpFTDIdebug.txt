@@ -5,6 +5,7 @@ attach 1
 set mem inaccessible-by-default off
 set {int}0x40048000 = 2
 load bin/debug/cortexM_startup_code.elf
+set mem inaccessible-by-default off
 set {int}0x40048000 = 2
 compare-sections
 b main
