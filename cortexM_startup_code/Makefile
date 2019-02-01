@@ -2,7 +2,7 @@
 BIN_NAME = cortexM_startup_code
 MCU = lpc812
 BOARD = 
-C_SOURCES = src/startup_c.c src/main.c
+C_SOURCES = src/startup_c.c src/main.c mcu/isr_$(MCU).c
 CPP_SOURCES = 
 S_SOURCES = 
 INCLUDES = -Iinc 
@@ -30,7 +30,7 @@ OBJCOPY = objcopy
 COMPILE_CXX_FLAGS = -std=gnu11 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m0 -mthumb
 COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
 COMPILE_ASM_FLAGS = -c -x assembler-with-cpp
-DEFINES = -DCORE_M0PLUS -D__MTB_BUFFER_SIZE=256 -D__USE_ROMDIVIDE -D__USE_LPCOPEN -D__LPC82X__
+DEFINES =
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
 CXX_RELEASE_COMPILE_FLAGS = -Os -g  
