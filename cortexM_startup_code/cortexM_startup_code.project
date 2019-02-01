@@ -6,6 +6,9 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="mcu">
+    <File Name="mcu/cortexm_irqs_lpc.c"/>
+    <File Name="mcu/cortexm_irqs_standard.c"/>
+    <File Name="mcu/cortexm_irqs.c"/>
     <File Name="mcu/mcu_irq.c"/>
     <File Name="mcu/isr_lpc82x.c"/>
     <File Name="mcu/isr_lpc81X.c"/>

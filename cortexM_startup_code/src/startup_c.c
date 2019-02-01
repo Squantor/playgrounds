@@ -45,28 +45,8 @@ void DebugMon_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void PendSV_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void SysTick_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 
-
-/* 16 standard Cortex-M vectors - these are present in every MCU */
-void *core_vector_table[16] __attribute__ ((section(".cortex_vectors"))) = {
-    // See http://sourceware.org/binutils/docs/ld/Source-Code-Reference.html
-    // why the address is used here (if not intuitive)
-    &_end_stack,
-    Reset_Handler,
-    NMI_Handler,
-    HardFault_Handler,
-    MemManage_Handler,
-    BusFault_Handler,
-    UsageFault_Handler,
-    0,
-    0,
-    0,
-    0,
-    SVC_Handler,
-    DebugMon_Handler,
-    0,
-    PendSV_Handler,
-    SysTick_Handler,
-};
+/* some vendors have a checksum in their core vector table */
+#include <cortexm_irqs.c>
 
 /* Based on http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
 void Reset_Handler(void) {
