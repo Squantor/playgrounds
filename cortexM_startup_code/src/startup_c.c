@@ -33,18 +33,16 @@ extern void SystemInit(void);
 void Dummy_Handler(void);
 
 /* Cortex-M core interrupt handlers */
-#define ALIAS(sym) __attribute__((weak, alias (sym)))
-
 void Reset_Handler(void);
-void NMI_Handler(void) ALIAS("Dummy_Handler");
-void HardFault_Handler(void) ALIAS("Dummy_Handler");
-void MemManage_Handler(void) ALIAS("Dummy_Handler");
-void BusFault_Handler(void) ALIAS("Dummy_Handler");
-void UsageFault_Handler(void) ALIAS("Dummy_Handler");
-void SVC_Handler(void) ALIAS("Dummy_Handler");
-void DebugMon_Handler(void) ALIAS("Dummy_Handler");
-void PendSV_Handler(void) ALIAS("Dummy_Handler");
-void SysTick_Handler(void) ALIAS("Dummy_Handler");
+void NMI_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void HardFault_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void MemManage_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void BusFault_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void UsageFault_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void SVC_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void DebugMon_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void PendSV_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
+void SysTick_Handler(void) __attribute__((weak, alias("Dummy_Handler"));
 
 
 /* 16 standard Cortex-M vectors - these are present in every MCU */

@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="cortexM_startup_code" Version="10.0.0" InternalType="">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="mcu">
+    <File Name="mcu/isr_lpc82x.c"/>
+    <File Name="mcu/isr_lpc824.c"/>
     <File Name="mcu/isr_lpc81X.c"/>
     <File Name="mcu/isr_lpc812.c"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
+    <VirtualDirectory Name="mcu">
+      <File Name="inc/mcu/irq_lpc82x.h"/>
+      <File Name="inc/mcu/irq_lpc81x.h"/>
+    </VirtualDirectory>
+    <File Name="inc/mcu_irqs.h"/>
     <File Name="inc/cortexm_irqs.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
@@ -23,33 +35,41 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="Cross GCC ( arm-none-eabi )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Debug" CompilerType="Cross GCC ( arm-none-eabi )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g" C_Options="-g" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
       </Compiler>
       <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="./bin/debug/cortexM_startup_code.elf" IntermediateDirectory="./build/debug" Command="./bin/debug/cortexM_startup_code.elf" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
-      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+      <Environment EnvVarSetName="Default" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
-      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+      <Debugger IsRemote="yes" RemoteHostName="localhost" RemoteHostPort="2000" DebuggerPath="../../../../../../usr/bin/arm-none-eabi-gdb" IsExtended="yes">
         <DebuggerSearchPaths/>
-        <PostConnectCommands/>
+        <PostConnectCommands>monitor swdp_scan
+attach 1
+set mem inaccessible-by-default off
+set {int}0x40048000 = 2
+load bin/debug/cortexM_startup_code.elf
+file bin/debug/cortexM_startup_code.elf
+set {int}0x40048000 = 2
+compare-sections
+b main</PostConnectCommands>
         <StartupCommands/>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="yes">
-        <RebuildCommand/>
+        <RebuildCommand>make clean &amp;&amp; make debug</RebuildCommand>
         <CleanCommand>make clean</CleanCommand>
         <BuildCommand>make</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory>$(WorkspacePath)</WorkingDirectory>
+        <WorkingDirectory>.</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
@@ -68,7 +88,7 @@
       </Compiler>
       <Linker Options="-O2" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="./bin/release/cortexM_startup_code.elf" IntermediateDirectory="./build/release" Command="./bin/release/cortexM_startup_code.elf" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="." PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
@@ -81,14 +101,14 @@
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="yes">
-        <RebuildCommand/>
+        <RebuildCommand>make clean &amp;&amp; make release</RebuildCommand>
         <CleanCommand>make clean</CleanCommand>
         <BuildCommand>make</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory>$(WorkspacePath)</WorkingDirectory>
+        <WorkingDirectory>.</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
