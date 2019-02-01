@@ -22,4 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-extern void Dummy_Handler(void);
+#if defined(__lpc824__)
+    #include "isr_lpc82x.c"
+#elif defined(__lpc812__)
+    #include "isr_lpc81X.c"
+#else
+    #warning "unknown MCU"
+#endif

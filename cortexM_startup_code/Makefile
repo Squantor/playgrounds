@@ -1,11 +1,11 @@
 # Project settings
 BIN_NAME = cortexM_startup_code
-MCU = lpc812
+MCU = lpc824
 BOARD = 
-C_SOURCES = src/startup_c.c src/main.c mcu/isr_$(MCU).c
+C_SOURCES = src/startup_c.c src/main.c
 CPP_SOURCES = 
 S_SOURCES = 
-INCLUDES = -Iinc 
+INCLUDES = -Iinc -Imcu
 LIBDIR = -L"./ld"
 LIBS = 
 RLIBDIR = $(LIBDIR)
@@ -30,7 +30,7 @@ OBJCOPY = objcopy
 COMPILE_CXX_FLAGS = -std=gnu11 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m0 -mthumb
 COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
 COMPILE_ASM_FLAGS = -c -x assembler-with-cpp
-DEFINES =
+DEFINES = -D__$(MCU)__
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
 CXX_RELEASE_COMPILE_FLAGS = -Os -g  
