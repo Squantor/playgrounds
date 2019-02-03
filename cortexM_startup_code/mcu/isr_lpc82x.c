@@ -21,6 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+#if defined (__cplusplus)
+extern "C" {
+#endif
+
 void SPI0_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void SPI1_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void UART0_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
@@ -51,7 +56,12 @@ void PIN_INT5_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void PIN_INT6_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void PIN_INT7_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 
-void *vendor_vector_table[] __attribute__ ((section(".vendor_vectors"))) = {
+#if defined (__cplusplus)
+} // extern "C"
+#endif
+
+extern void (* const vendor_vector_table[])(void);
+void (* const vendor_vector_table[])(void) __attribute__ ((used,section(".vendor_vectors"))) = {
     SPI0_IRQHandler,                         // SPI0 controller
     SPI1_IRQHandler,                         // SPI1 controller
     0,                                       // Reserved

@@ -58,6 +58,7 @@ SECTIONS {
                                          + (UsageFault_Handler + 1) 
                                          )
            );
+    _data_flash = LOADADDR(.data);
 }
 
 _end = .;

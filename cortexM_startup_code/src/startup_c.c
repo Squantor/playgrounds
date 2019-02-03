@@ -10,50 +10,32 @@
  */
 
 #include <stdint.h>
-#include <mcu_irq.c>
 
 /* Declare linker-defined symbols. The only thing of interest
    regarding these symbols is their *address*. uint32_t hints
    of alignment. */
-extern uint32_t _end_text;
+extern uint32_t _data_flash;
 extern uint32_t _start_data;
 extern uint32_t _end_data;
 extern uint32_t _start_bss;
 extern uint32_t _end_bss;
-extern uint32_t _start_stack;
-extern uint32_t _end_stack;
 
 /* C main function */
 extern int main(void);
-/* Device-specific initialization function. Optional, any Cortex-M
-   should be able to start up in its default mode on its own, though
-   some may have errata for some peripherals (including PLL) which
-   this function may "patch". */
-extern void SystemInit(void);
-
+/* standard interrupt/exception handler, best replace this by an assert?*/
 void Dummy_Handler(void);
-
-/* Cortex-M core interrupt handlers */
+/* prototypes used by the ARM ISR vector table */
 void Reset_Handler(void);
-void NMI_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void HardFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void MemManage_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void BusFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void UsageFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void SVC_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void DebugMon_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void PendSV_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
-void SysTick_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 
-/* some vendors have a checksum in their core vector table */
 #include <cortexm_irqs.c>
+#include <mcu_irq.c>
 
 /* Based on http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
 void Reset_Handler(void) {
     register uint32_t *src, *dst;
 
     /* Copy data section from flash to RAM */
-    src = &_end_text;
+    src = &_data_flash;
     dst = &_start_data;
     while (dst < &_end_data)
         *dst++ = *src++;
