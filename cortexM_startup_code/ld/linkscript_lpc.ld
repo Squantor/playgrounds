@@ -58,7 +58,7 @@ SECTIONS {
                                          + (UsageFault_Handler + 1) 
                                          )
            );
-    _data_flash = LOADADDR(.data);
+    PROVIDE(_data_flash = LOADADDR(.data));
 }
 
 _end = .;

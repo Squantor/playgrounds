@@ -1,6 +1,6 @@
 # Project settings
 BIN_NAME = cortexM_startup_code
-MCU = lpc824
+MCU = LPC824
 BOARD = 
 C_SOURCES = src/startup_c.c src/main.c
 CPP_SOURCES = 
@@ -43,7 +43,7 @@ ASM_DEBUG_COMPILE_FLAGS = -g3 -mcpu=cortex-m0 -mthumb
 LINK_FLAGS = -flto -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0 -mthumb
 LINK_FLAGS_RELEASE =
 LINK_FLAGS_DEBUG =
-LDSCRIPT = -T"ld/nxp_$(MCU).ld"
+LDSCRIPT = -T"ld/$(MCU).ld"
 
 
 # Clear built-in rules

@@ -27,6 +27,7 @@ SECTIONS {
     .data :
     {
         _start_data = .;
+        *(.ramfunc*) /* special section for RAM functions */
         *(.data*)
         _end_data = .;
     } >sram AT >flash
@@ -44,6 +45,7 @@ SECTIONS {
     _start_stack = .;
     /* http://sourceware.org/binutils/docs/ld/MEMORY.html */
     PROVIDE(_end_stack = ORIGIN(sram) + LENGTH(sram));
+    PROVIDE(_data_flash = LOADADDR(.data));
 }
 
 _end = .;

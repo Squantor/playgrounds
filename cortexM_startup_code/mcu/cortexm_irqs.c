@@ -26,6 +26,8 @@ SOFTWARE.
     #include "cortexm_irqs_lpc.c"
 #elif defined(__lpc812__)
     #include "cortexm_irqs_lpc.c"
+#elif defined(__STM32F103C8__)
+    #include "cortexm_irqs_standard.c"	
 #else
     #include "cortexm_irqs_standard.c"
 #endif

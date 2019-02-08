@@ -26,6 +26,8 @@ SOFTWARE.
     #include "isr_lpc82x.c"
 #elif defined(__lpc812__)
     #include "isr_lpc81X.c"
+#elif defined(__STM32F103C8__)
+	#include "isr_STM32F103C8.c"
 #else
     #warning "unknown MCU"
 #endif
