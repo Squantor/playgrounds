@@ -29,5 +29,5 @@ SOFTWARE.
 #elif defined(__STM32F103C8__)
     #include "cortexm_irqs_standard.c"	
 #else
-    #include "cortexm_irqs_standard.c"
+    #warning "unknown MCU"
 #endif

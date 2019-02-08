@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #if defined(__LPC824__)
-    #include "isr_lpc82x.c"
+    #include "isr_lpc82X.c"
 #elif defined(__LPC812__)
     #include "isr_lpc81X.c"
 #elif defined(__STM32F103C8__)
