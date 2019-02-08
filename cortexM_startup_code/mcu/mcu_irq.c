@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#if defined(__lpc824__)
+#if defined(__LPC824__)
     #include "isr_lpc82x.c"
-#elif defined(__lpc812__)
+#elif defined(__LPC812__)
     #include "isr_lpc81X.c"
 #elif defined(__STM32F103C8__)
 	#include "isr_STM32F103C8.c"

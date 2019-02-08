@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#if defined(__lpc824__)
+#if defined(__LPC824__)
     #include "cortexm_irqs_lpc.c"
-#elif defined(__lpc812__)
+#elif defined(__LPC812__)
     #include "cortexm_irqs_lpc.c"
 #elif defined(__STM32F103C8__)
     #include "cortexm_irqs_standard.c"	
