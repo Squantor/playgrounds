@@ -119,7 +119,7 @@ all: $(BIN_PATH)/$(BIN_NAME).axf
 $(BIN_PATH)/$(BIN_NAME).axf: $(OBJECTS)
 	$(TOOLCHAIN_PREFIX)$(CPP) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
-	$(TOOLCHAIN_PREFIX)$(SIZE) $@
+	$(TOOLCHAIN_PREFIX)$(SIZE) -x --format=SysV $@
 	date >> size$(BUILD_TARGET).log
 	$(TOOLCHAIN_PREFIX)$(SIZE) $@ >> size$(BUILD_TARGET).log
 	# create the various output files
