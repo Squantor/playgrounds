@@ -6,7 +6,7 @@
 
 volatile int var;
 
-void main()
+int main()
 {
     while (1) {
         var ^= 0x55;

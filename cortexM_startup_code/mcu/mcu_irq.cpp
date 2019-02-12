@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 #if defined(__LPC824__)
-    #include "isr_lpc82X.c"
+    #include "isr_lpc82X.cpp"
 #elif defined(__LPC812__)
-    #include "isr_lpc81X.c"
+    #include "isr_lpc81X.cpp"
 #elif defined(__STM32F103C8__)
-	#include "isr_STM32F103C8.c"
+	#include "isr_STM32F103C8.cpp"
 #else
     #warning "unknown MCU"
 #endif

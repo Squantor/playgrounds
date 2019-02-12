@@ -23,11 +23,11 @@ SOFTWARE.
 */
 
 #if defined(__LPC824__)
-    #include "cortexm_irqs_lpc.c"
+    #include "cortexm_irqs_lpc.cpp"
 #elif defined(__LPC812__)
-    #include "cortexm_irqs_lpc.c"
+    #include "cortexm_irqs_lpc.cpp"
 #elif defined(__STM32F103C8__)
-    #include "cortexm_irqs_standard.c"	
+    #include "cortexm_irqs_standard.cpp"	
 #else
     #warning "unknown MCU"
 #endif

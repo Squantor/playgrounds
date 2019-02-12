@@ -2,8 +2,8 @@
 BIN_NAME = cortexM_startup_code
 MCU = LPC824
 BOARD = 
-C_SOURCES = src/startup_c.c src/main.c
-CPP_SOURCES = 
+C_SOURCES = 
+CPP_SOURCES = src/startup.cpp src/main.cpp
 S_SOURCES = 
 INCLUDES = -Iinc -Imcu
 LIBDIR = -L"./ld"
@@ -28,7 +28,7 @@ OBJCOPY = objcopy
 
 # Toolchain flags
 COMPILE_CXX_FLAGS = -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m0 -mthumb
-COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
+COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
 COMPILE_ASM_FLAGS = -c -x assembler-with-cpp
 DEFINES = -D__$(MCU)__
 DEFINES_RELEASE = -DNDEBUG
