@@ -36,8 +36,6 @@ void PendSV_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void SysTick_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void DebugMon_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 
-extern void _end_stack(void);
-
 #if defined (__cplusplus)
 } // extern "C"
 #endif
