@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="cortexM_startup_code" Version="10.0.0" InternalType="">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="mcu">
     <File Name="mcu/isr_lpc82X.cpp"/>
     <File Name="mcu/mcu_irq.cpp"/>
@@ -16,11 +21,6 @@
     <File Name="src/main.cpp"/>
     <File Name="src/startup.cpp"/>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
-    </Plugin>
-  </Plugins>
   <Description/>
   <Dependencies/>
   <Settings Type="Executable">
@@ -54,7 +54,8 @@ load bin/debug/cortexM_startup_code.elf
 file bin/debug/cortexM_startup_code.elf
 set {int}0x40048000 = 2
 compare-sections
-b main</PostConnectCommands>
+b main
+b Reset_Handler</PostConnectCommands>
         <StartupCommands/>
       </Debugger>
       <PreBuild/>
