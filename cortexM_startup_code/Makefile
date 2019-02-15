@@ -1,17 +1,12 @@
-# Project settings
-BIN_NAME = cortexM_startup_code
-MCU = LPC824
-BOARD = 
-C_SOURCES = 
-CPP_SOURCES = src/startup.cpp src/main.cpp
-S_SOURCES = 
-INCLUDES = -Iinc -Imcu
-LIBDIR = -L"./ld"
-LIBS = 
-RLIBDIR = $(LIBDIR)
-RLIBS = $(LIBS)
-DLIBDIR = $(LIBDIR)
-DLIBS = $(LIBS)
+# get project settings project settings
+include src/Makefile.inc
+
+INCLUDES += -Imcu
+LIBDIR += -L"./ld"
+RLIBDIR += $(LIBDIR)
+RLIBS += $(LIBS)
+DLIBDIR += $(LIBDIR)
+DLIBS += $(LIBS)
 
 # Toolchain settings
 MAKE = make
@@ -27,24 +22,23 @@ OBJDUMP = objdump
 OBJCOPY = objcopy
 
 # Toolchain flags
-COMPILE_CXX_FLAGS = -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m0 -mthumb
-COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
-COMPILE_ASM_FLAGS = -c -x assembler-with-cpp
-DEFINES = -D__$(MCU)__
+COMPILE_CXX_FLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections 
+COMPILE_CPP_FLAGS += -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions 
+COMPILE_ASM_FLAGS += -c -x assembler-with-cpp
+DEFINES += -D__$(MCU)__
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
 CXX_RELEASE_COMPILE_FLAGS = -Os -g  
 CXX_DEBUG_COMPILE_FLAGS = -Og -g3 
 CPP_RELEASE_COMPILE_FLAGS = -Os -g 
 CPP_DEBUG_COMPILE_FLAGS = -Og -g3
-ASM_RELEASE_COMPILE_FLAGS = -mcpu=cortex-m0 -mthumb
-ASM_DEBUG_COMPILE_FLAGS = -g3 -mcpu=cortex-m0 -mthumb
+ASM_RELEASE_COMPILE_FLAGS = 
+ASM_DEBUG_COMPILE_FLAGS = -g3
 
-LINK_FLAGS = -flto -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0 -mthumb
+LINK_FLAGS += -flto -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage
 LINK_FLAGS_RELEASE =
 LINK_FLAGS_DEBUG =
 LDSCRIPT = -T"ld/$(MCU).ld"
-
 
 # Clear built-in rules
 .SUFFIXES:
