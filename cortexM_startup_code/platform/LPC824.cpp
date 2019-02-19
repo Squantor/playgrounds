@@ -22,12 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#if defined(__LPC824__)
-    #include "isr_lpc82X.cpp"
-#elif defined(__LPC812__)
-    #include "isr_lpc81X.cpp"
-#elif defined(__STM32F103C8__)
-	#include "isr_STM32F103C8.cpp"
-#else
-    #warning "unknown MCU"
+#if defined (__cplusplus)
+extern "C" {
 #endif
+
+void Dummy_Handler(void);
+
+#if defined (__cplusplus)
+} // extern "C"
+#endif
+
+#include "cortexm_irqs_lpc.cpp"
+#include "isr_lpc82X.cpp"
+
+void Dummy_Handler(void) {
+    while (1);
+}

@@ -26,20 +26,14 @@ extern uint32_t _end_bss;
 extern void _end_stack(void);
 extern void (*__preinit_array_start []) (void);
 extern void (*__preinit_array_end []) (void);
-void _init(void);
 extern void (*__init_array_start []) (void);
 extern void (*__init_array_end []) (void);
 
-
-void Dummy_Handler(void);
 void Reset_Handler(void);
 
 #if defined (__cplusplus)
 } // extern "C"
 #endif
-
-#include <cortexm_irqs.cpp>
-#include <mcu_irq.cpp>
 
 void Reset_Handler(void) 
 {
@@ -55,9 +49,7 @@ void Reset_Handler(void)
     dst = &_start_bss;
     while (dst < &_end_bss)
         *dst++ = 0;
-    
-    
-    #ifdef __cplusplus
+        
     /* execute c++ constructors */
     auto preInitFunc = __preinit_array_start;
     while(preInitFunc < __preinit_array_end)
@@ -71,17 +63,10 @@ void Reset_Handler(void)
         (*initFunc)();
         initFunc++;
     }
-    #endif
 
     main();
     
-    #ifdef __cplusplus
     /* we omit executing destructors so gcc can optimize them away*/
-    #endif
     
-    while (1);
-}
-
-void Dummy_Handler(void) {
     while (1);
 }

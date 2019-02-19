@@ -1,4 +1,3 @@
-
 # project name
 BIN_NAME = cortexM_startup_code
 MCU = LPC824
@@ -10,8 +9,8 @@ INCLUDES = -Iinc
 LIBDIR = 
 LIBS = 
 RLIBDIR = 
-DEFINES = -mcpu=cortex-m0 -mthumb
-COMPILE_CXX_FLAGS = -mcpu=cortex-m0 -mthumb
-COMPILE_CPP_FLAGS = -mcpu=cortex-m0 -mthumb
+DEFINES = 
+COMPILE_CXX_FLAGS =
+COMPILE_CPP_FLAGS =
 COMPILE_ASM_FLAGS =
-LINK_FLAGS = -mcpu=cortex-m0 -mthumb
+LINK_FLAGS =
