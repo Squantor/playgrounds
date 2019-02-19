@@ -13,8 +13,8 @@ DLIBS += $(LIBS)
 MAKE = make
 MKDIR = mkdir
 RM = rm
-CXX = gcc
-CPP = g++
+C_COMPILER = gcc
+CXX_COMPILER = g++
 GDB = gdb
 TOOLCHAIN_PREFIX = arm-none-eabi-
 SIZE = size
@@ -23,16 +23,16 @@ OBJDUMP = objdump
 OBJCOPY = objcopy
 
 # Toolchain flags
-COMPILE_CXX_FLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections 
-COMPILE_CPP_FLAGS += -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions 
+COMPILE_C_FLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections 
+COMPILE_CXX_FLAGS += -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions 
 COMPILE_ASM_FLAGS += -c -x assembler-with-cpp
 DEFINES += -DMCU_$(MCU)
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
-CXX_RELEASE_COMPILE_FLAGS = -Os -g  
-CXX_DEBUG_COMPILE_FLAGS = -Og -g3 
-CPP_RELEASE_COMPILE_FLAGS = -Os -g 
-CPP_DEBUG_COMPILE_FLAGS = -Og -g3
+C_RELEASE_COMPILE_FLAGS = -Os -g  
+C_RELEASE_COMPILE_FLAGS = -Og -g3 
+CXX_RELEASE_COMPILE_FLAGS = -Os -g 
+CXX_DEBUG_COMPILE_FLAGS = -Og -g3
 ASM_RELEASE_COMPILE_FLAGS = 
 ASM_DEBUG_COMPILE_FLAGS = -g3
 
@@ -50,13 +50,13 @@ LDSCRIPT = -T"ld/$(MCU).ld"
 print-%: ; @echo $*=$($*)
 
 # Combine compiler and linker flags
+release: export CFLAGS := $(COMPILE_C_FLAGS) $(C_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
 release: export CXXFLAGS := $(COMPILE_CXX_FLAGS) $(CXX_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
-release: export CPPFLAGS := $(COMPILE_CPP_FLAGS) $(CPP_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
 release: export ASMFLAGS := $(COMPILE_ASM_FLAGS) $(ASM_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
 release: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_RELEASE) $(LIBDIR) $(RLIBDIR) $(LDSCRIPT)
 release: export LIBS := $(LIBS) $(RLIBS)
-debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(CXX_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
-debug: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(CPP_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
+debug: export CFLAGS := $(COMPILE_C_FLAGS) $(C_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
+debug: export CXXFLAGS := $(COMPILE_CXX_FLAGS) $(CXX_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
 debug: export ASMFLAGS := $(COMPILE_ASM_FLAGS) $(ASM_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
 debug: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_DEBUG) $(LIBDIR) $(DLIBDIR) $(LDSCRIPT)
 debug: export LIBS := $(LIBS) $(DLIBS)
@@ -74,7 +74,7 @@ debug: export BUILD_TARGET := debug
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
 OBJECTS = $(C_SOURCES:%.c=$(BUILD_PATH)/%.c.o)
-OBJECTS += $(CPP_SOURCES:%.cpp=$(BUILD_PATH)/%.cpp.o)
+OBJECTS += $(CXX_SOURCES:%.cpp=$(BUILD_PATH)/%.cpp.o)
 OBJECTS += $(S_SOURCES:%.s=$(BUILD_PATH)/%.s.o)
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
@@ -105,7 +105,7 @@ all: $(BIN_PATH)/$(BIN_NAME).elf
 
 # create the executable
 $(BIN_PATH)/$(BIN_NAME).elf: $(OBJECTS)
-	$(TOOLCHAIN_PREFIX)$(CPP) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
+	$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
 	$(TOOLCHAIN_PREFIX)$(SIZE) -x --format=SysV $@ 
 	date >> size$(BUILD_TARGET).log
@@ -123,15 +123,15 @@ $(BIN_PATH)/$(BIN_NAME).elf: $(OBJECTS)
 # if the source file is in a subdir, create this subdir in the build dir
 $(BUILD_PATH)/%.c.o: ./%.c
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
 $(BUILD_PATH)/%.cpp.o: ./%.cpp
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CPP) $(CPPFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
 $(BUILD_PATH)/%.s.o: ./%.s
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CXX) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
 # debugging lines
 gdbftdidebug: debug
