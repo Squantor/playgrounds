@@ -1,7 +1,8 @@
 # get project settings project settings
-include src/Makefile.inc
+include src/Makefile.mk
+include platform/$(MCU).mk
 
-INCLUDES += -Imcu
+INCLUDES += -Iplatform
 LIBDIR += -L"./ld"
 RLIBDIR += $(LIBDIR)
 RLIBS += $(LIBS)
@@ -25,7 +26,7 @@ OBJCOPY = objcopy
 COMPILE_CXX_FLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections 
 COMPILE_CPP_FLAGS += -std=c++17 -Wall -Wextra -Wno-main -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions 
 COMPILE_ASM_FLAGS += -c -x assembler-with-cpp
-DEFINES += -D__$(MCU)__
+DEFINES += -DMCU_$(MCU)
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
 CXX_RELEASE_COMPILE_FLAGS = -Os -g  
