@@ -32,7 +32,7 @@ void Dummy_Handler(void);
 } // extern "C"
 #endif
 
-#include "cortexm_irqs.cpp"
+#include "cortexm_irqs_standard.cpp"
 #include "isr_STM32F103C8.cpp"
 
 void Dummy_Handler(void) {

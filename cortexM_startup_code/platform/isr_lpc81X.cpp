@@ -22,6 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#if defined (__cplusplus)
+extern "C" {
+#endif
+
 void SPI0_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void SPI1_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void UART0_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
@@ -43,7 +47,12 @@ void PININT5_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void PININT6_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 void PININT7_IRQHandler(void) __attribute__((weak, alias("Dummy_Handler")));
 
-void *vendor_vector_table[] __attribute__ ((section(".vendor_vectors"))) = {
+#if defined (__cplusplus)
+} // extern "C"
+#endif
+
+extern void (* const vendor_vector_table[])(void);
+void (* const vendor_vector_table[])(void) __attribute__ ((used,section(".vendor_vectors"))) = {
     SPI0_IRQHandler,
     SPI1_IRQHandler,
     0,

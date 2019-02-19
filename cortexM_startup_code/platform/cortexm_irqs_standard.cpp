@@ -26,6 +26,10 @@ SOFTWARE.
 extern "C" {
 #endif
 
+extern void _end_stack(void);
+extern void Reset_Handler(void);
+extern void Dummy_Handler(void);
+
 void NMI_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void HardFault_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
 void MemManage_Handler(void) __attribute__((weak, alias("Dummy_Handler")));
