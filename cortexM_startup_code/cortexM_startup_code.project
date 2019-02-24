@@ -10,15 +10,15 @@
     <File Name="platform/cortexm_irqs_standard.cpp"/>
     <File Name="platform/isr_lpc81X.cpp"/>
   </VirtualDirectory>
+  <VirtualDirectory Name="src">
+    <File Name="src/main.cpp"/>
+    <File Name="src/startup.cpp"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="src">
-    <File Name="src/main.cpp"/>
-    <File Name="src/startup.cpp"/>
-  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <Settings Type="Executable">

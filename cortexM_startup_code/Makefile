@@ -4,6 +4,7 @@ include platform/$(MCU).mk
 
 INCLUDES += -Iplatform
 LIBDIR += -L"./ld"
+LIBS +=
 RLIBDIR += $(LIBDIR)
 RLIBS += $(LIBS)
 DLIBDIR += $(LIBDIR)
