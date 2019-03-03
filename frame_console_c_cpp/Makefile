@@ -121,15 +121,15 @@ $(BIN_PATH)/$(BIN_NAME).elf: $(OBJECTS)
 # After the first compilation they will be joined with the rules from the
 # dependency files to provide header dependencies
 # if the source file is in a subdir, create this subdir in the build dir
-$(BUILD_PATH)/%.c.o: ./%.c
+$(BUILD_PATH)/%.c.o: ./%.c Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
 	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
-$(BUILD_PATH)/%.cpp.o: ./%.cpp
+$(BUILD_PATH)/%.cpp.o: ./%.cpp Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
 	$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
-$(BUILD_PATH)/%.s.o: ./%.s
+$(BUILD_PATH)/%.s.o: ./%.s Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
 	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
