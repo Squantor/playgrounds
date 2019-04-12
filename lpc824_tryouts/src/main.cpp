@@ -28,6 +28,8 @@ Main program entry/file.
 #include "chip.h"
 #include <cr_section_macros.h>
 #include <board.hpp>
+#include <stream_uart.hpp>
+#include <strings.hpp>
 
 #define TICKRATE_HZ (2)	/* 10 ticks per second */
 
@@ -84,33 +86,31 @@ extern "C"
 	}
 }
 
-
-
 int main(void)
 {
-    char string[] = "int0\n\r";
+    char string[] = "int0\r";
     uint8_t leds = 0;
     uint32_t eventsInt0Current = 0;
 
     boardInit();
 
-    /* Enable SysTick Timer */
     SysTick_Config(SystemCoreClock / TICKRATE_HZ);
+    
+    dsPuts(&streamUart, strHello);
 
-    /* Loop forever */
-	while (1)
-	{
-		// handle I2c port expander pins
-		if(eventsInt0Current != events_int0)
-		{
+    while (1)
+    {
+        // handle I2c port expander pins
+        if(eventsInt0Current != events_int0)
+        {
             uint8_t pins;
             getI2CExpander(&pins);
-            Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
+            dsPuts(&streamUart, string);
             setI2CExpander(( ~(leds++) ) | 0xF0);
             eventsInt0Current = events_int0;
         }
         __WFI();
-	}
+    }
 
     return 0 ;
 }
