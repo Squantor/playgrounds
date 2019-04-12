@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="lpc824_tryouts" Version="10.0.0" InternalType="">
+  <VirtualDirectory Name="src">
+    <File Name="src/cr_startup_lpc82x.cpp"/>
+    <File Name="src/boardinit.cpp"/>
+    <File Name="src/lpc824JHI33_protoboard.cpp"/>
+    <File Name="src/main.cpp"/>
+    <File Name="src/startup.cpp"/>
+    <File Name="src/lpc824_tryout.cpp"/>
+  </VirtualDirectory>
   <VirtualDirectory Name="platform">
     <File Name="platform/isr_lpc82X.cpp"/>
     <File Name="platform/isr_STM32F103C8.cpp"/>
@@ -12,19 +20,6 @@
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
     <File Name="inc/board.hpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="src">
-    <File Name="src/cr_startup_lpc82x.cpp"/>
-    <File Name="src/mtb.c"/>
-    <File Name="src/crp.c"/>
-    <File Name="src/boardinit.cpp"/>
-    <File Name="src/lpc824JHI33_protoboard.cpp"/>
-    <File Name="src/sysinit.c"/>
-    <File Name="src/main.cpp"/>
-    <File Name="src/startup.cpp"/>
-    <File Name="src/assert.c"/>
-    <File Name="src/lpc824_tryout.cpp"/>
-    <File Name="src/cr_cpp_config.cpp"/>
   </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
