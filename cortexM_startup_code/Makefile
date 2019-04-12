@@ -1,5 +1,7 @@
-# get project settings project settings
+# update per change V0004
+# get project settings
 include src/Makefile.mk
+# get platform settings
 include platform/$(MCU).mk
 
 INCLUDES += -Iplatform
