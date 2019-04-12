@@ -1,50 +1,46 @@
-# Project settings
-BIN_NAME = lpc824_tryouts
-MCU = lpc824
-BOARD = 
-C_SOURCES = src/crp.c src/mtb.c src/sysinit.c src/assert.c
-CPP_SOURCES = src/cr_cpp_config.cpp src/cr_startup_lpc82x.cpp \
-src/lpc824_tryout.cpp src/boardinit.cpp
-S_SOURCES = src/aeabi_romdiv_patch.s 
-INCLUDES = -Iinc -I../lpc_chip_82x/inc -I../squantorCodeLibraries/sqlibembedded_c/inc
-LIBS = -llpc_chip_82x -lsqlibembedded_c
-RLIBDIR = -L"../lpc_chip_82x/bin/release" -L"../squantorCodeLibraries/sqlibembedded_c/bin/cortexM0/release"
-RLIBS = $(LIBS)
-DLIBDIR = -L"../lpc_chip_82x/bin/debug" -L"../squantorCodeLibraries/sqlibembedded_c/bin/cortexM0/debug"
-DLIBS = $(LIBS)
+# update per change V0009
+# get project settings
+include src/Makefile.mk
+# get platform settings
+include platform/$(MCU).mk
+
+INCLUDES += -Iplatform
+ALIBS +=
+RLIBS +=
+DLIBS +=
+ALIBDIR += -L"./ld"
+RLIBDIR +=
+DLIBDIR +=
 
 # Toolchain settings
 MAKE = make
 MKDIR = mkdir
 RM = rm
-CXX = gcc
-CPP = g++
+C_COMPILER = gcc
+CXX_COMPILER = g++
 GDB = gdb
-TOOLCHAIN_PREFIX = arm-none-eabi-
 SIZE = size
 AR = ar
 OBJDUMP = objdump
 OBJCOPY = objcopy
 
 # Toolchain flags
-COMPILE_CXX_FLAGS = -std=gnu11 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m0 -mthumb
-COMPILE_CPP_FLAGS = -std=c++17 -Wall -Wextra -fno-common -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -mcpu=cortex-m0 -mthumb
-COMPILE_ASM_FLAGS = -c -x assembler-with-cpp
-DEFINES = -DCORE_M0PLUS -D__MTB_BUFFER_SIZE=256 -D__USE_ROMDIVIDE -D__USE_LPCOPEN -D__LPC82X__
+COMPILE_C_FLAGS +=
+COMPILE_CXX_FLAGS +=
+COMPILE_ASM_FLAGS +=
+DEFINES +=
 DEFINES_RELEASE = -DNDEBUG
 DEFINES_DEBUG = -DDEBUG
-CXX_RELEASE_COMPILE_FLAGS = -Os -g  
-CXX_DEBUG_COMPILE_FLAGS = -Og -g3 
-CPP_RELEASE_COMPILE_FLAGS = -Os -g 
-CPP_DEBUG_COMPILE_FLAGS = -Og -g3
-ASM_RELEASE_COMPILE_FLAGS = -mcpu=cortex-m0 -mthumb
-ASM_DEBUG_COMPILE_FLAGS = -g3 -mcpu=cortex-m0 -mthumb
+C_RELEASE_COMPILE_FLAGS = -Os -g
+C_DEBUG_COMPILE_FLAGS = -Og -g3
+CXX_RELEASE_COMPILE_FLAGS = -Os -g
+CXX_DEBUG_COMPILE_FLAGS = -Og -g3
+ASM_RELEASE_COMPILE_FLAGS =
+ASM_DEBUG_COMPILE_FLAGS = -g3
 
-LINK_FLAGS = -flto -nostdlib -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0 -mthumb
-LINK_FLAGS_RELEASE =
-LINK_FLAGS_DEBUG =
-LDSCRIPT = -T"ld/nxp_$(MCU).ld"
-
+LINK_FLAGS +=
+LINK_FLAGS_RELEASE +=
+LINK_FLAGS_DEBUG +=
 
 # Clear built-in rules
 .SUFFIXES:
@@ -55,16 +51,16 @@ LDSCRIPT = -T"ld/nxp_$(MCU).ld"
 print-%: ; @echo $*=$($*)
 
 # Combine compiler and linker flags
+release: export CFLAGS := $(COMPILE_C_FLAGS) $(C_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
 release: export CXXFLAGS := $(COMPILE_CXX_FLAGS) $(CXX_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
-release: export CPPFLAGS := $(COMPILE_CPP_FLAGS) $(CPP_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
 release: export ASMFLAGS := $(COMPILE_ASM_FLAGS) $(ASM_RELEASE_COMPILE_FLAGS) $(DEFINES_RELEASE) $(DEFINES)
-release: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_RELEASE) $(LIBDIR) $(RLIBDIR) $(LDSCRIPT)
-release: export LIBS := $(LIBS) $(RLIBS)
-debug: export CXXFLAGS := $(CXXFLAGS) $(COMPILE_CXX_FLAGS) $(CXX_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
-debug: export CPPFLAGS := $(CPPFLAGS) $(COMPILE_CPP_FLAGS) $(CPP_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
+release: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_RELEASE) $(ALIBDIR) $(RLIBDIR) $(LDSCRIPT)
+release: export LIBS := $(ALIBS) $(RLIBS)
+debug: export CFLAGS := $(COMPILE_C_FLAGS) $(C_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
+debug: export CXXFLAGS := $(COMPILE_CXX_FLAGS) $(CXX_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
 debug: export ASMFLAGS := $(COMPILE_ASM_FLAGS) $(ASM_DEBUG_COMPILE_FLAGS) $(DEFINES_DEBUG) $(DEFINES)
-debug: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_DEBUG) $(LIBDIR) $(DLIBDIR) $(LDSCRIPT)
-debug: export LIBS := $(LIBS) $(DLIBS)
+debug: export LDFLAGS := $(LINK_FLAGS) $(LINK_FLAGS_DEBUG) $(ALIBDIR) $(DLIBDIR) $(LDSCRIPT)
+debug: export LIBS := $(ALIBS) $(DLIBS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
@@ -78,24 +74,18 @@ debug: export BUILD_TARGET := debug
 
 # Set the object file names, with the source directory stripped
 # from the path, and the build path prepended in its place
-OBJECTS = $(C_SOURCES:%.c=$(BUILD_PATH)/%.c.o)
-OBJECTS += $(CPP_SOURCES:%.cpp=$(BUILD_PATH)/%.cpp.o)
+OBJECTS += $(C_SOURCES:%.c=$(BUILD_PATH)/%.c.o)
+OBJECTS += $(CXX_SOURCES:%.cpp=$(BUILD_PATH)/%.cpp.o)
 OBJECTS += $(S_SOURCES:%.s=$(BUILD_PATH)/%.s.o)
 # Set the dependency files that will be used to add header dependencies
 DEPS = $(OBJECTS:.o=.d)
 
 # Standard, non-optimized release build
-release: dirs
-	# make lpc_chip library if needed
-	$(MAKE) -C ../lpc_chip_82x release
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 release
+release: dirs pre-release
 	$(MAKE) all --no-print-directory
 
 # Debug build for gdb debugging
-debug: dirs
-	# make lpc_chip library if needed
-	$(MAKE) -C ../lpc_chip_82x debug
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 debug
+debug: dirs pre-debug
 	$(MAKE) all --no-print-directory
 
 # Create the directories used in the build
@@ -104,22 +94,18 @@ dirs:
 	$(MKDIR) -p $(BIN_PATH)
 
 # Removes all build files
-clean_debug:
-clean_release:
-clean:
-	$(MAKE) -C ../lpc_chip_82x clean
-	$(MAKE) -C ../squantorCodeLibraries/sqlibembedded_c PLATFORM=cortexM0 clean
+clean: pre-clean
 	$(RM) -r build
 	$(RM) -r bin
 
-# Main rule, checks the executable and symlinks to the output
-all: $(BIN_PATH)/$(BIN_NAME).axf
+# Main rule
+all: $(BIN_PATH)/$(BIN_NAME).elf
 
 # create the executable
-$(BIN_PATH)/$(BIN_NAME).axf: $(OBJECTS)
-	$(TOOLCHAIN_PREFIX)$(CPP) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
+$(BIN_PATH)/$(BIN_NAME).elf: $(OBJECTS)
+	$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(LDFLAGS) $(OBJECTS) -Xlinker -Map="$@.map" -o $@ $(LIBS)
 	# dump size and log to file
-	$(TOOLCHAIN_PREFIX)$(SIZE) -x --format=SysV $@
+	$(TOOLCHAIN_PREFIX)$(SIZE) -x --format=SysV $@ 
 	date >> size$(BUILD_TARGET).log
 	$(TOOLCHAIN_PREFIX)$(SIZE) $@ >> size$(BUILD_TARGET).log
 	# create the various output files
@@ -133,31 +119,18 @@ $(BIN_PATH)/$(BIN_NAME).axf: $(OBJECTS)
 # After the first compilation they will be joined with the rules from the
 # dependency files to provide header dependencies
 # if the source file is in a subdir, create this subdir in the build dir
-$(BUILD_PATH)/%.c.o: ./%.c
+# additional dependency on Makefile and more importantly the include in src
+$(BUILD_PATH)/%.c.o: ./%.c Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
-$(BUILD_PATH)/%.cpp.o: ./%.cpp
+$(BUILD_PATH)/%.cpp.o: ./%.cpp Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CPP) $(CPPFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
-$(BUILD_PATH)/%.s.o: ./%.s
+$(BUILD_PATH)/%.s.o: ./%.s Makefile ./src/Makefile.mk
 	$(MKDIR) -p $(dir $@) 
-	$(TOOLCHAIN_PREFIX)$(CXX) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
+	$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 
-# debugging lines
-gdbftdidebug: debug
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmpFTDIdebug.txt
-
-gdbftdirelease: release
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmpFTDIrelease.txt
-
-gdbusbdebug: debug
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmpUSBdebug.txt
-
-gdbusbrelease: debug
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmpUSBrelease.txt
-
-
-.PHONY: release debug dirs all clean clean_debug clean_release gdbftdidebug gdbftdirelease gdbusbdebug gdbusbrelease
+.PHONY: release debug dirs all clean clean_debug clean_release
 

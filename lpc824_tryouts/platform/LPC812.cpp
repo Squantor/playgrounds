@@ -1,7 +1,7 @@
 /*
-The MIT License (MIT)
+MIT License
 
-Copyright (c) 2018 Bart Bilos
+Copyright (c) 2019 Bart Bilos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,9 +21,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#ifndef BOARDINIT_H
-#define BOARDINIT_H
 
-void boardInit(void);
-
+#if defined (__cplusplus)
+extern "C" {
 #endif
+
+void Dummy_Handler(void);
+
+#if defined (__cplusplus)
+} // extern "C"
+#endif
+
+#include "cortexm_irqs_lpc.cpp"
+#include "isr_lpc81X.cpp"
+
+void Dummy_Handler(void) {
+    while (1);
+}
