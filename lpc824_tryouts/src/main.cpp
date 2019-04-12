@@ -88,7 +88,6 @@ extern "C"
 
 int main(void)
 {
-    static volatile uint8_t test;
     char string[] = "int0\n\r";
     uint8_t leds = 0;
     uint32_t eventsInt0Current = 0;
@@ -106,7 +105,6 @@ int main(void)
 		{
             uint8_t pins;
             getI2CExpander(&pins);
-            test = pins;
             Chip_UART_SendBlocking(LPC_USART0, &string, sizeof(string));
             setI2CExpander(( ~(leds++) ) | 0xF0);
             eventsInt0Current = events_int0;
