@@ -37,8 +37,7 @@ static inline void swmInit(void)
     Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
 
     // disable existing functionality
-    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC8);
-    Chip_SWM_DisableFixedPin(SWM_FIXED_ADC0);
+    Chip_SWM_FixedPinEnable(SWM_FIXED_ADC3);
     Chip_SWM_FixedPinEnable(SWM_FIXED_XTALIN, true);
     Chip_SWM_FixedPinEnable(SWM_FIXED_XTALOUT, true);
 

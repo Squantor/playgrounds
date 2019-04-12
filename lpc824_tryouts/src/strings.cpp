@@ -26,3 +26,4 @@ Common used strings
 */
 
 char strHello[] = "LPC824 playground";
+char strAdcThresh[] = "ADC threshold event\r";

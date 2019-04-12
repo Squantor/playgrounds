@@ -31,59 +31,79 @@ Main program entry/file.
 #include <stream_uart.hpp>
 #include <strings.hpp>
 
-#define TICKRATE_HZ (2)	/* 10 ticks per second */
+#define TICKRATE_HZ (5)    /* 10 ticks per second */
+
+#define BOARD_ADC_CH 3
 
 /* I2CM transfer record */
 static I2CM_XFER_T  i2cmXferRec;
 
 /* Function to setup and execute I2C transfer request */
 static void SetupXferRecAndExecute(uint8_t devAddr,
-								   uint8_t *txBuffPtr,
-								   uint16_t txSize,
-								   uint8_t *rxBuffPtr,
-								   uint16_t rxSize)
+                                   uint8_t *txBuffPtr,
+                                   uint16_t txSize,
+                                   uint8_t *rxBuffPtr,
+                                   uint16_t rxSize)
 {
-	/* Setup I2C transfer record */
-	i2cmXferRec.slaveAddr = devAddr;
-	i2cmXferRec.status = 0;
-	i2cmXferRec.txSz = txSize;
-	i2cmXferRec.rxSz = rxSize;
-	i2cmXferRec.txBuff = txBuffPtr;
+    /* Setup I2C transfer record */
+    i2cmXferRec.slaveAddr = devAddr;
+    i2cmXferRec.status = 0;
+    i2cmXferRec.txSz = txSize;
+    i2cmXferRec.rxSz = rxSize;
+    i2cmXferRec.txBuff = txBuffPtr;
     i2cmXferRec.rxBuff = rxBuffPtr;
-	Chip_I2CM_XferBlocking(LPC_I2C, &i2cmXferRec);
+    Chip_I2CM_XferBlocking(LPC_I2C, &i2cmXferRec);
 }
 
 static uint8_t txData[1];
 static uint8_t rxData[1];
 static void setI2CExpander(uint8_t outputs)
 {
-	txData[0] = outputs;
-	SetupXferRecAndExecute(0x20, txData, sizeof(txData), rxData, 0);
+    txData[0] = outputs;
+    SetupXferRecAndExecute(0x20, txData, sizeof(txData), rxData, 0);
 }
 
 static void getI2CExpander(uint8_t *inputs)
 {
-	SetupXferRecAndExecute(0x20, txData, 0, rxData, sizeof(rxData));
+    SetupXferRecAndExecute(0x20, txData, 0, rxData, sizeof(rxData));
     *inputs = rxData[0];
 }
 
-
-
 volatile uint32_t ticks = 0;
 volatile uint32_t events_int0 = 0;
+volatile uint32_t events_adc = 0;
+volatile bool sequenceComplete, thresholdCrossed;
 
 extern "C"
 {
-	void SysTick_Handler(void)
-	{
-		ticks++;
-	}
+    void SysTick_Handler(void)
+    {
+        ticks++;
+        /* Manual start for ADC conversion sequence A */
+        Chip_ADC_StartSequencer(LPC_ADC, ADC_SEQA_IDX);
+    }
 
-	void PIN_INT0_IRQHandler(void)
-	{
-		events_int0++;
-		Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH0);
-	}
+    void PIN_INT0_IRQHandler(void)
+    {
+        events_int0++;
+        Chip_PININT_ClearIntStatus(LPC_PININT, PININTCH0);
+    }
+    
+    void ADC_SEQA_IRQHandler(void)
+    {
+        uint32_t pending;
+
+        /* Get pending interrupts */
+        pending = Chip_ADC_GetFlags(LPC_ADC);
+
+        /* Sequence A completion interrupt */
+        if (pending & ADC_FLAGS_SEQA_INT_MASK) {
+            sequenceComplete = true;
+        }
+
+        /* Clear any pending interrupts */
+        Chip_ADC_ClearFlags(LPC_ADC, pending);
+    }
 }
 
 int main(void)
@@ -93,6 +113,21 @@ int main(void)
     uint32_t eventsInt0Current = 0;
 
     boardInit();
+    
+    Chip_ADC_Init(LPC_ADC, 0);
+    Chip_ADC_StartCalibration(LPC_ADC);
+    while (!(Chip_ADC_IsCalibrationDone(LPC_ADC))) {}
+    Chip_ADC_SetClockRate(LPC_ADC, ADC_MAX_SAMPLE_RATE);
+    
+    Chip_ADC_SetupSequencer(LPC_ADC, ADC_SEQA_IDX, 
+        (ADC_SEQ_CTRL_CHANSEL(BOARD_ADC_CH) | ADC_SEQ_CTRL_MODE_EOS));
+    
+    Chip_ADC_ClearFlags(LPC_ADC, Chip_ADC_GetFlags(LPC_ADC));
+    Chip_ADC_EnableInt(LPC_ADC, (ADC_INTEN_SEQA_ENABLE));
+    
+    NVIC_EnableIRQ(ADC_SEQA_IRQn);
+    
+    Chip_ADC_EnableSequencer(LPC_ADC, ADC_SEQA_IDX);
 
     SysTick_Config(SystemCoreClock / TICKRATE_HZ);
     
@@ -100,6 +135,7 @@ int main(void)
 
     while (1)
     {
+        __WFI();
         // handle I2c port expander pins
         if(eventsInt0Current != events_int0)
         {
@@ -109,7 +145,33 @@ int main(void)
             setI2CExpander(( ~(leds++) ) | 0xF0);
             eventsInt0Current = events_int0;
         }
-        __WFI();
+        // Handle ADC events
+        if(thresholdCrossed) 
+        {
+            thresholdCrossed = false;
+            dsPuts(&streamUart, strAdcThresh);
+        }
+        
+        /* Is a conversion sequence complete? */
+        if(sequenceComplete) 
+        {
+            sequenceComplete = false;
+
+            /* Get raw sample data for channels 0-11 */
+            for (int i = 0; i < 12; i++) {
+                uint32_t rawSample = Chip_ADC_GetDataReg(LPC_ADC, i);
+
+                /* Show some ADC data */
+                if (rawSample & (ADC_DR_OVERRUN | ADC_SEQ_GDAT_DATAVALID)) 
+                {
+                    //DEBUGOUT("Chan: %d Val: %d\r\n", i, ADC_DR_RESULT(rawSample));
+                    //DEBUGOUT("Threshold range: 0x%x ", ADC_DR_THCMPRANGE(rawSample));
+                    //DEBUGOUT("Threshold cross: 0x%x\r\n", ADC_DR_THCMPCROSS(rawSample));
+                    //DEBUGOUT("Overrun: %s ", (rawSample & ADC_DR_OVERRUN) ? "true" : "false");
+                    //DEBUGOUT("Data Valid: %s\r\n\r\n", (rawSample & ADC_SEQ_GDAT_DATAVALID) ? "true" : "false");
+                }
+            }
+        }
     }
 
     return 0 ;

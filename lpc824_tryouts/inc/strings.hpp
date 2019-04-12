@@ -28,5 +28,6 @@ Common used strings
 #define STRINGS_HPP
 
 extern char strHello[];
+extern char strAdcThresh[];
 
 #endif
