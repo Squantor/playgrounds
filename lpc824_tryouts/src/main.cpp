@@ -30,8 +30,9 @@ Main program entry/file.
 #include <board.hpp>
 #include <stream_uart.hpp>
 #include <strings.hpp>
+#include <print.hpp>
 
-#define TICKRATE_HZ (5)    /* 10 ticks per second */
+#define TICKRATE_HZ (10)    /* 10 ticks per second */
 
 #define BOARD_ADC_CH 3
 
@@ -120,7 +121,14 @@ int main(void)
     Chip_ADC_SetClockRate(LPC_ADC, ADC_MAX_SAMPLE_RATE);
     
     Chip_ADC_SetupSequencer(LPC_ADC, ADC_SEQA_IDX, 
-        (ADC_SEQ_CTRL_CHANSEL(BOARD_ADC_CH) | ADC_SEQ_CTRL_MODE_EOS));
+        (ADC_SEQ_CTRL_CHANSEL(BOARD_ADC_CH) | 
+        ADC_SEQ_CTRL_MODE_EOS )
+        );
+    // enable fixed pins after the sequencer
+    // TODO investigate this as it is not according to the datasheet
+    Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_SWM);
+    Chip_SWM_EnableFixedPin(SWM_FIXED_ADC3);
+    Chip_Clock_DisablePeriphClock(SYSCTL_CLOCK_SWM);
     
     Chip_ADC_ClearFlags(LPC_ADC, Chip_ADC_GetFlags(LPC_ADC));
     Chip_ADC_EnableInt(LPC_ADC, (ADC_INTEN_SEQA_ENABLE));
@@ -128,7 +136,7 @@ int main(void)
     NVIC_EnableIRQ(ADC_SEQA_IRQn);
     
     Chip_ADC_EnableSequencer(LPC_ADC, ADC_SEQA_IDX);
-
+    
     SysTick_Config(SystemCoreClock / TICKRATE_HZ);
     
     dsPuts(&streamUart, strHello);
@@ -145,12 +153,6 @@ int main(void)
             setI2CExpander(( ~(leds++) ) | 0xF0);
             eventsInt0Current = events_int0;
         }
-        // Handle ADC events
-        if(thresholdCrossed) 
-        {
-            thresholdCrossed = false;
-            dsPuts(&streamUart, strAdcThresh);
-        }
         
         /* Is a conversion sequence complete? */
         if(sequenceComplete) 
@@ -164,11 +166,11 @@ int main(void)
                 /* Show some ADC data */
                 if (rawSample & (ADC_DR_OVERRUN | ADC_SEQ_GDAT_DATAVALID)) 
                 {
-                    //DEBUGOUT("Chan: %d Val: %d\r\n", i, ADC_DR_RESULT(rawSample));
-                    //DEBUGOUT("Threshold range: 0x%x ", ADC_DR_THCMPRANGE(rawSample));
-                    //DEBUGOUT("Threshold cross: 0x%x\r\n", ADC_DR_THCMPCROSS(rawSample));
-                    //DEBUGOUT("Overrun: %s ", (rawSample & ADC_DR_OVERRUN) ? "true" : "false");
-                    //DEBUGOUT("Data Valid: %s\r\n\r\n", (rawSample & ADC_SEQ_GDAT_DATAVALID) ? "true" : "false");
+                    dsPuts(&streamUart, strAdcChan);
+                    print_hex_u16(&streamUart, i);
+                    dsPuts(&streamUart, strAdcValue);
+                    print_hex_u16(&streamUart, ADC_DR_RESULT(rawSample));
+                    dsPuts(&streamUart, strCrLf);
                 }
             }
         }

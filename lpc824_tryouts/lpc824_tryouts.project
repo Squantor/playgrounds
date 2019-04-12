@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="lpc824_tryouts" Version="10.0.0" InternalType="">
   <VirtualDirectory Name="src">
-    <File Name="src/strings.cpp"/>
-    <File Name="src/stream_uart.cpp"/>
     <File Name="src/cr_startup_lpc82x.cpp"/>
+    <File Name="src/strings.cpp"/>
     <File Name="src/boardinit.cpp"/>
     <File Name="src/lpc824JHI33_protoboard.cpp"/>
+    <File Name="src/stream_uart.cpp"/>
     <File Name="src/main.cpp"/>
+    <File Name="src/print.cpp"/>
     <File Name="src/startup.cpp"/>
     <File Name="src/lpc824_tryout.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="inc">
+    <File Name="inc/strings.hpp"/>
+    <File Name="inc/board.hpp"/>
+    <File Name="inc/print.hpp"/>
+    <File Name="inc/stream_uart.hpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="platform">
     <File Name="platform/isr_lpc82X.cpp"/>
@@ -19,11 +26,6 @@
     <File Name="platform/cortexm_irqs_lpc.cpp"/>
     <File Name="platform/cortexm_irqs_standard.cpp"/>
     <File Name="platform/isr_lpc81X.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="inc">
-    <File Name="inc/strings.hpp"/>
-    <File Name="inc/stream_uart.hpp"/>
-    <File Name="inc/board.hpp"/>
   </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">

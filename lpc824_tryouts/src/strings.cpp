@@ -25,5 +25,9 @@ SOFTWARE.
 Common used strings
 */
 
-char strHello[] = "LPC824 playground";
-char strAdcThresh[] = "ADC threshold event\r";
+#include <strings.h>
+
+char strHello[] = "LPC824 playground\r\n";
+char strAdcChan[] = "Channel: ";
+char strAdcValue[] = " value: ";
+char strCrLf[] = "\r\n";

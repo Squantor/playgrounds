@@ -9,7 +9,10 @@ include src/$(BOARD).mk
 
 # project settings
 C_SOURCES +=
-CXX_SOURCES += src/startup.cpp src/main.cpp src/strings.cpp src/stream_uart.cpp
+CXX_SOURCES += src/startup.cpp src/main.cpp \
+src/strings.cpp \
+src/stream_uart.cpp \
+src/print.cpp
 S_SOURCES +=
 INCLUDES += -Iinc
 DEFINES +=

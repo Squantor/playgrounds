@@ -21,15 +21,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-/*
-Common used strings
-*/
-#ifndef STRINGS_HPP
-#define STRINGS_HPP
+#ifndef PRINT_HPP
+#define PRINT_HPP
 
-extern char strHello[];
-extern char strAdcChan[];
-extern char strAdcValue[];
-extern char strCrLf[];
+#include <datastream.h>
+#include <stdint.h>
+
+void print_hex_u8(const datastreamChar_t *__restrict__ stream, const uint8_t data);
+void print_hex_u16(const datastreamChar_t *__restrict__ stream, const uint16_t data);
+void print_hex_u32(const datastreamChar_t *__restrict__ stream, const uint32_t data);
+void print_dec_u16(const datastreamChar_t *__restrict__ stream, uint16_t data);
+void print_dec_u32(const datastreamChar_t *__restrict__ stream, uint32_t data);
+void print_bin_u32(const datastreamChar_t *__restrict__ stream, const uint32_t data);
 
 #endif
