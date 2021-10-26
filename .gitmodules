@@ -1,15 +1,15 @@
-[submodule "lpc_chip_11cxx"]
-	path = lpc_chip_11cxx
-	url = https://github.com/Squantor/lpc_chip_11cxx.git
-[submodule "squantorCodeLibraries"]
-	path = squantorCodeLibraries
-	url = https://github.com/Squantor/squantorCodeLibraries.git
-[submodule "lpc_chip_82x"]
-	path = lpc_chip_82x
-	url = https://github.com/Squantor/lpc_chip_82x.git
-[submodule "squantorLibC"]
-	path = squantorLibC
-	url = https://github.com/Squantor/squantorLibC.git
-[submodule "squantorLibEmbeddedC"]
-	path = squantorLibEmbeddedC
-	url = https://github.com/Squantor/squantorLibEmbeddedC.git
+[submodule "software/squantorLibC"]
+	path = software/squantorLibC
+	url = git@github.com:Squantor/squantorLibC.git
+[submodule "software/squantorLibEmbedded"]
+	path = software/squantorLibEmbedded
+	url = git@github.com:Squantor/squantorLibEmbedded.git
+[submodule "software/squantorMinUnit"]
+	path = software/squantorMinUnit
+	url = git@github.com:Squantor/squantorMinUnit.git
+[submodule "software/libMcuLL"]
+	path = software/libMcuLL
+	url = git@github.com:Squantor/libMcuLL.git
+[submodule "electronics/various_PCB"]
+	path = electronics/various_PCB
+	url = git@github.com:Squantor/various_PCB.git

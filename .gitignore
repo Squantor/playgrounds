@@ -4,19 +4,13 @@
 *.o
 *.obj
 build/
-
-# Precompiled Headers
-*.gch
-*.pch
+Debug/
+Release/
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
@@ -30,8 +24,33 @@ build/
 *.app
 bin/
 
-#miscellanious generated files
+# miscellanious generated files
 *.log
+disassemblies/
 
-#eclipse stuff
-.settings/
+# doxygen output
+doxyOutput/
+
+#vscode files that are better ignored
+settings.json
+
+#kicad temporaries
+*.kicad_pcb-bak
+*.sch-bak
+*.net
+*.tmp
+*.bak
+_autosave*
+
+# kicad outputs
+plots/
+plots-*/
+*_plots_*/
+*_plots/
+*.zip
+
+# freecad backup files
+*.FCStd?
+
+# ignore STL files, you can add them by forcing it
+*.stl
