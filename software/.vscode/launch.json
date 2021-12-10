@@ -8,7 +8,7 @@
             "name": "run sharp LCD example debug",
             "cwd": "${workspaceRoot}",
             "executable": "${workspaceFolder}/bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",
-            "request": "attach",
+            "request": "launch",
             "type": "cortex-debug",
             "servertype": "bmp",
             "interface": "swd",

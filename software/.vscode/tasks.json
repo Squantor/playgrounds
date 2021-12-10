@@ -13,5 +13,12 @@
             },
             "problemMatcher": "$gcc"
         },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make PROJECT=LPC845M301HI48_sharp_lcd config=debug -j20 clean",
+            "group": "build",
+            "problemMatcher": "$gcc"
+        }
     ]
 }
