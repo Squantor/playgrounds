@@ -3,14 +3,13 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/LPC824/inc",
                 "${workspaceFolder}/libMcuLL/inc/",
                 "${workspaceFolder}/squantorLibC/inc/",
-                "${workspaceFolder}/squantorLibEmbeddedC/inc/",
-                "${workspaceFolder}/libEmbedded/inc/"
+                "${workspaceFolder}/squantorLibEmbedded/inc/",
+                "${workspaceFolder}/LPC845M301HI48_sharp_lcd/inc/",
             ],
             "defines": [
-                "MCU_LPC824M201JHI33",
+                "MCU_LPC845M301BD48",
                 "DEBUG"
             ],
             "browse": {
@@ -19,7 +18,7 @@
                     "${workspaceFolder}/**"
                 ]
             },
-            "compilerPath": "/home/abilos/programs/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc",
+            "compilerPath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
             "cppStandard": "c++20",
             "intelliSenseMode": "gcc-x64"
