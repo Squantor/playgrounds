@@ -69,7 +69,7 @@ void lcdTransfer(uint16_t *begin, uint16_t *end)
     }
 }
 
-util::sharpMemLcd<util::LS013B4DN04> boardLcd;
+util::sharpMemLcd<util::LS027B7DH01> boardLcd;
 
 int main()
 {
@@ -88,7 +88,7 @@ int main()
         SPI_TXDATCTL_EOT |
         SPI_TXDATCTL_RXIGNORE | 
         SPI_TXDATCTL_LEN(16) );
-    boardInit();
+    boardLcd.init();
     while (1) {
         if(currticks < systicks)
         {
@@ -97,14 +97,14 @@ int main()
             {
                 for(unsigned int j = 0; j < boardLcd.maxX; j++)
                 {
-                    boardLcd.putPixel(j, i, ((j ^ i) + currticks) & 0x20);
+                    boardLcd.putPixel(j, i, ((j ^ i) + (currticks/2)) & 0x40);
                     //boardLcd.putPixel(i, j, ((i*i + j*j) + currticks) & 0x20);
                     //if(i == j) boardLcd.putPixel(i, j, 1);
                 }
             }
-            //transferFramebuf();
-            boardLcd.lcdUpdate(lcdTransfer);
             boardLcd.flipVcom(lcdTransfer);
+            boardLcd.lcdUpdate(lcdTransfer);
         }
+        __NOP();
     }
 }

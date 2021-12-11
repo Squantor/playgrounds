@@ -23,7 +23,7 @@ void crudeDelay(uint32_t iterations)
 
 void boardInit(void)
 {
-    sysconEnableClocks(SYSCON, CLKCTRL0_IOCON | CLKCTRL0_GPIO0 | CLKCTRL0_SWM, CLKCTRL1_NONE);
+    sysconEnableClocks(SYSCON, CLKCTRL0_IOCON | CLKCTRL0_GPIO0 | CLKCTRL0_SWM | CLKCTRL0_SPI0, CLKCTRL1_NONE);
     ioconSetupPin(IOCON, IOCON_DISP_CE, IOCON_MODE_INACTIVE);
     ioconSetupPin(IOCON, IOCON_DISP_MOSI, IOCON_MODE_INACTIVE);
     ioconSetupPin(IOCON, IOCON_DISP_SCK, IOCON_MODE_INACTIVE);
@@ -47,10 +47,11 @@ void boardInit(void)
     // divide 60MHz from Pll to 30MHz for the CPU
     sysconMainClockDivider(SYSCON, 2);
     sysconMainClockPllSelect(SYSCON, MAINCLKPLLSEL_SYSPLL);
+
+    // setup GPIO pin
     gpioSetPinDIROutput(GPIO, PORT_LED, PIN_LED);
     gpioPinWrite(GPIO, PORT_LED, PIN_LED, 0);
-    // disable all unneeded clocks
-    sysconDisableClocks(SYSCON, CLKCTRL0_SWM, CLKCTRL1_NONE);
+
     // setup systick
     SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 
@@ -59,7 +60,7 @@ void boardInit(void)
     SwmMovablePinAssign(SWM, SWM_SPI0_MOSI, SWM_DISP_MOSI);
     SwmMovablePinAssign(SWM, SWM_SPI0_SCK, SWM_DISP_SCK);
     sysconPeripheralClockSelect(SYSCON, SPI0CLKSEL, CLKSRC_MAIN);
-    spiSetDivider(SPI0, 60);
+    spiSetDivider(SPI0, 30);
     spiSetConfig(SPI0, SPI_CFG_ENABLE | SPI_CFG_MASTER | SPI_CFG_LSBF | SPI_CFG_SPOL0);
 
     // disable all unneeded clocks
