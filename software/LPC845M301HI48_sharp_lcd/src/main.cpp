@@ -11,6 +11,7 @@
  */
 #include <nuclone_LPC845M301BD48_sharp_lcd.hpp>
 #include <sharp_memlcd.hpp>
+#include <font.hpp>
 
 volatile unsigned int systicks = 0;
 volatile bool pinmode;
@@ -76,23 +77,12 @@ int main()
     pinmode = false;
     unsigned int currticks = systicks;
     boardInit();
-    spiSetTxCtrlData(SPI0,  SPI_TXDATCTL_TXDAT(0x4) | 
-        SPI_TXDATCTL_TXSSEL0 | 
-        SPI_TXDATCTL_EOF |
-        SPI_TXDATCTL_RXIGNORE | 
-        SPI_TXDATCTL_LEN(3) );
-    waitSpiTxComplete();
-    spiSetTxCtrlData(SPI0,  SPI_TXDATCTL_TXDAT(0x0000) | 
-        SPI_TXDATCTL_TXSSEL0 | 
-        SPI_TXDATCTL_EOF |
-        SPI_TXDATCTL_EOT |
-        SPI_TXDATCTL_RXIGNORE | 
-        SPI_TXDATCTL_LEN(16) );
-    boardLcd.init();
+    boardLcd.init();   
     while (1) {
         if(currticks < systicks)
         {
             currticks = systicks;
+            /*
             for(unsigned int i = 0 ; i < boardLcd.maxY; i++)
             {
                 for(unsigned int j = 0; j < boardLcd.maxX; j++)
@@ -101,7 +91,8 @@ int main()
                     //boardLcd.putPixel(i, j, ((i*i + j*j) + currticks) & 0x20);
                     //if(i == j) boardLcd.putPixel(i, j, 1);
                 }
-            }
+            }*/
+            boardLcd.bitBlockTransfer(0,0, font8x8, 8, 240);
             boardLcd.flipVcom(lcdTransfer);
             boardLcd.lcdUpdate(lcdTransfer);
         }

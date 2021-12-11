@@ -1,7 +1,29 @@
-#include <stdint.h>
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2021 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ */
+#include <font.hpp>
 
+const uint16_t ascii2font[] = {
+    0,  // U+0000 ()
+    0,  // U+0001 ()
+    0,  // U+0002 ()
+    0,  // U+0003 ()
+    0,  // U+0004 ()
+    0,  // U+0005 ()
+    0,  // U+0006 ()
+    0,  // U+0007 ()
+    0,  // U+0008 ()
+    0,  // U+0009 ()
+    0,  // U+000A ()
+    0,  // U+000B ()
+    0,  // U+000C ()
+    0,  // U+000D ()
+};
 
-uint8_t font8x8[] = {
+const uint8_t font8x8[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // U+0020 (space)
     0x18, 0x3C, 0x3C, 0x18, 0x18, 0x00, 0x18, 0x00, // U+0021 (!)
     0x36, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // U+0022 (")

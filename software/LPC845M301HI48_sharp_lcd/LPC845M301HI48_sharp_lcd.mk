@@ -18,7 +18,8 @@ BOARD = nuclone_LPC845M301BD48
 
 # project sources
 FILES += $(PROJECT)/src/main.cpp \
-$(PROJECT)/src/$(BOARD).cpp
+$(PROJECT)/src/$(BOARD).cpp \
+$(PROJECT)/src/font.cpp
 
 INCLUDES += -I$(PROJECT)/inc
 

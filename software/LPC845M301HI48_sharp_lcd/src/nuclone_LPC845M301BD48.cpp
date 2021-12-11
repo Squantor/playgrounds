@@ -65,4 +65,19 @@ void boardInit(void)
 
     // disable all unneeded clocks
     sysconDisableClocks(SYSCON, CLKCTRL0_SWM, CLKCTRL1_NONE);
+
+    // setup and clear LCD display
+    spiSetTxCtrlData(SPI0,  SPI_TXDATCTL_TXDAT(0x4) | 
+        SPI_TXDATCTL_TXSSEL0 | 
+        SPI_TXDATCTL_EOF |
+        SPI_TXDATCTL_RXIGNORE | 
+        SPI_TXDATCTL_LEN(3) );
+    while(!(spiSetGetStatus(SPI0, 0x0) & SPI_STAT_TXRDY))
+        ;
+    spiSetTxCtrlData(SPI0,  SPI_TXDATCTL_TXDAT(0x0000) | 
+        SPI_TXDATCTL_TXSSEL0 | 
+        SPI_TXDATCTL_EOF |
+        SPI_TXDATCTL_EOT |
+        SPI_TXDATCTL_RXIGNORE | 
+        SPI_TXDATCTL_LEN(16) );
 }
