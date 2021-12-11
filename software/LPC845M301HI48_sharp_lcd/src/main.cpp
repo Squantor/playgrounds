@@ -92,7 +92,9 @@ int main()
                     //if(i == j) boardLcd.putPixel(i, j, 1);
                 }
             }*/
-            boardLcd.bitBlockTransfer(0,0, font8x8, 8, 240);
+            boardLcd.bitBlockTransfer(currticks & 0xFF, 0, font8x8, 8, 240);
+            boardLcd.bitBlockTransfer((currticks+8) & 0xFF, 0, font8x8+240, 8, 240);
+            boardLcd.bitBlockTransfer((currticks+16) & 0xFF, 0, font8x8+480, 8, 240);
             boardLcd.flipVcom(lcdTransfer);
             boardLcd.lcdUpdate(lcdTransfer);
         }
