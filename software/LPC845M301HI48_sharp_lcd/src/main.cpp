@@ -77,7 +77,8 @@ int main()
     pinmode = false;
     unsigned int currticks = systicks;
     boardInit();
-    boardLcd.init();   
+    boardLcd.init();
+    boardLcd.setBuffer(0xFFFF);
     while (1) {
         if(currticks < systicks)
         {
@@ -92,18 +93,18 @@ int main()
                     //if(i == j) boardLcd.putPixel(i, j, 1);
                 }
             }*/
-            boardLcd.bitBlockTransfer(0, 0, font8x8+ascii2font['H'], 8, 8);
-            boardLcd.bitBlockTransfer(8, 8, font8x8+ascii2font['e'], 8, 8);
-            boardLcd.bitBlockTransfer(16, 16, font8x8+ascii2font['l'], 8, 8);
-            boardLcd.bitBlockTransfer(24, 24, font8x8+ascii2font['l'], 8, 8);
-            boardLcd.bitBlockTransfer(32, 32, font8x8+ascii2font['o'], 8, 8);
-            boardLcd.bitBlockTransfer(40, 40, font8x8+ascii2font[' '], 8, 8);
-            boardLcd.bitBlockTransfer(48, 48, font8x8+ascii2font['w'], 8, 8);
-            boardLcd.bitBlockTransfer(56, 56, font8x8+ascii2font['o'], 8, 8);
-            boardLcd.bitBlockTransfer(64, 64, font8x8+ascii2font['r'], 8, 8);
-            boardLcd.bitBlockTransfer(72, 72, font8x8+ascii2font['l'], 8, 8);
-            boardLcd.bitBlockTransfer(80, 80, font8x8+ascii2font['d'], 8, 8);
-            boardLcd.bitBlockTransfer(88, 88, font8x8+ascii2font['!'], 8, 8);
+            boardLcd.bitBlockTransfer(0, 0, font8x8+ascii2font['H'], 8, 8, true);
+            boardLcd.bitBlockTransfer(8, 8, font8x8+ascii2font['e'], 8, 8, true);
+            boardLcd.bitBlockTransfer(16, 16, font8x8+ascii2font['l'], 8, 8, true);
+            boardLcd.bitBlockTransfer(24, 24, font8x8+ascii2font['l'], 8, 8, true);
+            boardLcd.bitBlockTransfer(32, 32, font8x8+ascii2font['o'], 8, 8, true);
+            boardLcd.bitBlockTransfer(40, 40, font8x8+ascii2font[' '], 8, 8, true);
+            boardLcd.bitBlockTransfer(48, 48, font8x8+ascii2font['w'], 8, 8, true);
+            boardLcd.bitBlockTransfer(56, 56, font8x8+ascii2font['o'], 8, 8, true);
+            boardLcd.bitBlockTransfer(64, 64, font8x8+ascii2font['r'], 8, 8, true);
+            boardLcd.bitBlockTransfer(72, 72, font8x8+ascii2font['l'], 8, 8, true);
+            boardLcd.bitBlockTransfer(80, 80, font8x8+ascii2font['d'], 8, 8, true);
+            boardLcd.bitBlockTransfer(88, 88, font8x8+ascii2font['!'], 8, 8, true);
             boardLcd.flipVcom(lcdTransfer);
             boardLcd.lcdUpdate(lcdTransfer);
         }
