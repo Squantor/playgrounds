@@ -92,9 +92,18 @@ int main()
                     //if(i == j) boardLcd.putPixel(i, j, 1);
                 }
             }*/
-            boardLcd.bitBlockTransfer(currticks & 0xFF, 0, font8x8, 8, 240);
-            boardLcd.bitBlockTransfer((currticks+8) & 0xFF, 0, font8x8+240, 8, 240);
-            boardLcd.bitBlockTransfer((currticks+16) & 0xFF, 0, font8x8+480, 8, 240);
+            boardLcd.bitBlockTransfer(0, 0, font8x8+ascii2font['H'], 8, 8);
+            boardLcd.bitBlockTransfer(8, 8, font8x8+ascii2font['e'], 8, 8);
+            boardLcd.bitBlockTransfer(16, 16, font8x8+ascii2font['l'], 8, 8);
+            boardLcd.bitBlockTransfer(24, 24, font8x8+ascii2font['l'], 8, 8);
+            boardLcd.bitBlockTransfer(32, 32, font8x8+ascii2font['o'], 8, 8);
+            boardLcd.bitBlockTransfer(40, 40, font8x8+ascii2font[' '], 8, 8);
+            boardLcd.bitBlockTransfer(48, 48, font8x8+ascii2font['w'], 8, 8);
+            boardLcd.bitBlockTransfer(56, 56, font8x8+ascii2font['o'], 8, 8);
+            boardLcd.bitBlockTransfer(64, 64, font8x8+ascii2font['r'], 8, 8);
+            boardLcd.bitBlockTransfer(72, 72, font8x8+ascii2font['l'], 8, 8);
+            boardLcd.bitBlockTransfer(80, 80, font8x8+ascii2font['d'], 8, 8);
+            boardLcd.bitBlockTransfer(88, 88, font8x8+ascii2font['!'], 8, 8);
             boardLcd.flipVcom(lcdTransfer);
             boardLcd.lcdUpdate(lcdTransfer);
         }
