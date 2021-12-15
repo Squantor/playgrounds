@@ -13,5 +13,4 @@ extern const uint16_t ascii2font8x8[];
 
 extern const uint8_t font8x8[];
 
-
 #endif
