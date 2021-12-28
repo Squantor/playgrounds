@@ -23,6 +23,13 @@
             "command": "make PROJECT=LPC845M301HI48_sharp_lcd config=debug -j20 clean",
             "group": "build",
             "problemMatcher": "$gcc"
-        }
+        },
+        {
+            "label": "build debug LPC812M101DH20 pwm modulator",
+            "type": "shell",
+            "command": "make PROJECT=LPC812M101DH20_pwm_modulator CONFIG=debug -j20",
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
     ]
 }
