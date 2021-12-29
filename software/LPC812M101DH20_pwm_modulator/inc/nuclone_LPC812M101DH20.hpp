@@ -18,9 +18,10 @@ For conditions of distribution and use, see LICENSE file
 #define IOCON_XTAL_IN IOCON_PIO0_8
 #define IOCON_XTAL_OUT IOCON_PIO0_9
 
-#define IOCON_LED IOCON_PIO0_13
+#define IOCON_LED IOCON_PIO0_14
+#define SWM_LED SWM_PORTPIN_P0_14
 #define PORT_LED GPIO_PORT0
-#define PIN_LED (13u)
+#define PIN_LED (14u)
 
 #define TICKS_PER_S 2
 
