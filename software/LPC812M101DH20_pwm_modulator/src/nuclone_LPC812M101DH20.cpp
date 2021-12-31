@@ -66,14 +66,14 @@ void boardInit(void) {
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 
   // setup SCT
-  SctConfig(SCT, SCT_CONFIG_32BIT_COUNTER | SCT_CONFIG_AUTOLIMIT_L);
-  SctSetControl(SCT, SCT_CTRL_BIDIR_L | SCT_CTRL_PRE_L(1) | SCT_CTRL_CLRCTR_L);
+  SctConfig(SCT0, SCT_CONFIG_32BIT_COUNTER | SCT_CONFIG_AUTOLIMIT_L);
+  SctSetControl(SCT0, SCT_CTRL_BIDIR_L | SCT_CTRL_PRE_L(1) | SCT_CTRL_CLRCTR_L);
   // define the frequency
-  SctMatchL(SCT, SCT_MATCH_0, 300);
-  SctMatchReloadL(SCT, SCT_MATCH_0, 300);
+  SctMatchL(SCT0, SCT_MATCH_0, 300);
+  SctMatchReloadL(SCT0, SCT_MATCH_0, 300);
   // 50% PWM
-  SctMatchL(SCT, SCT_MATCH_1, 150);
-  SctMatchReloadL(SCT, SCT_MATCH_1, 150);
+  SctMatchL(SCT0, SCT_MATCH_1, 150);
+  SctMatchReloadL(SCT0, SCT_MATCH_1, 150);
 
-  SctClearControl(SCT, SCT_CTRL_HALT_L);
+  SctClearControl(SCT0, SCT_CTRL_HALT_L);
 }
