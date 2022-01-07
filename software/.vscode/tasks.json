@@ -25,7 +25,7 @@
             "problemMatcher": "$gcc"
         },
         {
-            "label": "build debug LPC812M101DH20 pwm modulator",
+            "label": "build debug pwm modulator",
             "type": "shell",
             "command": "make PROJECT=LPC812M101DH20_pwm_modulator CONFIG=debug -j20",
             "group": "build",

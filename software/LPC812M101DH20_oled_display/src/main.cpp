@@ -6,11 +6,13 @@ For conditions of distribution and use, see LICENSE file
 */
 #include <board.hpp>
 
-volatile int var;
+extern "C" {
+void SysTick_Handler(void) { GpioSetPortToggle(GPIO, PORT_LED, 1 << PIN_LED); }
+}
 
 int main() {
   boardInit();
   while (1) {
-    var = var ^ 0x55;
+    __NOP();
   }
 }

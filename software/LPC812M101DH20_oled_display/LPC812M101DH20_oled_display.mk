@@ -9,7 +9,7 @@
 # project settings
 MCU = LPC812M101DH20
 TARGET = MCU
-BOARD = dummy_board
+BOARD = nuclone_LPC812M101DH20
 
 # project sources
 FILES += $(PROJECT)/src/main.cpp \
