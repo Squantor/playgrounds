@@ -37,10 +37,11 @@ void crudeDelay(uint32_t iterations) {
 }
 
 void boardInit(void) {
-  sysconEnableClocks(SYSCON,
-                     CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT);
+  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT | CLKCTRL_I2C0);
   ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
   ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_I2C_SCL, IOCON_I2CMODE(IOCON_I2CMODE_STD));
+  ioconSetupPin(IOCON, IOCON_I2C_SDA, IOCON_I2CMODE(IOCON_I2CMODE_STD));
   ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
   sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
@@ -65,15 +66,5 @@ void boardInit(void) {
   gpioPinWrite(GPIO, PORT_LED, PIN_LED, 0);
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 
-  // setup SCT
-  SctConfig(SCT0, SCT_CONFIG_32BIT_COUNTER | SCT_CONFIG_AUTOLIMIT_L);
-  SctSetControl(SCT0, SCT_CTRL_BIDIR_L | SCT_CTRL_PRE_L(1) | SCT_CTRL_CLRCTR_L);
-  // define the frequency
-  SctMatchL(SCT0, SCT_MATCH_0, 300);
-  SctMatchReloadL(SCT0, SCT_MATCH_0, 300);
-  // 50% PWM
-  SctMatchL(SCT0, SCT_MATCH_1, 150);
-  SctMatchReloadL(SCT0, SCT_MATCH_1, 150);
-
-  SctClearControl(SCT0, SCT_CTRL_HALT_L);
+  // setup i2c
 }

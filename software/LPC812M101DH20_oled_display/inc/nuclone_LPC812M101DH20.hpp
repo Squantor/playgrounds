@@ -23,6 +23,11 @@ For conditions of distribution and use, see LICENSE file
 #define PORT_LED GPIO_PORT0
 #define PIN_LED (14u)
 
+#define IOCON_I2C_SCL IOCON_PIO0_10
+#define SWM_I2C_SCL SWM_PORTPIN_P0_10
+#define IOCON_I2C_SDA IOCON_PIO0_11
+#define SWM_I2C_SDA SWM_PORTPIN_P0_11
+
 #define TICKS_PER_S 2
 
 void boardInit(void);
