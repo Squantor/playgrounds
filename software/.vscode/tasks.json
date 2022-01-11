@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
                 {
-            "label": "OLED display example",
+            "label": "build debug OLED display example",
             "type": "shell",
             "command": "make PROJECT=LPC812M101DH20_oled_display config=debug -j20",
             "group": "build",

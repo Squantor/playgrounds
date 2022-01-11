@@ -34,7 +34,7 @@
             "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC845.svd"
         },
         {
-            "name": "debug LPC812M101DH20 pwm modulator",
+            "name": "debug pwm modulator",
             "cwd": "${workspaceRoot}",
             "executable": "${workspaceFolder}/bin/LPC812M101DH20_pwm_modulator/debug/LPC812M101DH20_pwm_modulator.elf",
             "request": "launch",
@@ -49,6 +49,24 @@
             "preLaunchTask": "build debug LPC812M101DH20 pwm modulator",
             "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
             "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_pwm_modulator.txt"],
+            "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
+        },
+        {
+            "name": "debug oled display demo",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/bin/LPC812M101DH20_oled_display/debug/LPC812M101DH20_oled_display.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "bmp",
+            "interface": "swd",
+            "device": "LPC812",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
+            "runToEntryPoint": "main",
+            "preLaunchCommands": [],
+            "preRestartCommands": [],
+            "preLaunchTask": "build debug OLED display example",
+            "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+            "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"],
             "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
         },
     ]
