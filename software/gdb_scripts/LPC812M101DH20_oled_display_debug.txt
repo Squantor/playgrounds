@@ -1,13 +1,13 @@
 set print pretty on
 set architecture armv6
-file bin/LPC812/debug/LPC812.elf
+file bin/LPC812M101DH20_oled_display/debug/LPC812M101DH20_oled_display.elf
 target extended-remote /dev/ttyACM0
 shell sleep 1
 monitor swdp_scan
 attach 1
 set mem inaccessible-by-default off
 set {int}0x40048000 = 2
-load bin/LPC812/debug/LPC812.elf
+load bin/LPC812M101DH20_oled_display/debug/LPC812M101DH20_oled_display.elf
 set {int}0x40048000 = 2
 compare-sections
 b main
