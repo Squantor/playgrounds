@@ -71,4 +71,5 @@ void boardInit(void) {
   sysconAssertResets(SYSCON, RESETCTRL_I2C);
   sysconClearResets(SYSCON, RESETCTRL_I2C);
   i2cSetClockDivider(I2C0, 5);
+  // setup timeout register
 }
