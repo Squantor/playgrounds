@@ -23,7 +23,7 @@ uint8_t transferI2CData(uint8_t *data, uint8_t length) {
   i2cSetMasterControl(I2C0, I2C_MSCTL_MSTSTART);
   do {
     busStatus = i2cGetStatus(I2C0);
-  } while (((busStatus & (I2C_STAT_MSTPENDING)) == 0));
+  } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
   if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
   do {
     i2cSetMasterData(I2C0, data[dataIndex]);
@@ -44,7 +44,7 @@ int main() {
   boardInit();
   while (1) {
     if (currentTicks != ticks) {
-      uint8_t testDisplay[] = {0x3C};
+      uint8_t testDisplay[] = {0x3D};
       transferI2CData(testDisplay, sizeof(testDisplay));
     }
   }
