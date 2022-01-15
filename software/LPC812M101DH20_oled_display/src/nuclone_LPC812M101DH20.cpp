@@ -45,8 +45,9 @@ void boardInit(void) {
   ioconSetupPin(IOCON, IOCON_I2C_SDA, IOCON_I2CMODE(IOCON_I2CMODE_STD));
   ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
+  SwmMovablePinAssign(SWM, SWM_I2C0_SCL, SWM_I2C_SCL);
+  SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SCL);
   sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
-  SwmMovablePinAssign(SWM, SWM_SCT_OUT_0_O, SWM_LED);
 
   // setup system clocks
   sysconSysOscControl(SYSCON, SYSOSCCTRL_BYPASS(0) | SYSOSCCTRL_FREQ_1_20MHZ);
