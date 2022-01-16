@@ -5,8 +5,11 @@ Copyright (c) 2021 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 #include <board.hpp>
+#include <SSD1306.hpp>
 
 uint32_t ticks;
+
+using namespace SSD1306;
 
 extern "C" {
 void SysTick_Handler(void) {
@@ -95,22 +98,28 @@ int main() {
   uint8_t init2[] = {0xD3, 0x0, 0x40, 0x8D};
   SSD1306CommandList(0x78, init2, sizeof(init2));
   SSD1306Command(0x78, 0x14);
-  uint8_t init3[] = {0x20, 0x00, 0xA1, 0xC8};
+  uint8_t init3[] = {commands::setMemoryAddressingMode, commands::AddressingMode(commands::horizontalMode),
+                     commands::setSegmentRemap(commands::column0), commands::comOutputScanDirection(commands::remappedDirection)};
   SSD1306CommandList(0x78, init3, sizeof(init3));
-  SSD1306Command(0x78, 0xDA);
-  SSD1306Command(0x78, 0x12);
-  SSD1306Command(0x78, 0x81);
-  SSD1306Command(0x78, 0x01);
-  SSD1306Command(0x78, 0xd9);
-  SSD1306Command(0x78, 0xF1);
-  uint8_t init5[] = {0xDB, 0x40, 0xA4, 0xA6, 0x2E, 0xAF};
+  SSD1306Command(0x78, commands::setComPinsHardware);
+  SSD1306Command(0x78, commands::ComPinsHardware(false, false));
+  SSD1306Command(0x78, commands::setContrast);
+  SSD1306Command(0x78, commands::ConstrastLevel(1));
+  SSD1306Command(0x78, commands::setPrechargeLevel);
+  SSD1306Command(0x78, commands::prechargeLevel(0xF1));
+  uint8_t init5[] = {commands::setVcomDeselectLevel,
+                     commands::vcomDeselectLevel(4),
+                     commands::displayOn,
+                     commands::displayNormal,
+                     commands::scrollOff,
+                     commands::displayActive};
   SSD1306CommandList(0x78, init5, sizeof(init5));
 
   while (1) {
     if (currentTicks != ticks) {
       currentTicks = ticks;
       uint8_t invertDisplay;
-      if (currentTicks & 1)
+      if (currentTicks & 8)
         invertDisplay = 0xA6;
       else
         invertDisplay = 0xA7;
