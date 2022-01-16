@@ -23,9 +23,19 @@ consteval uint8_t ComPinsHardware(bool sequential, bool remapped) {
   return configuration;
 }
 
+constexpr uint8_t setDisplayClockDivide = 0xD5;
+consteval uint8_t displayClockDivisor(uint8_t ratio) {
+  return ratio;
+}
+
 constexpr uint8_t setPrechargeLevel = 0xD9;
 consteval uint8_t prechargeLevel(uint8_t level) {
   return level;
+}
+
+constexpr uint8_t setDisplayOffset = 0xD3;
+consteval uint8_t displayOffset(uint8_t offset) {
+  return offset;
 }
 
 enum scanDirection : uint8_t {
@@ -42,20 +52,29 @@ consteval uint8_t setPageStart(uint8_t address) {
 }
 constexpr uint8_t displayActive = 0xAF;     /*!< turn display on */
 constexpr uint8_t displaySleep = 0xAE;      /*!< turn display off */
-constexpr uint8_t setMultiplexRatio = 0xA8; /*!< multiplex ratio, 1 argument byte */
-constexpr uint8_t displayInvert = 0xA7;     /*!< invert display */
-constexpr uint8_t displayNormal = 0xA6;     /*!< normal display */
-constexpr uint8_t displayRam = 0xA5;        /*!< display RAM content */
-constexpr uint8_t displayOn = 0xA4;         /*!< turn all pixels on */
+constexpr uint8_t setMultiplexRatio = 0xA8; /*!< multiplex ratio */
+consteval uint8_t multiplexRatio(uint8_t ratio) {
+  return ratio;
+}
+constexpr uint8_t displayInvert = 0xA7; /*!< invert display */
+constexpr uint8_t displayNormal = 0xA6; /*!< normal display */
+constexpr uint8_t displayRam = 0xA5;    /*!< display RAM content */
+constexpr uint8_t displayOn = 0xA4;     /*!< turn all pixels on */
 
 enum segmentMapping : uint8_t {
   column0 = 0,  /*!< Segment 0 mapped to column address 0 */
   column127 = 1 /*!< Segment 0 mapped to column address 127 */
 };
-
 /*!< @brief set segment remapping */
 consteval uint8_t setSegmentRemap(segmentMapping mapping) {
   return mapping | 0xA0;
+}
+constexpr uint8_t setChargePump = 0x8D; /*!< set charge pump state */
+consteval uint8_t chargePumpOn(bool pumpOn) {
+  if (pumpOn)
+    return 0x14;
+  else
+    return 0x10;
 }
 constexpr uint8_t setContrast = 0x81; /*!< set contrast level */
 consteval uint8_t ConstrastLevel(uint8_t level) {

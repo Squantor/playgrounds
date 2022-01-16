@@ -92,14 +92,15 @@ int main() {
   ticks = 0;
   uint32_t currentTicks = 0;
   boardInit();
-  uint8_t init1[] = {0xAE, 0xD5, 0x80, 0xA8};
+  uint8_t init1[] = {
+    commands::displaySleep,      commands::setDisplayClockDivide,  commands::displayClockDivisor(0x80),
+    commands::setMultiplexRatio, commands::multiplexRatio(63),     commands::setDisplayOffset,
+    commands::displayOffset(0),  commands::setDisplayStartLine(0), commands::setChargePump,
+  };
   SSD1306CommandList(0x78, init1, sizeof(init1));
-  SSD1306Command(0x78, 63);
-  uint8_t init2[] = {0xD3, 0x0, 0x40, 0x8D};
-  SSD1306CommandList(0x78, init2, sizeof(init2));
-  SSD1306Command(0x78, 0x14);
-  uint8_t init3[] = {commands::setMemoryAddressingMode, commands::AddressingMode(commands::horizontalMode),
-                     commands::setSegmentRemap(commands::column0), commands::comOutputScanDirection(commands::remappedDirection)};
+  uint8_t init3[] = {commands::chargePumpOn(true), commands::setMemoryAddressingMode,
+                     commands::AddressingMode(commands::horizontalMode), commands::setSegmentRemap(commands::column0),
+                     commands::comOutputScanDirection(commands::remappedDirection)};
   SSD1306CommandList(0x78, init3, sizeof(init3));
   SSD1306Command(0x78, commands::setComPinsHardware);
   SSD1306Command(0x78, commands::ComPinsHardware(false, false));
