@@ -93,19 +93,24 @@ int main() {
   uint32_t currentTicks = 0;
   boardInit();
   uint8_t init1[] = {
-    commands::displaySleep,      commands::setDisplayClockDivide,  commands::displayClockDivisor(0x80),
-    commands::setMultiplexRatio, commands::multiplexRatio(63),     commands::setDisplayOffset,
-    commands::displayOffset(0),  commands::setDisplayStartLine(0), commands::setChargePump,
+    commands::displaySleep,
+    commands::setDisplayClockDivide,
+    commands::displayClockDivisor(0x80),
+    commands::setMultiplexRatio,
   };
   SSD1306CommandList(0x78, init1, sizeof(init1));
-  uint8_t init3[] = {commands::chargePumpOn(true), commands::setMemoryAddressingMode,
-                     commands::AddressingMode(commands::horizontalMode), commands::setSegmentRemap(commands::column0),
-                     commands::comOutputScanDirection(commands::remappedDirection)};
+  SSD1306Command(0x78, commands::multiplexRatio(31));
+  uint8_t init2[] = {commands::setDisplayOffset, commands::displayOffset(0), commands::setDisplayStartLine(0),
+                     commands::setChargePump};
+  SSD1306CommandList(0x78, init2, sizeof(init2));
+  SSD1306Command(0x78, commands::chargePumpOn(true));
+  uint8_t init3[] = {commands::setMemoryAddressingMode, commands::AddressingMode(commands::horizontalMode),
+                     commands::setSegmentRemap(commands::column0), commands::comOutputScanDirection(commands::remappedDirection)};
   SSD1306CommandList(0x78, init3, sizeof(init3));
   SSD1306Command(0x78, commands::setComPinsHardware);
-  SSD1306Command(0x78, commands::ComPinsHardware(false, false));
+  SSD1306Command(0x78, commands::ComPinsHardware(true, false));
   SSD1306Command(0x78, commands::setContrast);
-  SSD1306Command(0x78, commands::ConstrastLevel(1));
+  SSD1306Command(0x78, commands::ConstrastLevel(0x1f));
   SSD1306Command(0x78, commands::setPrechargeLevel);
   SSD1306Command(0x78, commands::prechargeLevel(0xF1));
   uint8_t init5[] = {commands::setVcomDeselectLevel,
@@ -121,9 +126,9 @@ int main() {
       currentTicks = ticks;
       uint8_t invertDisplay;
       if (currentTicks & 8)
-        invertDisplay = 0xA6;
+        invertDisplay = commands::displayInvert;
       else
-        invertDisplay = 0xA7;
+        invertDisplay = commands::displayNormal;
       SSD1306CommandList(0x78, &invertDisplay, sizeof(invertDisplay));
     }
   }
