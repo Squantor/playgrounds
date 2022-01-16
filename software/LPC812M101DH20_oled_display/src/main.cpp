@@ -15,26 +15,73 @@ void SysTick_Handler(void) {
 }
 }
 
+uint32_t startI2CTransfer(I2C_Type *peripheral, uint8_t address) {
+  uint32_t busStatus;
+  i2cSetMasterData(peripheral, address);
+  i2cSetMasterControl(peripheral, I2C_MSCTL_MSTSTART);
+  do {
+    busStatus = i2cGetStatus(peripheral);
+  } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
+  return busStatus;
+}
+
+uint8_t sendI2CData(I2C_Type *peripheral, uint8_t data) {
+  uint32_t busStatus;
+  i2cSetMasterData(peripheral, data);
+  i2cSetMasterControl(peripheral, I2C_MSCTL_MSTCONTINUE);
+  do {
+    busStatus = i2cGetStatus(peripheral);
+  } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
+  return busStatus;
+}
+
+void stopI2CTransfer(I2C_Type *peripheral) {
+  i2cSetMasterControl(peripheral, I2C_MSCTL_MSTSTOP);
+}
+
 uint8_t transferI2CData(uint8_t *data, uint8_t length) {
   uint8_t dataIndex = 0;
   uint32_t busStatus;
-  i2cSetConfiguration(I2C0, I2C_CFG_MSTEN | I2C_CFG_TIMEOUTEN);
-  i2cSetMasterData(I2C0, data[dataIndex]);
-  i2cSetMasterControl(I2C0, I2C_MSCTL_MSTSTART);
+  busStatus = startI2CTransfer(I2C0, data[dataIndex]);
+  if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+  dataIndex++;
   do {
-    busStatus = i2cGetStatus(I2C0);
-  } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
+    busStatus = sendI2CData(I2C0, data[dataIndex]);
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    dataIndex++;
+  } while (dataIndex < length);
+i2cStop:
+  stopI2CTransfer(I2C0);
+  return busStatus;
+}
+
+uint8_t SSD1306CommandList(uint8_t address, uint8_t *data, uint8_t length) {
+  uint8_t dataIndex = 0;
+  uint32_t busStatus;
+  busStatus = startI2CTransfer(I2C0, address);
   if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
   do {
-    i2cSetMasterData(I2C0, data[dataIndex]);
-    i2cSetMasterControl(I2C0, I2C_MSCTL_MSTCONTINUE);
-    do {
-      busStatus = i2cGetStatus(I2C0);
-    } while (((busStatus & I2C_STAT_MSTPENDING) != 0));
+    busStatus = sendI2CData(I2C0, 0x00);  // Command setup
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    busStatus = sendI2CData(I2C0, data[dataIndex]);
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
     dataIndex++;
-  } while (dataIndex < length && (I2C_STAT_MSTSTATE(busStatus) == I2C_STAT_MSSTATE_TRANSMIT_READY));
+  } while (dataIndex < length);
 i2cStop:
-  i2cSetMasterControl(I2C0, I2C_MSCTL_MSTSTOP);
+  stopI2CTransfer(I2C0);
+  return busStatus;
+}
+
+uint8_t SSD1306Command(uint8_t address, uint8_t command) {
+  uint32_t busStatus;
+  busStatus = startI2CTransfer(I2C0, address);
+  if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+  busStatus = sendI2CData(I2C0, 0x00);  // Command setup
+  if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+  busStatus = sendI2CData(I2C0, command);
+  if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+i2cStop:
+  stopI2CTransfer(I2C0);
   return busStatus;
 }
 
@@ -42,10 +89,32 @@ int main() {
   ticks = 0;
   uint32_t currentTicks = 0;
   boardInit();
+  uint8_t init1[] = {0xAE, 0xD5, 0x80, 0xA8};
+  SSD1306CommandList(0x78, init1, sizeof(init1));
+  SSD1306Command(0x78, 63);
+  uint8_t init2[] = {0xD3, 0x0, 0x40, 0x8D};
+  SSD1306CommandList(0x78, init2, sizeof(init2));
+  SSD1306Command(0x78, 0x14);
+  uint8_t init3[] = {0x20, 0x00, 0xA1, 0xC8};
+  SSD1306CommandList(0x78, init3, sizeof(init3));
+  SSD1306Command(0x78, 0xDA);
+  SSD1306Command(0x78, 0x12);
+  SSD1306Command(0x78, 0x81);
+  SSD1306Command(0x78, 0x01);
+  SSD1306Command(0x78, 0xd9);
+  SSD1306Command(0x78, 0xF1);
+  uint8_t init5[] = {0xDB, 0x40, 0xA4, 0xA6, 0x2E, 0xAF};
+  SSD1306CommandList(0x78, init5, sizeof(init5));
+
   while (1) {
     if (currentTicks != ticks) {
-      uint8_t testDisplay[] = {0x3D};
-      transferI2CData(testDisplay, sizeof(testDisplay));
+      currentTicks = ticks;
+      uint8_t invertDisplay;
+      if (currentTicks & 1)
+        invertDisplay = 0xA6;
+      else
+        invertDisplay = 0xA7;
+      SSD1306CommandList(0x78, &invertDisplay, sizeof(invertDisplay));
     }
   }
 }

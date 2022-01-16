@@ -37,8 +37,11 @@ void crudeDelay(uint32_t iterations) {
 }
 
 void boardInit(void) {
-  // setup io pins
+  // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT | CLKCTRL_I2C0);
+  sysconAssertResets(SYSCON, RESETCTRL_I2C);
+  sysconClearResets(SYSCON, RESETCTRL_I2C);
+  // setup io pins
   ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
   ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
   ioconSetupPin(IOCON, IOCON_I2C_SCL, IOCON_I2CMODE(IOCON_I2CMODE_STD));
@@ -46,8 +49,8 @@ void boardInit(void) {
   ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
   SwmMovablePinAssign(SWM, SWM_I2C0_SCL, SWM_I2C_SCL);
-  SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SCL);
-  sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
+  SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SDA);
+  // sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
 
   // setup system clocks
   sysconSysOscControl(SYSCON, SYSOSCCTRL_BYPASS(0) | SYSOSCCTRL_FREQ_1_20MHZ);
@@ -69,8 +72,7 @@ void boardInit(void) {
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 
   // setup i2c
-  sysconAssertResets(SYSCON, RESETCTRL_I2C);
-  sysconClearResets(SYSCON, RESETCTRL_I2C);
-  i2cSetClockDivider(I2C0, 5);
-  // setup timeout register
+  i2cSetClockDivider(I2C0, 3);
+  i2cSetConfiguration(I2C0, I2C_CFG_MSTEN);
+  // TODO: setup timeout reg and bits in config
 }
