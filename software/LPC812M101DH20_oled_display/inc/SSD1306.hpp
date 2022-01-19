@@ -39,8 +39,8 @@ consteval uint8_t displayOffset(uint8_t offset) {
 }
 
 enum scanDirection : uint8_t {
-  normalDirection = 0,
-  remappedDirection = 0x80,
+  normalDirection = 0x00,
+  remappedDirection = 0x08,
 };
 
 consteval uint8_t comOutputScanDirection(scanDirection mode) {
