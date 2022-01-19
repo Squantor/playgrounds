@@ -6,6 +6,11 @@
 #
 # Version: 20201220
 
+#additional library includes
+include libMcuLL/libMcuLL.mk
+include squantorLibC/squantorLibC.mk
+include squantorLibEmbedded/squantorLibEmbedded.mk
+
 # project settings
 MCU = LPC812M101DH20
 TARGET = MCU
