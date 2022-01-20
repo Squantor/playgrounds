@@ -8,9 +8,36 @@ For conditions of distribution and use, see LICENSE file
 #include <SSD1306.hpp>
 #include <font_8x8.h>
 
-uint32_t ticks;
-
 using namespace SSD1306;
+
+const uint8_t SSD1306Disp128x64[] = {commands::displaySleep,
+                                     commands::setDisplayClockDivide,
+                                     commands::displayClockDivisor(0x80),
+                                     commands::setMultiplexRatio,
+                                     commands::multiplexRatio(63),
+                                     commands::setDisplayOffset,
+                                     commands::displayOffset(0),
+                                     commands::setDisplayStartLine(0),
+                                     commands::setChargePump,
+                                     commands::chargePumpOn(true),
+                                     commands::setMemoryAddressingMode,
+                                     commands::AddressingMode(commands::horizontalMode),
+                                     commands::setSegmentRemap(commands::column127),
+                                     commands::comOutputScanDirection(commands::remappedDirection),
+                                     commands::setComPinsHardware,
+                                     commands::ComPinsHardware(false, false),
+                                     commands::setContrast,
+                                     commands::ConstrastLevel(0x01),
+                                     commands::setPrechargeLevel,
+                                     commands::prechargeLevel(0xF1),
+                                     commands::setVcomDeselectLevel,
+                                     commands::vcomDeselectLevel(4),
+                                     commands::displayOn,
+                                     commands::displayNormal,
+                                     commands::scrollOff,
+                                     commands::displayActive};
+
+uint32_t ticks;
 
 extern "C" {
 void SysTick_Handler(void) {
@@ -108,52 +135,9 @@ int main() {
   uint32_t currentTicks = 0;
   boardInit();
 
-  uint8_t init1[] = {commands::displaySleep,
-                     commands::setDisplayClockDivide,
-                     commands::displayClockDivisor(0x80),
-                     commands::setMultiplexRatio,
-                     commands::multiplexRatio(63),
-                     commands::setDisplayOffset,
-                     commands::displayOffset(0),
-                     commands::setDisplayStartLine(0),
-                     commands::setChargePump,
-                     commands::chargePumpOn(true),
-                     commands::setMemoryAddressingMode,
-                     commands::AddressingMode(commands::horizontalMode),
-                     commands::setSegmentRemap(commands::column127),
-                     commands::comOutputScanDirection(commands::remappedDirection)};
-  SSD1306CommandList(0x78, init1, sizeof(init1));
-
-  // SSD1306Command(0x78, commands::multiplexRatio(63));
-
-  /*uint8_t init2[] = {commands::setDisplayOffset, commands::displayOffset(0), commands::setDisplayStartLine(0),
-                     commands::setChargePump};
-  SSD1306CommandList(0x78, init2, sizeof(init2));*/
-
-  // SSD1306Command(0x78, commands::chargePumpOn(true));
-
-  /*uint8_t init3[] = {commands::setMemoryAddressingMode, commands::AddressingMode(commands::horizontalMode),
-                     commands::setSegmentRemap(commands::column127), commands::comOutputScanDirection(commands::remappedDirection)};
-  SSD1306CommandList(0x78, init3, sizeof(init3));*/
-
-  SSD1306Command(0x78, commands::setComPinsHardware);
-  SSD1306Command(0x78, commands::ComPinsHardware(false, false));
-  SSD1306Command(0x78, commands::setContrast);
-  SSD1306Command(0x78, commands::ConstrastLevel(0x01));
-  SSD1306Command(0x78, commands::setPrechargeLevel);
-  SSD1306Command(0x78, commands::prechargeLevel(0xF1));
-
-  uint8_t init5[] = {commands::setVcomDeselectLevel,
-                     commands::vcomDeselectLevel(4),
-                     commands::displayOn,
-                     commands::displayNormal,
-                     commands::scrollOff,
-                     commands::displayActive};
-  SSD1306CommandList(0x78, init5, sizeof(init5));
-
+  SSD1306CommandList(0x78, SSD1306Disp128x64, sizeof(SSD1306Disp128x64));
   uint8_t display[] = {commands::setPageAddress, 0, 0x07, commands::setColumnAddress, 0, 127};
   SSD1306CommandList(0x78, display, sizeof(display));
-  // SSD1306Command(0x78, 127);
   startI2CTransfer(I2C0, 0x78);
   sendI2CData(I2C0, 0x40);
   transferI2CData(I2C0, font8x8, 760);
