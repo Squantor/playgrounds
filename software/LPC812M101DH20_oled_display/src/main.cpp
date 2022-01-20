@@ -10,32 +10,58 @@ For conditions of distribution and use, see LICENSE file
 
 using namespace SSD1306;
 
-const uint8_t SSD1306Disp128x64[] = {commands::displaySleep,
-                                     commands::setDisplayClockDivide,
-                                     commands::displayClockDivisor(0x80),
-                                     commands::setMultiplexRatio,
-                                     commands::multiplexRatio(63),
-                                     commands::setDisplayOffset,
-                                     commands::displayOffset(0),
-                                     commands::setDisplayStartLine(0),
-                                     commands::setChargePump,
-                                     commands::chargePumpOn(true),
-                                     commands::setMemoryAddressingMode,
-                                     commands::AddressingMode(commands::horizontalMode),
-                                     commands::setSegmentRemap(commands::column127),
-                                     commands::comOutputScanDirection(commands::remappedDirection),
-                                     commands::setComPinsHardware,
-                                     commands::ComPinsHardware(false, false),
-                                     commands::setContrast,
-                                     commands::ConstrastLevel(0x01),
-                                     commands::setPrechargeLevel,
-                                     commands::prechargeLevel(0xF1),
-                                     commands::setVcomDeselectLevel,
-                                     commands::vcomDeselectLevel(4),
-                                     commands::displayOn,
-                                     commands::displayNormal,
-                                     commands::scrollOff,
-                                     commands::displayActive};
+const uint8_t init128x64[] = {commands::displaySleep,
+                              commands::setDisplayClockDivide,
+                              commands::displayClockDivisor(0x80),
+                              commands::setMultiplexRatio,
+                              commands::multiplexRatio(63),
+                              commands::setDisplayOffset,
+                              commands::displayOffset(0),
+                              commands::setDisplayStartLine(0),
+                              commands::setChargePump,
+                              commands::chargePumpOn(true),
+                              commands::setMemoryAddressingMode,
+                              commands::AddressingMode(commands::horizontalMode),
+                              commands::setSegmentRemap(commands::column127),
+                              commands::comOutputScanDirection(commands::remappedDirection),
+                              commands::setComPinsHardware,
+                              commands::ComPinsHardware(false, false),
+                              commands::setContrast,
+                              commands::ConstrastLevel(0x01),
+                              commands::setPrechargeLevel,
+                              commands::prechargeLevel(0xF1),
+                              commands::setVcomDeselectLevel,
+                              commands::vcomDeselectLevel(4),
+                              commands::displayOn,
+                              commands::displayNormal,
+                              commands::scrollOff,
+                              commands::displayActive};
+const uint8_t init128x32[] = {commands::displaySleep,
+                              commands::setDisplayClockDivide,
+                              commands::displayClockDivisor(0x80),
+                              commands::setMultiplexRatio,
+                              commands::multiplexRatio(31),
+                              commands::setDisplayOffset,
+                              commands::displayOffset(0),
+                              commands::setDisplayStartLine(0),
+                              commands::setChargePump,
+                              commands::chargePumpOn(true),
+                              commands::setMemoryAddressingMode,
+                              commands::AddressingMode(commands::horizontalMode),
+                              commands::setSegmentRemap(commands::column127),
+                              commands::comOutputScanDirection(commands::remappedDirection),
+                              commands::setComPinsHardware,
+                              commands::ComPinsHardware(true, false),
+                              commands::setContrast,
+                              commands::ConstrastLevel(0x01),
+                              commands::setPrechargeLevel,
+                              commands::prechargeLevel(0xF1),
+                              commands::setVcomDeselectLevel,
+                              commands::vcomDeselectLevel(4),
+                              commands::displayOn,
+                              commands::displayNormal,
+                              commands::scrollOff,
+                              commands::displayActive};
 
 uint32_t ticks;
 
@@ -135,12 +161,12 @@ int main() {
   uint32_t currentTicks = 0;
   boardInit();
 
-  SSD1306CommandList(0x78, SSD1306Disp128x64, sizeof(SSD1306Disp128x64));
+  SSD1306CommandList(0x78, init128x32, sizeof(init128x32));
   uint8_t display[] = {commands::setPageAddress, 0, 0x07, commands::setColumnAddress, 0, 127};
   SSD1306CommandList(0x78, display, sizeof(display));
   startI2CTransfer(I2C0, 0x78);
   sendI2CData(I2C0, 0x40);
-  transferI2CData(I2C0, font8x8, 760);
+  transferI2CData(I2C0, font8x8, 512);
 
   while (1) {
     if (currentTicks != ticks) {
