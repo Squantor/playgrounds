@@ -161,12 +161,15 @@ int main() {
   uint32_t currentTicks = 0;
   boardInit();
 
-  SSD1306CommandList(0x78, init128x32, sizeof(init128x32));
+  SSD1306CommandList(0x78, init128x64, sizeof(init128x64));
   uint8_t display[] = {commands::setPageAddress, 0, 0x07, commands::setColumnAddress, 0, 127};
   SSD1306CommandList(0x78, display, sizeof(display));
   startI2CTransfer(I2C0, 0x78);
   sendI2CData(I2C0, 0x40);
-  transferI2CData(I2C0, font8x8, 512);
+  transferI2CData(I2C0, font8x8VerticalFlipped, 760);
+  startI2CTransfer(I2C0, 0x78);
+  sendI2CData(I2C0, 0x40);
+  transferI2CData(I2C0, font8x8VerticalFlipped, 264);
 
   while (1) {
     if (currentTicks != ticks) {
