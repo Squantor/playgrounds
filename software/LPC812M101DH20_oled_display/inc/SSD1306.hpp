@@ -7,20 +7,25 @@ For conditions of distribution and use, see LICENSE file
 #ifndef SSD1306_HPP
 #define SSD1306_HPP
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 
+namespace util {
 namespace SSD1306 {
-namespace commands {
+
 constexpr uint8_t setVcomDeselectLevel = 0xDB;
 consteval uint8_t vcomDeselectLevel(uint8_t level) {
   return (level & 0x07) << 4;
 }
 constexpr uint8_t setComPinsHardware = 0xDA;
-consteval uint8_t ComPinsHardware(bool sequential, bool remapped) {
-  uint8_t configuration = 0x02;
-  if (sequential != true) configuration |= 0x10;
-  if (remapped) configuration |= 0x20;
-  return configuration;
+enum comPinMapping : uint8_t {
+  sequentialNormal = 0x00,
+  sequentialRemapped = 0x20,
+  alternatingNormal = 0x10,
+  alternatingRemapped = 0x30,
+};
+consteval uint8_t ComPinsHardware(comPinMapping setting) {
+  return 0x02 | setting;
 }
 
 constexpr uint8_t setDisplayClockDivide = 0xD5;
@@ -107,8 +112,7 @@ consteval uint8_t higherColumnAddress(uint8_t address) {
 consteval uint8_t lowerColumnAddress(uint8_t address) {
   return (address & 0x0F) | 0x00;
 }
-
-}  // namespace commands
 }  // namespace SSD1306
+}  // namespace util
 
 #endif
