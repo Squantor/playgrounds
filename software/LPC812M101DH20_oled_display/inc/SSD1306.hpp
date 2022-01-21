@@ -229,6 +229,13 @@ struct display {
   void init(const uint8_t *initCommands, uint16_t initCommandLength) {
     sendCommands(initCommands, initCommandLength);
   }
+
+  void writeWindow(uint8_t xBegin, uint8_t xEnd, uint8_t yBegin, uint8_t yEnd, const uint8_t *data, uint16_t length) {
+    uint8_t setPointer[] = {
+      SSD1306::setPageAddress, (uint8_t)(yBegin >> 3), (uint8_t)(yEnd >> 3), SSD1306::setColumnAddress, xBegin, xEnd};
+    sendCommands(setPointer, sizeof(setPointer));
+    sendData(data, length);
+  }
 };
 
 }  // namespace SSD1306

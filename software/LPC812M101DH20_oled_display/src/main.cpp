@@ -27,10 +27,12 @@ int main() {
   boardInit();
 
   currentDisplay.init(SSD1306::init128x64, sizeof(SSD1306::init128x64));
-  uint8_t setPointer[] = {SSD1306::setPageAddress, 0, 0x07, SSD1306::setColumnAddress, 0, 127};
-  currentDisplay.sendCommands(setPointer, sizeof(setPointer));
-  currentDisplay.sendData(font8x8VerticalFlipped, 760);
-  currentDisplay.sendData(font8x8VerticalFlipped, 264);
+
+  currentDisplay.writeWindow(0, 7, 0, 0, ascii2Font8x8(font8x8VerticalFlipped, 'h'), 8);
+  currentDisplay.writeWindow(8, 15, 0, 0, ascii2Font8x8(font8x8VerticalFlipped, 'e'), 8);
+  currentDisplay.writeWindow(16, 23, 0, 0, ascii2Font8x8(font8x8VerticalFlipped, 'l'), 8);
+  currentDisplay.writeWindow(24, 31, 0, 0, ascii2Font8x8(font8x8VerticalFlipped, 'l'), 8);
+  currentDisplay.writeWindow(32, 39, 0, 0, ascii2Font8x8(font8x8VerticalFlipped, 'o'), 8);
 
   while (1) {
     if (currentTicks != ticks) {
