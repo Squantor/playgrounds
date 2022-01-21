@@ -112,6 +112,125 @@ consteval uint8_t higherColumnAddress(uint8_t address) {
 consteval uint8_t lowerColumnAddress(uint8_t address) {
   return (address & 0x0F) | 0x00;
 }
+
+const uint8_t init128x64[] = {SSD1306::displaySleep,
+                              SSD1306::setDisplayClockDivide,
+                              SSD1306::displayClockDivisor(0x80),
+                              SSD1306::setMultiplexRatio,
+                              SSD1306::multiplexRatio(63),
+                              SSD1306::setDisplayOffset,
+                              SSD1306::displayOffset(0),
+                              SSD1306::setDisplayStartLine(0),
+                              SSD1306::setChargePump,
+                              SSD1306::chargePumpOn(true),
+                              SSD1306::setMemoryAddressingMode,
+                              SSD1306::AddressingMode(SSD1306::horizontalMode),
+                              SSD1306::setSegmentRemap(SSD1306::column127),
+                              SSD1306::comOutputScanDirection(SSD1306::remappedDirection),
+                              SSD1306::setComPinsHardware,
+                              SSD1306::ComPinsHardware(SSD1306::alternatingNormal),
+                              SSD1306::setContrast,
+                              SSD1306::ConstrastLevel(0x01),
+                              SSD1306::setPrechargeLevel,
+                              SSD1306::prechargeLevel(0xF1),
+                              SSD1306::setVcomDeselectLevel,
+                              SSD1306::vcomDeselectLevel(4),
+                              SSD1306::displayOn,
+                              SSD1306::displayNormal,
+                              SSD1306::scrollOff,
+                              SSD1306::displayActive};
+const uint8_t init128x32[] = {SSD1306::displaySleep,
+                              SSD1306::setDisplayClockDivide,
+                              SSD1306::displayClockDivisor(0x80),
+                              SSD1306::setMultiplexRatio,
+                              SSD1306::multiplexRatio(31),
+                              SSD1306::setDisplayOffset,
+                              SSD1306::displayOffset(0),
+                              SSD1306::setDisplayStartLine(0),
+                              SSD1306::setChargePump,
+                              SSD1306::chargePumpOn(true),
+                              SSD1306::setMemoryAddressingMode,
+                              SSD1306::AddressingMode(SSD1306::horizontalMode),
+                              SSD1306::setSegmentRemap(SSD1306::column127),
+                              SSD1306::comOutputScanDirection(SSD1306::remappedDirection),
+                              SSD1306::setComPinsHardware,
+                              SSD1306::ComPinsHardware(SSD1306::sequentialNormal),
+                              SSD1306::setContrast,
+                              SSD1306::ConstrastLevel(0x01),
+                              SSD1306::setPrechargeLevel,
+                              SSD1306::prechargeLevel(0xF1),
+                              SSD1306::setVcomDeselectLevel,
+                              SSD1306::vcomDeselectLevel(4),
+                              SSD1306::displayOn,
+                              SSD1306::displayNormal,
+                              SSD1306::scrollOff,
+                              SSD1306::displayActive};
+
+template <uint8_t i2cAddress>
+struct display {
+  uint32_t startI2CTransfer(I2C_Type *peripheral, uint8_t address) {
+    uint32_t busStatus;
+    i2cSetMasterData(peripheral, address);
+    i2cSetMasterControl(peripheral, I2C_MSCTL_MSTSTART);
+    do {
+      busStatus = i2cGetStatus(peripheral);
+    } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
+    return busStatus;
+  }
+
+  uint8_t sendI2CData(I2C_Type *peripheral, uint8_t data) {
+    uint32_t busStatus;
+    i2cSetMasterData(peripheral, data);
+    i2cSetMasterControl(peripheral, I2C_MSCTL_MSTCONTINUE);
+    do {
+      busStatus = i2cGetStatus(peripheral);
+    } while (((busStatus & (I2C_STAT_MSTPENDING | I2C_STAT_EVENTTIMEOUT | I2C_STAT_SCLTIMEOUT)) == 0));
+    return busStatus;
+  }
+
+  void stopI2CTransfer(I2C_Type *peripheral) {
+    i2cSetMasterControl(peripheral, I2C_MSCTL_MSTSTOP);
+  }
+
+  uint8_t sendCommands(const uint8_t *data, uint16_t length) {
+    uint16_t dataIndex = 0;
+    uint32_t busStatus;
+    busStatus = startI2CTransfer(I2C0, i2cAddress);
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    busStatus = sendI2CData(I2C0, 0x00);  // Command setup
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    do {
+      busStatus = sendI2CData(I2C0, data[dataIndex]);
+      if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+      dataIndex++;
+    } while (dataIndex < length);
+  i2cStop:
+    stopI2CTransfer(I2C0);
+    return busStatus;
+  }
+
+  uint8_t sendData(const uint8_t *data, uint16_t length) {
+    uint16_t dataIndex = 0;
+    uint32_t busStatus;
+    busStatus = startI2CTransfer(I2C0, i2cAddress);
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    busStatus = sendI2CData(I2C0, 0x40);  // data write
+    if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+    do {
+      busStatus = sendI2CData(I2C0, data[dataIndex]);
+      if ((I2C_STAT_MSTSTATE(busStatus) != I2C_STAT_MSSTATE_TRANSMIT_READY)) goto i2cStop;
+      dataIndex++;
+    } while (dataIndex < length);
+  i2cStop:
+    stopI2CTransfer(I2C0);
+    return busStatus;
+  }
+
+  void init(const uint8_t *initCommands, uint16_t initCommandLength) {
+    sendCommands(initCommands, initCommandLength);
+  }
+};
+
 }  // namespace SSD1306
 }  // namespace util
 
