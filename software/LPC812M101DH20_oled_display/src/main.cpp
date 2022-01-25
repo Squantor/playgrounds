@@ -29,7 +29,7 @@ void currentDisplayWriteWindow(uint8_t xBegin, uint8_t xEnd, uint8_t yBegin, uin
 }
 
 result currentDisplayWriteChar(const char *c) {
-  currentConsole.writeChar(currentDisplayWriteWindow, *c);
+  currentConsole.writeBigChar(currentDisplayWriteWindow, *c);
   return noError;
 }
 
@@ -50,6 +50,7 @@ int main() {
   while (1) {
     if (currentTicks != ticks) {
       printDecNzU32(&displayStream, currentTicks);
+      dsWriteChar(&displayStream, currentTicks & 0x7F);
       currentTicks = ticks;
       uint8_t invertDisplay;
       if (currentTicks & 16)

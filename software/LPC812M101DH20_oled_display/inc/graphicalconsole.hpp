@@ -9,6 +9,7 @@ For conditions of distribution and use, see LICENSE file
 
 #include <cinttypes>
 #include <font_8x8.h>
+#include <bit.h>
 
 template <uint8_t maxX, uint8_t maxY>
 struct graphicalConsole {
@@ -19,6 +20,28 @@ struct graphicalConsole {
     if (xpos >= maxX) {
       xpos = 0;
       ypos += 8;
+    }
+    if (ypos >= maxY) {
+      ypos = 0;
+    }
+  }
+  void writeBigChar(auto writeWindow, char c) {
+    const uint8_t *bitmap = ascii2Font8x8(font, c);
+    uint8_t bigBitmap[32];
+    for (size_t i = 0; i < 16; i++) {
+      uint16_t zoomedData = bitZoom(*bitmap);
+      bigBitmap[i] = zoomedData;
+      bigBitmap[i + 16] = zoomedData >> 8;
+      i++;
+      bigBitmap[i] = zoomedData;
+      bigBitmap[i + 16] = zoomedData >> 8;
+      bitmap++;
+    }
+    writeWindow(xpos, xpos + 15, ypos, ypos + 8, bigBitmap, 32);
+    xpos += 16;
+    if (xpos >= maxX) {
+      xpos = 0;
+      ypos += 16;
     }
     if (ypos >= maxY) {
       ypos = 0;
