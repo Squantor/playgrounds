@@ -3,7 +3,14 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-                {
+        {
+            "label": "build debug E-ink display example",
+            "type": "shell",
+            "command": "make PROJECT=LPC812M101DH20_e-ink_display config=debug -j20",
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
             "label": "build debug OLED display example",
             "type": "shell",
             "command": "make PROJECT=LPC812M101DH20_oled_display config=debug -j20",

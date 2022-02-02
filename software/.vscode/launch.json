@@ -5,6 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "debug e-ink display demo",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/bin/LPC812M101DH20_e-ink_display/debug/LPC812M101DH20_e-ink_display.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "bmp",
+            "interface": "swd",
+            "device": "LPC812",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
+            "runToEntryPoint": "main",
+            "preLaunchCommands": [],
+            "preRestartCommands": [],
+            "preLaunchTask": "build debug E-ink display example",
+            "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+            "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"],
+            "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
+        },
+        {
             "name": "run sharp LCD example debug",
             "cwd": "${workspaceRoot}",
             "executable": "${workspaceFolder}/bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",

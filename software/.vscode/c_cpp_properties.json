@@ -6,7 +6,7 @@
                 "${workspaceFolder}/libMcuLL/inc/",
                 "${workspaceFolder}/squantorLibC/inc/",
                 "${workspaceFolder}/squantorLibEmbedded/inc/",
-                "${workspaceFolder}/LPC812M101DH20_oled_display/inc/"
+                "${workspaceFolder}/LPC812M101DH20_e-ink_display/inc/"
             ],
             "defines": [
                 "MCU_LPC812M101DH20",
