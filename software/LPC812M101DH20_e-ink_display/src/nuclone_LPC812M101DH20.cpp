@@ -38,7 +38,7 @@ void crudeDelay(uint32_t iterations) {
 
 void boardInit(void) {
   // clock enables and resets
-  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT | CLKCTRL_I2C0);
+  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
   sysconAssertResets(SYSCON, RESETCTRL_I2C);
   sysconClearResets(SYSCON, RESETCTRL_I2C);
   // setup io pins
@@ -50,7 +50,7 @@ void boardInit(void) {
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
   SwmMovablePinAssign(SWM, SWM_I2C0_SCL, SWM_I2C_SCL);
   SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SDA);
-  // sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
+  sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
 
   // setup system clocks
   sysconSysOscControl(SYSCON, SYSOSCCTRL_BYPASS(0) | SYSOSCCTRL_FREQ_1_20MHZ);
@@ -71,8 +71,5 @@ void boardInit(void) {
   gpioPinWrite(GPIO, PORT_LED, PIN_LED, 0);
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 
-  // setup i2c
-  i2cSetClockDivider(I2C0, 3);
-  i2cSetConfiguration(I2C0, I2C_CFG_MSTEN);
-  // TODO: setup timeout reg and bits in config
+  // setup SPI
 }
