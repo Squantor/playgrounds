@@ -44,12 +44,8 @@ void boardInit(void) {
   // setup io pins
   ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
   ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_I2C_SCL, IOCON_I2CMODE(IOCON_I2CMODE_STD));
-  ioconSetupPin(IOCON, IOCON_I2C_SDA, IOCON_I2CMODE(IOCON_I2CMODE_STD));
   ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
-  SwmMovablePinAssign(SWM, SWM_I2C0_SCL, SWM_I2C_SCL);
-  SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SDA);
   sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
 
   // setup system clocks
