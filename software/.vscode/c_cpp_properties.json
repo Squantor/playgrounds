@@ -6,10 +6,10 @@
                 "${workspaceFolder}/libMcuLL/inc/",
                 "${workspaceFolder}/squantorLibC/inc/",
                 "${workspaceFolder}/squantorLibEmbedded/inc/",
-                "${workspaceFolder}/LPC812M101DH20_e-ink_display/inc/"
+                "${workspaceFolder}/cortexM0_routines/inc/"
             ],
             "defines": [
-                "MCU_LPC812M101DH20",
+                "MCU_CortexM0",
                 "DEBUG"
             ],
             "browse": {

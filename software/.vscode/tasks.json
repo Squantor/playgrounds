@@ -38,5 +38,12 @@
             "group": "build",
             "problemMatcher": "$gcc"
         },
+        {
+            "label": "build CortexM0 test routines",
+            "type": "shell",
+            "command": "make PROJECT=cortexM0_routines CONFIG=debug -j20",
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
     ]
 }

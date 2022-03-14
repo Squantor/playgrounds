@@ -87,5 +87,23 @@
             "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"],
             "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
         },
+        {
+            "name": "debug Cortex M0 routines",
+            "cwd": "${workspaceRoot}",
+            "executable": "${workspaceFolder}/bin/cortexM0_routines/debug/cortexM0_routines.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "bmp",
+            "interface": "swd",
+            "device": "LPC812",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
+            "runToEntryPoint": "main",
+            "preLaunchCommands": [],
+            "preRestartCommands": [],
+            "preLaunchTask": "build CortexM0 test routines",
+            "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+            "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/cortexM0_routines.txt"],
+            "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
+        },
     ]
 }
