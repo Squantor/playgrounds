@@ -5,7 +5,7 @@ Copyright (c) 2021 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 #include <board.hpp>
-#include <SSD1306.hpp>
+#include <SSD1306_direct.hpp>
 #include <graphicalconsole.hpp>
 #include <font_8x8.h>
 #include <print.h>
