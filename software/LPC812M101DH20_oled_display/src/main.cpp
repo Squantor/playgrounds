@@ -58,6 +58,7 @@ int main() {
       else
         invertDisplay = SSD1306::displayNormal;
       currentDisplay.sendCommands(&invertDisplay, sizeof(invertDisplay));
+      currentDisplay.update();
     }
   }
 }
