@@ -15,6 +15,8 @@ For conditions of distribution and use, see LICENSE file
 #define CLOCK_AHB (30000000u)
 #define CLOCK_MAIN (60000000u)
 
+#include <mcu_ll.h>
+
 #define IOCON_XTAL_IN IOCON_PIO0_8
 #define IOCON_XTAL_OUT IOCON_PIO0_9
 

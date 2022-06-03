@@ -6,10 +6,10 @@
                 "${workspaceFolder}/libMcuLL/inc/",
                 "${workspaceFolder}/squantorLibC/inc/",
                 "${workspaceFolder}/squantorLibEmbedded/inc/",
-                "${workspaceFolder}/cortexM0_routines/inc/"
+                "${workspaceFolder}/LPC812M101DH20_oled_display/inc/"
             ],
             "defines": [
-                "MCU_CortexM0",
+                "MCU_LPC812M101DH20",
                 "DEBUG"
             ],
             "browse": {
@@ -21,7 +21,8 @@
             "compilerPath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
             "cppStandard": "c++20",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4

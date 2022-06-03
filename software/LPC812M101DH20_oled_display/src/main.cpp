@@ -17,7 +17,7 @@ uint32_t ticks;
 extern "C" {
 void SysTick_Handler(void) {
   ticks++;
-  GpioSetPortToggle(GPIO, PORT_LED, 1 << PIN_LED);
+  gpioPortToggle(GPIO, PORT_LED, 1 << PIN_LED);
 }
 }
 

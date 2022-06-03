@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include <board.hpp>
+#include <nuclone_LPC812M101DH20.hpp>
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -39,17 +39,17 @@ void crudeDelay(uint32_t iterations) {
 void boardInit(void) {
   // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT | CLKCTRL_I2C0);
-  sysconAssertResets(SYSCON, RESETCTRL_I2C);
-  sysconClearResets(SYSCON, RESETCTRL_I2C);
+  sysconEnableResets(SYSCON, RESETCTRL_I2C0);
+  sysconDisableResets(SYSCON, RESETCTRL_I2C0);
   // setup io pins
-  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
   ioconSetupPin(IOCON, IOCON_I2C_SCL, IOCON_I2CMODE(IOCON_I2CMODE_STD));
   ioconSetupPin(IOCON, IOCON_I2C_SDA, IOCON_I2CMODE(IOCON_I2CMODE_STD));
-  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(IOCON_MODE_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
-  SwmMovablePinAssign(SWM, SWM_I2C0_SCL, SWM_I2C_SCL);
-  SwmMovablePinAssign(SWM, SWM_I2C0_SDA, SWM_I2C_SDA);
+  SwmMovablePinAssign(SWM, SWM_I2C0_SCL_IO, SWM_I2C_SCL);
+  SwmMovablePinAssign(SWM, SWM_I2C0_SDA_IO, SWM_I2C_SDA);
   // sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
 
   // setup system clocks
