@@ -5,7 +5,7 @@ Copyright (c) 2021 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 #include <board.hpp>
-#include <SSD1306_direct.hpp>
+#include <SSD1306_fb.hpp>
 #include <graphicalconsole.hpp>
 #include <font_8x8.h>
 #include <print.h>
@@ -21,8 +21,8 @@ void SysTick_Handler(void) {
 }
 }
 
-SSD1306::display<0x78> currentDisplay;
-graphicalConsole<128, 64> currentConsole(font8x8VerticalFlipped);
+SSD1306::display<0x78, SSD1306::standard128x64> currentDisplay;
+graphicalConsole<SSD1306::standard128x64::maxX, SSD1306::standard128x64::maxY> currentConsole(font8x8VerticalFlipped);
 
 void currentDisplayWriteWindow(uint8_t xBegin, uint8_t xEnd, uint8_t yBegin, uint8_t yEnd, const uint8_t *data, uint16_t length) {
   currentDisplay.writeWindow(xBegin, xEnd, yBegin, yEnd, data, length);
@@ -44,7 +44,7 @@ int main() {
   uint32_t currentTicks = 0;
   boardInit();
 
-  currentDisplay.init(SSD1306::init128x64, sizeof(SSD1306::init128x64));
+  currentDisplay.init();
   dsPuts(&displayStream, "Hello World!");
 
   while (1) {
