@@ -4,28 +4,34 @@
 
 # Project specific rules with a few predefined, extend as needed
 #
-# Version: 20210113
-
-#project hardware specific commands
-gdbbmp: all
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/$(PROJECT)_$(CONFIG).txt
-.PHONY: gdbbmp
-
-tpwrdisable:
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmp_tpwr_disable.txt
-.PHONY: tpwrdisable
-
-tpwrenable:
-	$(TOOLCHAIN_PREFIX)$(GDB) -x ./gdb_scripts/bmp_tpwr_enable.txt
-.PHONY: tpwrenable
+# Version: 20210303
 
 # always executed by build engine
 pre-build:
-	@echo executing pre build steps
+	$(U) "executing pre build steps"
 
 .PHONY: pre-build
 
-post-build: main-build
-	@echo executing post build steps
+post-build: main-build generate-diassembly
+	$(U) "executing post build steps"
 
 .PHONY: post-build
+
+# run the executable
+execute: all
+	$(EXECUTABLE)
+
+.PHONY: execute
+
+DATESTRING := $(shell date +%Y%m%d%H%M%S)
+
+# generate disassembly of currently built executable
+generate-diassembly: $(EXECUTABLE) $(PROJECT)/disassemblies/build-tag
+	$(C)$(TOOLCHAIN_PREFIX)$(OBJDUMP) -h --no-show-raw-insn --no-addresses -S "$(EXECUTABLE)" > "$(PROJECT)/disassemblies/$(PROJECT)_$(DATESTRING).lss"
+
+.PHONY: generate-diassembly
+
+$(PROJECT)/disassemblies/build-tag: 
+	$(C)$(MKDIR) -p $(PROJECT)/disassemblies
+	$(C)$(TOUCH) $@
+
