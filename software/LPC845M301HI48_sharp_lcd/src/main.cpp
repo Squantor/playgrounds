@@ -62,7 +62,7 @@ int main() {
   unsigned int currticks = systicks;
   boardInit();
   boardLcd.init();
-  //boardLcd.setBuffer(0xFFFF);
+  boardLcd.setBuffer(0xFFFF);
   while (1) {
     if (currticks < systicks) {
       xPos++;
@@ -70,9 +70,9 @@ int main() {
       if (xPos >= util::LS027B7DH01::maxX) xPos = 0;
       if (yPos >= util::LS027B7DH01::maxY) yPos = 0;
       currticks = systicks;
-      //boardLcd.bitBlockTransfer(xPos, yPos, cat264x176bitmap, 264, 176, util::bitblitOperation::OP_MOV);
-      //boardLcd.flipVcom(lcdTransfer);
-      //boardLcd.lcdUpdate(lcdTransfer);
+      boardLcd.bitBlockTransfer(xPos, yPos, cat264x176bitmap, 264, 176, util::bitblitOperation::OP_NOT);
+      boardLcd.flipVcom(lcdTransfer);
+      boardLcd.lcdUpdate(lcdTransfer);
     }
     __NOP();
   }
