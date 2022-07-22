@@ -3,11 +3,11 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/libMcuLL/inc",
-                "${workspaceFolder}/common/inc",
-                "${workspaceFolder}/squantorLibC/inc",
-                "${workspaceFolder}/squantorLibEmbedded/inc",
-                "${workspaceFolder}/LPC845M301HI48_sharp_lcd/inc"
+                "${workspaceFolder}/libraries/libMcuLL/inc",
+                "${workspaceFolder}/libraries/common/inc",
+                "${workspaceFolder}/libraries/squantorLibC/inc",
+                "${workspaceFolder}/libraries/squantorLibEmbedded/inc",
+                "${workspaceFolder}/projects/LPC812M101DH20_oled_display/inc"
             ],
             "defines": [
                 "MCU_LPC845M301BD48",
