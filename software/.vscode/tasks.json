@@ -6,35 +6,35 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "make PROJECT=LPC845M301HI48_sharp_lcd config=debug -j20 clean",
+      "command": "make clean",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug E-ink display example",
       "type": "shell",
-      "command": "make PROJECT=LPC812M101DH20_e-ink_display config=debug -j20",
+      "command": "make PROJECT=LPC812_e-ink_display config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug OLED display example",
       "type": "shell",
-      "command": "make PROJECT=LPC812M101DH20_oled_display config=debug -j20",
+      "command": "make PROJECT=LPC812_oled_display config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "sharp LCD example",
       "type": "shell",
-      "command": "make PROJECT=LPC845M301HI48_sharp_lcd config=debug -j20",
+      "command": "make PROJECT=LPC845_sharp_lcd config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug pwm modulator",
       "type": "shell",
-      "command": "make PROJECT=LPC812M101DH20_pwm_modulator CONFIG=debug -j20",
+      "command": "make PROJECT=LPC812_pwm_modulator CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
@@ -56,6 +56,13 @@
       "label": "build C++ systick demo",
       "type": "shell",
       "command": "make PROJECT=systick_template_cpp CONFIG=debug -j20",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build PC template",
+      "type": "shell",
+      "command": "make PROJECT=PC CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
