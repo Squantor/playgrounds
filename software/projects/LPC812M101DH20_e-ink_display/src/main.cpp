@@ -8,12 +8,12 @@ For conditions of distribution and use, see LICENSE file
 #include <font_8x8.h>
 #include <print.h>
 
-uint32_t ticks;
+volatile uint32_t ticks;
 
 extern "C" {
 void SysTick_Handler(void) {
-  ticks++;
-  GpioSetPortToggle(GPIO, PORT_LED, 1 << PIN_LED);
+  ticks = ticks + 1;
+  gpioPortToggle(GPIO, PORT_LED, 1 << PIN_LED);
 }
 }
 

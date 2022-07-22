@@ -39,12 +39,12 @@ void crudeDelay(uint32_t iterations) {
 void boardInit(void) {
   // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
-  sysconAssertResets(SYSCON, RESETCTRL_I2C);
-  sysconClearResets(SYSCON, RESETCTRL_I2C);
+  sysconEnableResets(SYSCON, RESETCTRL_I2C0);
+  sysconDisableResets(SYSCON, RESETCTRL_I2C0);
   // setup io pins
-  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(IOCON_MODE_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
   sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
 

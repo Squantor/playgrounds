@@ -37,14 +37,13 @@ void crudeDelay(uint32_t iterations) {
 }
 
 void boardInit(void) {
-  sysconEnableClocks(SYSCON,
-                     CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT);
-  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(PIN_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(PIN_INACTIVE));
+  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SCT);
+  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconSetupPin(IOCON, IOCON_LED, IOCON_MODE(IOCON_MODE_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
   sysconDisableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON);
-  SwmMovablePinAssign(SWM, SWM_SCT_OUT_0_O, SWM_LED);
+  SwmMovablePinAssign(SWM, SWM_SCT0_OUT_0_O, SWM_LED);
   // setup system clocks
   // ClockSetPLLBypass(false, false);
   sysconSysOscControl(SYSCON, SYSOSCCTRL_BYPASS(0) | SYSOSCCTRL_FREQ_1_20MHZ);
