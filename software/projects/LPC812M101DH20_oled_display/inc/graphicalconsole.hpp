@@ -8,14 +8,15 @@ For conditions of distribution and use, see LICENSE file
 #define GRAPHICAL_CONSOLE_HPP
 
 #include <cinttypes>
-#include <font_8x8.h>
+#include <fonts/font_8x8.hpp>
 #include <bit.h>
 
 template <uint8_t maxX, uint8_t maxY>
 struct graphicalConsole {
-  graphicalConsole(const uint8_t *font) : xpos{0}, ypos{0}, font{font} {}
+  graphicalConsole(const font &consoleFont) : xpos{0}, ypos{0}, consoleFont{consoleFont} {}
   void writeChar(auto writeWindow, char c) {
-    writeWindow(xpos, xpos + 7, ypos, ypos, ascii2Font8x8(font, c), 8);
+    const uint8_t *bitmap = ascii2Font(consoleFont, c);
+    writeWindow(xpos, xpos + 7, ypos, ypos, bitmap, 8);
     xpos += 8;
     if (xpos >= maxX) {
       xpos = 0;
@@ -26,7 +27,7 @@ struct graphicalConsole {
     }
   }
   void writeBigChar(auto writeWindow, char c) {
-    const uint8_t *bitmap = ascii2Font8x8(font, c);
+    const uint8_t *bitmap = ascii2Font(consoleFont, c);
     uint8_t bigBitmap[32];
     for (size_t i = 0; i < 16; i++) {
       uint16_t zoomedData = bitZoom(*bitmap);
@@ -49,7 +50,7 @@ struct graphicalConsole {
   }
   uint8_t xpos;
   uint8_t ypos;
-  const uint8_t *const font;
+  const font &consoleFont;
 };
 
 #endif

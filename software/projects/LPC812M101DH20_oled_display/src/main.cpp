@@ -22,7 +22,7 @@ void SysTick_Handler(void) {
 }
 
 SSD1306::display<0x78, SSD1306::standard128x64> currentDisplay;
-graphicalConsole<SSD1306::standard128x64::maxX, SSD1306::standard128x64::maxY> currentConsole(font8x8VerticalFlipped);
+graphicalConsole<SSD1306::standard128x64::maxX, SSD1306::standard128x64::maxY> currentConsole(mono8x8RowFlip);
 
 void currentDisplayWriteWindow(uint8_t xBegin, uint8_t xEnd, uint8_t yBegin, uint8_t yEnd, const uint8_t *data, uint16_t length) {
   currentDisplay.writeWindow(xBegin, xEnd, yBegin, yEnd, data, length);
