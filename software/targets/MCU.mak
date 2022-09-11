@@ -4,28 +4,31 @@
 
 # settings for the MCU target
 #
-# Version: 20220722
+# Version: 20220909
 
 ifndef $(PROJECT)_MCU
 $(error Project MCU is not defined!)
 else
 MCU := $($(PROJECT)_MCU)
 endif
-include targets/$(MCU).mk
+include targets/$(MCU).mak
 
 # valid configurations like debug, release, test, define them here
-CONFIGS = debug release
+CONFIGS = debug release_size release_speed
 
 # configuration specific flags
 CFLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections
 CFLAGS_debug += -Og -g3
-CFLAGS_release += -Os -g
+CFLAGS_release_size += -Os -g -flto
+CFLAGS_release_speed += -O2 -g -flto
 CXXFLAGS += -std=gnu++20 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions
 CXXFLAGS_debug += -Og -g3
-CXXFLAGS_release += -Os -g
+CXXFLAGS_release_size += -Os -g
+CXXFLAGS_release_speed += -O2 -g
 ASMFLAGS += -c -x assembler-with-cpp
-LDFLAGS +=  -nostdlib -Wl,--gc-sections -Wl,-print-memory-usage -Wl,-Ltargets/ld
+LDFLAGS +=  -nostdlib -Wl,--gc-sections -Wl,-print-memory-usage -Wl,-Ltargets/ld -flto
 DEFINES += -D$(BOARD)
-DEFINES_release += -DNDEBUG
 DEFINES_debug += -DDEBUG
+DEFINES_release_size += -DNDEBUG
+DEFINES_release_speed += -DNDEBUG
 LIBS += -lgcc

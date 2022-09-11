@@ -2,11 +2,11 @@
 # Copyright (c) 2021 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# settings for the LPC824M201JHI33 Microcontroller
+# settings for the LPC845M301JBD48 Microcontroller
 #
-# Version: 20200427
+# Version: 20220909
 
 # import compiler settings for the general controller type
-include targets/LPC824.mk
+include targets/LPC845.mak
 
 
