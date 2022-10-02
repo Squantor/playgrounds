@@ -2,28 +2,17 @@
     "configurations": [
         {
             "name": "Linux",
-            "includePath": [
-                "${workspaceFolder}/libraries/libMcuLL/inc",
-                "${workspaceFolder}/libraries/common/inc",
-                "${workspaceFolder}/libraries/squantorLibC/inc",
-                "${workspaceFolder}/libraries/squantorLibEmbedded/inc",
-                "${workspaceFolder}/projects/LPC812M101DH20_pwm_modulator/inc"
-            ],
-            "defines": [
-                "MCU_LPC812M101DH20",
-                "DEBUG"
-            ],
+            "includePath": [],
+            "defines": [],
             "browse": {
                 "limitSymbolsToIncludedHeaders": false,
                 "path": [
                     "${workspaceFolder}/**"
                 ]
             },
-            "compilerPath": "/home/abilos/programs/gcc-arm-none-eabi-10.3-2021.10/bin//arm-none-eabi-gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++20",
-            "intelliSenseMode": "gcc-x64",
-        }
+      "cStandard": "gnu17",
+      "cppStandard": "gnu++20",
+      "compileCommands": "${workspaceFolder}/compile_commands.json"        }
     ],
     "version": 4
 }

@@ -13,56 +13,63 @@
     {
       "label": "build debug E-ink display example",
       "type": "shell",
-      "command": "make PROJECT=LPC812_e-ink_display config=debug -j20",
+      "command": "bear -- make PROJECT=LPC812_e-ink_display config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug OLED display example",
       "type": "shell",
-      "command": "make PROJECT=LPC812_oled_display config=debug -j20",
+      "command": "bear -- make PROJECT=LPC812_oled_display config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "sharp LCD example",
       "type": "shell",
-      "command": "make PROJECT=LPC845_sharp_lcd config=debug -j20",
+      "command": "bear -- make PROJECT=LPC845_sharp_lcd config=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug pwm modulator",
       "type": "shell",
-      "command": "make PROJECT=LPC812_pwm_modulator CONFIG=debug -j20",
+      "command": "bear -- make PROJECT=LPC812_pwm_modulator CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build CortexM0 test routines",
       "type": "shell",
-      "command": "make PROJECT=cortexM0_routines CONFIG=debug -j20",
+      "command": "bear -- make PROJECT=cortexM0_routines CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build C systick demo",
       "type": "shell",
-      "command": "make PROJECT=systick_template_c CONFIG=debug -j20",
+      "command": "bear -- make PROJECT=systick_template_c CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
+      "label": "build debug RP2040 empty project",
+      "type": "shell",
+      "command": "bear -- make PROJECT=RP2040_empty CONFIG=debug -j20",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+      {
       "label": "build C++ systick demo",
       "type": "shell",
-      "command": "make PROJECT=systick_template_cpp CONFIG=debug -j20",
+      "command": "bear -- make PROJECT=systick_template_cpp CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build PC template",
       "type": "shell",
-      "command": "make PROJECT=PC CONFIG=debug -j20",
+      "command": "bear -- make PROJECT=PC CONFIG=debug -j20",
       "group": "build",
       "problemMatcher": "$gcc"
     },
