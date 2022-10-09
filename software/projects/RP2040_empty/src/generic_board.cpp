@@ -8,5 +8,5 @@
 
 void boardInit(void) {
   // setup systick
-  SysTick_Config(CLOCK_AHB / TICKS_PER_S);
+  SysTick_Config(CLOCK_CPU / TICKS_PER_S);
 }

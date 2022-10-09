@@ -86,4 +86,4 @@ SECTIONS {
     PROVIDE(_data_flash = LOADADDR(.data));
 }
 
-_end = .;
+
