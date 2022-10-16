@@ -4,86 +4,89 @@ SPDX-License-Identifier: MIT
 Copyright (c) 2021 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
+/*
+RP2040 linkerfile code, based on the template by Alex Taradov:
+https://github.com/ataradov/mcu-starter-projects/tree/master/rp2040
+*/
+
 
 ENTRY(Reset_Handler)
 
 SECTIONS {
-    .boot : ALIGN(4)
-    {
-        KEEP(*(.boot.entry))
-        *(.boot*)
-        . = 256-4;
-        LONG(0xcccccccc) /* CRC */
-    } > boot
+  .boot : ALIGN(4)
+  {
+    KEEP(*(.boot.entry))
+    *(.boot*)
+    . = 256-4;
+    LONG(0xcccccccc) /* CRC */
+  } > boot
 
-    .text : ALIGN(4)
-    {
-        KEEP(*(.vectors))
-        KEEP(*(.cortex_vectors))
-        KEEP(*(.vendor_vectors))
-        *(.text*)
-        *(.rodata*)
+  .text : ALIGN(4)
+  {
+    KEEP(*(.vectors))
+    KEEP(*(.cortex_vectors))
+    KEEP(*(.vendor_vectors))
+    *(.text*)
+    *(.rodata*)
 
-        /* C++ constructors etc */
-        . = ALIGN(4);
-        KEEP(*(.init))
-        
-        . = ALIGN(4);
-        __preinit_array_start = .;
-        KEEP (*(.preinit_array))
-        __preinit_array_end = .;
-        
-        . = ALIGN(4);
-        __init_array_start = .;
-        KEEP (*(SORT(.init_array.*)))
-        KEEP (*(.init_array))
-        __init_array_end = .;
-        
-        KEEP(*(.fini));
-        
-        . = ALIGN(4);
-        KEEP (*crtbegin.o(.ctors))
-        KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
-        KEEP (*(SORT(.ctors.*)))
-        KEEP (*crtend.o(.ctors))
-        
-        . = ALIGN(4);
-        KEEP (*crtbegin.o(.dtors))
-        KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
-        KEEP (*(SORT(.dtors.*)))
-        KEEP (*crtend.o(.dtors))
-        . = ALIGN(4);
-        /* End C++ */
-
-        _end_text = .;
-    } > ram AT > rom
-
-    /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
-    .data : ALIGN(4)
-    {
-        _start_data = .;
-        *(.ramfunc*) /* special section for RAM functions */
-        *(vtable)
-        *(.data*)
-        . = ALIGN(4)
-        _end_data = .;
-    } >ram AT > rom
-
-    .bss : ALIGN(4)
-    {
-        _start_bss = .;
-        *(.bss*)
-        *(COMMON)
-        . = ALIGN(4)
-        _end_bss = .;
-    } >ram
-
+    /* C++ constructors etc */
     . = ALIGN(4);
+    KEEP(*(.init))
+    
+    . = ALIGN(4);
+    __preinit_array_start = .;
+    KEEP (*(.preinit_array))
+    __preinit_array_end = .;
+    
+    . = ALIGN(4);
+    __init_array_start = .;
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array))
+    __init_array_end = .;
+    
+    KEEP(*(.fini));
+    
+    . = ALIGN(4);
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*crtend.o(.ctors))
+    
+    . = ALIGN(4);
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*crtend.o(.dtors))
+    . = ALIGN(4);
+    /* End C++ */
 
-    _start_stack = .;
-    /* http://sourceware.org/binutils/docs/ld/MEMORY.html */
-    PROVIDE(_end_stack = ORIGIN(ram) + LENGTH(ram));
-    PROVIDE(_data_flash = LOADADDR(.data));
+    _end_text = .;
+  } >ram AT >rom
+
+  /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
+  .data : ALIGN(4)
+  {
+    _start_data = .;
+    *(.ramfunc*) /* special section for RAM functions */
+    *(.data*)
+    _end_data = .;
+  } >ram AT >rom
+
+  .bss : ALIGN(4)
+  {
+    _start_bss = .;
+    *(.bss*)
+    *(COMMON)
+    _end_bss = .;
+  } >ram
+
+  . = ALIGN(4);
+
+  _start_stack = .;
+  /* http://sourceware.org/binutils/docs/ld/MEMORY.html */
+  PROVIDE(_end_stack = ORIGIN(ram) + LENGTH(ram));
+  PROVIDE(_data_flash = LOADADDR(.data));
+  PROVIDE(_start_text = ORIGIN(flash));
 }
 
-
+_end = .;
