@@ -30,7 +30,6 @@ __attribute__((noinline, section(".ramfunc"))) void delay_cycles(uint32_t cycles
 }
 
 int main() {
-  unsigned int currticks = systicks;
   boardInit();
   while (1) {
     delay_cycles(10);

@@ -7,6 +7,9 @@
 #ifndef GENERIC_BOARD_HPP
 #define GENERIC_BOARD_HPP
 
+#define CLOCK_XTAL (12000000u)
+#define CLOCK_CPU (12000000u)
+
 #include <mcu_ll.h>
 
 #define TICKS_PER_S (8u)

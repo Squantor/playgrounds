@@ -19,7 +19,7 @@ void Dummy_Handler(void);
 }  // extern "C"
 #endif
 
-#include "cortexm0plus_irqs_RP2040.cpp"
+#include "cortexm0plus_irqs_rp2040.cpp"
 #include "isr_RP2040.cpp"
 
 void Dummy_Handler(void) {
