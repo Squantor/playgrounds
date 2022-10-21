@@ -22,6 +22,8 @@ extern int main(void);
 extern "C" {
 #endif
 
+// vector table
+extern void (*const core_vector_table[16])(void);
 // linker symbols used to prepare C/C++ environment
 extern uint32_t _rom_start;
 extern uint32_t _text_start;
@@ -82,7 +84,7 @@ __attribute__((naked, used, noreturn, section(".boot.entry"))) void Reset_Handle
     initFunc++;
   }
 
-  // SCB->VTOR = (uint32_t)vectors;
+  SCB->VTOR = reinterpret_cast<uint32_t>(core_vector_table);
 
   asm(R"asm(
     msr    msp, %[sp]
