@@ -12,7 +12,7 @@ https://github.com/ataradov/mcu-starter-projects/tree/master/rp2040
 extern "C" {
 #endif
 
-extern void _end_stack(void);
+extern void _stack_top(void);
 extern void Reset_Handler(void);
 extern void Dummy_Handler(void);
 
@@ -32,8 +32,8 @@ extern void (*const core_vector_table[16])(void);
 __attribute__((used, section(".cortex_vectors"))) void (*const core_vector_table[16])(void) = {
   // See http://sourceware.org/binutils/docs/ld/Source-Code-Reference.html
   // why the address is used here (if not intuitive)
-  0,                 /*!< stack pointer, not used in the RP2040*/
-  0,                 /*!< Reset handler address, not used in the RP2040 */
+  &_stack_top,       /*!< stack pointer, not used in the RP2040*/
+  Reset_Handler,     /*!< Reset handler address, not used in the RP2040 */
   NMI_Handler,       /*!<  */
   HardFault_Handler, /*!<  */
   0,                 /*!<  */

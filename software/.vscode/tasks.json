@@ -59,7 +59,14 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
-      {
+    {
+      "label": "build release size RP2040 empty project",
+      "type": "shell",
+      "command": "bear -- make PROJECT=RP2040_empty CONFIG=release_size -j20",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
       "label": "build C++ systick demo",
       "type": "shell",
       "command": "bear -- make PROJECT=systick_template_cpp CONFIG=debug -j20",

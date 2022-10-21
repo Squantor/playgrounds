@@ -12,10 +12,10 @@ https://github.com/ataradov/mcu-starter-projects/tree/master/rp2040
 
 MEMORY
 {
-    boot  :   ORIGIN = 0x10000000, LENGTH = 256
-    rom   :   ORIGIN = 0x10000100, LENGTH = 2048K - 256
-    ram   :   ORIGIN = 0x20000000, LENGTH = 264K
+    boot (rx) : ORIGIN = 0x10000000, LENGTH = 256
+    rom  (rx) : ORIGIN = 0x10000100, LENGTH = 2048K - 256
+    ram (rwx) : ORIGIN = 0x20000000, LENGTH = 264K
 }
 
 /* Include main link script. Note: it will be searched in -L paths. */
-INCLUDE linkscript.ld
+INCLUDE linkscript_rp2040.ld
