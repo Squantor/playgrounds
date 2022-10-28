@@ -16,6 +16,7 @@ volatile unsigned int systicks = 0;
 extern "C" {
 void SysTick_Handler(void) {
   systicks = systicks + 1;
+  sioGpioOutXor(SIO, LED_MASK);
 }
 }
 

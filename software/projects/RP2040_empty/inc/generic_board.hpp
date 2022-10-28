@@ -16,4 +16,7 @@
 
 void boardInit(void);
 
+#define LED_PIN BANK0_GPIO25
+#define LED_MASK BANK0_GPIO25_MASK
+
 #endif
