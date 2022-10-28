@@ -5,7 +5,7 @@
 # Version: 202220715
 
 # project settings
-NAME := RP2040_empty
+NAME := RP2040_demo
 BOARD := generic_board
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := RP2040

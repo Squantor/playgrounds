@@ -16,4 +16,4 @@ include $(BASE_DIR)/projects/LPC812M101DH20_pwm_modulator/LPC812M101DH20_pwm_mod
 include $(BASE_DIR)/projects/LPC845M301HI48_sharp_lcd/LPC845M301HI48_sharp_lcd.mak
 include $(BASE_DIR)/projects/systick_template_c/systick_template_c.mak
 include $(BASE_DIR)/projects/systick_template_cpp/systick_template_cpp.mak
-include $(BASE_DIR)/projects/RP2040_empty/RP2040_empty.mak
+include $(BASE_DIR)/projects/RP2040_demo/RP2040_demo.mak
