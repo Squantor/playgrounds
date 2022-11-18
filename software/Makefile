@@ -184,7 +184,7 @@ $(OBJ_PATH)/%.cpp.o: %.cpp
 > $(C)$(MKDIR) -p $(dir $@) 
 > $(C)$(TOOLCHAIN_PREFIX)$(CXX_COMPILER) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c -o $@ $<
 
-$(OBJ_PATH)/%.s.o: %.s
+$(OBJ_PATH)/%.S.o: %.S
 > $(U) "ASM $(basename $(notdir $@))"
 > $(C)$(MKDIR) -p $(dir $@) 
 > $(C)$(TOOLCHAIN_PREFIX)$(C_COMPILER) $(ASMFLAGS) $(INCLUDES) -MP -MMD -c -o $@ $<

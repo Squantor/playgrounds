@@ -1,18 +1,19 @@
 /*
 SPDX-License-Identifier: MIT
 
-Copyright (c) 2021 Bart Bilos
+Copyright (c) 2022 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /*
-RP2040 linkerfile code, based on the template by Alex Taradov:
+RP2040 linkerfile code, inspired by the template by Alex Taradov:
 https://github.com/ataradov/mcu-starter-projects/tree/master/rp2040
+More information taken from raspberry Pi Pico SDK
 */
 
-
-ENTRY(Reset_Handler)
+ENTRY(secondStageBoot)
 
 SECTIONS {
+ 
   .boot : ALIGN(4)
   {
     KEEP(*(.boot.entry))
