@@ -16,23 +16,22 @@ SECTIONS {
 
   .flash_begin : {
     __flash_binary_start = .;
-  } > rom
+  } > boot
 
   .boot2 : {
-    KEEP(*(.secondStageBoot))
     _boot2_start = .;
-    *(.secondStageBoot)
+    KEEP(*(.secondStageBoot))
     . = 256-4;
     LONG(0xDEADBEEF) /* Insert dummy CRC */
     _boot2_end = .;
-  } > rom
+  } > boot
 
-  ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader too large!!!")
+  ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
  
   .text : ALIGN(4)
   {
     _text_start = .;
-    KEEP(*(.vectors))
+    KEEP(*(.vectors)) /*TODO: remove as we dont have a vectors anymore I think? */
     KEEP(*(.cortex_vectors))
     KEEP(*(.vendor_vectors))
     *(.text*)
@@ -70,7 +69,8 @@ SECTIONS {
     /* End C++ */
 
     _text_end = .;
-  } >ram AT >rom
+  /*} >ram AT >rom*/
+  } > rom
 
   /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
   .data : ALIGN(4)
@@ -79,7 +79,7 @@ SECTIONS {
     *(.ramfunc*) /* special section for RAM functions */
     *(.data*)
     _data_end = .;
-  } >ram AT >rom
+  } > ram AT > rom
 
   .bss : ALIGN(4)
   {
@@ -87,7 +87,7 @@ SECTIONS {
     *(.bss*)
     *(COMMON)
     _bss_end = .;
-  } >ram
+  } > ram
 
   . = ALIGN(4);
 
