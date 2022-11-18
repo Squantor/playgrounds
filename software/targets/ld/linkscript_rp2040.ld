@@ -13,15 +13,22 @@ More information taken from raspberry Pi Pico SDK
 ENTRY(secondStageBoot)
 
 SECTIONS {
- 
-  .boot : ALIGN(4)
-  {
-    KEEP(*(.boot.entry))
-    *(.boot*)
-    . = 256-4;
-    LONG(0xcccccccc) /* CRC */
-  } > boot
 
+  .flash_begin : {
+    __flash_binary_start = .;
+  } > rom
+
+  .boot2 : {
+    KEEP(*(.secondStageBoot))
+    _boot2_start = .;
+    *(.secondStageBoot)
+    . = 256-4;
+    LONG(0xDEADBEEF) /* Insert dummy CRC */
+    _boot2_end = .;
+  } > rom
+
+  ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader too large!!!")
+ 
   .text : ALIGN(4)
   {
     _text_start = .;
