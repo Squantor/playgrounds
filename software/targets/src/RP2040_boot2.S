@@ -43,8 +43,6 @@
 .type secondStageBoot,%function
 .thumb_func
 secondStageBoot:
-  push {lr}
-
   // Use r3 as base address where possible
   ldr r3, =XIP_SSI_BASE
 
@@ -73,13 +71,6 @@ secondStageBoot:
   str r1, [r3, #SSI_SSIENR_OFFSET]
   // flash is now mapped into memory space, we can now run from it
 
-check_return:
-    pop {r0}
-    cmp r0, #0
-    beq vector_into_flash
-    bx r0
-
-vector_into_flash:
   // setup ISR vector table to correct position in VTOR of the PPB
   ldr r0, =(XIP_BASE + 0x100)
   ldr r1, =(PPB_BASE + M0PLUS_VTOR_OFFSET)
