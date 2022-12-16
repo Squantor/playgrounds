@@ -20,7 +20,6 @@
       "preLaunchTask": "build debug E-ink display example",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"],
-      "gdbpath": "/home/abilos/programs/gcc-arm-none-eabi-10-2020-q4-major/bin//arm-none-eabi-gdb"
     },
     {
       "name": "run sharp LCD example debug",
@@ -137,6 +136,24 @@
       "preRestartCommands": [],
       "preLaunchTask": "build C++ systick demo",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+    },
+    {
+      "name": "debug debug RP2040",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/bin/RP2040_demo/debug/RP2040_demo.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "RP2040",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      "runToEntryPoint": "main",
+      "preLaunchCommands": [],
+      "preRestartCommands": [],
+      "preLaunchTask": "build debug RP2040 demo project",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
+      "debuggerArgs": ["--command=${workspaceFolder}/gdb_scripts/RP2040_demo_debug.txt"],
+      "showDevDebugOutput": "raw"
     },
   ]
 }
