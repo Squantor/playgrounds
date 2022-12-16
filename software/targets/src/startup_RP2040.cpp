@@ -25,7 +25,7 @@ extern "C" {
 // vector table
 extern void (*const core_vector_table[16])(void);
 // linker symbols used to prepare C/C++ environment
-extern uint32_t _rom_start;
+extern uint32_t _flash_start;
 extern uint32_t _text_start;
 extern uint32_t _text_end;
 extern uint32_t _data_start;
@@ -47,25 +47,12 @@ void Reset_Handler(void);
 
 /**
  * @brief Reset handler
- *
- * This code must be position independent, it is linked at 0x10000000, but loaded at 0x20041f00.
  */
-__attribute__((naked, used, noreturn, section(".boot.entry"))) void Reset_Handler(void) {
-  // setup XIP SSI peripheral
-  xipssiEnable(XIP_SSI, false);
-  xipssiBaudrate(XIP_SSI, 2);  // Must be even (BABI: Why then? TODO investigate)
-  xipssiCtrlr0(XIP_SSI, XIP_SSI_CTRLR0_TMOD(XIP_SSI_CTRL0_TMOD_EEPROM) | XIP_SSI_CTRLR0_DFS_32(32 - 1) |
-                          XIP_SSI_CTRLR0_SPI_FRF(XIP_SSI_CTRL0_SPI_FRF_1BIT));
-  xipssiCtrlr1(XIP_SSI, XIP_SSI_CTRLR1_NDF(0));
-  xipssiSpictrl0(XIP_SSI, XIP_SSI_SPI_CTRLR0_SPI_XIP_CMD(0x03) | XIP_SSI_SPI_CTRLR0_ADDR_L(24 / 4) |
-                            XIP_SSI_SPI_CTRLR0_INST_L(XIP_SSI_SPI_CTRLR0_INST_L_8B_INSTR) |
-                            XIP_SSI_SPI_CTRLR0_TRANS_TYPE(XIP_SSI_SPI_CTRLR0_TRANS_TYPE_STD_BOTH));
-  xipssiEnable(XIP_SSI, true);
-
+void Reset_Handler(void) {
   uint32_t *src, *dst;
   // Copy flash to RAM based sections .text and .data
   // we copy everything in one go starting at _text_start until _data_end
-  src = &_rom_start;
+  src = &_flash_start;
   dst = &_text_start;
   while (dst < &_data_end) *dst++ = *src++;
   // zero out bss

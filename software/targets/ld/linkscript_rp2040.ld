@@ -16,7 +16,7 @@ SECTIONS {
 
   .flash_begin : {
     __flash_binary_start = .;
-  } > boot
+  } > boot2
 
   .boot2 : {
     _boot2_start = .;
@@ -24,14 +24,14 @@ SECTIONS {
     . = 256-4;
     LONG(0xDEADBEEF) /* Insert dummy CRC */
     _boot2_end = .;
-  } > boot
+  } > boot2
 
   ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
  
   .text : ALIGN(4)
   {
     _text_start = .;
-    KEEP(*(.vectors)) /*TODO: remove as we dont have a vectors anymore I think? */
+    KEEP(*(.vectors)) /* TODO: remove as we dont have a vectors anymore I think? */
     KEEP(*(.cortex_vectors))
     KEEP(*(.vendor_vectors))
     *(.text*)
@@ -69,8 +69,8 @@ SECTIONS {
     /* End C++ */
 
     _text_end = .;
-  /*} >ram AT >rom*/
-  } > rom
+  /*} > ram AT > flash*/
+  } > flash
 
   /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
   .data : ALIGN(4)
@@ -79,7 +79,7 @@ SECTIONS {
     *(.ramfunc*) /* special section for RAM functions */
     *(.data*)
     _data_end = .;
-  } > ram AT > rom
+  } > ram AT > flash
 
   .bss : ALIGN(4)
   {
@@ -95,7 +95,7 @@ SECTIONS {
   /* http://sourceware.org/binutils/docs/ld/MEMORY.html */
   PROVIDE(_stack_top = ORIGIN(ram) + LENGTH(ram));
   PROVIDE(_data_flash = LOADADDR(.data));
-  PROVIDE(_rom_start = ORIGIN(rom));
+  PROVIDE(_flash_start = ORIGIN(flash));
 }
 
 _end = .;

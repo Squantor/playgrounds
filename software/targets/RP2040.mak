@@ -10,6 +10,8 @@
 include targets/core_CortexM0plus.mak
 
 # Specific C files and linker scripts
-FILES += targets/src/RP2040.cpp targets/src/startup_RP2040.cpp targets/src/RP2040_boot2.S
+FILES += targets/src/RP2040.cpp \
+         targets/src/startup_RP2040.cpp \
+				 targets/src/RP2040_boot2.S
 DEFINES += -DMCU_$(MCU)
 LDSCRIPT = -T"targets/ld/RP2040.ld"
