@@ -43,9 +43,8 @@
 .type secondStageBoot,%function
 .thumb_func
 secondStageBoot:
-  push {lr}
 
-  // Use as base address where possible
+  // Use r3 as base address where possible
   ldr r3, =XIP_SSI_BASE
 
   // Disable SSI to allow further config
@@ -72,19 +71,15 @@ secondStageBoot:
   mov r1, #1
   str r1, [r3, #SSI_SSIENR_OFFSET]
 
-vector_into_flash:
+  // flash is now mapped into memory space, we can now run from it
+
+  // setup ISR vector table to correct position in VTOR of the PPB
   ldr r0, =(XIP_BASE + 0x100)
   ldr r1, =(PPB_BASE + M0PLUS_VTOR_OFFSET)
   str r0, [r1]
-  ldmia r0, {r0, r1}
-  msr msp, r0
-  bx r1
-
-  // flash is now mapped into memory space, we can now run from it
-
-  // TODO: setup ISR vector table to correct position
-  // TODO: set reset vector stack
-  // TODO: jump to reset vector
+  ldmia r0, {r0, r1}  // load stack pointer in R0 and entry from vectors in R1
+  msr msp, r0         // load main stack pointer with reset vector value
+  bx r1               // jump to reset vector
 
 .global literals
 literals:
