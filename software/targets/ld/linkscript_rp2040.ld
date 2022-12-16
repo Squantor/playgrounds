@@ -19,16 +19,16 @@ SECTIONS {
     __flash_binary_start = .;
   } > flash
 
-  .boot : ALIGN(4) 
+  .boot2 : ALIGN(4) 
   {
-    _boot_start = .;
+    _boot2_start = .;
     KEEP(*(.boot.entry))
     . = 256-4;
     LONG(0xDEADBEEF) /* Insert dummy CRC */
-    _boot_end = .;
-  } > boot
+    _boot2_end = .;
+  } > flash
 
-  ASSERT(_boot_end - _boot_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
+  ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
  
   .text : ALIGN(4)
   {
