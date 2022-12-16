@@ -30,6 +30,20 @@ extern void (*const core_vector_table[16])(void);
 __attribute__((used, section(".cortex_vectors"))) void (*const core_vector_table[16])(void) = {
   // See http://sourceware.org/binutils/docs/ld/Source-Code-Reference.html
   // why the address is used here (if not intuitive)
-  &_end_stack, Reset_Handler,  NMI_Handler,     HardFault_Handler, 0, 0, 0, 0, 0, 0, 0, SVC_Handler, DebugMon_Handler,
-  0,           PendSV_Handler, SysTick_Handler,
+  &_end_stack,       /*!<  */
+  Reset_Handler,     /*!<  */
+  NMI_Handler,       /*!<  */
+  HardFault_Handler, /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  0,                 /*!<  */
+  SVC_Handler,       /*!<  */
+  DebugMon_Handler,  /*!<  */
+  0,                 /*!<  */
+  PendSV_Handler,    /*!<  */
+  SysTick_Handler,   /*!<  */
 };
