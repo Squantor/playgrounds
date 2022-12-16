@@ -76,25 +76,25 @@ SECTIONS {
   /* http://sourceware.org/binutils/docs/ld/Output-Section-LMA.html */
   .data : ALIGN(4)
   {
-    _data_start = .;
+    _start_data = .;
     *(.ramfunc*) /* special section for RAM functions */
     *(.data*)
-    _data_end = .;
+    _end_data = .;
   } > ram AT > flash
 
   .bss : ALIGN(4)
   {
-    _bss_start = .;
+    _start_bss = .;
     *(.bss*)
     *(COMMON)
-    _bss_end = .;
+    _end_bss = .;
   } > ram
 
   . = ALIGN(4);
 
   _start_stack = .;
   /* http://sourceware.org/binutils/docs/ld/MEMORY.html */
-  PROVIDE(_stack_top = ORIGIN(ram) + LENGTH(ram));
+  PROVIDE(_end_stack = ORIGIN(core0Stack) + LENGTH(core0Stack));
   PROVIDE(_data_flash = LOADADDR(.data));
   PROVIDE(_flash_start = ORIGIN(flash));
 }
