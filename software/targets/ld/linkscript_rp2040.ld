@@ -14,24 +14,25 @@ ENTRY(secondStageBoot)
 
 SECTIONS {
 
-  .flash_begin : {
+  .flash_begin : 
+  {
     __flash_binary_start = .;
-  } > boot2
+  } > flash
 
-  .boot2 : {
-    _boot2_start = .;
-    KEEP(*(.secondStageBoot))
+  .boot : ALIGN(4) 
+  {
+    _boot_start = .;
+    KEEP(*(.boot.entry))
     . = 256-4;
     LONG(0xDEADBEEF) /* Insert dummy CRC */
-    _boot2_end = .;
-  } > boot2
+    _boot_end = .;
+  } > boot
 
-  ASSERT(_boot2_end - _boot2_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
+  ASSERT(_boot_end - _boot_start == 256, "ERROR: Second stage bootloader not 256 bytes!")
  
   .text : ALIGN(4)
   {
     _text_start = .;
-    KEEP(*(.vectors)) /* TODO: remove as we dont have a vectors anymore I think? */
     KEEP(*(.cortex_vectors))
     KEEP(*(.vendor_vectors))
     *(.text*)

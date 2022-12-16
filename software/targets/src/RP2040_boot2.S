@@ -37,7 +37,7 @@
 .cpu cortex-m0
 .thumb
 
-.section .boot
+.section .boot.entry, "ax"
 
 .global secondStageBoot
 .type secondStageBoot,%function
@@ -81,9 +81,13 @@ vector_into_flash:
   bx r1
 
   // flash is now mapped into memory space, we can now run from it
-   
-  // TODO: copy flash to sram
+
   // TODO: setup ISR vector table to correct position
   // TODO: set reset vector stack
   // TODO: jump to reset vector
+
+.global literals
+literals:
+.ltorg
+
 .end
