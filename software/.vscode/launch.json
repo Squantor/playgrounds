@@ -153,11 +153,12 @@
         "load bin/RP2040_demo/debug/RP2040_demo.elf",
         "compare-sections",
       ],
-      "preRestartCommands": [],
+      "preRestartCommands": [
+        "load bin/RP2040_demo/debug/RP2040_demo.elf",
+      ],
       "preLaunchTask": "build debug RP2040 demo project",
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
       "debuggerArgs": [],
-      "showDevDebugOutput": "both",
     },
   ]
 }
