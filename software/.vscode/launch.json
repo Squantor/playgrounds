@@ -147,7 +147,7 @@
       "interface": "swd",
       "device": "RP2040",
       "BMPGDBSerialPort": "/dev/ttyACM0",
-      "runToEntryPoint": "main",
+      //"runToEntryPoint": "main",
       "overrideLaunchCommands": [],
       "preLaunchCommands": [
         "load bin/RP2040_demo/debug/RP2040_demo.elf",
