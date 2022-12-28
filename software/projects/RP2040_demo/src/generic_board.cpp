@@ -9,31 +9,39 @@
 void boardInit(void) {
   volatile uint32_t timeout = 0;
   (void)timeout;
+  // clear resusitator status
+  CLOCKS_SET->CLK_SYS_RESUS_CTRL = CLOCKS_SYS_RESUS_CTRL_CLEAR;
   // ~1 ms @ 12 MHz
   timeout = xoscStart(47, 0x1000000);
 
-  // Setup SYS PLL for 12 MHz * 40 / 4 / 1 = 120 MHz
+  // Setup SYS PLL
   timeout = resetsReset(RESETS_PLL_SYS_MASK, 0x1000000);
-  timeout = pllStart(PLL_SYS, 1, 40, 4, 1, 0x1000000);
+  // atadarov config: 12 MHz * 40 / 4 / 1 = 120 MHz
+  // timeout = pllStart(PLL_SYS, 1, 40, 4, 1, 0x1000000);
+  // SDK config: 12MHz * 125 / 6 / 2 = 125MHz
+  timeout = pllStart(PLL_SYS, 1, 125, 6, 2, 0x1000000);
 
   // Setup USB PLL for 12 MHz * 36 / 3 / 3 = 48 MHz
   timeout = resetsReset(RESETS_PLL_USB_MASK, 0x1000000);
   timeout = pllStart(PLL_USB, 1, 36, 3, 3, 0x1000000);
 
   // Switch clocks to their final socurces
-  CLOCKS->CLK[CLK_REF].CTRL = CLOCKS_CLK_CTRL_SRC(REF_SRC_XOSC);
+  timeout = clocksSwitchGlitchlessSrc(CLK_REF, REF_SRC_XOSC, 0x1000000);
 
-  CLOCKS->CLK[CLK_SYS].CTRL = CLOCKS_CLK_CTRL_AUXSRC(SYS_AUXSRC_PLL_SYS);
-  CLOCKS_SET->CLK[CLK_SYS].CTRL = CLOCKS_CLK_CTRL_SRC(SYS_SRC_CLKSRC_CLK_SYS_AUX);
+  timeout = clocksSwitchGlitchlessAux(CLK_SYS, SYS_AUXSRC_PLL_SYS, 0x1000000);
 
-  CLOCKS->CLK[CLK_PERI].CTRL = CLOCKS_CLK_CTRL_ENABLE | CLOCKS_CLK_CTRL_AUXSRC(PERI_AUXSRC_CLK_SYS);
+  clockSwitchBasicAux(CLK_PERI, PERI_AUXSRC_CLK_SYS);
 
-  CLOCKS->CLK[CLK_USB].CTRL = CLOCKS_CLK_CTRL_ENABLE | CLOCKS_CLK_CTRL_AUXSRC(USB_AUXSRC_PLL_USB);
+  clockSwitchBasicAux(CLK_USB, USB_AUXSRC_PLL_USB);
 
-  CLOCKS->CLK[CLK_ADC].CTRL = CLOCKS_CLK_CTRL_ENABLE | CLOCKS_CLK_CTRL_AUXSRC(ADC_AUXSRC_PLL_USB);
+  clockSwitchBasicAux(CLK_ADC, ADC_AUXSRC_PLL_USB);
 
-  CLOCKS->CLK[CLK_RTC].DIV = CLOCKS_CLK_DIV_INT(256);  // 12MHz / 256 = 46875 Hz
-  CLOCKS->CLK[CLK_RTC].CTRL = CLOCKS_CLK_CTRL_ENABLE | CLOCKS_CLK_CTRL_AUXSRC(RTC_AUXSRC_XOSC);
+  clocksSetDivider(CLK_RTC, 256, 0);  // 12MHz / 256 = 46875 Hz
+  clockSwitchBasicAux(CLK_RTC, RTC_AUXSRC_XOSC);
+
+  // output clock network to GPOUT0, very useful for clock debugging
+  CLOCKS->CLK[CLK_GPOUT0].DIV = CLOCKS_CLK_DIV_INT(10);  // divide by 10 to make math easier
+  CLOCKS->CLK[CLK_GPOUT0].CTRL = CLOCKS_CLK_CTRL_ENABLE | CLOCKS_CLK_CTRL_AUXSRC(GPOUT0_AUXSRC_CLK_REF);
 
   /*
 
@@ -41,13 +49,14 @@ void boardInit(void) {
   WATCHDOG->TICK = ((F_REF / F_TICK) << WATCHDOG_TICK_CYCLES_Pos) | WATCHDOG_TICK_ENABLE_Msk;
 
   */
-  // TODO: verify clock signals
 
   timeout = resetsReset(RESETS_IO_BANK0_MASK | RESETS_PADS_BANK0_MASK, 0x1000000);
 
   // setup LED pin
   sioGpioOeSet(SIO, LED_MASK);
   iobank0GpioCtrl(IO_BANK0, LED_PIN, BANK0_GPIO25_FUNC_SIO, 0);
+  iobank0GpioCtrl(IO_BANK0, CLOCK_PIN, BANK0_GPIO21_FUNC_CLOCK_GPOUT0, 0);
+
   //  setup systick
-  SysTick_Config(CLOCK_CPU / TICKS_PER_S);
+  SysTick_Config(FREQ_CPU / TICKS_PER_S);
 }
