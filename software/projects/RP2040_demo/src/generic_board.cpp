@@ -14,33 +14,12 @@ void boardInit(void) {
 
   // Setup SYS PLL for 12 MHz * 40 / 4 / 1 = 120 MHz
   timeout = resetsReset(RESETS_PLL_SYS_MASK, 0x1000000);
-  timeout = pllSysStart(1, 40, 4, 1, 0x1000000);
-  /*
-
-  PLL_SYS->CS = (1 << PLL_SYS_CS_REFDIV_Pos);
-  PLL_SYS->FBDIV_INT = 40;
-  PLL_SYS->PRIM = (4 << PLL_SYS_PRIM_POSTDIV1_Pos) | (1 << PLL_SYS_PRIM_POSTDIV2_Pos);
-
-  PLL_SYS_CLR->PWR = PLL_SYS_PWR_VCOPD_Msk | PLL_SYS_PWR_PD_Msk;
-  while (0 == PLL_SYS->CS_b.LOCK)
-    ;
-
-  PLL_SYS_CLR->PWR = PLL_SYS_PWR_POSTDIVPD_Msk;
+  timeout = pllStart(PLL_SYS, 1, 40, 4, 1, 0x1000000);
 
   // Setup USB PLL for 12 MHz * 36 / 3 / 3 = 48 MHz
-  RESETS_CLR->RESET = RESETS_RESET_pll_usb_Msk;
-  while (0 == RESETS->RESET_DONE_b.pll_usb)
-    ;
-
-  PLL_USB->CS = (1 << PLL_SYS_CS_REFDIV_Pos);
-  PLL_USB->FBDIV_INT = 36;
-  PLL_USB->PRIM = (3 << PLL_SYS_PRIM_POSTDIV1_Pos) | (3 << PLL_SYS_PRIM_POSTDIV2_Pos);
-
-  PLL_USB_CLR->PWR = PLL_SYS_PWR_VCOPD_Msk | PLL_SYS_PWR_PD_Msk;
-  while (0 == PLL_USB->CS_b.LOCK)
-    ;
-
-  PLL_USB_CLR->PWR = PLL_SYS_PWR_POSTDIVPD_Msk;
+  timeout = resetsReset(RESETS_PLL_USB_MASK, 0x1000000);
+  timeout = pllStart(PLL_USB, 1, 36, 3, 3, 0x1000000);
+  /*
 
   // Switch clocks to their final socurces
   CLOCKS->CLK_REF_CTRL = (CLOCKS_CLK_REF_CTRL_SRC_xosc_clksrc << CLOCKS_CLK_REF_CTRL_SRC_Pos);
