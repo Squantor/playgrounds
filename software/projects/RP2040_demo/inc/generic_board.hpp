@@ -8,7 +8,7 @@
 #define GENERIC_BOARD_HPP
 
 #define CLOCK_XTAL (12000000u)
-#define CLOCK_CPU (12000000u)
+#define CLOCK_CPU (120000000u)
 
 #include <mcu_ll.h>
 
