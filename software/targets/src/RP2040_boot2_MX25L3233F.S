@@ -1,6 +1,6 @@
 /**
- * @file    RP2040_boot2.S
- * @brief   Second stage bootloader for RP2040
+ * @file    RP2040_boot2_MX25L3233F.S
+ * @brief   RP2040 second stage bootloader for MX25L3233F
  */
 
 /**
@@ -9,24 +9,11 @@
  * For conditions of distribution and use, see LICENSE file
  */
 
+#include <RP2040_defs.h>
+
 // general settings
 #define CMD_READ 0x03 /*!< SPI flash read command */
 #define ADDR_LEN 6  /*!< Address length (in 4bit increments) */
-
-// RP2040 memory locations
-#define XIP_SSI_BASE  (0x18000000)
-#define XIP_BASE      (0x10000000)
-#define PPB_BASE      (0xe0000000)
-#define SRAM4_BASE    (0x20040000)
-#define SRAM5_BASE    (0x20041000)
-
-// RP2040 register offsets
-#define SSI_CTRLR0_OFFSET     (0x00)
-#define SSI_CTRLR1_OFFSET     (0x04)
-#define SSI_SSIENR_OFFSET     (0x08)
-#define SSI_BAUDR_OFFSET      (0x14)
-#define SSI_SPI_CTRLR0_OFFSET (0xf4)
-#define M0PLUS_VTOR_OFFSET    (0xed08)
 
 // RP2040 register settings
 #define PICO_FLASH_SPI_CLKDIV 4
