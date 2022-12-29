@@ -12,14 +12,14 @@
 #include <RP2040_defs.h>
 
 // general settings
-#define CMD_READ 0x03 /*!< SPI flash read command */
+#define CMD_READ 0x0B /*!< SPI flash read command */
 #define ADDR_LEN 6  /*!< Address length (in 4bit increments) */
 
 // RP2040 register settings
 #define PICO_FLASH_SPI_CLKDIV 4
 #define CTRLR0_XIP (0x0 << 21) | (31 << 16) | (0x3 << 8)
 #define CTRLR1_XIP 0
-#define SPI_CTRLR0_XIP (CMD_READ << 24) | (2 << 8) | (ADDR_LEN << 2)
+#define SPI_CTRLR0_XIP (CMD_READ << 24) | (8 << 11) | (2 << 8) | (ADDR_LEN << 2)
 
 .cpu cortex-m0
 .thumb
