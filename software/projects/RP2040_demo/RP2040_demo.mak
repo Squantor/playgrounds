@@ -2,13 +2,14 @@
 # Copyright (c) 2021 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 202220715
+# Version: 202221229
 
 # project settings
 NAME := RP2040_demo
 BOARD := generic_board
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := RP2040
+$(NAME)_FLASH := generic
 
 $(NAME)_LIBS := libMcuLL squantorLibC squantorLibEmbedded
 
