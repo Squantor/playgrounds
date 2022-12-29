@@ -6,7 +6,7 @@
 
 # Version: 20221229
 
-FLASH_CHIPS := generic
+FLASH_CHIPS := generic MX25L3233F
 
 # collect flash chip configuration information
 ifndef $(PROJECT)_FLASH
@@ -14,7 +14,7 @@ ifndef $(PROJECT)_FLASH
 else
 # check if flash chip is known
   ifeq (, $(filter $($(PROJECT)_FLASH),$(FLASH_CHIPS)))
-    $(error Unknown flash $($(PROJECT)_FLASH!))
+    $(error Unknown flash $($(PROJECT)_FLASH) available chips: $(FLASH_CHIPS))
 	else
 		FLASH := $($(PROJECT)_FLASH)
   endif

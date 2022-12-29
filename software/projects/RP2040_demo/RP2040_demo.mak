@@ -9,7 +9,7 @@ NAME := RP2040_demo
 BOARD := generic_board
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := RP2040
-$(NAME)_FLASH := generic
+$(NAME)_FLASH := MX25L3233F
 
 $(NAME)_LIBS := libMcuLL squantorLibC squantorLibEmbedded
 
