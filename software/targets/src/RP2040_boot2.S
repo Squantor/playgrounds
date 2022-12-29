@@ -29,7 +29,7 @@
 #define M0PLUS_VTOR_OFFSET    (0xed08)
 
 // RP2040 register settings
-#define PICO_FLASH_SPI_CLKDIV 2
+#define PICO_FLASH_SPI_CLKDIV 4
 #define CTRLR0_XIP (0x0 << 21) | (31 << 16) | (0x3 << 8)
 #define CTRLR1_XIP 0
 #define SPI_CTRLR0_XIP (CMD_READ << 24) | (2 << 8) | (ADDR_LEN << 2)
