@@ -11,27 +11,31 @@
 
 #include <RP2040_defs.h>
 
-#define CMD_READ 0x6B         /**< MX25L3233F flash read command */
-#define CMD_READ_STATUS 0x05  /**< MX25L3233F read status register */
-#define CMD_WRITE_ENABLE 0x06 /**< MX25L3233F write enable */
-#define CMD_WRITE_STATUS 0x01 /**< MX25L3233F write status and configuration registers */
+#define CMD_READ 0xEB             /**< MX25L3233F flash read command */
+#define CMD_READ_STATUS 0x05      /**< MX25L3233F read status register */
+#define CMD_WRITE_ENABLE 0x06     /**< MX25L3233F write enable */
+#define CMD_WRITE_STATUS 0x01     /**< MX25L3233F write status and configuration registers */
+#define MODE_CONTINUOUS_READ 0xF0 /**< MX25L3233F continuous read mode bits */
 
-#define STATUS_WEL_BITS (1<<1) /**< MX25L3233F write latch enable bit */
-#define STATUS_QE_BITS (1<<6) /**< MX25L3233F write latch enable bit */
+#define STATUS_WEL_BITS (1<<1)  /**< MX25L3233F write latch enable bit */
+#define STATUS_QE_BITS (1<<6)   /**< MX25L3233F write latch enable bit */
 
-#define ADDR_LEN 6           /**< Address length (in 4bit increments) */
+#define ADDR_LEN 8    /**< Address length (in 4bit increments) */
+#define WAIT_CYCLES 4 /**< amount of wait cycles, includes mode bits! */
 
 // RP2040 register settings
 #define PICO_FLASH_SPI_CLKDIV 2
 
 // SSI CTRLR0 setting for SPI: standard SPI format, 8bit dataframe, TX/RX read mode
 #define CTRLR0_SPI (7 << 16) | (0 << 8)
-// SSI CTRLR0 setting for XIP: Quad SPI format, 32bit dataframe, EEPROM read mode
+// SSI CTRLR0 setting for XIP: QSPI format, 32bit dataframe, EEPROM read mode
 #define CTRLR0_XIP (0x2 << 21) | (31 << 16) | (0x3 << 8)
 // SSI CTRLR1 setting for XIP:
 #define CTRLR1_XIP 0                                     
-// SSI SPI CTRL0 setting for XIP: 8 wait cycles, 8 bit instruction, 24 bit address (6*4), cmd and address normal
-#define SPI_CTRLR0_XIP (CMD_READ << 24) | (8 << 11) | (2 << 8) | (ADDR_LEN << 2) | (0x0 << 0)
+// SSI SPI CTRL0 setting for entering XIP: 4 wait cycles, 8 bit instruction, 32 bit address (8*4), cmd normal rest quad
+#define SPI_CTRLR0_ENT (CMD_READ << 24) | (WAIT_CYCLES << 11) | (2 << 8) | (ADDR_LEN << 2) | (0x1 << 0)
+// TODO: SSI SPI CTRL0 setting for XIP: 4 wait cycles, no instruction but append after address, 32 bit address (8*4), all in quad mode
+#define SPI_CTRLR0_XIP (MODE_CONTINUOUS_READ << 24) | (WAIT_CYCLES << 11) | (0 << 8) | (ADDR_LEN << 2) | (0x2 << 0)
 
 .cpu cortex-m0
 .thumb
@@ -82,19 +86,16 @@ secondStageBoot:
   bl wait_ssi_ready
 
 qspi_enabled:
+  // configure SSI to emit a QSPI performance enhancing pattern
   // Disable SSI to allow further config
   mov r1, #0
   str r1, [r3, #SSI_SSIENR_OFFSET]
-
-  // Set baud rate
-  mov r1, #PICO_FLASH_SPI_CLKDIV
-  str r1, [r3, #SSI_BAUDR_OFFSET]
 
   // configure XIP mode
   ldr r1, =(CTRLR0_XIP)
   str r1, [r3, #SSI_CTRLR0_OFFSET]
 
-  ldr r1, =(SPI_CTRLR0_XIP)
+  ldr r1, =(SPI_CTRLR0_ENT)
   ldr r0, =(XIP_SSI_BASE + SSI_SPI_CTRLR0_OFFSET)
   str r1, [r0]
 
@@ -105,6 +106,28 @@ qspi_enabled:
   // Re-enable SSI
   mov r1, #1
   str r1, [r3, #SSI_SSIENR_OFFSET]
+
+  // reconfigure SSI to add command after the address
+  movs r1, #CMD_READ
+  str r1, [r3, #SSI_DR0_OFFSET]   // Push SPI command into TX FIFO
+  movs r1, #MODE_CONTINUOUS_READ   // 32-bit: 24 address bits (we don't care, so 0) and M[7:4]=1010
+  str r1, [r3, #SSI_DR0_OFFSET]   // Push Address into TX FIFO - this will trigger the transaction
+
+  bl wait_ssi_ready
+
+  // configure SSI into XIP mode
+  // Disable SSI to allow further config
+  mov r1, #0
+  str r1, [r3, #SSI_SSIENR_OFFSET]
+
+  ldr r1, =(SPI_CTRLR0_XIP)
+  ldr r0, =(XIP_SSI_BASE + SSI_SPI_CTRLR0_OFFSET)
+  str r1, [r0]
+
+  // Re-enable SSI
+  mov r1, #1
+  str r1, [r3, #SSI_SSIENR_OFFSET]
+
   // flash is now mapped into memory space, we can now run from it
 
   // setup ISR vector table to correct position in VTOR of the PPB
