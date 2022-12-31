@@ -63,20 +63,26 @@ secondStageBoot:
   mov r1, #1
   str r1, [r3, #SSI_SSIENR_OFFSET]
 
-  // read out status register
+  // read out MX25L3233F status register
   ldr r0, =(CMD_READ_STATUS)
-  bl flash_transceive
+  // write command byte and dummy
+  str r0, [r3, #SSI_DR0_OFFSET]
+  str r0, [r3, #SSI_DR0_OFFSET]  
+  bl wait_ssi_ready
+  // read dummy and response
+  ldr r0, [r3, #SSI_DR0_OFFSET]
+  ldr r0, [r3, #SSI_DR0_OFFSET]
   // check if status register is set to accept QSPI commands
   movs r1, #STATUS_QE_BITS
   tst r1, r0
   bne qspi_enabled
   
-  // write enable
+  // MX25L3233F write enable
   ldr r0, =(CMD_WRITE_ENABLE)
   str r0, [r3, #SSI_DR0_OFFSET]
   bl wait_ssi_ready
  
-  // write status and config register
+  // MX25L3233F write status and config register
   ldr r0, =(CMD_WRITE_STATUS)
   str r0, [r3, #SSI_DR0_OFFSET]
   mov r0, #STATUS_QE_BITS
@@ -90,45 +96,40 @@ qspi_enabled:
   // Disable SSI to allow further config
   mov r1, #0
   str r1, [r3, #SSI_SSIENR_OFFSET]
-
   // configure XIP mode
   ldr r1, =(CTRLR0_XIP)
   str r1, [r3, #SSI_CTRLR0_OFFSET]
-
+  // configure XIP entry mode
   ldr r1, =(SPI_CTRLR0_ENT)
   ldr r0, =(XIP_SSI_BASE + SSI_SPI_CTRLR0_OFFSET)
   str r1, [r0]
-
   // NDF=0 (single 32b read)
   mov r1, #CTRLR1_XIP
   str r1, [r3, #SSI_CTRLR1_OFFSET]
-
   // Re-enable SSI
   mov r1, #1
   str r1, [r3, #SSI_SSIENR_OFFSET]
 
-  // reconfigure SSI to add command after the address
+  // send performance enhancing mode dummy read to MX25L3233F
   movs r1, #CMD_READ
-  str r1, [r3, #SSI_DR0_OFFSET]   // Push SPI command into TX FIFO
-  movs r1, #MODE_CONTINUOUS_READ   // 32-bit: 24 address bits (we don't care, so 0) and M[7:4]=1010
-  str r1, [r3, #SSI_DR0_OFFSET]   // Push Address into TX FIFO - this will trigger the transaction
-
+  str r1, [r3, #SSI_DR0_OFFSET]
+  movs r1, #MODE_CONTINUOUS_READ // this will be appended to address bits
+  str r1, [r3, #SSI_DR0_OFFSET]
   bl wait_ssi_ready
 
   // configure SSI into XIP mode
   // Disable SSI to allow further config
   mov r1, #0
   str r1, [r3, #SSI_SSIENR_OFFSET]
-
+  // configure XIP mode
   ldr r1, =(SPI_CTRLR0_XIP)
   ldr r0, =(XIP_SSI_BASE + SSI_SPI_CTRLR0_OFFSET)
   str r1, [r0]
-
   // Re-enable SSI
   mov r1, #1
   str r1, [r3, #SSI_SSIENR_OFFSET]
 
-  // flash is now mapped into memory space, we can now run from it
+  // flash is now mapped into memory space, we can now read and run
 
   // setup ISR vector table to correct position in VTOR of the PPB
   ldr r0, =(XIP_BASE + 0x100)

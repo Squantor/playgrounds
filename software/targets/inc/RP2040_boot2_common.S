@@ -12,29 +12,6 @@
 #ifndef RP2040_BOOT2_COMMON_S
 #define RP2040_BOOT2_COMMON_S
 
-/** @brief TODO good description
- *  inputs: r3: SSI base register,r0: command byte to send
- *  outputs: r0, command response
- *  clobbers: none
- *
- */
-.type flash_transceive,%function
-.thumb_func
-flash_transceive:
-    push {r1, lr}
-    // command byte
-    str r0, [r3, #SSI_DR0_OFFSET]
-    // Dummy byte:
-    str r0, [r3, #SSI_DR0_OFFSET]
-    
-    bl wait_ssi_ready
-    // Discard first byte
-    ldr r0, [r3, #SSI_DR0_OFFSET]
-    // read response
-    ldr r0, [r3, #SSI_DR0_OFFSET]
-
-    pop {r1, pc}
-
 /** @brief wait until SSI is ready
  *  inputs: r3: SSI base register
  *  clobbers: none
@@ -44,7 +21,7 @@ flash_transceive:
 .thumb_func
 wait_ssi_ready:
     push {r0, r1, lr}
-    
+
     // repeat until TFE and BUSY are not set
 wait_again:
     ldr r1, [r3, #SSI_SR_OFFSET]
