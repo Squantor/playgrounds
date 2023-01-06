@@ -11,7 +11,7 @@
 include targets/TC_local.mak
 
 #needed files for this target
-FILES += targets/src/PC_bare_startup.s targets/src/PC_bare_exit.c targets/src/PC_bare_start.c
+FILES += targets/src/PC_bare_startup.S targets/src/PC_bare_exit.c targets/src/PC_bare_start.c
 INCLUDES += -Itargets/inc
 
 # valid configurations like debug, release test, etcetera
@@ -29,7 +29,7 @@ LDFLAGS += -static -nostdlib -z norelro -nolibc
 LDSCRIPT :=
 DEFINES_release += -DNDEBUG
 DEFINES_debug += -DDEBUG
-DEFINES +=
+DEFINES += $($(PROJECT)_DEFINES)
 FILES_debug := 
 FILES_rekease := 
 TARGET_LIBRARIES := -lgcc
