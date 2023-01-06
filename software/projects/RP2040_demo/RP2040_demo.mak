@@ -9,7 +9,7 @@ PROJ_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
 # project settings
 NAME := RP2040_demo
-BOARD := generic_board
+BOARD := nuclone_RP2040
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := RP2040
 $(NAME)_FLASH := MX25L3233F

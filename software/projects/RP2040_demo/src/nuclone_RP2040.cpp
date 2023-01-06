@@ -1,14 +1,20 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2021 Bart Bilos
+ * Copyright (c) 2023 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
-#include <generic_board.hpp>
+/**
+ * @brief RP2040 demonstration init
+ *
+ */
+#include <nuclone_RP2040.hpp>
 
 void boardInit(void) {
   // reset all setup peripherals
-  resetsReset(RESETS_IO_BANK0_MASK | RESETS_PADS_BANK0_MASK | RESETS_PLL_SYS_MASK | RESETS_PLL_USB_MASK, 0x1000000);
+  resetsReset(RESETS_IO_BANK0_MASK | RESETS_PADS_BANK0_MASK | RESETS_PLL_SYS_MASK | RESETS_PLL_USB_MASK | RESETS_UART0_MASK |
+                RESETS_UART1_MASK,
+              0x1000000);
   // clear resusitator status
   CLOCKS_SET->CLK_SYS_RESUS_CTRL = CLOCKS_SYS_RESUS_CTRL_CLEAR;
   // 47 ticks is around 1 ms @ 12 MHz
@@ -41,9 +47,14 @@ void boardInit(void) {
   WATCHDOG->TICK = ((F_REF / F_TICK) << WATCHDOG_TICK_CYCLES_Pos) | WATCHDOG_TICK_ENABLE_Msk;
   */
 
+  // setup UART
+
   // setup LED pin
   sioGpioOeSet(SIO, LED_MASK);
   iobank0GpioCtrl(IO_BANK0, LED_PIN, BANK0_GPIO25_FUNC_SIO, 0);
+  // Setup UART 0 pins
+  iobank0GpioCtrl(IO_BANK0, UART_RX_PIN, BANK0_GPIO0_FUNC_UART0_TX, 0);
+  iobank0GpioCtrl(IO_BANK0, UART_TX_PIN, BANK0_GPIO1_FUNC_UART0_RX, 0);
 
   //  setup systick
   SysTick_Config(FREQ_CPU / TICKS_PER_S);

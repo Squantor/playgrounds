@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2021 Bart Bilos
+ * Copyright (c) 2023 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
 /*
@@ -9,7 +9,7 @@
  * can be compiled and run on any Cortex-M MCU. However, to see
  * its effect, you'll need to use debugger.
  */
-#include <generic_board.hpp>
+#include <nuclone_RP2040.hpp>
 
 volatile unsigned int systicks = 0;
 

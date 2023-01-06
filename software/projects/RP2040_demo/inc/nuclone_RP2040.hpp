@@ -1,11 +1,11 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2021 Bart Bilos
+ * Copyright (c) 2023 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
-#ifndef GENERIC_BOARD_HPP
-#define GENERIC_BOARD_HPP
+#ifndef NUCLONE_RP2040_HPP
+#define NUCLONE_RP2040_HPP
 
 #define FREQ_XTAL (12000000u)       /**< Crystal oscillator frequncy */
 #define FREQ_CPU (125000000u)       /**< CPU frequency */
@@ -24,5 +24,10 @@ void boardInit(void);
 #define LED_MASK BANK0_GPIO25_MASK
 #define CLOCK_PIN BANK0_GPIO21
 #define CLOCK_MASK BANK0_GPIO21_MASK
+
+#define UART_TX_PIN BANK0_GPIO0
+#define UART_TX_MASK BANK0_GPIO0_MASK
+#define UART_RX_PIN BANK0_GPIO1
+#define UART_RX_MASK BANK0_GPIO1_MASK
 
 #endif
