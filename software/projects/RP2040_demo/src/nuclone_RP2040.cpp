@@ -46,8 +46,9 @@ void boardInit(void) {
   // Configure 1 us tick for watchdog and timer
   WATCHDOG->TICK = ((F_REF / F_TICK) << WATCHDOG_TICK_CYCLES_Pos) | WATCHDOG_TICK_ENABLE_Msk;
   */
-
+  __NOP();
   // setup UART
+  uint32_t actualbaud = uartSetBaudRate(UART0, 115200);
 
   // setup LED pin
   sioGpioOeSet(SIO, LED_MASK);
