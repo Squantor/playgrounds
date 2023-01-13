@@ -50,6 +50,7 @@ void boardInit(void) {
   // setup UART
   uartSetBaudRate(UART0, 115200);
   uartSetFormat(UART0, UART_8DATA_BITS, UART_1STOP_BIT, UART_PARITY_NONE);
+  uartEnable(UART0);
 
   // setup LED pin
   sioGpioOeSet(SIO, LED_MASK);
