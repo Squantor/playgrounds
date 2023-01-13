@@ -48,7 +48,8 @@ void boardInit(void) {
   */
   __NOP();
   // setup UART
-  uint32_t actualbaud = uartSetBaudRate(UART0, 115200);
+  uartSetBaudRate(UART0, 115200);
+  uartSetFormat(UART0, UART_8DATA_BITS, UART_1STOP_BIT, UART_PARITY_NONE);
 
   // setup LED pin
   sioGpioOeSet(SIO, LED_MASK);
