@@ -11,7 +11,7 @@
  */
 #include <nuclone_RP2040.hpp>
 
-volatile unsigned int systicks = 0;
+volatile uint32_t systicks = 0;
 
 extern "C" {
 void SysTick_Handler(void) {
@@ -31,9 +31,19 @@ __attribute__((noinline, section(".ramfunc"))) void delay_cycles(uint32_t cycles
 }
 
 int main() {
+  static uint32_t currTicks = 0;
   boardInit();
   while (1) {
     delay_cycles(10);
     __NOP();
+    if (currTicks != systicks) {
+      uint8_t dataWrite = (uint8_t)(currTicks & 0xFF);
+      uartWriteBlocking(UART0, &dataWrite, sizeof(dataWrite));
+      uint8_t dataRead = 0;
+      uartReadBlocking(UART0, &dataRead, sizeof(dataRead));
+      if (dataRead != dataWrite)
+        __BKPT(1);
+      currTicks = systicks;
+    }
   }
 }
