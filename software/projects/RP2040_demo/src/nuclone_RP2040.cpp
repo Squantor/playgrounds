@@ -46,7 +46,6 @@ void boardInit(void) {
   // Configure 1 us tick for watchdog and timer
   WATCHDOG->TICK = ((F_REF / F_TICK) << WATCHDOG_TICK_CYCLES_Pos) | WATCHDOG_TICK_ENABLE_Msk;
   */
-  __NOP();
   // setup UART
   uartSetBaudRate(UART0, 115200);
   uartSetFormat(UART0, UART_8DATA_BITS, UART_1STOP_BIT, UART_PARITY_NONE);
@@ -61,4 +60,5 @@ void boardInit(void) {
 
   //  setup systick
   SysTick_Config(FREQ_CPU / TICKS_PER_S);
+  __enable_irq();
 }

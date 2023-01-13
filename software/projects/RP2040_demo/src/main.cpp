@@ -42,7 +42,7 @@ int main() {
       uint8_t dataRead = 0;
       uartReadBlocking(UART0, &dataRead, sizeof(dataRead));
       if (dataRead != dataWrite)
-        __BKPT(1);
+        __NOP();
       currTicks = systicks;
     }
   }
