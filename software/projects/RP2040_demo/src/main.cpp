@@ -16,7 +16,6 @@ volatile uint32_t systicks = 0;
 extern "C" {
 void SysTick_Handler(void) {
   systicks = systicks + 1;
-  sioGpioOutXor(SIO, LED_MASK);
 }
 }
 
@@ -43,6 +42,7 @@ int main() {
       uartReadBlocking(UART0, &dataRead, sizeof(dataRead));
       if (dataRead != dataWrite)
         __NOP();
+      sioGpioOutXor(SIO, LED_MASK);
       currTicks = systicks;
     }
   }
