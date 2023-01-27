@@ -22,13 +22,13 @@ void boardInit(void) {
 
   // Setup PLL's
   // atadarov config: 12MHz * 40 / 4 / 1 = 120MHz
-  // timeout = pllStart(PLL_SYS, 1, 40, 4, 1, 0x1000000);
+  pllStart(PLL_SYS, 1, 40, 4, 1, 0x1000000);
   // SDK config: 12MHz * 125 / 6 / 2 = 125MHz
-  pllStart(PLL_SYS, 1, 125, 6, 2, 0x1000000);
+  // pllStart(PLL_SYS, 1, 125, 6, 2, 0x1000000);
   // atadarov config: 12 MHz * 36 / 3 / 3 = 48MHz
-  // pllStart(PLL_USB, 1, 36, 3, 3, 0x1000000);
+  pllStart(PLL_USB, 1, 36, 3, 3, 0x1000000);
   // SDK config: 12MHz * 100 / 5 / 5 = 48MHz
-  pllStart(PLL_USB, 1, 100, 5, 5, 0x1000000);
+  // pllStart(PLL_USB, 1, 100, 5, 5, 0x1000000);
 
   // Setup clocks
   clocksSwitchGlitchlessSrc(CLK_REF, REF_SRC_XOSC, 0x1000000);

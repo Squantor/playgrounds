@@ -8,7 +8,7 @@
 #define NUCLONE_RP2040_HPP
 
 #define FREQ_XTAL (12000000u)      /**< Crystal oscillator frequncy */
-#define FREQ_CPU (125000000u)      /**< CPU frequency */
+#define FREQ_CPU (120000000u)      /**< CPU frequency */
 #define FREQ_USB (48000000u)       /**< USB frequency */
 #define FREQ_ADC (48000000u)       /**< ADC frequency */
 #define FREQ_RTC (FREQ_XTAL / 256) /**< RTC frequency */
