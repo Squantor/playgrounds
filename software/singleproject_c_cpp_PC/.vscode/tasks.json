@@ -13,14 +13,14 @@
     {
       "label": "build PC example debug configuration",
       "type": "shell",
-      "command": "bear -- make config=debug -j24",
+      "command": "bear -- make CONFIG=debug -j24",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build PC example release configuration",
       "type": "shell",
-      "command": "bear -- make config=release -j24",
+      "command": "bear -- make CONFIG=release -j24",
       "group": "build",
       "problemMatcher": "$gcc"
     },
