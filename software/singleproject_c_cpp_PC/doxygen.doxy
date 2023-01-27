@@ -1,0 +1,5 @@
+# doxygen settings to override from the default config
+PROJECT_NAME = "PC template"
+OUTPUT_DIRECTORY = doxyOutput
+INCLUDE_PATH = inc
+INPUT = src inc
