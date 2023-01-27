@@ -150,7 +150,7 @@ endif
 
 doc: $(DOCDEPS)
 > $(C)$(MKDIR) -p $(DOC_PATH)
-> $(C)( cat doxygen/Doxyfile ; echo "@INCLUDE = doxygen.doxy" ) | doxygen -
+> $(C)doxygen doxygen.doxy
 .PHONY: doc
 
 $(EXECUTABLE): $(OBJECTS)

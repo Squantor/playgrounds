@@ -1,3 +1,8 @@
+/**
+ * @file test.c
+ * @brief test C file
+ * 
+ */
 /*
 SPDX-License-Identifier: MIT
 
@@ -8,6 +13,11 @@ For conditions of distribution and use, see LICENSE file
 #include <stdio.h>
 #include <test.h>
 
+/**
+ * @brief 
+ * 
+ * @return int 
+ */
 int testfunc(void)
 {
     printf("Test function from %s %d\n", __FILE__, __LINE__);
