@@ -1,5 +1,5 @@
-# software playground
-Various tryouts
+# multi project software playgrounds
+Various tryouts in a multiproject build system
 ## Project list
 Here is a list of the various projects that I feel are worth documenting.
 ## Building
