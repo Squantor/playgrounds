@@ -11,8 +11,8 @@
  */
 #include <nuclone_RP2040.hpp>
 
-uint8_t helloString[] = "Hello World\n";
 volatile uint32_t systicks = 0;
+const uint8_t helloString[] = "Hello World\n";
 
 extern "C" {
 void SysTick_Handler(void) {
@@ -41,6 +41,7 @@ int main() {
       if (0 == uartIsRxAvailable(UART0)) {
         uint8_t dataRead = 0;
         uartReadBlocking(UART0, &dataRead, sizeof(dataRead));
+        dataRead++;
         uartWriteBlocking(UART0, &dataRead, sizeof(dataRead));
       }
       sioGpioOutXor(SIO, LED_MASK);
