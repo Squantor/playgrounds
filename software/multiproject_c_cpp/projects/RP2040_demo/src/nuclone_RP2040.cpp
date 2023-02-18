@@ -13,7 +13,7 @@
 void boardInit(void) {
   // reset all setup peripherals
   resetsReset(RESETS_IO_BANK0_MASK | RESETS_PADS_BANK0_MASK | RESETS_PLL_SYS_MASK | RESETS_PLL_USB_MASK | RESETS_UART0_MASK |
-                RESETS_UART1_MASK | RESETS_SPI0_MASK | RESETS_PIO1_MASK,
+                RESETS_UART1_MASK | RESETS_SPI0_MASK | RESETS_PIO1_MASK | RESETS_I2C0_MASK,
               0x1000000);
   // clear resusitator status
   CLOCKS_SET->CLK_SYS_RESUS_CTRL = CLOCKS_SYS_RESUS_CTRL_CLEAR;
