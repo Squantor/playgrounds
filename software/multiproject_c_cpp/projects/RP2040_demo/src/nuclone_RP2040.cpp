@@ -46,6 +46,8 @@ void boardInit(void) {
   // Configure 1 us tick for watchdog and timer
   WATCHDOG->TICK = ((F_REF / F_TICK) << WATCHDOG_TICK_CYCLES_Pos) | WATCHDOG_TICK_ENABLE_Msk;
   */
+  // setup I2C
+  i2cSetupMaster(I2C0, IC_CON_SPEED_FASTMODE, 400000);
   // setup UART
   uartSetBaudRate(UART0, 115200);
   uartSetFormat(UART0, UART_8DATA_BITS, UART_1STOP_BIT, UART_PARITY_NONE);
@@ -65,6 +67,9 @@ void boardInit(void) {
   iobank0GpioCtrl(IO_BANK0, SPI_MOSI_PIN, BANK0_GPIO3_FUNC_SPI0_TX, 0);
   iobank0GpioCtrl(IO_BANK0, SPI_MISO_PIN, BANK0_GPIO4_FUNC_SPI0_RX, 0);
   iobank0GpioCtrl(IO_BANK0, SPI_CS_PIN, BANK0_GPIO5_FUNC_SPI0_CS, 0);
+  // Setup I2C 0 pins
+  iobank0GpioCtrl(IO_BANK0, I2C_SCL_PIN, BANK0_GPIO9_FUNC_I2C0_SCL, 0);
+  iobank0GpioCtrl(IO_BANK0, I2C_SDA_PIN, BANK0_GPIO8_FUNC_I2C0_SDA, 0);
 
   //  setup systick
   SysTick_Config(FREQ_CPU / TICKS_PER_S);
