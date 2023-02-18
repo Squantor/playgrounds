@@ -33,21 +33,10 @@ __attribute__((noinline, section(".ramfunc"))) void delay_cycles(uint32_t cycles
 int main() {
   static uint32_t currTicks = 0;
   boardInit();
-  uartWriteBlocking(UART0, helloString, sizeof(helloString));
   while (1) {
     delay_cycles(10);
     __NOP();
     if (currTicks != systicks) {
-      if (0 == uartIsRxAvailable(UART0)) {
-        uint8_t dataRead = 0;
-        uint16_t spiDataOut = 0, spiDataIn;
-        uartReadBlocking(UART0, &dataRead, sizeof(dataRead));
-        dataRead++;
-        uartWriteBlocking(UART0, &dataRead, sizeof(dataRead));
-        spiDataIn = dataRead + currTicks;
-        spiTranceiveBits(SPI0, &spiDataIn, &spiDataOut, 1, 16);
-        __NOP();
-      }
       sioGpioOutXor(SIO, LED_MASK);
       currTicks = systicks;
     }

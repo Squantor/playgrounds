@@ -17,3 +17,5 @@ include $(BASE_DIR)/projects/LPC845M301HI48_sharp_lcd/LPC845M301HI48_sharp_lcd.m
 include $(BASE_DIR)/projects/systick_template_c/systick_template_c.mak
 include $(BASE_DIR)/projects/systick_template_cpp/systick_template_cpp.mak
 include $(BASE_DIR)/projects/RP2040_demo/RP2040_demo.mak
+include $(BASE_DIR)/projects/RP2040_flash_bringup/RP2040_flash_bringup.mak
+include $(BASE_DIR)/projects/RP2040_oled_display/RP2040_oled_display.mak

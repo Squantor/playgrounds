@@ -19,7 +19,9 @@
       "preRestartCommands": [],
       "preLaunchTask": "build debug E-ink display example",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
-      "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"],
+      "debuggerArgs": [
+        "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"
+      ],
     },
     {
       "name": "run sharp LCD example debug",
@@ -34,18 +36,18 @@
       "runToMain": true,
       "preLaunchCommands": [],
       "preRestartCommands": [
-          "set print pretty on",
-          "set architecture armv6",
-          "file bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",
-          //"monitor tpwr enable",
-          //"shell sleep 1",
-          "monitor swdp_scan",
-          "attach 1",
-          "set mem inaccessible-by-default off",
-          "set {int}0x40048000 = 2",
-          "load bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",
-          "set {int}0x40048000 = 2",
-          "compare-sections",
+        "set print pretty on",
+        "set architecture armv6",
+        "file bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",
+        //"monitor tpwr enable",
+        //"shell sleep 1",
+        "monitor swdp_scan",
+        "attach 1",
+        "set mem inaccessible-by-default off",
+        "set {int}0x40048000 = 2",
+        "load bin/LPC845M301HI48_sharp_lcd/debug/LPC845M301HI48_sharp_lcd.elf",
+        "set {int}0x40048000 = 2",
+        "compare-sections",
       ],
       "preLaunchTask": "sharp LCD example",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC845.svd"
@@ -65,7 +67,9 @@
       "preRestartCommands": [],
       "preLaunchTask": "build debug LPC812M101DH20 pwm modulator",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
-      "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_pwm_modulator.txt"],
+      "debuggerArgs": [
+        "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_pwm_modulator.txt"
+      ],
     },
     {
       "name": "debug oled display demo",
@@ -82,7 +86,9 @@
       "preRestartCommands": [],
       "preLaunchTask": "build debug OLED display example",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
-      "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"],
+      "debuggerArgs": [
+        "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"
+      ],
     },
     {
       "name": "debug Cortex M0 routines",
@@ -99,7 +105,9 @@
       "preRestartCommands": [],
       "preLaunchTask": "build CortexM0 test routines",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
-      "debuggerArgs": ["--command=./${workspaceFolder}/gdb_scripts/cortexM0_routines.txt"],
+      "debuggerArgs": [
+        "--command=./${workspaceFolder}/gdb_scripts/cortexM0_routines.txt"
+      ],
     },
     {
       "name": "Debug C systick template",
@@ -114,7 +122,10 @@
       "BMPGDBSerialPort": "/dev/ttyACM0",
       "runToEntryPoint": "main",
       "preLaunchCommands": [],
-      "postLaunchCommands": ["set {int}0x40048000 = 2","compare-sections"],
+      "postLaunchCommands": [
+        "set {int}0x40048000 = 2",
+        "compare-sections"
+      ],
       "preRestartCommands": [],
       "preLaunchTask": "build C systick demo",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
@@ -132,13 +143,16 @@
       "BMPGDBSerialPort": "/dev/ttyACM0",
       "runToEntryPoint": "main",
       "preLaunchCommands": [],
-      "postLaunchCommands": ["set {int}0x40048000 = 2","compare-sections"],
+      "postLaunchCommands": [
+        "set {int}0x40048000 = 2",
+        "compare-sections"
+      ],
       "preRestartCommands": [],
       "preLaunchTask": "build C++ systick demo",
       "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
     },
     {
-      "name": "debug debug RP2040",
+      "name": "debug debug RP2040 demo",
       "cwd": "${workspaceRoot}",
       "executable": "${workspaceFolder}/bin/RP2040_demo/debug/RP2040_demo.elf",
       "request": "launch",
@@ -157,6 +171,29 @@
         "load bin/RP2040_demo/debug/RP2040_demo.elf",
       ],
       "preLaunchTask": "build debug RP2040 demo project",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
+      "debuggerArgs": [],
+    },
+    {
+      "name": "debug debug RP2040 flash bringup",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/bin/RP2040_flash_bringup/debug/RP2040_flash_bringup.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "RP2040",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      //"runToEntryPoint": "main",
+      "overrideLaunchCommands": [],
+      "preLaunchCommands": [
+        "load bin/RP2040_flash_bringup/debug/RP2040_flash_bringup.elf",
+        "compare-sections",
+      ],
+      "preRestartCommands": [
+        "load bin/RP2040_flash_bringup/debug/RP2040_flash_bringup.elf",
+      ],
+      "preLaunchTask": "build debug RP2040 flash bringup",
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
       "debuggerArgs": [],
     },
