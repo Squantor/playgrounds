@@ -80,5 +80,19 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build debug RP2040 oled display",
+      "type": "shell",
+      "command": "bear -- make PROJECT=RP2040_oled_demo CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build debug RP2040 flash bringup",
+      "type": "shell",
+      "command": "bear -- make PROJECT=RP2040_flash_bringup CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
