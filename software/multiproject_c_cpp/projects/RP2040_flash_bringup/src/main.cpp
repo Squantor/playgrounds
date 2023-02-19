@@ -10,9 +10,13 @@
  * its effect, you'll need to use debugger.
  */
 #include <nuclone_RP2040.hpp>
+#include <array>
+#include <utility>
+#include <cstddef>
+
+constexpr size_t patternSize = 65536;
 
 volatile uint32_t systicks = 0;
-const uint8_t helloString[] = "Hello World\n";
 
 extern "C" {
 void SysTick_Handler(void) {
@@ -30,6 +34,24 @@ __attribute__((noinline, section(".ramfunc"))) void delay_cycles(uint32_t cycles
     : [cycles] "+l"(cycles));
 }
 
+template <std::size_t Length, typename Generator>
+constexpr auto lut(Generator&& f) {
+  using content_type = decltype(f(std::size_t{0}));
+  std::array<content_type, Length> arr{};
+  for (std::size_t i = 0; i < Length; i++) {
+    arr[i] = f(i);
+  }
+  return arr;
+}
+
+template <std::size_t Length>
+inline constexpr auto patternTable = lut<Length>([](std::size_t n) {
+  unsigned result = n;
+  return result;
+});
+
+constinit const auto memoryTestTable = patternTable<patternSize>;
+
 int main() {
   static uint32_t currTicks = 0;
   boardInit();
@@ -37,7 +59,13 @@ int main() {
     delay_cycles(10);
     __NOP();
     if (currTicks != systicks) {
-      sioGpioOutXor(SIO, LED_MASK);
+      bool correct = true;
+      for (size_t i = 0; i < patternSize; i++) {
+        if (memoryTestTable[i] != i)
+          correct = false;
+      }
+      if (correct != false)
+        sioGpioOutXor(SIO, LED_MASK);
       currTicks = systicks;
     }
   }
