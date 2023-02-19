@@ -14,7 +14,7 @@
 #include <utility>
 #include <cstddef>
 
-constexpr size_t patternSize = 65536;
+constexpr size_t patternSize = 4096;
 
 volatile uint32_t systicks = 0;
 
@@ -61,11 +61,15 @@ int main() {
     if (currTicks != systicks) {
       bool correct = true;
       for (size_t i = 0; i < patternSize; i++) {
-        if (memoryTestTable[i] != i)
+        if (memoryTestTable[i] != i) {
           correct = false;
+          __NOP();
+        }
       }
-      if (correct != false)
+      if (correct != false) {
         sioGpioOutXor(SIO, LED_MASK);
+        __NOP();
+      }
       currTicks = systicks;
     }
   }
