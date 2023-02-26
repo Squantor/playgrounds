@@ -1,10 +1,14 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2021 Bart Bilos
+ * Copyright (c) 2023 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
-
+/**
+ * \brief general purpose peripheral tests
+ *
+ * Simple template based abstraction test
+ */
 #include <array>
 #include <cstdio>
 #include <cstdint>
@@ -41,7 +45,7 @@ peripheral<10> hardware0;
 peripheralGeneric<hardware0> peripheral0;
 deviceGeneric<peripheral0> device0;
 
-MINUNIT_ADD(testAtomicUint16, NULL, NULL) {
+MINUNIT_ADD(testGenericPeripheral, NULL, NULL) {
   uint32_t value = device0.doSomething(10);
   minUnitCheck(18u == value);
 }
