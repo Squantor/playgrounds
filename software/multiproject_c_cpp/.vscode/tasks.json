@@ -94,5 +94,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build C++ peripheral abstraction test",
+      "type": "shell",
+      "command": "bear -- make PROJECT=peripheral_abstraction CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }

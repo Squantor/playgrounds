@@ -5,6 +5,31 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "debug C++ peripheral abstraction test",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/peripheral_abstraction/debug/peripheral_abstraction.elf",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build C++ peripheral abstraction test",
+    },
+    {
       "name": "debug e-ink display demo",
       "cwd": "${workspaceRoot}",
       "executable": "${workspaceFolder}/bin/LPC812M101DH20_e-ink_display/debug/LPC812M101DH20_e-ink_display.elf",
