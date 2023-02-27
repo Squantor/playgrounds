@@ -14,57 +14,44 @@
 #include <cstdint>
 #include <MinUnit.h>
 
-template <size_t N>
-struct peripheralSpi {
-  std::array<uint16_t, N> transactionsTransmit;
-  std::array<uint16_t, N> transactionsReceive;
-};
-
-enum spiOperations {
-  CONT_TRANSCIEVE = 1,
-  CONT_TRANSMIT = 2,
-  CONT_RECEIVE = 3,
-  END_TRANSCEIVE = 4,
-  END_TRANSMIT = 5,
-  END_RECEIVE = 6,
-};
-
-enum spiChipEnables {
+enum class spiChipEnables : uint16_t {
   SPI_DEV_0 = 1,
   SPI_DEV_1 = 2,
   SPI_DEV_2 = 3,
   SPI_DEV_3 = 4,
 };
 
-template <auto &P>
+template <size_t N>
+struct peripheralSpi {
+  std::array<uint16_t, N> transactionsTransmit;
+  std::array<uint16_t, N> transactionsReceive;
+  // Method to add a receive transaction
+  // Method that returns transmit transactions
+  // Method that returns receive transactions
+};
+
+template <auto& P>
 class GenericSpi {
  public:
   GenericSpi() : transmitIndex{0}, receiveIndex{9} {}
-  /**
-   * @brief SPI transaction
-   *
-   * @param operation   SPI transaction to execute
-   * @param device      SPI device
-   * @param data        uint16_t buffer
-   * @param bitCount    amount of bits to transfer, max of 8KiB
-   */
-  void transaction(spiOperations operation, spiChipEnables device, uint16_t *data, uint16_t bitCount) {
-    uint16_t currentTransaction = device << 8 | operation;
-    switch (operation) {
-      case spiOperations::CONT_TRANSCIEVE:
-        
-        break;
-      case spiOperations::CONT_TRANSMIT:
-        break;
-      case spiOperations::CONT_RECEIVE:
-        break;
-      case spiOperations::END_TRANSCEIVE:
-        break;
-      case spiOperations::END_TRANSMIT:
-        break;
-      case spiOperations::END_RECEIVE:
-        break;
-    }
+  void transmit(spiChipEnables device, const uint16_t* transmitBuffer, uint16_t bitcount, bool lastAction) {
+    // Put transaction data into transactionsTransmit
+    // compute index count
+    // put bit data in transactionsTransmit
+  }
+  void receive(spiChipEnables device, uint16_t* receiveBuffer, uint16_t bitcount, bool lastAction) {
+    // assert if we have no data for this device, should be filled in the transactionsReceive
+    // Put transaction data into transactionsReceive
+    // compute index count
+    // copy data in receive buffer
+  }
+  void transceive(spiChipEnables device, const uint16_t* transmitBuffer, uint16_t* receiveBuffer, uint16_t bitcount,
+                  bool lastAction) {
+    // assert if we have no data for this device, should be filled in the transactionsReceive
+    // Put transaction data into transactionsReceive
+    // compute index count for transmit and receive
+    // copy data from transactionsReceive in receive buffer
+    // put transmit buffer data in transactionsTransmit
   }
 
  private:
