@@ -11,5 +11,5 @@
 #include <sim_hw.hpp>
 
 namespace board {
-sim_hw::spiPeripheral testSpi0;
+sim_hw::spiPeripheral<1000> testSpi0;
 }

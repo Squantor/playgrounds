@@ -23,6 +23,7 @@ enum class spiChipEnables : uint16_t {
 };
 }  // namespace spi
 
+template <size_t N>
 class spiPeripheral {
  public:
   spiPeripheral() : transmitIndex{0}, receiveIndex{0} {}
@@ -37,9 +38,13 @@ class spiPeripheral {
       data = 0;
   }
   void transmit(sim_hw::spi::spiChipEnables device, const uint16_t* transmitBuffer, uint16_t bitcount, bool lastAction) {
-    // Put transaction data into transactionsTransmit
-    // compute index count
-    // put bit data in transactionsTransmit
+    size_t dataElementCount = bitcount / 16 + 1;
+    txTransactions[transmitIndex++] = bitcount;
+    txTransactions[transmitIndex++] = static_cast<uint16_t>(device);
+    txTransactions[transmitIndex++] = static_cast<uint16_t>(lastAction);
+    for (size_t i = 0; i < dataElementCount; i++) {
+      txTransactions[transmitIndex++] = transmitBuffer[i];
+    }
   }
   void receive(sim_hw::spi::spiChipEnables device, uint16_t* receiveBuffer, uint16_t bitcount, bool lastAction) {
     // assert if we have no data for this device, should be filled in the transactionsReceive
@@ -58,18 +63,73 @@ class spiPeripheral {
   /**
    * @brief Return amount of transmit transactions
    *
-   * @return int
+   * @return size_t
    */
-  int txCount(void) {
+  int txTransactionCount(void) {
+    size_t index = txTransactionNext(0);
+    int transactionCount = 0;
     // iterate through transmit transactions
+    while (index != 0) {
+      transactionCount++;
+      index = txTransactionNext(index);
+      if (index == 0) {
+        break;
+      }
+    }
+    return transactionCount;
   }
-  // TODO get transaction X data count
-  // TODO get transaction X chip enable
+
+  // TODO get txTransaction X data count
+  uint16_t txTransactionGetBits(int transaction) {
+    size_t index = txTransactionToIndex(transaction);
+    return txTransactions[index];
+  }
+
+  // TODO get txTransaction X chip enable
+  uint16_t txTransactionGetChip(int transaction) {
+    size_t index = txTransactionToIndex(transaction);
+    return txTransactions[index + 1];
+  }
+  // TODO get
+  uint16_t txTransactionGetLast(int transaction) {
+    size_t index = txTransactionToIndex(transaction);
+    return txTransactions[index + 2];
+  }
   // TODO get transaction X data pointer
+  uint16_t* txTransactionGetData(int transaction) {
+    size_t index = txTransactionToIndex(transaction);
+    return &txTransactions[index + 3];
+  }
 
  private:
-  std::array<uint16_t, 100> txTransactions;
-  std::array<uint16_t, 100> rxTransactions;
+  size_t txTransactionToIndex(int transaction) {
+    size_t index = 0;
+    int transactionCount = 1;
+    // iterate through transmit transactions
+    while (transactionCount < transaction) {
+      index = txTransactionNext(index);
+      if (index == 0)
+        break;
+      transactionCount++;
+    }
+    return index;
+  }
+  /**
+   * @brief returns next transaction index
+   *
+   * @param index   input index
+   * @return size_t index of next transaction, 0 for end or invalid
+   */
+  size_t txTransactionNext(size_t index) {
+    if (txTransactions[index] == 0)
+      return 0;
+    size_t newIndex = index + (txTransactions[index] / 16) + 4;
+    if (newIndex > N)
+      return 0;
+    return newIndex;
+  }
+  std::array<uint16_t, N> txTransactions;
+  std::array<uint16_t, N> rxTransactions;
   size_t transmitIndex, receiveIndex;
 };
 

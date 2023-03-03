@@ -12,7 +12,7 @@
 #include <sim_hw.hpp>
 
 namespace board {
-extern sim_hw::spiPeripheral testSpi0;
+extern sim_hw::spiPeripheral<1000> testSpi0;
 }
 
 #endif
