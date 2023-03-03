@@ -79,29 +79,55 @@ class spiPeripheral {
     return transactionCount;
   }
 
-  // TODO get txTransaction X data count
+  /**
+   * @brief Get bit transfer count from transaction
+   *
+   * @param transaction transaction number,
+   * @return uint16_t   transferred bits in transaction
+   */
   uint16_t txTransactionGetBits(int transaction) {
     size_t index = txTransactionToIndex(transaction);
     return txTransactions[index];
   }
 
-  // TODO get txTransaction X chip enable
+  /**
+   * @brief get chip enable from transaction
+   *
+   * @param transaction transaction number
+   * @return uint16_t   chip enable from transaction
+   */
   uint16_t txTransactionGetChip(int transaction) {
     size_t index = txTransactionToIndex(transaction);
     return txTransactions[index + 1];
   }
-  // TODO get
+  /**
+   * @brief get last transmission indicator from transaction
+   *
+   * @param transaction transaction number
+   * @return uint16_t   get last transmission indicator, 0 for not, non zero for last
+   */
   uint16_t txTransactionGetLast(int transaction) {
     size_t index = txTransactionToIndex(transaction);
     return txTransactions[index + 2];
   }
-  // TODO get transaction X data pointer
+  /**
+   * @brief get data from transaction
+   *
+   * @param transaction transaction number
+   * @return uint16_t*  pointer to first bits in uint16_t array
+   */
   uint16_t* txTransactionGetData(int transaction) {
     size_t index = txTransactionToIndex(transaction);
     return &txTransactions[index + 3];
   }
 
  private:
+  /**
+   * @brief
+   *
+   * @param transaction
+   * @return size_t
+   */
   size_t txTransactionToIndex(int transaction) {
     size_t index = 0;
     int transactionCount = 1;
