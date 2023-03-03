@@ -13,6 +13,7 @@ For conditions of distribution and use, see LICENSE file
  */
 #include <cstdio>
 #include <MinUnit.h>
+#include <board.hpp>
 
 /** \brief overridden reporting function
  *

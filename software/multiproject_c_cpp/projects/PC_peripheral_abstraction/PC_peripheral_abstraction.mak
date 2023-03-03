@@ -13,6 +13,7 @@ $(NAME)_TARGET := PC
 $(NAME)_DEFINES := -DMINUNIT_MAX_TESTS=1000
 $(NAME)_LIBS := squantorMinUnit
 $(NAME)_FILES := $(PROJ_DIR)/src/main.cpp \
+$(PROJ_DIR)/src/board.cpp \
 $(PROJ_DIR)/src/test_peripheral.cpp \
 $(PROJ_DIR)/src/test_generic_spi.cpp
 $(NAME)_INCLUDES := -I$(PROJ_DIR)/inc
