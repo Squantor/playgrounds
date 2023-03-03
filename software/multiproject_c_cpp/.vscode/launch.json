@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/bin/peripheral_abstraction/debug/peripheral_abstraction.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
