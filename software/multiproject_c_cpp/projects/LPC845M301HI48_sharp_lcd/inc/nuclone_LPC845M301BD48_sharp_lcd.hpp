@@ -15,7 +15,7 @@
 #define CLOCK_AHB           (30000000u)
 #define CLOCK_MAIN          (60000000u)
 
-#include <mcu_ll.h>
+#include <mcu_ll.hpp>
 
 #define TICKS_PER_S         10
 
