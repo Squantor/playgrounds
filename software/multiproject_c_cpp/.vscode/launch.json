@@ -43,7 +43,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug E-ink display example",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"
       ],
@@ -75,7 +75,7 @@
         "compare-sections",
       ],
       "preLaunchTask": "sharp LCD example",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC845.svd"
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd"
     },
     {
       "name": "debug pwm modulator",
@@ -91,7 +91,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug LPC812M101DH20 pwm modulator",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_pwm_modulator.txt"
       ],
@@ -110,7 +110,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug OLED display example",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"
       ],
@@ -129,7 +129,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build CortexM0 test routines",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/cortexM0_routines.txt"
       ],
@@ -153,7 +153,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build C systick demo",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
     },
     {
       "name": "Debug C++ systick template",
@@ -174,7 +174,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build C++ systick demo",
-      "svdFile": "${workspaceFolder}/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
     },
     {
       "name": "debug debug RP2040 demo",
