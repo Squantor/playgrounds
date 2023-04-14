@@ -24,35 +24,6 @@ void SysTick_Handler(void) {
 }
 }
 
-void waitSpiTxComplete(void) {
-  while (!(spiSetGetStatus(SPI0, 0x0) & SPI_STAT_TXRDY))
-    ;
-}
-
-void lcdTransfer(uint16_t *begin, uint16_t *end) {
-  // transfer of 1
-  if (begin + 1 == end) {
-    waitSpiTxComplete();
-    spiSetTxCtrlData(SPI0, SPI_TXDATCTL_TXDAT(*begin) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_EOT |
-                             SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
-    return;
-  }
-  // transfer of N
-  else {
-    uint16_t *p = begin;
-    while (p < end) {
-      waitSpiTxComplete();
-      spiSetTxCtrlData(
-        SPI0, SPI_TXDATCTL_TXDAT(*p) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
-      p++;
-    }
-    // line or multiline transfers need to be terminated
-    waitSpiTxComplete();
-    spiSetTxCtrlData(SPI0, SPI_TXDATCTL_TXDAT(0x0000) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_EOT |
-                             SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
-  }
-}
-
 util::sharpMemLcd<util::LS027B7DH01> boardLcd;
 
 int main() {
@@ -67,8 +38,10 @@ int main() {
     if (currticks < systicks) {
       xPos++;
       yPos++;
-      if (xPos >= util::LS027B7DH01::maxX) xPos = 0;
-      if (yPos >= util::LS027B7DH01::maxY) yPos = 0;
+      if (xPos >= util::LS027B7DH01::maxX)
+        xPos = 0;
+      if (yPos >= util::LS027B7DH01::maxY)
+        yPos = 0;
       currticks = systicks;
       boardLcd.bitBlockTransfer(xPos, yPos, cat264x176bitmap, 264, 176, util::bitblitOperation::OP_NOT);
       boardLcd.flipVcom(lcdTransfer);

@@ -5,8 +5,10 @@
  * For conditions of distribution and use, see LICENSE file
  */
 #include <nuclone_LPC845M301BD48_sharp_lcd.hpp>
+#include <span>
+#include <array>
 
-LPC845M301BD48::instances::spi<LPC845M301BD48::peripherals::SPI0_cpp> spi0Peripheral;
+instances::spi::spi<peripherals::SPI0_cpp, instances::spi::spiChipEnables> spi0Peripheral;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -72,4 +74,41 @@ void boardInit(void) {
     ;
   spiSetTxCtrlData(SPI0, SPI_TXDATCTL_TXDAT(0x0000) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_EOT |
                            SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
+}
+
+/*
+static void waitSpiTxComplete(void) {
+  while (!(spiSetGetStatus(SPI0, 0x0) & SPI_STAT_TXRDY))
+    ;
+}
+
+void lcdTransfer(uint16_t *begin, uint16_t *end) {
+  // transfer of 1
+  if (begin + 1 == end) {
+    waitSpiTxComplete();
+    spiSetTxCtrlData(SPI0, SPI_TXDATCTL_TXDAT(*begin) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_EOT |
+                             SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
+    return;
+  }
+  // transfer of N
+  else {
+    uint16_t *p = begin;
+    while (p < end) {
+      waitSpiTxComplete();
+      spiSetTxCtrlData(
+        SPI0, SPI_TXDATCTL_TXDAT(*p) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
+      p++;
+    }
+    // line or multiline transfers need to be terminated
+    waitSpiTxComplete();
+    spiSetTxCtrlData(SPI0, SPI_TXDATCTL_TXDAT(0x0000) | SPI_TXDATCTL_TXSSEL0 | SPI_TXDATCTL_EOF | SPI_TXDATCTL_EOT |
+                             SPI_TXDATCTL_RXIGNORE | SPI_TXDATCTL_LEN(16));
+  }
+}
+*/
+
+void lcdTransfer(uint16_t *begin, uint16_t *end) {
+  spi0Peripheral.transmit(instances::spi::spiChipEnables::SSEL0, std::span{begin, end}, (end - begin) * 16, false);
+  std::array<uint16_t, 1> endTransmit;
+  spi0Peripheral.transmit(instances::spi::spiChipEnables::SSEL0, endTransmit, 16, true);
 }
