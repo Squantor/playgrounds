@@ -1,0 +1,67 @@
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2023 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ */
+/**
+ * \file LPC810 series IOCON register interface
+ */
+#ifndef LPC81X_IOCON_REGS_HPP
+#define LPC81X_IOCON_REGS_HPP
+
+namespace registers {
+namespace iocon {
+
+/**
+ * @brief
+ *
+ */
+enum modes : uint32_t {
+  INACTIVE = (0 << 3), /**< No pullup/down */
+  PULLDOWN = (1 << 3), /**< Pulldown enabled */
+  PULLUP = (2 << 3),   /**< Pullup enabled */
+  REPEATER = (3 << 3), /**< Repeater mode */
+};
+
+/**
+ * @brief
+ *
+ */
+enum filtering : uint32_t {
+  BYPASS = (0 << 11),  /**< Bypassed input filter */
+  CYCLES1 = (1 << 11), /**< 1 clock cycle pulses are filtered */
+  CYCLES2 = (2 << 11), /**< 2 clock cycle pulses are filtered */
+  CYCLES3 = (3 << 11), /**< 3 clock cycle pulses are filtered */
+};
+
+/**
+ * @brief Clock divider to use for filtering
+ *
+ */
+enum clock : uint32_t {
+  IOCONCLKDIV0 = (0 << 13), /**< use IOCONCLKDIV0 in SYSCON */
+  IOCONCLKDIV1 = (1 << 13), /**< use IOCONCLKDIV1 in SYSCON */
+  IOCONCLKDIV2 = (2 << 13), /**< use IOCONCLKDIV2 in SYSCON */
+  IOCONCLKDIV3 = (3 << 13), /**< use IOCONCLKDIV3 in SYSCON */
+  IOCONCLKDIV4 = (4 << 13), /**< use IOCONCLKDIV4 in SYSCON */
+  IOCONCLKDIV5 = (5 << 13), /**< use IOCONCLKDIV5 in SYSCON */
+  IOCONCLKDIV6 = (6 << 13), /**< use IOCONCLKDIV6 in SYSCON */
+};
+
+/**
+ * @brief IOCON register definitions
+ *
+ */
+struct registers {
+  uint32_t PIO[56]; /**< Pin control registers */
+};
+namespace PIO {
+constexpr inline uint32_t HYS = (1 << 5); /**< Hysteresis enable */
+constexpr inline uint32_t INV = (1 << 6); /**< Invert input enable */
+constexpr inline uint32_t OD = (1 << 10); /**< Open drain enable */
+}  // namespace PIO
+}  // namespace iocon
+}  // namespace registers
+
+#endif
