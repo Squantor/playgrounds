@@ -222,5 +222,24 @@
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
       "debuggerArgs": [],
     },
+    {
+      "name": "debug LPC812 C++ pin abstraction",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceFolder}/bin/LPC812_cpp_pin_abstraction/debug/LPC812_cpp_pin_abstraction.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "LPC812",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      "runToEntryPoint": "main",
+      "preLaunchCommands": [],
+      "preRestartCommands": [],
+      "preLaunchTask": "build LPC812 C++ pin abstraction",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "debuggerArgs": [
+        "--command=./${workspaceFolder}/gdb_scripts/LPC812_cpp_pin_abstraction_debug.txt"
+      ],
+    },
   ]
 }
