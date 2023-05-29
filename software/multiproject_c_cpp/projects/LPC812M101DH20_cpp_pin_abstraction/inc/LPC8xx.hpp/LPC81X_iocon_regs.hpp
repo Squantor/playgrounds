@@ -49,6 +49,12 @@ enum clock : uint32_t {
   IOCONCLKDIV6 = (6 << 13), /**< use IOCONCLKDIV6 in SYSCON */
 };
 
+enum i2cmode : uint32_t {
+  I2C_STD = (0 << 8),  /**< standard/fast I2C mode */
+  IO_STD = (1 << 8),   /**< standard I/O functionality */
+  I2C_FAST = (2 << 8), /**< fast mode plus I2C */
+};
+
 /**
  * @brief IOCON register definitions
  *

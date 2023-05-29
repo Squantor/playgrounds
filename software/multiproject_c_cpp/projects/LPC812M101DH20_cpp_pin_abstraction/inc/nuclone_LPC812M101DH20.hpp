@@ -16,8 +16,9 @@ For conditions of distribution and use, see LICENSE file
 #define CLOCK_MAIN (60000000u)
 
 #include <mcu_ll.h>
+#include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
 #include <LPC8xx.hpp/LPC81X_iocon_regs.hpp>
-#include <LPC8xx.hpp/LPC812M101DH20_iocon.hpp>
+#include <LPC8xx.hpp/LPC81X_iocon.hpp>
 
 #define TICKS_PER_S 10
 
