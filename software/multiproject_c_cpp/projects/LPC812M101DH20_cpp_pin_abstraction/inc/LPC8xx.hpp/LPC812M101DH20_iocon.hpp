@@ -15,7 +15,7 @@
 
 namespace instances {
 namespace iocon {
-enum class pins {
+enum pins {
   PIO0_00,
   PIO0_01,
   PIO0_02,
@@ -36,46 +36,40 @@ enum class pins {
   PIO0_17,
 };
 
-template <uint32_t base, pins p>
+template <pins p>
 struct pin {};
 
 // iocon pin specializations
 template <>
-struct pin<IOCON_BASE, pins::PIO0_00> {
-  static auto regs() {
-    return reinterpret_cast<registers::iocon::registers*>(IOCON_BASE);
-  }
-  void init(registers::iocon::modes mode) {
-    regs()->PIO[index] = mode;
-  }
-  static constexpr size_t index = 17;
+struct pin<pins::PIO0_00> {
+  static constexpr size_t ioconIndex = 17;
 };
 template <>
-struct pin<IOCON_BASE, pins::PIO0_01> {
-  static auto regs() {
-    return reinterpret_cast<registers::iocon::registers*>(IOCON_BASE);
-  }
-  void init(registers::iocon::modes mode) {
-    regs()->PIO[index] = mode;
-  }
-  static constexpr size_t index = 11;
+struct pin<pins::PIO0_01> {
+  static constexpr size_t ioconIndex = 11;
 };
 template <>
-struct pin<IOCON_BASE, pins::PIO0_02> {
-  static constexpr size_t index = 6;
+struct pin<pins::PIO0_02> {
+  static constexpr size_t ioconIndex = 6;
 };
 template <>
-struct pin<IOCON_BASE, pins::PIO0_03> {
-  static constexpr size_t index = 5;
+struct pin<pins::PIO0_03> {
+  static constexpr size_t ioconIndex = 5;
 };
 template <>
-struct pin<IOCON_BASE, pins::PIO0_04> {
-  static constexpr size_t index = 4;
+struct pin<pins::PIO0_04> {
+  static constexpr size_t ioconIndex = 4;
 };
 template <>
-struct pin<IOCON_BASE, pins::PIO0_05> {
-  static constexpr size_t index = 3;
+struct pin<pins::PIO0_05> {
+  static constexpr size_t ioconIndex = 3;
 };
+
+// specializations work in this case with structs and configuring them at compiletime
+// you just instantiate one setup struct and feed it at runtime to the iocon configurator
+// iocon is just a class that will setup a pin (from the specialization tree) with the proper settings
+// this iocon should be folded in some kind of pin properties,
+
 }  // namespace iocon
 }  // namespace instances
 

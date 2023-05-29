@@ -23,8 +23,8 @@ SOFTWARE.
 */
 #include <nuclone_LPC812M101DH20.hpp>
 
-instances::iocon::pin<IOCON_BASE, instances::iocon::pins::PIO0_00> test_0_0;
-instances::iocon::pin<IOCON_BASE, instances::iocon::pins::PIO0_01> test_0_1;
+instances::iocon::pin<instances::iocon::pins::PIO0_00> test_0_0;
+instances::iocon::pin<instances::iocon::pins::PIO0_01> test_0_1;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -60,9 +60,6 @@ void boardInit(void) {
     ;
   sysconMainClockDivider(SYSCON, 2);
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
-
-  test_0_0.init(registers::iocon::PULLUP);
-  test_0_1.init(registers::iocon::PULLUP);
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }
