@@ -23,8 +23,13 @@ SOFTWARE.
 */
 #include <nuclone_LPC812M101DH20.hpp>
 
-instances::iocon::pin<instances::iocon::pins::PIO0_00> test_0_0;
-instances::iocon::pin<instances::iocon::pins::PIO0_01> test_0_1;
+using namespace instances;
+using namespace peripherals;
+
+iocon::pin<IOports::PORT0, IOpins::PIN00> test_0_0;
+iocon::pin<IOports::PORT0, IOpins::PIN01> test_0_1;
+
+iocon::pin<testPin2Port, testPin2Pin> testPin2;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -42,7 +47,7 @@ void crudeDelay(uint32_t iterations) {
 void boardInit(void) {
   // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
-  // setup io pins
+  // setup io IOpins
   ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
   ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);

@@ -8,8 +8,6 @@
  * \file LPC812M101DH20 pin definitions
  */
 
-#include <cstddef>
-
 #ifndef LPC812M101DH20_PINS_HPP
 #define LPC812M101DH20_PINS_HPP
 
@@ -19,10 +17,13 @@ namespace iocon {
 /**
  * @brief base template
  *
- * @tparam p pin to specialize in configure
+ * @tparam T_PORT IO port
+ * @tparam T_PIN  IO pin
  */
-template <IOpins p>
-struct pin {};
+template <IOports T_PORT, IOpins T_PIN, bool DUMMY = false>
+struct pin {
+  static_assert(DUMMY, "This configuration is invalid!");
+};
 
 /**
  * @brief PIO0_00 specialisation
@@ -30,77 +31,77 @@ struct pin {};
  * @tparam
  */
 template <>
-struct pin<IOpins::PIO0_00> {
+struct pin<IOports::PORT0, IOpins::PIN00> {
   static constexpr uint8_t ioconIndex = 17;
 };
 template <>
-struct pin<IOpins::PIO0_01> {
+struct pin<IOports::PORT0, IOpins::PIN01> {
   static constexpr uint8_t ioconIndex = 11;
 };
 template <>
-struct pin<IOpins::PIO0_02> {
+struct pin<IOports::PORT0, IOpins::PIN02> {
   static constexpr uint8_t ioconIndex = 6;
 };
 template <>
-struct pin<IOpins::PIO0_03> {
+struct pin<IOports::PORT0, IOpins::PIN03> {
   static constexpr uint8_t ioconIndex = 5;
 };
 template <>
-struct pin<IOpins::PIO0_04> {
+struct pin<IOports::PORT0, IOpins::PIN04> {
   static constexpr uint8_t ioconIndex = 4;
 };
 template <>
-struct pin<IOpins::PIO0_05> {
+struct pin<IOports::PORT0, IOpins::PIN05> {
   static constexpr uint8_t ioconIndex = 3;
 };
 template <>
-struct pin<IOpins::PIO0_06> {
+struct pin<IOports::PORT0, IOpins::PIN06> {
   static constexpr uint8_t ioconIndex = 16;
 };
 template <>
-struct pin<IOpins::PIO0_07> {
+struct pin<IOports::PORT0, IOpins::PIN07> {
   static constexpr uint8_t ioconIndex = 15;
 };
 template <>
-struct pin<IOpins::PIO0_08> {
+struct pin<IOports::PORT0, IOpins::PIN08> {
   static constexpr uint8_t ioconIndex = 14;
 };
 template <>
-struct pin<IOpins::PIO0_09> {
+struct pin<IOports::PORT0, IOpins::PIN09> {
   static constexpr uint8_t ioconIndex = 13;
 };
 template <>
-struct pin<IOpins::PIO0_10> {
+struct pin<IOports::PORT0, IOpins::PIN10> {
   static constexpr uint8_t ioconIndex = 8;
   static constexpr uint8_t isI2Cpin = 1;
 };
 template <>
-struct pin<IOpins::PIO0_11> {
+struct pin<IOports::PORT0, IOpins::PIN11> {
   static constexpr uint8_t ioconIndex = 7;
   static constexpr uint8_t isI2Cpin = 1;
 };
 template <>
-struct pin<IOpins::PIO0_12> {
+struct pin<IOports::PORT0, IOpins::PIN12> {
   static constexpr uint8_t ioconIndex = 2;
 };
 template <>
-struct pin<IOpins::PIO0_13> {
+struct pin<IOports::PORT0, IOpins::PIN13> {
   static constexpr uint8_t ioconIndex = 1;
 };
 template <>
-struct pin<IOpins::PIO0_14> {
+struct pin<IOports::PORT0, IOpins::PIN14> {
   static constexpr uint8_t ioconIndex = 12;
 };
 template <>
-struct pin<IOpins::PIO0_15> {
+struct pin<IOports::PORT0, IOpins::PIN15> {
   static constexpr uint8_t ioconIndex = 10;
 };
 template <>
-struct pin<IOpins::PIO0_16> {
+struct pin<IOports::PORT0, IOpins::PIN16> {
   static constexpr uint8_t ioconIndex = 9;
 };
 template <>
-struct pin<IOpins::PIO0_17> {
+struct pin<IOports::PORT0, IOpins::PIN17> {
   static constexpr uint8_t ioconIndex = 0;
 };
 /* Braindump:

@@ -16,9 +16,7 @@ For conditions of distribution and use, see LICENSE file
 #define CLOCK_MAIN (60000000u)
 
 #include <mcu_ll.h>
-#include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
-#include <LPC8xx.hpp/LPC81X_iocon_regs.hpp>
-#include <LPC8xx.hpp/LPC81X_iocon.hpp>
+#include <LPC812M101DH20.hpp>
 
 #define TICKS_PER_S 10
 
@@ -54,11 +52,14 @@ For conditions of distribution and use, see LICENSE file
 #define PIN_I2C_SDA_TEST (4u)
 #define SWM_I2C_SDA_TEST (SWM_PORTPIN_P0_4)
 
-// loose test pins
+// loose test IOpins
 #define IOCON_TESTPIN_2 (IOCON_PIO0_7)
 #define PORT_TESTPIN_2 (GPIO_PORT0)
 #define PIN_TESTPIN_2 (7u)
 #define SWM_TESTPIN_2 (SWM_PORTPIN_P0_7)
+
+inline constexpr instances::IOpins testPin2Pin = instances::IOpins::PIN07;
+inline constexpr instances::IOports testPin2Port = instances::IOports::PORT0;
 
 void boardInit(void);
 
