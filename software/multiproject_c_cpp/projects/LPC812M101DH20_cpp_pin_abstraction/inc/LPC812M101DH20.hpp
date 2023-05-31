@@ -29,45 +29,8 @@ constexpr static inline uint32_t SPI0_cpp = 0x4005'8000u; /**< TODO, rename to t
 constexpr static inline uint32_t SPI1_cpp = 0x4005'C000u; /**< TODO, rename to their names when refactoring is done */
 }  // namespace peripherals
 
-namespace instances {
-
-/**
- * @brief Available pins on LPC812M101DH20
- *
- */
-enum IOpins : uint8_t {
-  PIN00,
-  PIN01,
-  PIN02,
-  PIN03,
-  PIN04,
-  PIN05,
-  PIN06,
-  PIN07,
-  PIN08,
-  PIN09,
-  PIN10,
-  PIN11,
-  PIN12,
-  PIN13,
-  PIN14,
-  PIN15,
-  PIN16,
-  PIN17,
-};
-
-/**
- * @brief Available ports on LPC812M101DH20
- *
- */
-enum IOports : uint8_t {
-  PORT0,
-};
-
-}  // namespace instances
-
 // device specific headers go here
-#include <LPC8xx.hpp/LPC81X_pins.hpp>
+#include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
 
 // includes that define the registers namespace go here.
 #include <LPC8xx.hpp/LPC81X_iocon_regs.hpp>
