@@ -21,16 +21,19 @@ extern "C" {
 
 namespace peripherals {
 constexpr static inline uint32_t IOCON_cpp = 0x4004'4000u; /**< TODO, rename to their names when refactoring is done */
+constexpr static inline uint32_t SWM_cpp = 0x4000'C000u;   /**< TODO, rename to their names when refactoring is done */
 }  // namespace peripherals
-
-// device specific headers go here
-#include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
 
 // includes that define the registers namespace go here.
 #include <LPC8xx.hpp/LPC81X_iocon_regs.hpp>
 #include <LPC8xx.hpp/LPC81X_swm_regs.hpp>
 
+// device specific headers go here
+// these need to go after registers namespace definitions as they are used here
+#include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
+
 // includes that use the registers namespace go here
+// need to go after registers namespaces and device specific headers
 #include <LPC8xx.hpp/LPC81X_iocon.hpp>
 #include <LPC8xx.hpp/LPC81X_swm.hpp>
 
