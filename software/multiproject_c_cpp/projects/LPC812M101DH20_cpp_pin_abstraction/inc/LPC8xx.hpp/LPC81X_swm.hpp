@@ -25,7 +25,13 @@ struct swm {
   }
 
   template <typename PIN, typename FUNC>
-  void setup(PIN &pin, FUNC &function) {}
+  constexpr void setup(PIN &pin, FUNC &function) {
+    if constexpr (function.type == registers::swm::pinFunctionTypes::MOVABLE) {
+      // create a mask for resetting the pin setting
+      constexpr uint32_t mask = ~(0xFF << function.shift);
+      regs()->PINASSIGN[function.index] = (regs()->PINASSIGN[function.index] & mask) | (pin.swmValue << function.shift);
+    }
+  }
 };
 }  // namespace swm
 }  // namespace instances

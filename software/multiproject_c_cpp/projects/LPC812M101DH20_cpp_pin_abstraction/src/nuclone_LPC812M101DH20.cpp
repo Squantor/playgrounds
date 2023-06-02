@@ -33,7 +33,6 @@ i2cSdaOutType i2cSdaOut;
 i2cSclSenseType i2cSclSense;
 i2cSdaSenseType i2cSdaSense;
 
-// iocon::pin<testPin2Port, testPin2Pin> testPin2;
 instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
 
 void crudeDelay(uint32_t iterations) {

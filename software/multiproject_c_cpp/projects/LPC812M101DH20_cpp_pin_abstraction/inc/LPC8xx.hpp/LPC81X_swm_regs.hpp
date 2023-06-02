@@ -36,55 +36,153 @@ enum pinAssign : uint8_t {
 };
 
 enum functionMovable : uint8_t {
-  SWM_USART0_TXD_O = 0U,     /**< UART0 TXD Output */
-  SWM_USART0_RXD_I = 1U,     /**< UART0 RXD Input */
-  SWM_USART0_RTS_O = 2U,     /**< UART0 RTS Output */
-  SWM_USART0_CTS_I = 3U,     /**< UART0 CTS Input */
-  SWM_USART0_SCLK_IO = 4U,   /**< UART0 SCLK I/O */
-  SWM_USART1_TXD_O = 5U,     /**< UART1 TXD Output */
-  SWM_USART1_RXD_I = 6U,     /**< UART1 RXD Input */
-  SWM_USART1_RTS_O = 7U,     /**< UART1 RTS Output */
-  SWM_USART1_CTS_I = 8U,     /**< UART1 CTS Input */
-  SWM_USART1_SCLK_IO = 9U,   /**< UART1 SCLK I/O */
-  SWM_USART2_TXD_O = 10U,    /**< UART2 TXD Output */
-  SWM_USART2_RXD_I = 11U,    /**< UART2 RXD Input */
-  SWM_USART2_RTS_O = 12U,    /**< UART2 RTS Output */
-  SWM_USART2_CTS_I = 13U,    /**< UART2 CTS Input */
-  SWM_USART2_SCLK_IO = 14U,  /**< UART2 SCLK I/O */
-  SWM_SPI0_SCK_IO = 15U,     /**< SPI0 SCK I/O */
-  SWM_SPI0_MOSI_IO = 16U,    /**< SPI0 MOSI I/O */
-  SWM_SPI0_MISO_IO = 17U,    /**< SPI0 MISO I/O */
-  SWM_SPI0_SSEL_IO = 18U,    /**< SPI0 SSEL I/O */
-  SWM_SPI1_SCK_IO = 19U,     /**< SPI1 SCK I/O */
-  SWM_SPI1_MOSI_IO = 20U,    /**< SPI1 MOSI I/O */
-  SWM_SPI1_MISO_IO = 21U,    /**< SPI1 MISO I/O */
-  SWM_SPI1_SSEL_IO = 22U,    /**< SPI1 SSEL I/O */
-  SWM_SCT0_IN_0_I = 23U,     /**< SCT Input 0*/
-  SWM_SCT0_IN_1_I = 24U,     /**< SCT Input 1*/
-  SWM_SCT0_IN_2_I = 25U,     /**< SCT Input 2*/
-  SWM_SCT0_IN_3_I = 26U,     /**< SCT Input 3*/
-  SWM_SCT0_OUT_0_O = 27U,    /**< SCT Output 0*/
-  SWM_SCT0_OUT_1_O = 28U,    /**< SCT Output 1*/
-  SWM_SCT0_OUT_2_O = 29U,    /**< SCT Output 2*/
-  SWM_SCT0_OUT_3_O = 30U,    /**< SCT Output 3*/
-  SWM_I2C0_SDA_IO = 31U,     /**< I2C SDA I/O */
-  SWM_I2C0_SCL_IO = 32U,     /**< I2C SCL I/O */
-  SWM_ACMP_O = 33U,          /**< ACMP Output */
-  SWM_CLKOUT_O = 34U,        /**< CLKOUT Output */
-  SWM_GPIO_INT_BMAT_O = 35U, /**< GPIO INT BMAT Output */
+  USART0_TXD_O = 0U,     /**< UART0 TXD Output */
+  USART0_RXD_I = 1U,     /**< UART0 RXD Input */
+  USART0_RTS_O = 2U,     /**< UART0 RTS Output */
+  USART0_CTS_I = 3U,     /**< UART0 CTS Input */
+  USART0_SCLK_IO = 4U,   /**< UART0 SCLK I/O */
+  USART1_TXD_O = 5U,     /**< UART1 TXD Output */
+  USART1_RXD_I = 6U,     /**< UART1 RXD Input */
+  USART1_RTS_O = 7U,     /**< UART1 RTS Output */
+  USART1_CTS_I = 8U,     /**< UART1 CTS Input */
+  USART1_SCLK_IO = 9U,   /**< UART1 SCLK I/O */
+  USART2_TXD_O = 10U,    /**< UART2 TXD Output */
+  USART2_RXD_I = 11U,    /**< UART2 RXD Input */
+  USART2_RTS_O = 12U,    /**< UART2 RTS Output */
+  USART2_CTS_I = 13U,    /**< UART2 CTS Input */
+  USART2_SCLK_IO = 14U,  /**< UART2 SCLK I/O */
+  SPI0_SCK_IO = 15U,     /**< SPI0 SCK I/O */
+  SPI0_MOSI_IO = 16U,    /**< SPI0 MOSI I/O */
+  SPI0_MISO_IO = 17U,    /**< SPI0 MISO I/O */
+  SPI0_SSEL_IO = 18U,    /**< SPI0 SSEL I/O */
+  SPI1_SCK_IO = 19U,     /**< SPI1 SCK I/O */
+  SPI1_MOSI_IO = 20U,    /**< SPI1 MOSI I/O */
+  SPI1_MISO_IO = 21U,    /**< SPI1 MISO I/O */
+  SPI1_SSEL_IO = 22U,    /**< SPI1 SSEL I/O */
+  SCT0_IN_0_I = 23U,     /**< SCT Input 0*/
+  SCT0_IN_1_I = 24U,     /**< SCT Input 1*/
+  SCT0_IN_2_I = 25U,     /**< SCT Input 2*/
+  SCT0_IN_3_I = 26U,     /**< SCT Input 3*/
+  SCT0_OUT_0_O = 27U,    /**< SCT Output 0*/
+  SCT0_OUT_1_O = 28U,    /**< SCT Output 1*/
+  SCT0_OUT_2_O = 29U,    /**< SCT Output 2*/
+  SCT0_OUT_3_O = 30U,    /**< SCT Output 3*/
+  I2C0_SDA_IO = 31U,     /**< I2C SDA I/O */
+  I2C0_SCL_IO = 32U,     /**< I2C SCL I/O */
+  ACMP_O = 33U,          /**< ACMP Output */
+  CLKOUT_O = 34U,        /**< CLKOUT Output */
+  GPIO_INT_BMAT_O = 35U, /**< GPIO INT BMAT Output */
 };
 
 enum functionFixed : uint16_t {
-  SWM_EN0_NONE = 0,           /**< No change for enable 0 */
-  SWM_EN0_ACMP_I1 = (1 << 0), /**< ACMP I1 */
-  SWM_EN0_ACMP_I2 = (1 << 1), /**< ACMP I2 */
-  SWM_EN0_SWCLK = (1 << 2),   /**< SWCLK */
-  SWM_EN0_SWDIO = (1 << 3),   /**< SWDIO */
-  SWM_EN0_XTALIN = (1 << 4),  /**< XTALIN */
-  SWM_EN0_XTALOUT = (1 << 5), /**< XTALOUT */
-  SWM_EN0_RST = (1 << 6),     /**< Reset */
-  SWM_EN0_CLKIN = (1 << 7),   /**< Clock Input */
-  SWM_EN0_VDDCMP = (1 << 8)   /**< VDD */
+  ACMP_I1 = (1 << 0), /**< ACMP I1 */
+  ACMP_I2 = (1 << 1), /**< ACMP I2 */
+  SWCLK = (1 << 2),   /**< SWCLK */
+  SWDIO = (1 << 3),   /**< SWDIO */
+  XTALIN = (1 << 4),  /**< XTALIN */
+  XTALOUT = (1 << 5), /**< XTALOUT */
+  RST = (1 << 6),     /**< Reset */
+  CLKIN = (1 << 7),   /**< Clock Input */
+  VDDCMP = (1 << 8)   /**< ACMP VDD*/
+};
+
+enum class pinFunctions : uint8_t {
+  USART0_TXD_O,    /**< UART0 TXD Output */
+  USART0_RXD_I,    /**< UART0 RXD Input */
+  USART0_RTS_O,    /**< UART0 RTS Output */
+  USART0_CTS_I,    /**< UART0 CTS Input */
+  USART0_SCLK_IO,  /**< UART0 SCLK I/O */
+  USART1_TXD_O,    /**< UART1 TXD Output */
+  USART1_RXD_I,    /**< UART1 RXD Input */
+  USART1_RTS_O,    /**< UART1 RTS Output */
+  USART1_CTS_I,    /**< UART1 CTS Input */
+  USART1_SCLK_IO,  /**< UART1 SCLK I/O */
+  USART2_TXD_O,    /**< UART2 TXD Output */
+  USART2_RXD_I,    /**< UART2 RXD Input */
+  USART2_RTS_O,    /**< UART2 RTS Output */
+  USART2_CTS_I,    /**< UART2 CTS Input */
+  USART2_SCLK_IO,  /**< UART2 SCLK I/O */
+  SPI0_SCK_IO,     /**< SPI0 SCK I/O */
+  SPI0_MOSI_IO,    /**< SPI0 MOSI I/O */
+  SPI0_MISO_IO,    /**< SPI0 MISO I/O */
+  SPI0_SSEL_IO,    /**< SPI0 SSEL I/O */
+  SPI1_SCK_IO,     /**< SPI1 SCK I/O */
+  SPI1_MOSI_IO,    /**< SPI1 MOSI I/O */
+  SPI1_MISO_IO,    /**< SPI1 MISO I/O */
+  SPI1_SSEL_IO,    /**< SPI1 SSEL I/O */
+  SCT0_IN_0_I,     /**< SCT Input 0*/
+  SCT0_IN_1_I,     /**< SCT Input 1*/
+  SCT0_IN_2_I,     /**< SCT Input 2*/
+  SCT0_IN_3_I,     /**< SCT Input 3*/
+  SCT0_OUT_0_O,    /**< SCT Output 0*/
+  SCT0_OUT_1_O,    /**< SCT Output 1*/
+  SCT0_OUT_2_O,    /**< SCT Output 2*/
+  SCT0_OUT_3_O,    /**< SCT Output 3*/
+  I2C0_SDA_IO,     /**< I2C SDA I/O */
+  I2C0_SCL_IO,     /**< I2C SCL I/O */
+  ACMP_O,          /**< analog comparator Output */
+  CLKOUT_O,        /**< CLKOUT Output */
+  GPIO_INT_BMAT_O, /**< GPIO pattern matching Output */
+  ACMP_I1,         /**< analog comparator input 1 */
+  ACMP_I2,         /**< analog comparator input 2 */
+  SWCLK,           /**< SWD clock */
+  SWDIO,           /**< SWD input/output */
+  XTALIN,          /**< Crystal oscillator input */
+  XTALOUT,         /**< Crystal oscillator output */
+  RST,             /**< Reset */
+  CLKIN,           /**< Clock Input */
+  VDDCMP,          /**< analog comparator vdd input */
+};
+
+enum class pinFunctionTypes : uint8_t {
+  MOVABLE,
+  FIXED,
+};
+
+/**
+ * @brief pin function base template
+ *
+ * @tparam T_FUNC pin function
+ * @tparam DUMMY  needed for the static_assert
+ */
+template <pinFunctions T_FUNC, bool DUMMY = false>
+struct pinFunction {
+  static_assert(DUMMY, "This configuration is invalid!");
+};
+
+template <>
+struct pinFunction<pinFunctions::USART0_TXD_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{0};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::USART0_RXD_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{0};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::I2C0_SDA_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{7};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::I2C0_SCL_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{8};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::ACMP_I1> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign indexPio{pinAssign::PIO0_0};
+  static constexpr functionFixed mask{functionFixed::ACMP_I1};
 };
 
 struct registers {
