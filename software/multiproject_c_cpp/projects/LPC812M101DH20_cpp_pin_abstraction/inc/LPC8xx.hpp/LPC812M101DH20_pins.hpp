@@ -51,10 +51,8 @@ enum class IOports : uint8_t {
   PORT0, /**< Port 0 */
 };
 
-namespace iocon {
-
 /**
- * @brief base template
+ * @brief base I/O pin template
  *
  * @tparam T_PORT IO port
  * @tparam T_PIN  IO pin
@@ -65,99 +63,121 @@ struct pin {
 };
 
 /**
- * @brief PIO0_00 specialisation
+ * @brief Specialization for Pin 0 on Port 0
  *
- * @tparam
  */
 template <>
 struct pin<IOports::PORT0, IOpins::PIN00> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 17;
+  static constexpr uint8_t swmValue = 0;
 };
+
+/**
+ * @brief Specialization for Pin 1 on Port 0
+ *
+ */
 template <>
 struct pin<IOports::PORT0, IOpins::PIN01> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 11;
+  static constexpr uint8_t swmValue = 1;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN02> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 6;
+  static constexpr uint8_t swmValue = 2;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN03> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 5;
+  static constexpr uint8_t swmValue = 3;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN04> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 4;
+  static constexpr uint8_t swmValue = 4;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN05> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 3;
+  static constexpr uint8_t swmValue = 5;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN06> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 16;
+  static constexpr uint8_t swmValue = 6;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN07> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 15;
+  static constexpr uint8_t swmValue = 7;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN08> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 14;
+  static constexpr uint8_t swmValue = 8;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN09> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 13;
+  static constexpr uint8_t swmValue = 9;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN10> {
   static constexpr uint8_t typeFlags = pinTypeFlags::IOCON_I2C;
   static constexpr uint8_t ioconIndex = 8;
+  static constexpr uint8_t swmValue = 10;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN11> {
   static constexpr uint8_t typeFlags = pinTypeFlags::IOCON_I2C;
   static constexpr uint8_t ioconIndex = 7;
+  static constexpr uint8_t swmValue = 11;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN12> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 2;
+  static constexpr uint8_t swmValue = 12;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN13> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 1;
+  static constexpr uint8_t swmValue = 13;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN14> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 12;
+  static constexpr uint8_t swmValue = 14;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN15> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 10;
+  static constexpr uint8_t swmValue = 15;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN16> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 9;
+  static constexpr uint8_t swmValue = 16;
 };
 template <>
 struct pin<IOports::PORT0, IOpins::PIN17> {
   static constexpr uint8_t typeFlags = pinTypeFlags::NORMAL;
   static constexpr uint8_t ioconIndex = 0;
+  static constexpr uint8_t swmValue = 17;
 };
 /* Braindump:
 specializations work in this case with structs and configuring them at compiletime
@@ -167,7 +187,6 @@ this iocon should be folded in some kind of pin properties,
 Another insight, you encode values in types, as each template is a unique type.
 */
 
-}  // namespace iocon
 }  // namespace instances
 
 #endif

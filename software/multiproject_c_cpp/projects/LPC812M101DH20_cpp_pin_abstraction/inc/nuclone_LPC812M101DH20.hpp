@@ -58,15 +58,15 @@ For conditions of distribution and use, see LICENSE file
 #define PIN_TESTPIN_2 (7u)
 #define SWM_TESTPIN_2 (SWM_PORTPIN_P0_7)
 
-using xtalInType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
-using xtalOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
-using testPin0Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
-using testPin1Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
-using testPin2Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
-using i2cSclOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
-using i2cSclSenseType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
-using i2cSdaOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
-using i2cSdaSenseType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
+using xtalInType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
+using xtalOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
+using testPin0Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
+using testPin1Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
+using testPin2Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
+using i2cSclOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
+using i2cSclSenseType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
+using i2cSdaOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
+using i2cSdaSenseType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
 
 void boardInit(void);
 void ledState(bool isOn);

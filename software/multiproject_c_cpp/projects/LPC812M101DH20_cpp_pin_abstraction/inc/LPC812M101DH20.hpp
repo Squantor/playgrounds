@@ -28,8 +28,10 @@ constexpr static inline uint32_t IOCON_cpp = 0x4004'4000u; /**< TODO, rename to 
 
 // includes that define the registers namespace go here.
 #include <LPC8xx.hpp/LPC81X_iocon_regs.hpp>
+#include <LPC8xx.hpp/LPC81X_swm_regs.hpp>
 
 // includes that use the registers namespace go here
 #include <LPC8xx.hpp/LPC81X_iocon.hpp>
+#include <LPC8xx.hpp/LPC81X_swm.hpp>
 
 #endif
