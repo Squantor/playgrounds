@@ -60,7 +60,7 @@ enum i2cmodes : uint32_t {
  *
  */
 struct registers {
-  uint32_t PIO[56]; /**< Pin control registers */
+  volatile uint32_t PIO[56]; /**< Pin control registers */
 };
 namespace PIO {
 constexpr inline uint32_t HYS = (1 << 5); /**< Hysteresis enable */
