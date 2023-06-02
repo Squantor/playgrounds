@@ -17,7 +17,7 @@ namespace iocon {
  * @brief
  *
  */
-enum modes : uint32_t {
+enum pullModes : uint32_t {
   INACTIVE = (0 << 3), /**< No pullup/down */
   PULLDOWN = (1 << 3), /**< Pulldown enabled */
   PULLUP = (2 << 3),   /**< Pullup enabled */
@@ -28,7 +28,7 @@ enum modes : uint32_t {
  * @brief
  *
  */
-enum filtering : uint32_t {
+enum pinFiltering : uint32_t {
   BYPASS = (0 << 11),  /**< Bypassed input filter */
   CYCLES1 = (1 << 11), /**< 1 clock cycle pulses are filtered */
   CYCLES2 = (2 << 11), /**< 2 clock cycle pulses are filtered */
@@ -39,7 +39,7 @@ enum filtering : uint32_t {
  * @brief Clock divider to use for filtering
  *
  */
-enum clock : uint32_t {
+enum clockDivider : uint32_t {
   IOCONCLKDIV0 = (0 << 13), /**< use IOCONCLKDIV0 in SYSCON */
   IOCONCLKDIV1 = (1 << 13), /**< use IOCONCLKDIV1 in SYSCON */
   IOCONCLKDIV2 = (2 << 13), /**< use IOCONCLKDIV2 in SYSCON */
@@ -49,7 +49,7 @@ enum clock : uint32_t {
   IOCONCLKDIV6 = (6 << 13), /**< use IOCONCLKDIV6 in SYSCON */
 };
 
-enum i2cmode : uint32_t {
+enum i2cmodes : uint32_t {
   I2C_STD = (0 << 8),  /**< standard/fast I2C mode */
   IO_STD = (1 << 8),   /**< standard I/O functionality */
   I2C_FAST = (2 << 8), /**< fast mode plus I2C */

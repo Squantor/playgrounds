@@ -23,12 +23,11 @@ SOFTWARE.
 */
 #include <nuclone_LPC812M101DH20.hpp>
 
-using namespace instances;
+xtalInType xtalIn;
+xtalOutType xtalOut;
 
-iocon::pin<IOports::PORT0, IOpins::PIN00> test_0_0;
-iocon::pin<IOports::PORT0, IOpins::PIN01> test_0_1;
-
-iocon::pin<testPin2Port, testPin2Pin> testPin2;
+// iocon::pin<testPin2Port, testPin2Pin> testPin2;
+instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -47,8 +46,10 @@ void boardInit(void) {
   // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
   // setup io IOpins
-  ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
-  ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
+  // ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
+  // ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
+  ioconPeripheral.setup(xtalIn, registers::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(xtalOut, registers::iocon::pullModes::INACTIVE);
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
 
   // setup system clocks

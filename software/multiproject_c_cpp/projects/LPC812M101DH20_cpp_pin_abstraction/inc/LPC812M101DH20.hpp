@@ -19,6 +19,10 @@ extern "C" {
 }
 #endif
 
+namespace peripherals {
+constexpr static inline uint32_t IOCON_cpp = 0x4004'4000u; /**< TODO, rename to their names when refactoring is done */
+}  // namespace peripherals
+
 // device specific headers go here
 #include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
 

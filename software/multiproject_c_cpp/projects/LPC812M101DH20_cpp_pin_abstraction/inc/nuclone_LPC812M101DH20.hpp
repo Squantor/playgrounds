@@ -58,8 +58,13 @@ For conditions of distribution and use, see LICENSE file
 #define PIN_TESTPIN_2 (7u)
 #define SWM_TESTPIN_2 (SWM_PORTPIN_P0_7)
 
-inline constexpr instances::IOpins testPin2Pin = instances::IOpins::PIN07;
-inline constexpr instances::IOports testPin2Port = instances::IOports::PORT0;
+using xtalInType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
+using xtalOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
+using testPin0Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
+using testPin1Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
+using testPin2Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
+using i2cSclPinType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
+using i2cSdaPinType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
 
 void boardInit(void);
 
