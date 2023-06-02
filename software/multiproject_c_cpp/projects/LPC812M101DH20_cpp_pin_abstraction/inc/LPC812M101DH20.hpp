@@ -19,16 +19,6 @@ extern "C" {
 }
 #endif
 
-/*
-Copied orignally from the C header, the idea is to move more and more from
-C definitions to C++. Step by step, C++ bits will go below
-*/
-
-namespace peripherals {
-constexpr static inline uint32_t SPI0_cpp = 0x4005'8000u; /**< TODO, rename to their names when refactoring is done */
-constexpr static inline uint32_t SPI1_cpp = 0x4005'C000u; /**< TODO, rename to their names when refactoring is done */
-}  // namespace peripherals
-
 // device specific headers go here
 #include <LPC8xx.hpp/LPC812M101DH20_pins.hpp>
 

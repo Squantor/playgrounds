@@ -17,7 +17,7 @@ namespace instances {
  * @brief Available pins on LPC812M101DH20
  *
  */
-enum IOpins : uint8_t {
+enum class IOpins : uint8_t {
   PIN00,
   PIN01,
   PIN02,
@@ -42,7 +42,7 @@ enum IOpins : uint8_t {
  * @brief Available ports on LPC812M101DH20
  *
  */
-enum IOports : uint8_t {
+enum class IOports : uint8_t {
   PORT0,
 };
 

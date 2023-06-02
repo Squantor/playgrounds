@@ -24,7 +24,6 @@ SOFTWARE.
 #include <nuclone_LPC812M101DH20.hpp>
 
 using namespace instances;
-using namespace peripherals;
 
 iocon::pin<IOports::PORT0, IOpins::PIN00> test_0_0;
 iocon::pin<IOports::PORT0, IOpins::PIN01> test_0_1;
