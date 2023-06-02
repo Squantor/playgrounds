@@ -52,21 +52,23 @@ For conditions of distribution and use, see LICENSE file
 #define PIN_I2C_SDA_TEST (4u)
 #define SWM_I2C_SDA_TEST (SWM_PORTPIN_P0_4)
 
-// loose test IOpins
-#define IOCON_TESTPIN_2 (IOCON_PIO0_7)
-#define PORT_TESTPIN_2 (GPIO_PORT0)
-#define PIN_TESTPIN_2 (7u)
-#define SWM_TESTPIN_2 (SWM_PORTPIN_P0_7)
+/* Pin connections:
 
-using xtalInType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
-using xtalOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
-using testPin0Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
-using testPin1Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
-using testPin2Type = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
-using i2cSclOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
-using i2cSclSenseType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
-using i2cSdaOutType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
-using i2cSdaSenseType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
+*/
+using xtalInPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
+using xtalOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
+using test0PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
+using test1PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
+using test2PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
+using i2cSclOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
+using i2cSclSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
+using i2cSdaOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
+using i2cSdaSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
+
+using i2c0SdaFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SDA_IO>;
+using i2c0SclFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SCL_IO>;
+using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;
+using xtalOutFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALOUT>;
 
 void boardInit(void);
 void ledState(bool isOn);

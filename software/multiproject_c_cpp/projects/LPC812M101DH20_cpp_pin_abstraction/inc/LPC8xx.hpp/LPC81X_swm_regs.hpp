@@ -14,25 +14,25 @@ namespace registers {
 namespace swm {
 
 enum pinAssign : uint8_t {
-  PIO0_0 = 0U,   /**< assign to pin P0_0. */
-  PIO0_1 = 1U,   /**< assign to pin pin P0_1. */
-  PIO0_2 = 2U,   /**< assign to pin pin P0_2. */
-  PIO0_3 = 3U,   /**< assign to pin pin P0_3. */
-  PIO0_4 = 4U,   /**< assign to pin pin P0_4. */
-  PIO0_5 = 5U,   /**< assign to pin pin P0_5. */
-  PIO0_6 = 6U,   /**< assign to pin pin P0_6. */
-  PIO0_7 = 7U,   /**< assign to pin pin P0_7. */
-  PIO0_8 = 8U,   /**< assign to pin pin P0_8. */
-  PIO0_9 = 9U,   /**< assign to pin pin P0_9. */
-  PIO0_10 = 10U, /**< assign to pin pin P0_10. */
-  PIO0_11 = 11U, /**< assign to pin pin P0_11. */
-  PIO0_12 = 12U, /**< assign to pin pin P0_12. */
-  PIO0_13 = 13U, /**< assign to pin pin P0_13. */
-  PIO0_14 = 14U, /**< assign to pin pin P0_14. */
-  PIO0_15 = 15U, /**< assign to pin pin P0_15. */
-  PIO0_16 = 16U, /**< assign to pin pin P0_16. */
-  PIO0_17 = 17U, /**< assign to pin pin P0_17. */
-  RESET = 0xffU  /**< assign to nothing */
+  PIO0_0 = 0U,     /**< assign to pin P0_0. */
+  PIO0_1 = 1U,     /**< assign to pin pin P0_1. */
+  PIO0_2 = 2U,     /**< assign to pin pin P0_2. */
+  PIO0_3 = 3U,     /**< assign to pin pin P0_3. */
+  PIO0_4 = 4U,     /**< assign to pin pin P0_4. */
+  PIO0_5 = 5U,     /**< assign to pin pin P0_5. */
+  PIO0_6 = 6U,     /**< assign to pin pin P0_6. */
+  PIO0_7 = 7U,     /**< assign to pin pin P0_7. */
+  PIO0_8 = 8U,     /**< assign to pin pin P0_8. */
+  PIO0_9 = 9U,     /**< assign to pin pin P0_9. */
+  PIO0_10 = 10U,   /**< assign to pin pin P0_10. */
+  PIO0_11 = 11U,   /**< assign to pin pin P0_11. */
+  PIO0_12 = 12U,   /**< assign to pin pin P0_12. */
+  PIO0_13 = 13U,   /**< assign to pin pin P0_13. */
+  PIO0_14 = 14U,   /**< assign to pin pin P0_14. */
+  PIO0_15 = 15U,   /**< assign to pin pin P0_15. */
+  PIO0_16 = 16U,   /**< assign to pin pin P0_16. */
+  PIO0_17 = 17U,   /**< assign to pin pin P0_17. */
+  PIO_NONE = 0xffU /**< assign to nothing */
 };
 
 enum functionMovable : uint8_t {
@@ -81,7 +81,7 @@ enum functionFixed : uint16_t {
   SWDIO = (1 << 3),   /**< SWDIO */
   XTALIN = (1 << 4),  /**< XTALIN */
   XTALOUT = (1 << 5), /**< XTALOUT */
-  RST = (1 << 6),     /**< Reset */
+  RESET = (1 << 6),   /**< Reset */
   CLKIN = (1 << 7),   /**< Clock Input */
   VDDCMP = (1 << 8)   /**< ACMP VDD*/
 };
@@ -129,7 +129,7 @@ enum class pinFunctions : uint8_t {
   SWDIO,           /**< SWD input/output */
   XTALIN,          /**< Crystal oscillator input */
   XTALOUT,         /**< Crystal oscillator output */
-  RST,             /**< Reset */
+  RESET,           /**< Reset */
   CLKIN,           /**< Clock Input */
   VDDCMP,          /**< analog comparator vdd input */
 };
@@ -181,8 +181,64 @@ struct pinFunction<pinFunctions::I2C0_SCL_IO> {
 template <>
 struct pinFunction<pinFunctions::ACMP_I1> {
   static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
-  static constexpr pinAssign indexPio{pinAssign::PIO0_0};
+  static constexpr pinAssign pio{pinAssign::PIO0_0};
   static constexpr functionFixed mask{functionFixed::ACMP_I1};
+};
+
+template <>
+struct pinFunction<pinFunctions::ACMP_I2> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_1};
+  static constexpr functionFixed mask{functionFixed::ACMP_I2};
+};
+
+template <>
+struct pinFunction<pinFunctions::SWCLK> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_3};
+  static constexpr functionFixed mask{functionFixed::SWCLK};
+};
+
+template <>
+struct pinFunction<pinFunctions::SWDIO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_2};
+  static constexpr functionFixed mask{functionFixed::SWDIO};
+};
+
+template <>
+struct pinFunction<pinFunctions::XTALIN> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_8};
+  static constexpr functionFixed mask{functionFixed::XTALIN};
+};
+
+template <>
+struct pinFunction<pinFunctions::XTALOUT> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_9};
+  static constexpr functionFixed mask{functionFixed::XTALOUT};
+};
+
+template <>
+struct pinFunction<pinFunctions::RESET> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_5};
+  static constexpr functionFixed mask{functionFixed::RESET};
+};
+
+template <>
+struct pinFunction<pinFunctions::CLKIN> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_1};
+  static constexpr functionFixed mask{functionFixed::CLKIN};
+};
+
+template <>
+struct pinFunction<pinFunctions::VDDCMP> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::FIXED};
+  static constexpr pinAssign pio{pinAssign::PIO0_6};
+  static constexpr functionFixed mask{functionFixed::VDDCMP};
 };
 
 struct registers {
