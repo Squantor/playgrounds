@@ -63,9 +63,12 @@ using xtalOutType = instances::iocon::pin<instances::IOports::PORT0, instances::
 using testPin0Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
 using testPin1Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
 using testPin2Type = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
-using i2cSclPinType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
-using i2cSdaPinType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
+using i2cSclOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
+using i2cSclSenseType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
+using i2cSdaOutType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
+using i2cSdaSenseType = instances::iocon::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
 
 void boardInit(void);
+void ledState(bool isOn);
 
 #endif

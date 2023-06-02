@@ -25,6 +25,13 @@ SOFTWARE.
 
 xtalInType xtalIn;
 xtalOutType xtalOut;
+testPin0Type testPin0;
+testPin1Type testPin1;
+testPin2Type testPin2;
+i2cSclOutType i2cSclOut;
+i2cSdaOutType i2cSdaOut;
+i2cSclSenseType i2cSclSense;
+i2cSdaSenseType i2cSdaSense;
 
 // iocon::pin<testPin2Port, testPin2Pin> testPin2;
 instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
@@ -45,11 +52,17 @@ void crudeDelay(uint32_t iterations) {
 void boardInit(void) {
   // clock enables and resets
   sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
-  // setup io IOpins
-  // ioconSetupPin(IOCON, IOCON_XTAL_IN, IOCON_MODE(IOCON_MODE_INACTIVE));
-  // ioconSetupPin(IOCON, IOCON_XTAL_OUT, IOCON_MODE(IOCON_MODE_INACTIVE));
+  // setup IOCON pins
   ioconPeripheral.setup(xtalIn, registers::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalOut, registers::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(i2cSclSense, registers::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(i2cSdaSense, registers::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(i2cSclOut, registers::iocon::i2cmodes::I2C_STD);
+  ioconPeripheral.setup(i2cSdaOut, registers::iocon::i2cmodes::I2C_STD);
+  ioconPeripheral.setup(testPin0, registers::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(testPin1, registers::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(testPin2, registers::iocon::pullModes::PULLUP);
+
   swmEnableFixedPin(SWM, SWM_EN0_XTALIN | SWM_EN0_XTALOUT);
 
   // setup system clocks
@@ -67,4 +80,11 @@ void boardInit(void) {
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
+}
+
+void ledState(bool isOn) {
+  if (isOn)
+    ioconPeripheral.setup(testPin2, registers::iocon::pullModes::PULLUP);
+  else
+    ioconPeripheral.setup(testPin2, registers::iocon::pullModes::PULLDOWN);
 }
