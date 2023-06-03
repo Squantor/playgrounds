@@ -33,8 +33,8 @@ constexpr i2cSdaOutPinType i2cSdaOutPin;
 constexpr i2cSclSensePinType i2cSclSensePin;
 constexpr i2cSdaSensePinType i2cSdaSensePin;
 
-constexpr i2c0SclFunctionType i2c0Scl;
-constexpr i2c0SdaFunctionType i2c0Sda;
+constexpr mainI2cSclFunctionType i2cMainSclFunction;
+constexpr mainI2cSdaFunctionType i2cMainSdaFunction;
 constexpr xtalInFunctionType xtalIn;
 constexpr xtalOutFunctionType xtalOut;
 
@@ -67,8 +67,8 @@ void boardInit(void) {
   ioconPeripheral.setup(test0Pin, registers::iocon::pullModes::PULLUP);
   ioconPeripheral.setup(test1Pin, registers::iocon::pullModes::PULLUP);
   ioconPeripheral.setup(test2Pin, registers::iocon::pullModes::PULLUP);
-  swmPeriperhal.setup(i2cSclOutPin, i2c0Scl);
-  swmPeriperhal.setup(i2cSdaOutPin, i2c0Sda);
+  swmPeriperhal.setup(i2cSclOutPin, i2cMainSclFunction);
+  swmPeriperhal.setup(i2cSdaOutPin, i2cMainSdaFunction);
   swmPeriperhal.setup(xtalInPin, xtalIn);
   swmPeriperhal.setup(xtalOut, xtalOut);
 

@@ -65,8 +65,8 @@ using i2cSclSensePinType = instances::pin<instances::IOports::PORT0, instances::
 using i2cSdaOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
 using i2cSdaSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
 
-using i2c0SdaFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SDA_IO>;
-using i2c0SclFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SCL_IO>;
+using mainI2cSdaFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SDA_IO>;
+using mainI2cSclFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C0_SCL_IO>;
 using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;
 using xtalOutFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALOUT>;
 
