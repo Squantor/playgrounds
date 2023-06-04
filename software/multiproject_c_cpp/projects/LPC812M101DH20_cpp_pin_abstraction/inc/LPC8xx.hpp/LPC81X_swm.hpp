@@ -24,6 +24,14 @@ struct swm {
     return reinterpret_cast<registers::swm::registers *>(base);
   }
 
+  /**
+   * @brief
+   *
+   * @tparam PIN
+   * @tparam FUNC
+   * @param pin
+   * @param function
+   */
   template <typename PIN, typename FUNC>
   constexpr void setup(PIN &pin, FUNC &function) {
     if constexpr (FUNC::type == registers::swm::pinFunctionTypes::MOVABLE) {
@@ -32,16 +40,26 @@ struct swm {
       regs()->PINASSIGN[function.index] = (regs()->PINASSIGN[function.index] & mask) | (pin.pio << function.shift);
     }
     if constexpr (FUNC::type == registers::swm::pinFunctionTypes::FIXED) {
-      static_assert(PIN::pio == FUNC::pio, "this fixed function is not available on this pin!");
+      static_assert(PIN::pio == FUNC::pio, "this function is not available on this pin!");
       regs()->PINENABLE0 = regs()->PINENABLE0 & ~function.mask;
     }
   }
 
+  /**
+   * @brief
+   *
+   * @param pinMask
+   */
   constexpr void enableFixedPins(uint32_t pinMask) {
     // clearing bits enables fixed functions
     regs()->PINENABLE0 = regs()->PINENABLE0 & ~pinMask;
   }
 
+  /**
+   * @brief
+   *
+   * @param pinMask
+   */
   constexpr void disableFixedPins(uint32_t pinMask) {
     // setting bits disables fixed functions
     regs()->PINENABLE0 = regs()->PINENABLE0 | pinMask;
