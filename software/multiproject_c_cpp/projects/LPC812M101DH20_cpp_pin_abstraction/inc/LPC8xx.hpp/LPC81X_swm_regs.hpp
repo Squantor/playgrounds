@@ -87,21 +87,21 @@ enum functionFixed : uint16_t {
 };
 
 enum class pinFunctions : uint8_t {
-  USART0_TXD_O,    /**< UART0 TXD Output */
-  USART0_RXD_I,    /**< UART0 RXD Input */
-  USART0_RTS_O,    /**< UART0 RTS Output */
-  USART0_CTS_I,    /**< UART0 CTS Input */
-  USART0_SCLK_IO,  /**< UART0 SCLK I/O */
-  USART1_TXD_O,    /**< UART1 TXD Output */
-  USART1_RXD_I,    /**< UART1 RXD Input */
-  USART1_RTS_O,    /**< UART1 RTS Output */
-  USART1_CTS_I,    /**< UART1 CTS Input */
-  USART1_SCLK_IO,  /**< UART1 SCLK I/O */
-  USART2_TXD_O,    /**< UART2 TXD Output */
-  USART2_RXD_I,    /**< UART2 RXD Input */
-  USART2_RTS_O,    /**< UART2 RTS Output */
-  USART2_CTS_I,    /**< UART2 CTS Input */
-  USART2_SCLK_IO,  /**< UART2 SCLK I/O */
+  U0_TXD_O,        /**< UART0 TXD Output */
+  U0_RXD_I,        /**< UART0 RXD Input */
+  U0_RTS_O,        /**< UART0 RTS Output */
+  U0_CTS_I,        /**< UART0 CTS Input */
+  U0_SCLK_IO,      /**< UART0 SCLK I/O */
+  U1_TXD_O,        /**< UART1 TXD Output */
+  U1_RXD_I,        /**< UART1 RXD Input */
+  U1_RTS_O,        /**< UART1 RTS Output */
+  U1_CTS_I,        /**< UART1 CTS Input */
+  U1_SCLK_IO,      /**< UART1 SCLK I/O */
+  U2_TXD_O,        /**< UART2 TXD Output */
+  U2_RXD_I,        /**< UART2 RXD Input */
+  U2_RTS_O,        /**< UART2 RTS Output */
+  U2_CTS_I,        /**< UART2 CTS Input */
+  U2_SCLK_IO,      /**< UART2 SCLK I/O */
   SPI0_SCK_IO,     /**< SPI0 SCK I/O */
   SPI0_MOSI_IO,    /**< SPI0 MOSI I/O */
   SPI0_MISO_IO,    /**< SPI0 MISO I/O */
@@ -110,17 +110,17 @@ enum class pinFunctions : uint8_t {
   SPI1_MOSI_IO,    /**< SPI1 MOSI I/O */
   SPI1_MISO_IO,    /**< SPI1 MISO I/O */
   SPI1_SSEL_IO,    /**< SPI1 SSEL I/O */
-  SCT0_IN_0_I,     /**< SCT Input 0*/
-  SCT0_IN_1_I,     /**< SCT Input 1*/
-  SCT0_IN_2_I,     /**< SCT Input 2*/
-  SCT0_IN_3_I,     /**< SCT Input 3*/
-  SCT0_OUT_0_O,    /**< SCT Output 0*/
-  SCT0_OUT_1_O,    /**< SCT Output 1*/
-  SCT0_OUT_2_O,    /**< SCT Output 2*/
-  SCT0_OUT_3_O,    /**< SCT Output 3*/
-  I2C0_SDA_IO,     /**< I2C SDA I/O */
-  I2C0_SCL_IO,     /**< I2C SCL I/O */
-  ACMP_O,          /**< analog comparator Output */
+  CTIN_0_I,        /**< SCT Input 0*/
+  CTIN_1_I,        /**< SCT Input 1*/
+  CTIN_2_I,        /**< SCT Input 2*/
+  CTIN_3_I,        /**< SCT Input 3*/
+  CTOUT_0_O,       /**< SCT Output 0*/
+  CTOUT_1_O,       /**< SCT Output 1*/
+  CTOUT_2_O,       /**< SCT Output 2*/
+  CTOUT_3_O,       /**< SCT Output 3*/
+  I2C_SDA_IO,      /**< I2C SDA I/O */
+  I2C_SCL_IO,      /**< I2C SCL I/O */
+  ACMP_O_O,        /**< analog comparator Output */
   CLKOUT_O,        /**< CLKOUT Output */
   GPIO_INT_BMAT_O, /**< GPIO pattern matching Output */
   ACMP_I1,         /**< analog comparator input 1 */
@@ -150,32 +150,286 @@ struct pinFunction {
   static_assert(DUMMY, "This configuration is invalid!");
 };
 
+/**
+ * @brief Template specialization for UART 0 TX output
+ *
+ * @tparam
+ */
 template <>
-struct pinFunction<pinFunctions::USART0_TXD_O> {
+struct pinFunction<pinFunctions::U0_TXD_O> {
   static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
   static constexpr uint8_t index{0};
   static constexpr uint8_t shift{0};
 };
 
+/**
+ * @brief Template specialization for UART 0 RX input
+ *
+ * @tparam
+ */
 template <>
-struct pinFunction<pinFunctions::USART0_RXD_I> {
+struct pinFunction<pinFunctions::U0_RXD_I> {
   static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
   static constexpr uint8_t index{0};
   static constexpr uint8_t shift{8};
 };
 
+/**
+ * @brief Template specialization for UART 0 RTS output
+ *
+ * @tparam
+ */
 template <>
-struct pinFunction<pinFunctions::I2C0_SDA_IO> {
+struct pinFunction<pinFunctions::U0_RTS_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{0};
+  static constexpr uint8_t shift{16};
+};
+
+/**
+ * @brief Template specialization for UART 0 CTS input
+ *
+ * @tparam
+ */
+template <>
+struct pinFunction<pinFunctions::U0_CTS_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{0};
+  static constexpr uint8_t shift{24};
+};
+
+/**
+ * @brief Template specialization for UART 0 SCLK output
+ *
+ * @tparam
+ */
+template <>
+struct pinFunction<pinFunctions::U0_SCLK_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{1};
+  static constexpr uint8_t shift{0};
+};
+
+/**
+ * @brief Template specialization for UART 1 TX output
+ *
+ * @tparam
+ */
+template <>
+struct pinFunction<pinFunctions::U1_TXD_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{1};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::U1_RXD_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{1};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::U1_RTS_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{1};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::U1_CTS_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{2};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::U1_SCLK_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{2};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::U2_TXD_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{2};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::U2_RXD_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{2};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::U2_RTS_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{3};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::U2_CTS_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{3};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::U2_SCLK_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{3};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI0_SCK_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{3};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI0_MOSI_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{4};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI0_MISO_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{4};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI0_SSEL_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{4};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI1_SCK_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{4};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI1_MOSI_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{5};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI1_MISO_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{5};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::SPI1_SSEL_IO> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{5};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTIN_0_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{5};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTIN_1_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{6};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTIN_2_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{6};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTIN_3_I> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{6};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTOUT_0_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{6};
+  static constexpr uint8_t shift{24};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTOUT_1_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{7};
+  static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTOUT_2_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{7};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::CTOUT_3_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{7};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::I2C_SDA_IO> {
   static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
   static constexpr uint8_t index{7};
   static constexpr uint8_t shift{24};
 };
 
 template <>
-struct pinFunction<pinFunctions::I2C0_SCL_IO> {
+struct pinFunction<pinFunctions::I2C_SCL_IO> {
   static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
   static constexpr uint8_t index{8};
   static constexpr uint8_t shift{0};
+};
+
+template <>
+struct pinFunction<pinFunctions::ACMP_O_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{8};
+  static constexpr uint8_t shift{8};
+};
+
+template <>
+struct pinFunction<pinFunctions::CLKOUT_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{8};
+  static constexpr uint8_t shift{16};
+};
+
+template <>
+struct pinFunction<pinFunctions::GPIO_INT_BMAT_O> {
+  static constexpr pinFunctionTypes type{pinFunctionTypes::MOVABLE};
+  static constexpr uint8_t index{8};
+  static constexpr uint8_t shift{24};
 };
 
 template <>
