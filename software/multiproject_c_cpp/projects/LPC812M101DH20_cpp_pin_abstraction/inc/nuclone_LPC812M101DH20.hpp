@@ -15,8 +15,7 @@ For conditions of distribution and use, see LICENSE file
 #define CLOCK_AHB (30000000u)
 #define CLOCK_MAIN (60000000u)
 
-#include <mcu_ll.h>
-#include <LPC812M101DH20.hpp>
+#include <mcu_ll.hpp>
 
 #define TICKS_PER_S 10
 
