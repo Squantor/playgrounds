@@ -14,7 +14,7 @@ namespace registers {
 namespace iocon {
 
 /**
- * @brief
+ * @brief Pin pull modes
  *
  */
 enum pullModes : uint32_t {
@@ -25,7 +25,7 @@ enum pullModes : uint32_t {
 };
 
 /**
- * @brief
+ * @brief pin filtering modes
  *
  */
 enum pinFiltering : uint32_t {
@@ -49,6 +49,10 @@ enum clockDivider : uint32_t {
   IOCONCLKDIV6 = (6 << 13), /**< use IOCONCLKDIV6 in SYSCON */
 };
 
+/**
+ * @brief I2C pin modes
+ *
+ */
 enum i2cmodes : uint32_t {
   I2C_STD = (0 << 8),  /**< standard/fast I2C mode */
   IO_STD = (1 << 8),   /**< standard I/O functionality */
@@ -62,6 +66,7 @@ enum i2cmodes : uint32_t {
 struct registers {
   volatile uint32_t PIO[56]; /**< Pin control registers */
 };
+
 namespace PIO {
 constexpr inline uint32_t HYS = (1 << 5); /**< Hysteresis enable */
 constexpr inline uint32_t INV = (1 << 6); /**< Invert input enable */

@@ -20,51 +20,22 @@ For conditions of distribution and use, see LICENSE file
 
 #define TICKS_PER_S 10
 
-#define IOCON_XTAL_IN IOCON_PIO0_8
-#define IOCON_XTAL_OUT IOCON_PIO0_9
-
-// test pin pair 0, connected to eachother via 1KOhm resistor
-#define IOCON_TESTPIN_0_0 (IOCON_PIO0_1)
-#define PORT_TESTPIN_0_0 (GPIO_PORT0)
-#define PIN_TESTPIN_0_0 (1u)
-#define SWM_TESTPIN_0_0 (SWM_PORTPIN_P0_1)
-#define IOCON_TESTPIN_0_1 (IOCON_PIO0_15)
-#define PORT_TESTPIN_0_1 (GPIO_PORT0)
-#define PIN_TESTPIN_0_1 (15u)
-#define SWM_TESTPIN_0_1 (SWM_PORTPIN_P0_15)
-
-// I2C Clock test pin, pulled up to 2.2K to 3.3V
-#define IOCON_I2C_SCL_OUT (IOCON_PIO0_10)
-#define PORT_I2C_SCL_OUT (GPIO_PORT0)
-#define PIN_I2C_SCL_OUT (10u)
-#define SWM_I2C_SCL_OUT (SWM_PORTPIN_P0_10)
-#define IOCON_I2C_SCL_TEST (IOCON_PIO0_16)
-#define PORT_I2C_SCL_TEST (GPIO_PORT0)
-#define PIN_I2C_SCL_TEST (16u)
-#define SWM_I2C_SCL_TEST (SWM_PORTPIN_P0_16)
-// I2C Data test pin, pulled up to 2.2K to 3.3V
-#define IOCON_I2C_SDA_OUT (IOCON_PIO0_11)
-#define PORT_I2C_SDA_OUT (GPIO_PORT0)
-#define PIN_I2C_SDA_OUT (11u)
-#define SWM_I2C_SDA_OUT (SWM_PORTPIN_P0_11)
-#define IOCON_I2C_SDA_TEST (IOCON_PIO0_4)
-#define PORT_I2C_SDA_TEST (GPIO_PORT0)
-#define PIN_I2C_SDA_TEST (4u)
-#define SWM_I2C_SDA_TEST (SWM_PORTPIN_P0_4)
-
-/* Pin connections:
-
-*/
+// Crystal osillator pins
 using xtalInPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
 using xtalOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
+// test pin pair 0, connected to eachother via 1KOhm resistor
 using test0PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
 using test1PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
+// auxillary test pin
 using test2PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
+// I2C Clock pin pair, pulled up to 2.2K to 3.3V
 using i2cSclOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
 using i2cSclSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
+// I2C Data pin pair, pulled up to 2.2K to 3.3V
 using i2cSdaOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN11>;
 using i2cSdaSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN04>;
 
+// Peripheral functions
 using mainI2cSdaFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C_SDA_IO>;
 using mainI2cSclFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C_SCL_IO>;
 using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;

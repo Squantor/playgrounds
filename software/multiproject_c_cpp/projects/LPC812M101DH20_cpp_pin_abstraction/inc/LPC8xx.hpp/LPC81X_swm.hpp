@@ -25,12 +25,12 @@ struct swm {
   }
 
   /**
-   * @brief
+   * @brief set pin to a function
    *
-   * @tparam PIN
-   * @tparam FUNC
-   * @param pin
-   * @param function
+   * @tparam PIN      pin to assign function
+   * @tparam FUNC     function to assign to pin
+   * @param pin       pin to assign function to
+   * @param function  function to assign to pin
    */
   template <typename PIN, typename FUNC>
   constexpr void setup(PIN &pin, FUNC &function) {
@@ -46,22 +46,20 @@ struct swm {
   }
 
   /**
-   * @brief
+   * @brief Enable fixed pins in one go
    *
-   * @param pinMask
+   * @param pinMask bit pattern of fixed functions
    */
   constexpr void enableFixedPins(uint32_t pinMask) {
-    // clearing bits enables fixed functions
     regs()->PINENABLE0 = regs()->PINENABLE0 & ~pinMask;
   }
 
   /**
-   * @brief
+   * @brief Disable fixed pins in one go
    *
-   * @param pinMask
+   * @param pinMask bit pattern of fixed functions
    */
   constexpr void disableFixedPins(uint32_t pinMask) {
-    // setting bits disables fixed functions
     regs()->PINENABLE0 = regs()->PINENABLE0 | pinMask;
   }
 };

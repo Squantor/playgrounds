@@ -259,13 +259,6 @@ struct pin<IOports::PORT0, IOpins::PIN17> {
   static constexpr uint8_t ioconIndex = 0;
   static constexpr registers::swm::pinAssign swmValue = registers::swm::pinAssign::PIO0_17;
 };
-/* Braindump:
-specializations work in this case with structs and configuring them at compiletime
-you just instantiate one setup struct and feed it at runtime to the iocon configurator
-iocon is just a class that will setup a pin (from the specialization tree) with the proper settings
-this iocon should be folded in some kind of pin properties,
-Another insight, you encode values in types, as each template is a unique type.
-*/
 
 }  // namespace instances
 
