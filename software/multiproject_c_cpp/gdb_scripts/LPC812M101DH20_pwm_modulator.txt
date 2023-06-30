@@ -1,3 +1,5 @@
+set architecture armv6-m
+set print pretty on
 file bin/LPC812M101DH20_blinky/debug/LPC812M101DH20_blinky.elf
 target extended-remote /dev/ttyACM0
 shell sleep 1

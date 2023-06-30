@@ -1,5 +1,5 @@
+set architecture armv6-m
 set print pretty on
-set architecture armv6
 file bin/LPC812M101DH20_e-ink_display/debug/LPC812M101DH20_e-ink_display.elf
 target extended-remote /dev/ttyACM0
 shell sleep 1

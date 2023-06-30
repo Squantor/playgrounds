@@ -1,10 +1,12 @@
-file bin/LPC812_cpp_pin_abstraction/debug/LPC812_cpp_pin_abstraction.elf
+set architecture armv6-m
+set print pretty on
+file bin/LPC812_cpp_prototyping/debug/LPC812_cpp_prototyping.elf
 target extended-remote /dev/ttyACM0
 shell sleep 1
 monitor swdp_scan
 attach 1
 set mem inaccessible-by-default off
 set {int}0x40048000 = 2
-load bin/LPC812_cpp_pin_abstraction/debug/LPC812_cpp_pin_abstraction.elf
+load bin/LPC812_cpp_prototyping/debug/LPC812_cpp_prototyping.elf
 set {int}0x40048000 = 2
 compare-sections
