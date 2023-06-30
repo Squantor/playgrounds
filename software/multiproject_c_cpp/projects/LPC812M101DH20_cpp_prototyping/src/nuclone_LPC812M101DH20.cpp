@@ -40,6 +40,7 @@ constexpr xtalOutFunctionType xtalOut;
 
 instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
 instances::swm::swm<peripherals::SWM_cpp> swmPeriperhal;
+instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -86,12 +87,16 @@ void boardInit(void) {
   sysconMainClockDivider(SYSCON, 2);
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
 
+  // setup GPIO's
+  __NOP();
+  gpioPeripheral.setOutput(test2Pin);
+
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }
 
 void ledState(bool isOn) {
   if (isOn)
-    ioconPeripheral.setup(test2Pin, registers::iocon::pullModes::PULLUP);
+    gpioPeripheral.high(test2Pin);
   else
-    ioconPeripheral.setup(test2Pin, registers::iocon::pullModes::PULLDOWN);
+    gpioPeripheral.low(test2Pin);
 }
