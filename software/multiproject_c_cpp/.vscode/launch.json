@@ -224,6 +224,7 @@
     {
       "name": "debug LPC812 C++ prototyping",
       "cwd": "${workspaceRoot}",
+      "gdbPath": "/usr/bin/gdb-multiarch",
       "executable": "${workspaceFolder}/bin/LPC812_cpp_prototyping/debug/LPC812_cpp_prototyping.elf",
       "request": "launch",
       "type": "cortex-debug",
