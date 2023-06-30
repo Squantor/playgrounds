@@ -20,4 +20,4 @@ include $(BASE_DIR)/projects/RP2040_demo/RP2040_demo.mak
 include $(BASE_DIR)/projects/RP2040_flash_bringup/RP2040_flash_bringup.mak
 include $(BASE_DIR)/projects/RP2040_oled_display/RP2040_oled_display.mak
 include $(BASE_DIR)/projects/PC_peripheral_abstraction/PC_peripheral_abstraction.mak
-include $(BASE_DIR)/projects/LPC812M101DH20_cpp_pin_abstraction/LPC812M101DH20_cpp_pin_abstraction.mak
+include $(BASE_DIR)/projects/LPC812M101DH20_cpp_prototyping/LPC812M101DH20_cpp_prototyping.mak

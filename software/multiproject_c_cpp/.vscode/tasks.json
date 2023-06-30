@@ -102,9 +102,9 @@
       "problemMatcher": "$gcc"
     },
     {
-      "label": "build LPC812 C++ pin abstraction",
+      "label": "build LPC812 C++ prototyping",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812_cpp_pin_abstraction CONFIG=debug -j25",
+      "command": "bear -- make PROJECT=LPC812_cpp_prototyping CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },

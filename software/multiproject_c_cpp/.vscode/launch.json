@@ -58,7 +58,6 @@
       "interface": "swd",
       "device": "LPC845",
       "BMPGDBSerialPort": "/dev/ttyACM0",
-      "runToMain": true,
       "preLaunchCommands": [],
       "preRestartCommands": [
         "set print pretty on",
@@ -223,9 +222,9 @@
       "debuggerArgs": [],
     },
     {
-      "name": "debug LPC812 C++ pin abstraction",
+      "name": "debug LPC812 C++ prototyping",
       "cwd": "${workspaceRoot}",
-      "executable": "${workspaceFolder}/bin/LPC812_cpp_pin_abstraction/debug/LPC812_cpp_pin_abstraction.elf",
+      "executable": "${workspaceFolder}/bin/LPC812_cpp_prototyping/debug/LPC812_cpp_prototyping.elf",
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "bmp",
@@ -235,10 +234,10 @@
       "runToEntryPoint": "main",
       "preLaunchCommands": [],
       "preRestartCommands": [],
-      "preLaunchTask": "build LPC812 C++ pin abstraction",
+      "preLaunchTask": "build LPC812 C++ prototyping",
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [
-        "--command=./${workspaceFolder}/gdb_scripts/LPC812_cpp_pin_abstraction_debug.txt"
+        "--command=./${workspaceFolder}/gdb_scripts/LPC812_cpp_prototyping_debug.txt"
       ],
     },
   ]
