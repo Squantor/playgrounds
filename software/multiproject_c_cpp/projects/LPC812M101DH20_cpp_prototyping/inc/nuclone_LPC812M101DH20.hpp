@@ -26,8 +26,8 @@ For conditions of distribution and use, see LICENSE file
 #include <LPC8XX.hpp/LPC81X_pmu_regs.hpp>
 #include <LPC8XX.hpp/LPC81X_sct_regs.hpp>
 #include <LPC8XX.hpp/LPC81X_spi_regs.hpp>
-#include <LPC8XX.hpp/LPC81X_sysctl_regs.hpp>
-#include <LPC8XX.hpp/LPC81X_uart_regs.hpp>
+#include <LPC8XX.hpp/LPC81X_syscon_regs.hpp>
+#include <LPC8XX.hpp/LPC81X_usart_regs.hpp>
 #include <LPC8XX.hpp/LPC81X_wkt_regs.hpp>
 #include <LPC8XX.hpp/LPC81X_wwdt_regs.hpp>
 
@@ -40,8 +40,8 @@ For conditions of distribution and use, see LICENSE file
 #include <LPC8XX.hpp/LPC81X_pmu.hpp>
 #include <LPC8XX.hpp/LPC81X_sct.hpp>
 #include <LPC8XX.hpp/LPC81X_spi.hpp>
-#include <LPC8XX.hpp/LPC81X_sysctl.hpp>
-#include <LPC8XX.hpp/LPC81X_uart.hpp>
+#include <LPC8XX.hpp/LPC81X_syscon.hpp>
+#include <LPC8XX.hpp/LPC81X_usart.hpp>
 #include <LPC8XX.hpp/LPC81X_wkt.hpp>
 #include <LPC8XX.hpp/LPC81X_wwdt.hpp>
 

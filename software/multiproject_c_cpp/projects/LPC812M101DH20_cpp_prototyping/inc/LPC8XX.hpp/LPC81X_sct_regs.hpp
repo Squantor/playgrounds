@@ -18,7 +18,7 @@ static constexpr inline uint8_t sctMatchCount = 8u;  /**< Number of match/compar
 static constexpr inline uint8_t sctOutputCount = 6u; /**< Number of outputs */
 
 /**
- * @brief gpio register definitions
+ * @brief state configurable timer register definitions
  *
  */
 struct registers {

@@ -5,31 +5,29 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO register interface
+ * \file LPC810 series windowed watchdog register interface
  */
-#ifndef LPC81X_GPIO_REGS_HPP
-#define LPC81X_GPIO_REGS_HPP
+#ifndef LPC81X_WWDT_REGS_HPP
+#define LPC81X_WWDT_REGS_HPP
 
 namespace registers {
-namespace gpio {
+namespace wwdt {
 
 /**
- * @brief gpio register definitions
+ * @brief windowed watchdog register definitions
  *
  */
 struct registers {
-  volatile uint8_t B[128][32]; /**< Byte pin registers ports 0 to n; pins PIOn_0 to PIOn_31 */
-  volatile uint32_t W[32][32]; /**< Word pin registers port 0 to n */
-  volatile uint32_t DIR[32];   /**< Direction registers port n */
-  volatile uint32_t MASK[32];  /**< Mask register port n */
-  volatile uint32_t PIN[32];   /**< Portpin register port n */
-  volatile uint32_t MPIN[32];  /**< Masked port register port n */
-  volatile uint32_t SET[32];   /**< Write: Set register for port n Read: output bits for port n */
-  volatile uint32_t CLR[32];   /**< Clear port n */
-  volatile uint32_t NOT[32];   /**< Toggle port n */
+  volatile uint32_t MOD;      /**< basic mode and status register */
+  volatile uint32_t TC;       /**< time-out value register */
+  volatile uint32_t FEED;     /**< Writing 0xAA followed by 0x55 reloads the Watchdog timer */
+  volatile const uint32_t TV; /**< current value of the Watchdog timer */
+  volatile const uint32_t RESERVED0;
+  volatile uint32_t WARNINT; /**< contains the Watchdog warning interrupt value */
+  volatile uint32_t WINDOW;  /**< contains the Watchdog window value. */
 };
 
-}  // namespace gpio
+}  // namespace wwdt
 }  // namespace registers
 
 #endif
