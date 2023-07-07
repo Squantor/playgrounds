@@ -25,10 +25,10 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio pin to high
    *
-   * @tparam PIN
-   * @param pin
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
    */
   template <typename PIN>
   void high(PIN &pin) {
@@ -36,10 +36,10 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio pin to low
    *
-   * @tparam PIN
-   * @param pin
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
    */
   template <typename PIN>
   void low(PIN &pin) {
@@ -47,10 +47,10 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Toggle gpio pin
    *
-   * @tparam PIN
-   * @param pin
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
    */
   template <typename PIN>
   void toggle(PIN &pin) {
@@ -58,11 +58,11 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Get the gpio pin state
    *
-   * @tparam PIN
-   * @param pin
-   * @return uint32_t
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
+   * @return uint32_t pin state, 0 for low 1 for high
    */
   template <typename PIN>
   uint32_t get(PIN &pin) {
@@ -70,11 +70,11 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio port pins to high
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio pins to set high, a 1 bit will set the corresponding gpio pin to high
    */
   template <typename PORT>
   void portHigh(PORT &port, uint32_t setting) {
@@ -82,12 +82,11 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief set gpio port pins to low
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
-   * @return voic
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio pins to set low, a 1 bit will set the corresponding gpio pin to low
    */
   template <typename PORT>
   void portLow(PORT &port, uint32_t setting) {
@@ -95,11 +94,11 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief toggle gpio port pins
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio pins to toggle, a 1 bit will toggle the corresponding pio pin
    */
   template <typename PORT>
   void portToggle(PORT &port, uint32_t setting) {
@@ -107,24 +106,26 @@ struct gpio {
   }
 
   /**
-   * @brief TODO
+   * @brief Setup gpio port at once
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
-   * @param mask
+   * sets the gpio port pins in one go while adhering to the bit mask
+   *
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio pins to setup
+   * @param mask gpio pins that are unaffected
    */
   template <typename PORT>
   void portSet(PORT &port, uint32_t setting, uint32_t mask) {
-    regs()->DIR[port.gpioPortIndex] = (regs()->DIR[port.gpioPortIndex] & mask) | (setting & mask);
+    regs()->DIR[port.gpioPortIndex] = (regs()->DIR[port.gpioPortIndex] & ~mask) | (setting & mask);
   }
 
   /**
-   * @brief TODO
+   * @brief Setup gpio port at once
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio pins to setup
    */
   template <typename PORT>
   void portSet(PORT &port, uint32_t setting) {
@@ -132,12 +133,12 @@ struct gpio {
   }
 
   /**
-   * @brief TODO
+   * @brief Get gpio port pins state
    *
-   * @tparam PORT
-   * @param port
-   * @param mask
-   * @return uint32_t
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param mask gpio pins to ignore
+   * @return uint32_t gpio pin state masked by mask
    */
   template <typename PORT>
   uint32_t portGet(PORT &port, uint32_t mask) {
@@ -145,11 +146,11 @@ struct gpio {
   }
 
   /**
-   * @brief TODO
+   * @brief Get gpio port pins state
    *
-   * @tparam PORT
-   * @param port
-   * @return uint32_t
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @return uint32_t gpio pin state
    */
   template <typename PORT>
   uint32_t portGet(PORT &port) {
@@ -157,10 +158,10 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio pin to output mode
    *
-   * @tparam PIN
-   * @param pin
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
    */
   template <typename PIN>
   void output(PIN &pin) {
@@ -168,10 +169,10 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio pin to input mode
    *
-   * @tparam PIN
-   * @param pin
+   * @tparam PIN pin instance
+   * @param pin reference to pin instance
    */
   template <typename PIN>
   void input(PIN &pin) {
@@ -179,12 +180,14 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio port direction
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
-   * @param mask
+   * Set the gpio port direction in one go masked by a mask
+   *
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio port pin directions
+   * @param mask gpio pins to ignore
    */
   template <typename PORT>
   void portDirection(PORT &port, uint32_t setting, uint32_t mask) {
@@ -192,11 +195,11 @@ struct gpio {
   }
 
   /**
-   * @brief
+   * @brief Set gpio port direction
    *
-   * @tparam PORT
-   * @param port
-   * @param setting
+   * @tparam PORT port instance
+   * @param port reference to port instance
+   * @param setting gpio port pin directions
    */
   template <typename PORT>
   void portDirection(PORT &port, uint32_t setting) {
