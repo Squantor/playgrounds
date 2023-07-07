@@ -32,6 +32,7 @@ constexpr i2cSclOutPinType i2cSclOutPin;
 constexpr i2cSdaOutPinType i2cSdaOutPin;
 constexpr i2cSclSensePinType i2cSclSensePin;
 constexpr i2cSdaSensePinType i2cSdaSensePin;
+constexpr gpioPort mainPort;
 
 constexpr mainI2cSclFunctionType i2cMainSclFunction;
 constexpr mainI2cSdaFunctionType i2cMainSdaFunction;
@@ -89,7 +90,8 @@ void boardInit(void) {
 
   // setup GPIO's
   __NOP();
-  gpioPeripheral.setOutput(test2Pin);
+  gpioPeripheral.output(test2Pin);
+  gpioPeripheral.output(mainPort, 0x00000080, 0x00000080);
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }

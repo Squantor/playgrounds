@@ -21,6 +21,9 @@ For conditions of distribution and use, see LICENSE file
 
 #define TICKS_PER_S 10
 
+// main gpio port
+using gpioPort = instances::port<instances::IOports::PORT0>;
+
 // Crystal osillator pins
 using xtalInPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
 using xtalOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;

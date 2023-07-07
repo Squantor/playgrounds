@@ -62,8 +62,33 @@ struct gpio {
    * @param pin
    */
   template <typename PIN>
-  void setOutput(PIN &pin) {
+  void output(PIN &pin) {
     regs()->DIR[pin.gpioPortIndex] = regs()->DIR[pin.gpioPortIndex] | (1 << pin.gpioPinIndex);
+  }
+
+  /**
+   * @brief
+   *
+   * @tparam PORT
+   * @param port
+   * @param setting
+   * @param mask
+   */
+  template <typename PORT>
+  void output(PORT &port, uint32_t setting, uint32_t mask) {
+    regs()->DIR[port.gpioPortIndex] = (regs()->DIR[port.gpioPortIndex] & ~mask) | (setting & mask);
+  }
+
+  /**
+   * @brief
+   *
+   * @tparam PORT
+   * @param port
+   * @param setting
+   */
+  template <typename PORT>
+  void output(PORT &port, uint32_t setting) {
+    regs()->DIR[port.gpioPortIndex] = setting;
   }
 };
 }  // namespace gpio
