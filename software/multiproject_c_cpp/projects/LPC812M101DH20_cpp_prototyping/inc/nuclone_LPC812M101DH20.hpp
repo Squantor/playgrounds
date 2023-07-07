@@ -45,6 +45,24 @@ using mainI2cSclFunctionType = instances::swm::pinFunction<instances::swm::pinFu
 using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;
 using xtalOutFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALOUT>;
 
+constexpr xtalInPinType xtalInPin;
+constexpr xtalOutPinType xtalOutPin;
+constexpr test0PinType test0Pin;
+constexpr test1PinType test1Pin;
+constexpr test2PinType test2Pin;
+constexpr i2cSclOutPinType i2cSclOutPin;
+constexpr i2cSdaOutPinType i2cSdaOutPin;
+constexpr i2cSclSensePinType i2cSclSensePin;
+constexpr i2cSdaSensePinType i2cSdaSensePin;
+constexpr gpioPort mainPort;
+
+constexpr mainI2cSclFunctionType i2cMainSclFunction;
+constexpr mainI2cSdaFunctionType i2cMainSdaFunction;
+constexpr xtalInFunctionType xtalIn;
+constexpr xtalOutFunctionType xtalOut;
+
+extern instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
+
 void boardInit(void);
 void ledState(bool isOn);
 

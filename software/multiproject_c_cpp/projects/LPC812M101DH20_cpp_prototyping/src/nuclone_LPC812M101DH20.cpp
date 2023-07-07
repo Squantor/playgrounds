@@ -23,22 +23,6 @@ SOFTWARE.
 */
 #include <nuclone_LPC812M101DH20.hpp>
 
-constexpr xtalInPinType xtalInPin;
-constexpr xtalOutPinType xtalOutPin;
-constexpr test0PinType test0Pin;
-constexpr test1PinType test1Pin;
-constexpr test2PinType test2Pin;
-constexpr i2cSclOutPinType i2cSclOutPin;
-constexpr i2cSdaOutPinType i2cSdaOutPin;
-constexpr i2cSclSensePinType i2cSclSensePin;
-constexpr i2cSdaSensePinType i2cSdaSensePin;
-constexpr gpioPort mainPort;
-
-constexpr mainI2cSclFunctionType i2cMainSclFunction;
-constexpr mainI2cSdaFunctionType i2cMainSdaFunction;
-constexpr xtalInFunctionType xtalIn;
-constexpr xtalOutFunctionType xtalOut;
-
 instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
 instances::swm::swm<peripherals::SWM_cpp> swmPeriperhal;
 instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
@@ -91,7 +75,9 @@ void boardInit(void) {
   // setup GPIO's
   __NOP();
   gpioPeripheral.output(test2Pin);
-  gpioPeripheral.output(mainPort, 0x00000080, 0x00000080);
+  gpioPeripheral.portDirection(mainPort, 0x00000080, 0x00000080);
+  gpioPeripheral.portDirection(mainPort, 0x00000080);
+  [[maybe_unused]] volatile uint32_t dummy = gpioPeripheral.portGet(mainPort, 0x0000FFFF);
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }
