@@ -16,8 +16,6 @@ For conditions of distribution and use, see LICENSE file
 #define CLOCK_MAIN (60000000u)
 
 #include <mcu_ll.hpp>
-#include <LPC8XX.hpp/LPC81X_gpio_regs.hpp>
-#include <LPC8XX.hpp/LPC81X_gpio.hpp>
 
 #define TICKS_PER_S 10
 
