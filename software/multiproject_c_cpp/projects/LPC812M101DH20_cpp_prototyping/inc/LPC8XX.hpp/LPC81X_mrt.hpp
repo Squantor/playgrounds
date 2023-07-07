@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series Multi rate timer functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_MRT_HPP
+#define LPC81X_MRT_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace mrt {
+using namespace registers::mrt;
 template <uint32_t base>
-struct gpio {
+struct mrt {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to mrt registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::mrt::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace mrt
 }  // namespace instances
 
 #endif

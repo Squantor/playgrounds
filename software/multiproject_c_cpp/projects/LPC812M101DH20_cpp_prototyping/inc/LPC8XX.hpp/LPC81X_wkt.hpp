@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series wakeup timer functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_WKT_HPP
+#define LPC81X_WKT_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace wkt {
+using namespace registers::wkt;
 template <uint32_t base>
-struct gpio {
+struct wkt {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to wkt registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::wkt::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace wkt
 }  // namespace instances
 
 #endif

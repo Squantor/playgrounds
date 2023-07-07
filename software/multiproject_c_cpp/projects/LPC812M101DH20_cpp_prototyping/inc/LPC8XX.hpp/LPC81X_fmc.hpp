@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series Flash memory control functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_FMC_HPP
+#define LPC81X_FMC_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace fmc {
+using namespace registers::fmc;
 template <uint32_t base>
-struct gpio {
+struct fmc {
   /**
    * @brief get registers from peripheral
    *
    * @return return pointer to gpio registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::fmc::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace fmc
 }  // namespace instances
 
 #endif

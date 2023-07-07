@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series system control functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_SYSCON_HPP
+#define LPC81X_SYSCON_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace syscon {
+using namespace registers::syscon;
 template <uint32_t base>
-struct gpio {
+struct syscon {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to syscon registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::syscon::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace syscon
 }  // namespace instances
 
 #endif

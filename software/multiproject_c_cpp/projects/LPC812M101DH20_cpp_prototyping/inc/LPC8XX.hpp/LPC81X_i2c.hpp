@@ -7,25 +7,24 @@
 /**
  * \file LPC810 series GPIO functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_I2C_HPP
+#define LPC81X_I2C_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace i2c {
+using namespace registers::i2c;
 template <uint32_t base>
-struct gpio {
+struct i2c {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to i2c registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::i2c::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace i2c
 }  // namespace instances
 
 #endif

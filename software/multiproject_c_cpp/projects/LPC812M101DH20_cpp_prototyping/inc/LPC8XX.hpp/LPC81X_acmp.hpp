@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series analog comparator functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_ACMP_HPP
+#define LPC81X_ACMP_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace acmp {
+using namespace registers::acmp;
 template <uint32_t base>
-struct gpio {
+struct acmp {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to analog comparator registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::acmp::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace acmp
 }  // namespace instances
 
 #endif

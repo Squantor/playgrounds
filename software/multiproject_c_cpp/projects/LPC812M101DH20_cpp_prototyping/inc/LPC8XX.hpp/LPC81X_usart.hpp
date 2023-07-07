@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series USART functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_USART_HPP
+#define LPC81X_USART_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace usart {
+using namespace registers::usart;
 template <uint32_t base>
-struct gpio {
+struct usart {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to usart registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::usart::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace usart
 }  // namespace instances
 
 #endif

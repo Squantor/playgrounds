@@ -5,27 +5,26 @@
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * \file LPC810 series GPIO functions
+ * \file LPC810 series SPI functions
  */
-#ifndef LPC81X_GPIO_HPP
-#define LPC81X_GPIO_HPP
+#ifndef LPC81X_SPI_HPP
+#define LPC81X_SPI_HPP
 
 namespace instances {
-namespace gpio {
-using namespace registers::gpio;
+namespace spi {
+using namespace registers::spi;
 template <uint32_t base>
-struct gpio {
+struct spi {
   /**
    * @brief get registers from peripheral
    *
-   * @return return pointer to gpio registers
+   * @return return pointer to spi registers
    */
   static auto regs() {
-    return reinterpret_cast<registers::gpio::registers *>(base);
+    return reinterpret_cast<registers::spi::registers *>(base);
   }
-
 };
-}  // namespace gpio
+}  // namespace spi
 }  // namespace instances
 
 #endif
