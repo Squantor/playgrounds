@@ -78,9 +78,8 @@ void boardInit(void) {
   sysconMainClockDivider(SYSCON, 2);
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
 
-  // setup GPIO's
-
   // setup SPI
 
+  // setup timers
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }
