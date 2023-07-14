@@ -56,8 +56,9 @@ using xtalOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpi
 // test pin pair 0, connected to eachother via 1KOhm resistor
 using test0PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN01>;
 using test1PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN15>;
-// auxillary test pin
+// auxillary test pin, connected to nothing
 using test2PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN07>;
+using test3PinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN14>;
 // I2C Clock pin pair, pulled up to 2.2K to 3.3V
 using i2cSclOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN10>;
 using i2cSclSensePinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN16>;
@@ -70,12 +71,17 @@ using mainI2cSdaFunctionType = instances::swm::pinFunction<instances::swm::pinFu
 using mainI2cSclFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::I2C_SCL_IO>;
 using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;
 using xtalOutFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALOUT>;
+using mainSpiSckFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::SPI0_SCK_IO>;
+using mainSpiSselFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::SPI0_SSEL_IO>;
+using mainSpiMosiFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::SPI0_MOSI_IO>;
+using mainSpiMisoFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::SPI0_MISO_IO>;
 
 constexpr xtalInPinType xtalInPin;
 constexpr xtalOutPinType xtalOutPin;
 constexpr test0PinType test0Pin;
 constexpr test1PinType test1Pin;
 constexpr test2PinType test2Pin;
+constexpr test3PinType test3Pin;
 constexpr i2cSclOutPinType i2cSclOutPin;
 constexpr i2cSdaOutPinType i2cSdaOutPin;
 constexpr i2cSclSensePinType i2cSclSensePin;
@@ -84,12 +90,15 @@ constexpr gpioPort mainPort;
 
 constexpr mainI2cSclFunctionType i2cMainSclFunction;
 constexpr mainI2cSdaFunctionType i2cMainSdaFunction;
+constexpr mainSpiSckFunctionType spiMainSckFunction;
+constexpr mainSpiSselFunctionType spiMainSselFunction;
+constexpr mainSpiMosiFunctionType spiMainMosiFunction;
+constexpr mainSpiMisoFunctionType spiMainMisoFunction;
 constexpr xtalInFunctionType xtalIn;
 constexpr xtalOutFunctionType xtalOut;
 
 extern instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
 
 void boardInit(void);
-void ledState(bool isOn);
 
 #endif

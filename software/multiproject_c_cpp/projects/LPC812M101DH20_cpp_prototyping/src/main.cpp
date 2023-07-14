@@ -11,8 +11,6 @@ uint32_t ticks;
 extern "C" {
 void SysTick_Handler(void) {
   ticks++;
-  // ledState(ticks & 0x1);
-  gpioPeripheral.toggle(test2Pin);
 }
 }
 

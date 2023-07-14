@@ -26,6 +26,7 @@ SOFTWARE.
 instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
 instances::swm::swm<peripherals::SWM_cpp> swmPeriperhal;
 instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
+instances::spi::spi<peripherals::SPI0_cpp> spiPeripheral;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -50,11 +51,16 @@ void boardInit(void) {
   ioconPeripheral.setup(i2cSdaSensePin, registers::iocon::pullModes::PULLUP);
   ioconPeripheral.setup(i2cSclOutPin, registers::iocon::i2cmodes::I2C_STD);
   ioconPeripheral.setup(i2cSdaOutPin, registers::iocon::i2cmodes::I2C_STD);
-  ioconPeripheral.setup(test0Pin, registers::iocon::pullModes::PULLUP);
-  ioconPeripheral.setup(test1Pin, registers::iocon::pullModes::PULLUP);
-  ioconPeripheral.setup(test2Pin, registers::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(test0Pin, registers::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(test1Pin, registers::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(test2Pin, registers::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(test3Pin, registers::iocon::pullModes::INACTIVE);
   swmPeriperhal.setup(i2cSclOutPin, i2cMainSclFunction);
   swmPeriperhal.setup(i2cSdaOutPin, i2cMainSdaFunction);
+  swmPeriperhal.setup(test2Pin, spiMainSckFunction);
+  swmPeriperhal.setup(test3Pin, spiMainSselFunction);
+  swmPeriperhal.setup(test1Pin, spiMainMosiFunction);
+  swmPeriperhal.setup(test0Pin, spiMainMisoFunction);
   swmPeriperhal.setup(xtalInPin, xtalIn);
   swmPeriperhal.setup(xtalOut, xtalOut);
 
@@ -73,18 +79,8 @@ void boardInit(void) {
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
 
   // setup GPIO's
-  __NOP();
-  gpioPeripheral.output(test2Pin);
-  gpioPeripheral.portDirection(mainPort, 0x00000080, 0x00000080);
-  gpioPeripheral.portDirection(mainPort, 0x00000080);
-  [[maybe_unused]] volatile uint32_t dummy = gpioPeripheral.portGet(mainPort, 0x0000FFFF);
+
+  // setup SPI
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
-}
-
-void ledState(bool isOn) {
-  if (isOn)
-    gpioPeripheral.high(test2Pin);
-  else
-    gpioPeripheral.low(test2Pin);
 }
