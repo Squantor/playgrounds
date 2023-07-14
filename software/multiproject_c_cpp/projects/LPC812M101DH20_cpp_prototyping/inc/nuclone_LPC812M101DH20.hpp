@@ -98,6 +98,7 @@ constexpr xtalInFunctionType xtalIn;
 constexpr xtalOutFunctionType xtalOut;
 
 extern instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
+extern instances::spi::spi<peripherals::SPI0_cpp> spiPeripheral;
 
 void boardInit(void);
 

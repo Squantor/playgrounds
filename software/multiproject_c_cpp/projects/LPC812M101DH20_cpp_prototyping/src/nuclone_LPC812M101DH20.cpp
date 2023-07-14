@@ -43,7 +43,7 @@ void crudeDelay(uint32_t iterations) {
 
 void boardInit(void) {
   // clock enables and resets
-  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO);
+  sysconEnableClocks(SYSCON, CLKCTRL_SWM | CLKCTRL_IOCON | CLKCTRL_GPIO | CLKCTRL_SPI0);
   // setup IOCON pins
   ioconPeripheral.setup(xtalInPin, registers::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalOutPin, registers::iocon::pullModes::INACTIVE);
@@ -79,6 +79,7 @@ void boardInit(void) {
   sysconMainClockSelect(SYSCON, MAINCLKSEL_PLL_OUT);
 
   // setup SPI
+  spiPeripheral.initMaster(1000);  // very slow SPI
 
   // setup timers
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
