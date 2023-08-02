@@ -1,0 +1,11 @@
+set architecture armv6-m
+set print pretty on
+file bin/RP2040_demo/debug/RP2040_demo.elf
+target extended-remote /dev/ttyACM0
+shell sleep 1
+monitor swdp_scan
+attach 1
+set mem inaccessible-by-default off
+load bin/RP2040_demo/debug/RP2040_demo.elf
+compare-sections
+b main

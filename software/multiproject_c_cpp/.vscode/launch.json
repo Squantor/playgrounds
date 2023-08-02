@@ -178,6 +178,7 @@
     {
       "name": "debug debug RP2040 demo",
       "cwd": "${workspaceRoot}",
+      //"gdbPath": "/usr/bin/gdb-multiarch",
       "executable": "${workspaceFolder}/bin/RP2040_demo/debug/RP2040_demo.elf",
       "request": "launch",
       "type": "cortex-debug",
@@ -201,6 +202,7 @@
     {
       "name": "debug debug RP2040 flash bringup",
       "cwd": "${workspaceRoot}",
+      "gdbPath": "/usr/bin/gdb-multiarch",
       "executable": "${workspaceFolder}/bin/RP2040_flash_bringup/debug/RP2040_flash_bringup.elf",
       "request": "launch",
       "type": "cortex-debug",

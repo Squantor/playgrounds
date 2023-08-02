@@ -108,5 +108,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build RP2404 C++ prototyping",
+      "type": "shell",
+      "command": "bear -- make PROJECT=RP2404_cpp CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
