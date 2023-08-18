@@ -1,14 +1,14 @@
 [submodule "software/squantorLibC"]
-	path = software/multiproject_c_cpp/libraries/squantorLibC
+	path = software/cpp_makefile/libraries/squantorLibC
 	url = git@github.com:Squantor/squantorLibC.git
 [submodule "software/squantorLibEmbedded"]
-	path = software/multiproject_c_cpp/libraries/squantorLibEmbedded
+	path = software/cpp_makefile/libraries/squantorLibEmbedded
 	url = git@github.com:Squantor/squantorLibEmbedded.git
 [submodule "software/squantorMinUnit"]
-	path = software/multiproject_c_cpp/libraries/squantorMinUnit
+	path = software/cpp_makefile/libraries/squantorMinUnit
 	url = git@github.com:Squantor/squantorMinUnit.git
 [submodule "software/libMcuLL"]
-	path = software/multiproject_c_cpp/libraries/libMcuLL
+	path = software/cpp_makefile/libraries/libMcuLL
 	url = git@github.com:Squantor/libMcuLL.git
 [submodule "electronics/various_PCB"]
 	path = electronics/various_PCB
