@@ -4,7 +4,7 @@
 
 # settings for the MCU target
 #
-# Version: 20230101
+# Version: 20230929
 
 ifndef $(PROJECT)_MCU
 $(error Project MCU is not defined!)
@@ -21,7 +21,7 @@ CFLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections 
 CFLAGS_debug += -Og -g3
 CFLAGS_release_size += -Os -g -flto
 CFLAGS_release_speed += -O2 -g -flto
-CXXFLAGS += -std=gnu++20 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions
+CXXFLAGS += -std=gnu++20 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -fno-threadsafe-statics
 CXXFLAGS_debug += -Og -g3
 CXXFLAGS_release_size += -Os -g
 CXXFLAGS_release_speed += -O2 -g
