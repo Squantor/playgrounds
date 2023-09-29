@@ -5,6 +5,29 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug LPC812M101DH20 blinky",
+      "cwd": "${workspaceRoot}",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "executable": "${workspaceFolder}/bin/LPC812M101DH20_blinky/debug/LPC812M101DH20_blinky.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "LPC812",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      "powerOverBMP": "disable",
+      "preLaunchTask": "build LPC812M101DH20 blinky",
+      "preLaunchCommands": [],
+      "postLaunchCommands": [
+        "set {int}0x40048000 = 2",
+        "compare-sections"
+      ],
+      "preRestartCommands": [],
+      "runToEntryPoint": "main",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "debuggerArgs": [],
+    },
+    {
       "name": "debug C++ peripheral abstraction test",
       "type": "cppdbg",
       "request": "launch",
