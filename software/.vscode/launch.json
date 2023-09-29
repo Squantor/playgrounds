@@ -23,7 +23,7 @@
         "compare-sections"
       ],
       "preRestartCommands": [],
-      "runToEntryPoint": "main",
+      //"runToEntryPoint": "main",
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
       "debuggerArgs": [],
     },

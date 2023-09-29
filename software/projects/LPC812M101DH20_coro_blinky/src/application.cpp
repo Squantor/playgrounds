@@ -9,15 +9,14 @@ For conditions of distribution and use, see LICENSE file
  */
 #include <board.hpp>
 #include <blinky.hpp>
+#include <systick.hpp>
+#include <blinky.hpp>
 
-extern "C" {
-void SysTick_Handler(void) {
-  gpioPeripheral.toggle(ledPin);
-}
-}
+blinky appBlinky;
 
 void applicationLoop(void) {
+  static uint32_t currentSysTick = sysTick;
   while (1) {
-    __WFI();
+    appBlinky.execute();
   }
 }
