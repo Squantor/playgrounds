@@ -122,5 +122,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build LPC812M101DH20 coroutine blinky",
+      "type": "shell",
+      "command": "bear -- make PROJECT=LPC812M101DH20_coro_blinky CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
