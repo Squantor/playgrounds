@@ -11,6 +11,13 @@
       "problemMatcher": "$gcc"
     },
     {
+      "label": "build debug LPC812M101DH20 nuclone ADC demo",
+      "type": "shell",
+      "command": "bear -- make PROJECT=LPC812M101DH20_nuclone_ADC CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
       "label": "build debug E-ink display example",
       "type": "shell",
       "command": "bear -- make PROJECT=LPC812_e-ink_display config=debug -j25",

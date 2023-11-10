@@ -24,3 +24,4 @@ include $(BASE_DIR)/projects/LPC812M101DH20_cpp_prototyping/LPC812M101DH20_cpp_p
 include $(BASE_DIR)/projects/RP2040_cpp/RP2040_cpp.mak
 include $(BASE_DIR)/projects/LPC812M101DH20_blinky/LPC812M101DH20_blinky.mak
 include $(BASE_DIR)/projects/LPC812M101DH20_coro_blinky/LPC812M101DH20_coro_blinky.mak
+include $(BASE_DIR)/projects/LPC812M101DH20_nuclone_ADC/LPC812M101DH20_nuclone_ADC.mak
