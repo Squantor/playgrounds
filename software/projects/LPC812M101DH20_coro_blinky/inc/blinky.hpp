@@ -22,10 +22,10 @@ class blinky {
 
   void execute(void) {
     CR_BEGIN(crCurrent);
-    CR_WAIT_V(crCurrent, currSystick != sysTick);
+    CR_WAIT_V(currSystick != sysTick);
     currSystick = sysTick;
     gpioPeripheral.toggle(ledPin);
-    CR_END_V(crCurrent);
+    CR_END_V();
   }
 
  private:

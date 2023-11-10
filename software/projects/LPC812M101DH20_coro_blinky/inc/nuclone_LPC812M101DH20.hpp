@@ -20,17 +20,17 @@ For conditions of distribution and use, see LICENSE file
 #define TICKS_PER_S 10
 
 // main gpio port
-using gpioPort = instances::port<instances::IOports::PORT0>;
+using gpioPort = libMcuLL::hw::port<libMcuLL::hw::IOports::PORT0>;
 
 // Crystal osillator pins
-using xtalInPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN08>;
-using xtalOutPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN09>;
+using xtalInPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN08>;
+using xtalOutPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN09>;
 // LED pin
-using LedPinType = instances::pin<instances::IOports::PORT0, instances::IOpins::PIN14>;
+using LedPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN14>;
 
 // Peripheral functions
-using xtalInFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALIN>;
-using xtalOutFunctionType = instances::swm::pinFunction<instances::swm::pinFunctions::XTALOUT>;
+using xtalInFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::XTALIN>;
+using xtalOutFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::XTALOUT>;
 
 constexpr gpioPort mainPort;
 constexpr xtalInPinType xtalInPin;
@@ -40,9 +40,9 @@ constexpr LedPinType ledPin;
 constexpr xtalInFunctionType xtalIn;
 constexpr xtalOutFunctionType xtalOut;
 
-extern instances::iocon::iocon<peripherals::IOCON_cpp> ioconPeripheral;
-extern instances::swm::swm<peripherals::SWM_cpp> swmPeriperhal;
-extern instances::gpio::gpio<peripherals::GPIO_cpp> gpioPeripheral;
-extern instances::syscon::syscon<peripherals::SYSCON_cpp> sysconPeripheral;
+extern libMcuLL::sw::iocon::iocon<libMcuLL::hw::IOCON_cpp> ioconPeripheral;
+extern libMcuLL::sw::swm::swm<libMcuLL::hw::SWM_cpp> swmPeriperhal;
+extern libMcuLL::sw::gpio::gpio<libMcuLL::hw::GPIO_cpp> gpioPeripheral;
+extern libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
 
 #endif
