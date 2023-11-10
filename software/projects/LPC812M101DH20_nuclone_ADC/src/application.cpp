@@ -11,12 +11,15 @@ For conditions of distribution and use, see LICENSE file
 #include <blinky.hpp>
 #include <systick.hpp>
 #include <blinky.hpp>
+#include <measure.hpp>
 
 blinky appBlinky;
+measure appMeasure;
 
 void applicationLoop(void) {
   static uint32_t currentSysTick = sysTick;
   while (1) {
     appBlinky.execute();
+    appMeasure.execute();
   }
 }

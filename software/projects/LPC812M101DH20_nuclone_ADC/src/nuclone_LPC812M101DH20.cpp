@@ -60,7 +60,10 @@ void boardInit(void) {
   // disable all unneeded clocks
   sysconPeripheral.disablePeripheralClocks(libMcuLL::sw::syscon::CLOCK_IOCON);
   // setup USART
+  sysconPeripheral.setUsartClockDivider(1);
+  mainUsartPeripheral.init(115200);
   // setup SPI
+  mainSpiPeripheral.initMaster(100000);
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }

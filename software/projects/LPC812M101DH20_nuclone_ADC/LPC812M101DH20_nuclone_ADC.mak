@@ -18,7 +18,8 @@ $(NAME)_FILES := $(PROJ_DIR)/src/main.cpp \
 $(PROJ_DIR)/src/$(BOARD).cpp \
 $(PROJ_DIR)/src/application.cpp \
 $(PROJ_DIR)/src/systick.cpp \
-$(PROJ_DIR)/src/blinky.cpp
+$(PROJ_DIR)/src/blinky.cpp \
+$(PROJ_DIR)/src/measure.cpp
 $(NAME)_INCLUDES := -I$(PROJ_DIR)/inc
 
 # --- nothing user definable below ---
