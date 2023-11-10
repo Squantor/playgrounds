@@ -8,13 +8,13 @@ For conditions of distribution and use, see LICENSE file
 #include <string.h>
 
 char testString[] = "Hello output\n";
+std::array<std::uint16_t, sizeof(testString)> testOutput;
 
 void measure::execute(void) {
   CR_BEGIN(crCurrent);
   CR_WAIT_V(currSystick != sysTick);
   currSystick = sysTick;
   // output Uart stuff
-  std::array<std::uint16_t, sizeof(testString)> testOutput;
   char *p = testString;
   for (std::uint16_t &data : testOutput) {
     data = *p;
