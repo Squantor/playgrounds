@@ -25,24 +25,45 @@ using gpioPort = libMcuLL::hw::port<libMcuLL::hw::IOports::PORT0>;
 // Crystal osillator pins
 using xtalInPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN08>;
 using xtalOutPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN09>;
-// LED pin
-using LedPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN14>;
+// Uart pins
+using mainUartRxPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN00>;
+using mainUartTxPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN04>;
+// SPI pins
+using mainSpiSckPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN17>;
+using mainSpiMisoPinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN13>;
+using adcSpiCePinType = libMcuLL::hw::pin<libMcuLL::hw::IOports::PORT0, libMcuLL::hw::IOpins::PIN12>;
 
 // Peripheral functions
 using xtalInFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::XTALIN>;
 using xtalOutFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::XTALOUT>;
+using mainUartRxFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::U0_RXD_I>;
+using mainUartTxFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::U0_TXD_O>;
+using mainSpiSckFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::SPI0_SCK_IO>;
+using mainSpiMisoFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::SPI0_MOSI_IO>;
+using adcSpiCeFunctionType = libMcuLL::hw::swm::pinFunction<libMcuLL::hw::swm::pinFunctions::SPI0_SSEL_IO>;
 
 constexpr gpioPort mainPort;
 constexpr xtalInPinType xtalInPin;
 constexpr xtalOutPinType xtalOutPin;
-constexpr LedPinType ledPin;
+constexpr mainUartRxPinType mainUartRxPin;
+constexpr mainUartTxPinType mainUartTxPin;
+constexpr mainSpiSckPinType mainSpiSckPin;
+constexpr mainSpiMisoPinType mainSpiMisoPin;
+constexpr adcSpiCePinType adcSpiCePin;
 
 constexpr xtalInFunctionType xtalIn;
 constexpr xtalOutFunctionType xtalOut;
+constexpr mainUartRxFunctionType mainUartRxFunction;
+constexpr mainUartTxFunctionType mainUartTxFunction;
+constexpr mainSpiSckFunctionType mainSpiSckFunction;
+constexpr mainSpiMisoFunctionType mainSpiMisoFunction;
+constexpr adcSpiCeFunctionType adcSpiCeFunction;
 
 extern libMcuLL::sw::iocon::iocon<libMcuLL::hw::IOCON_cpp> ioconPeripheral;
 extern libMcuLL::sw::swm::swm<libMcuLL::hw::SWM_cpp> swmPeriperhal;
 extern libMcuLL::sw::gpio::gpio<libMcuLL::hw::GPIO_cpp> gpioPeripheral;
 extern libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
+extern libMcuLL::sw::spi::spiAsync<libMcuLL::hw::SPI0_cpp, libMcuLL::sw::spi::chipEnables> mainSpiPeripheral;
+extern libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp> mainUsartPeripheral;
 
 #endif

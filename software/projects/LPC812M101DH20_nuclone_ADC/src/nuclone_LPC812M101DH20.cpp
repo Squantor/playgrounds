@@ -10,6 +10,8 @@ libMcuLL::sw::iocon::iocon<libMcuLL::hw::IOCON_cpp> ioconPeripheral;
 libMcuLL::sw::swm::swm<libMcuLL::hw::SWM_cpp> swmPeriperhal;
 libMcuLL::sw::gpio::gpio<libMcuLL::hw::GPIO_cpp> gpioPeripheral;
 libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
+libMcuLL::sw::spi::spiAsync<libMcuLL::hw::SPI0_cpp, libMcuLL::sw::spi::chipEnables> mainSpiPeripheral;
+libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp> mainUsartPeripheral;
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
@@ -27,12 +29,21 @@ void crudeDelay(uint32_t iterations) {
 void boardInit(void) {
   // clock enables and resets
   sysconPeripheral.enablePeripheralClocks(libMcuLL::sw::syscon::CLOCK_SWM | libMcuLL::sw::syscon::CLOCK_IOCON |
-                                          libMcuLL::sw::syscon::CLOCK_GPIO);
+                                          libMcuLL::sw::syscon::CLOCK_GPIO | libMcuLL::sw::syscon::CLOCK_UART0 |
+                                          libMcuLL::sw::syscon::CLOCK_SPI0);
   // setup IOCON pins
   ioconPeripheral.setup(xtalInPin, libMcuLL::sw::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalOutPin, libMcuLL::sw::iocon::pullModes::INACTIVE);
+  ioconPeripheral.setup(mainUartRxPin, libMcuLL::sw::iocon::pullModes::PULLUP);
+  ioconPeripheral.setup(mainSpiMisoPin, libMcuLL::sw::iocon::pullModes::PULLDOWN);
   swmPeriperhal.setup(xtalInPin, xtalIn);
   swmPeriperhal.setup(xtalOut, xtalOut);
+  swmPeriperhal.setup(mainUartRxPin, mainUartRxFunction);
+  swmPeriperhal.setup(mainUartTxPin, mainUartTxFunction);
+  swmPeriperhal.setup(mainSpiMisoPin, mainSpiMisoFunction);
+  swmPeriperhal.setup(mainSpiSckPin, mainSpiSckFunction);
+  swmPeriperhal.setup(adcSpiCePin, adcSpiCeFunction);
+
   // setup system clocks
   sysconPeripheral.setSysOscControl(libMcuLL::hw::syscon::SYSOSCCTRL::NO_BYPASS | libMcuLL::hw::syscon::SYSOSCCTRL::FREQ_1_20MHz);
   sysconPeripheral.powerPeripherals(libMcuLL::sw::syscon::POWER_SYSOSC);
@@ -48,7 +59,8 @@ void boardInit(void) {
   sysconPeripheral.selectMainClock(libMcuLL::sw::syscon::MAINCLK_PLL_OUT);
   // disable all unneeded clocks
   sysconPeripheral.disablePeripheralClocks(libMcuLL::sw::syscon::CLOCK_IOCON);
-  gpioPeripheral.output(ledPin);
+  // setup USART
+  // setup SPI
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }

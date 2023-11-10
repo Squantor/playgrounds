@@ -24,7 +24,6 @@ class blinky {
     CR_BEGIN(crCurrent);
     CR_WAIT_V(currSystick != sysTick);
     currSystick = sysTick;
-    gpioPeripheral.toggle(ledPin);
     CR_END_V();
   }
 
