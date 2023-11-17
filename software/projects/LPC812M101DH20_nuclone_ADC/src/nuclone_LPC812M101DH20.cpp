@@ -36,7 +36,6 @@ void boardInit(void) {
   ioconPeripheral.setup(xtalInPin, libMcuLL::sw::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalOutPin, libMcuLL::sw::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(mainUartRxPin, libMcuLL::sw::iocon::pullModes::PULLUP);
-  ioconPeripheral.setup(mainSpiMisoPin, libMcuLL::sw::iocon::pullModes::PULLDOWN);
   swmPeriperhal.setup(xtalInPin, xtalIn);
   swmPeriperhal.setup(xtalOut, xtalOut);
   swmPeriperhal.setup(mainUartRxPin, mainUartRxFunction);
