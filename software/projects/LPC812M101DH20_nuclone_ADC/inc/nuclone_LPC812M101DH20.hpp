@@ -66,4 +66,6 @@ extern libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
 extern libMcuLL::sw::spi::spiAsync<libMcuLL::hw::SPI0_cpp, libMcuLL::sw::spi::chipEnables> mainSpiPeripheral;
 extern libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp> mainUsartPeripheral;
 
+extern libMcuLL::sw::spi::chipEnables adcChipEnable;
+
 #endif

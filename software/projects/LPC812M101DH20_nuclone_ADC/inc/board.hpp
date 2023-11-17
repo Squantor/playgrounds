@@ -10,5 +10,6 @@ For conditions of distribution and use, see LICENSE file
 #include <nuclone_LPC812M101DH20.hpp>
 
 void boardInit(void);
+void crudeDelay(uint32_t iterations);
 
 #endif

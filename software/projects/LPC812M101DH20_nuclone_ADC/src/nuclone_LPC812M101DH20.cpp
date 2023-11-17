@@ -12,6 +12,7 @@ libMcuLL::sw::gpio::gpio<libMcuLL::hw::GPIO_cpp> gpioPeripheral;
 libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
 libMcuLL::sw::spi::spiAsync<libMcuLL::hw::SPI0_cpp, libMcuLL::sw::spi::chipEnables> mainSpiPeripheral;
 libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp> mainUsartPeripheral;
+libMcuLL::sw::spi::chipEnables adcChipEnable{libMcuLL::sw::spi::chipEnables::SSEL};
 
 void crudeDelay(uint32_t iterations) {
   for (uint32_t i = iterations; i > 0; i--) {
