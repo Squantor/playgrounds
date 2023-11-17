@@ -42,7 +42,7 @@ void boardInit(void) {
   swmPeriperhal.setup(mainUartTxPin, mainUartTxFunction);
   swmPeriperhal.setup(mainSpiMisoPin, mainSpiMisoFunction);
   swmPeriperhal.setup(mainSpiSckPin, mainSpiSckFunction);
-  swmPeriperhal.setup(adcSpiCePin, adcSpiCeFunction);
+  // swmPeriperhal.setup(adcSpiCePin, adcSpiCeFunction);
 
   // setup system clocks
   sysconPeripheral.setSysOscControl(libMcuLL::hw::syscon::SYSOSCCTRL::NO_BYPASS | libMcuLL::hw::syscon::SYSOSCCTRL::FREQ_1_20MHz);
@@ -63,7 +63,8 @@ void boardInit(void) {
   sysconPeripheral.setUsartClockDivider(1);
   mainUsartPeripheral.init(115200);
   // setup SPI
-  mainSpiPeripheral.initMaster(100000);
+  mainSpiPeripheral.initMaster(4000000);
+  // setup MCP3551 in continuous conversion mode
 
   SysTick_Config(CLOCK_AHB / TICKS_PER_S);
 }
