@@ -64,7 +64,7 @@ extern libMcuLL::sw::swm::swm<libMcuLL::hw::SWM_cpp> swmPeriperhal;
 extern libMcuLL::sw::gpio::gpio<libMcuLL::hw::GPIO_cpp> gpioPeripheral;
 extern libMcuLL::sw::syscon::syscon<libMcuLL::hw::SYSCON_cpp> sysconPeripheral;
 extern libMcuLL::sw::spi::spiAsync<libMcuLL::hw::SPI0_cpp, libMcuLL::sw::spi::chipEnables, std::uint16_t> mainSpiPeripheral;
-extern libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp, std::uint8_t> mainUsartPeripheral;
+extern libMcuLL::sw::usart::usartAsync<libMcuLL::hw::USART0_cpp, char> mainUsartPeripheral;
 
 extern libMcuLL::sw::spi::chipEnables adcChipEnable;
 
