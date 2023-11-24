@@ -7,8 +7,7 @@ For conditions of distribution and use, see LICENSE file
 #include <measure.hpp>
 #include <string.h>
 
-char testString[] = "Hello output\n";
-std::array<std::uint16_t, sizeof(testString)> testOutput;
+std::array<std::uint8_t, 16> testOutput{"Hello output\n"};
 std::array<std::uint16_t, 2> adcSampleOutput;
 
 uint32_t conversionReady(void) {
@@ -48,11 +47,6 @@ void measure::execute(void) {
   crudeDelay(15);  // wait until MCP3551s internal state is normalized
   conversionReady();
   // output Uart stuff
-  char *p = testString;
-  for (std::uint16_t &data : testOutput) {
-    data = *p;
-    p++;
-  }
   CR_WAIT_V(mainUsartPeripheral.claim() == libMcuLL::results::CLAIMED);
   CR_WAIT_V(mainUsartPeripheral.startWrite(testOutput) == libMcuLL::results::STARTED);
   CR_WAIT_V(mainUsartPeripheral.progressWrite() == libMcuLL::results::DONE);
