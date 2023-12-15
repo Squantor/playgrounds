@@ -8,6 +8,7 @@ For conditions of distribution and use, see LICENSE file
 #include <string.h>
 #include <span>
 #include <format.hpp>
+// #include <MCP355X.hpp>
 
 std::array<char, 16> promptString{"ADC value is: "};
 std::array<char, 3> crlfString{"\n\r"};
@@ -30,22 +31,26 @@ auto isMcp355XReady = [](void) {
   return state != 0;
 };
 
+auto disableMcp355X = [](void) {
+  gpioPeripheral.high(adcSpiCePin);
+};
+
 void measure::execute(void) {
   CR_BEGIN(crCurrent);
   // CR_WAIT_V(currSystick != sysTick);
   // currSystick = sysTick;
 
   // sense if a sample is ready
-  CR_WAIT_V(isMcp355XReady() == 0);
   adcSampleOutput[0] = 0xDEAD;
   adcSampleOutput[1] = 0xBEEF;
   // do SPI stuff
   CR_WAIT_V(mainSpiPeripheral.claim() == libMcuLL::results::CLAIMED);
+  CR_WAIT_V(isMcp355XReady() == 0);
   CR_WAIT_V(mainSpiPeripheral.startRead(libMcuLL::sw::spi::chipEnables::SSEL_NONE, adcSampleOutput, 24, false) ==
             libMcuLL::results::STARTED);
   while (mainSpiPeripheral.progress() != libMcuLL::results::DONE)
     ;
-  gpioPeripheral.high(adcSpiCePin);
+  disableMcp355X();
   CR_WAIT_V(mainSpiPeripheral.unclaim() == libMcuLL::results::UNCLAIMED);
   // Start a new conversion of the MCP3551
   crudeDelay(15);  // wait until MCP3551s internal state is normalized
