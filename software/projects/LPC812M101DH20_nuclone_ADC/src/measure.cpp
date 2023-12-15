@@ -13,7 +13,7 @@ For conditions of distribution and use, see LICENSE file
 std::array<char, 16> promptString{"ADC value is: "};
 std::array<char, 3> crlfString{"\n\r"};
 std::array<char, 32> uartOutputBuffer;
-std::array<std::uint16_t, 2> adcSampleOutput;
+uint32_t adcSampleOutput;
 
 driverMCP355X testAdc(mainSpiPeripheral);
 
@@ -42,27 +42,14 @@ void measure::execute(void) {
   // CR_WAIT_V(currSystick != sysTick);
   // currSystick = sysTick;
 
-  // sense if a sample is ready
-  adcSampleOutput[0] = 0xDEAD;
-  adcSampleOutput[1] = 0xBEEF;
   // do SPI stuff
-  CR_WAIT_V(mainSpiPeripheral.claim() == libMcuLL::results::CLAIMED);
-  CR_WAIT_V(isMcp355XReady() == 0);
-  CR_WAIT_V(mainSpiPeripheral.startRead(libMcuLL::sw::spi::chipEnables::SSEL_NONE, adcSampleOutput, 24, false) ==
-            libMcuLL::results::STARTED);
-  while (mainSpiPeripheral.progress() != libMcuLL::results::DONE)
-    ;
-  disableMcp355X();
-  CR_WAIT_V(mainSpiPeripheral.unclaim() == libMcuLL::results::UNCLAIMED);
-  // Start a new conversion of the MCP3551
-  crudeDelay(15);  // wait until MCP3551s internal state is normalized
-  isMcp355XReady();
+  CR_WAIT_V(testAdc.getSample(isMcp355XReady, disableMcp355X, adcSampleOutput) == libMcuLL::results::DONE);
+
   // construct output string
   std::span<char> output;
   output = uartOutputBuffer;
   output = util::appendString(output, promptString);
-  output = util::appendHex(output, adcSampleOutput[0]);
-  output = util::appendHex(output, static_cast<uint8_t>(adcSampleOutput[1]));
+  output = util::appendHex(output, adcSampleOutput);
   output = util::appendString(output, crlfString);
   // output Uart stuff
   CR_WAIT_V(mainUsartPeripheral.claim() == libMcuLL::results::CLAIMED);
