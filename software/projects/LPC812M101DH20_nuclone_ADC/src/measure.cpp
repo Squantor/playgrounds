@@ -14,7 +14,7 @@ std::array<char, 3> crlfString{"\n\r"};
 std::array<char, 32> uartOutputBuffer;
 std::array<std::uint16_t, 2> adcSampleOutput;
 
-uint32_t conversionReady(void) {
+auto isMcp355XReady = [](void) {
   // preset GPIO's
   gpioPeripheral.output(adcSpiCePin);
   gpioPeripheral.high(adcSpiCePin);
@@ -27,8 +27,8 @@ uint32_t conversionReady(void) {
   if (state != 0) {
     gpioPeripheral.high(adcSpiCePin);
   }
-  return state;
-}
+  return state != 0;
+};
 
 void measure::execute(void) {
   CR_BEGIN(crCurrent);
@@ -36,7 +36,7 @@ void measure::execute(void) {
   // currSystick = sysTick;
 
   // sense if a sample is ready
-  CR_WAIT_V(conversionReady() == 0);
+  CR_WAIT_V(isMcp355XReady() == 0);
   adcSampleOutput[0] = 0xDEAD;
   adcSampleOutput[1] = 0xBEEF;
   // do SPI stuff
@@ -49,7 +49,7 @@ void measure::execute(void) {
   CR_WAIT_V(mainSpiPeripheral.unclaim() == libMcuLL::results::UNCLAIMED);
   // Start a new conversion of the MCP3551
   crudeDelay(15);  // wait until MCP3551s internal state is normalized
-  conversionReady();
+  isMcp355XReady();
   // construct output string
   std::span<char> output;
   output = uartOutputBuffer;
