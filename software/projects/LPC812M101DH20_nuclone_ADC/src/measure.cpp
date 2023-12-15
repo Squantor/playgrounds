@@ -8,12 +8,14 @@ For conditions of distribution and use, see LICENSE file
 #include <string.h>
 #include <span>
 #include <format.hpp>
-// #include <MCP355X.hpp>
+#include <MCP355X.hpp>
 
 std::array<char, 16> promptString{"ADC value is: "};
 std::array<char, 3> crlfString{"\n\r"};
 std::array<char, 32> uartOutputBuffer;
 std::array<std::uint16_t, 2> adcSampleOutput;
+
+driverMCP355X testAdc(mainSpiPeripheral);
 
 auto isMcp355XReady = [](void) {
   // preset GPIO's
