@@ -10,10 +10,10 @@ For conditions of distribution and use, see LICENSE file
 #include <format.hpp>
 #include <MCP355X.hpp>
 
-std::array<char, 16> promptString{"ADC value is: "};
+std::array<char, 16> adcRawString{"ADC raw is: "};
+std::array<char, 16> adcValueString{" ADC value is: "};
 std::array<char, 3> crlfString{"\n\r"};
-std::array<char, 32> uartOutputBuffer;
-uint32_t adcSampleOutput;
+std::array<char, 64> uartOutputBuffer;
 
 driverMCP355X testAdc(mainSpiPeripheral);
 
@@ -43,13 +43,17 @@ void measure::execute(void) {
   // currSystick = sysTick;
 
   // do SPI stuff
-  CR_WAIT_V(testAdc.getSample(isMcp355XReady, disableMcp355X, adcSampleOutput) == libMcuLL::results::DONE);
+  std::uint32_t adcRaw;
+  std::int32_t adcValue;
+  CR_WAIT_V(testAdc.getSample(isMcp355XReady, disableMcp355X, adcRaw, adcValue) == libMcuLL::results::DONE);
 
   // construct output string
   std::span<char> output;
   output = uartOutputBuffer;
-  output = util::appendString(output, promptString);
-  output = util::appendHex(output, adcSampleOutput);
+  output = util::appendString(output, adcRawString);
+  output = util::appendHex(output, adcRaw);
+  output = util::appendString(output, adcValueString);
+  output = util::appendDec(output, adcValue);
   output = util::appendString(output, crlfString);
   // output Uart stuff
   CR_WAIT_V(mainUsartPeripheral.claim() == libMcuLL::results::CLAIMED);

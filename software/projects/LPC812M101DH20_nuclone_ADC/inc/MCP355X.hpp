@@ -18,7 +18,7 @@ struct driverMCP355X {
   driverMCP355X(T_spibus& peripheral) : spibus(peripheral){};
 
   template <typename T_Check, typename T_disable>
-  libMcuLL::results getSample(T_Check&& sampleAvailable, T_disable&& disableChip, std::uint32_t& sample) {
+  libMcuLL::results getSample(T_Check&& sampleAvailable, T_disable&& disableChip, std::uint32_t& raw, std::int32_t& sample) {
     CR_BEGIN(crCurrent);
     CR_WAIT(libMcuLL::results::BUSY, spibus.claim() == libMcuLL::results::CLAIMED);
     CR_WAIT(libMcuLL::results::BUSY, sampleAvailable() == 0);
@@ -26,8 +26,20 @@ struct driverMCP355X {
             spibus.startRead(libMcuLL::sw::spi::chipEnables::SSEL_NONE, adcSampleOutput, 24, false) == libMcuLL::results::STARTED);
     CR_WAIT(libMcuLL::results::BUSY, spibus.progress() == libMcuLL::results::DONE);
     disableChip();
-    sample = static_cast<uint32_t>(adcSampleOutput[0]) << 16;
-    sample |= static_cast<uint32_t>(adcSampleOutput[1]);
+    raw = static_cast<uint32_t>(adcSampleOutput[0]) << 8;
+    raw |= static_cast<uint32_t>(adcSampleOutput[1] & 0xFF);
+    // ransform raw data and overflow conditions into a integer value
+    if (raw & (1 << 22)) {
+      sample = raw;
+    } else if (raw & (1 << 23)) {
+      sample = raw | 0xFFC00000;
+    } else {
+      if (raw & (1 << 21))
+        sample = raw | 0xFFC00000;
+      else
+        sample = raw;
+    }
+
     CR_YIELD(libMcuLL::results::DONE);
     CR_WAIT(libMcuLL::results::BUSY, spibus.unclaim() == libMcuLL::results::UNCLAIMED);
     CR_END(libMcuLL::results::BUSY);
