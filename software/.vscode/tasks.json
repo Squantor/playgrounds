@@ -24,5 +24,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build inclusion test",
+      "type": "shell",
+      "command": "compiledb make PROJECT=include_test CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
