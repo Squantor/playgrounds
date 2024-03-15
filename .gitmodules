@@ -13,3 +13,12 @@
 [submodule "electronics/various_PCB"]
 	path = electronics/various_PCB
 	url = git@github.com:Squantor/various_PCB.git
+[submodule "software/libraries/squantorLibC"]
+	path = software/libraries/squantorLibC
+	url = git@github.com:Squantor/squantorLibC.git
+[submodule "software/libraries/squantorLibEmbedded"]
+	path = software/libraries/squantorLibEmbedded
+	url = git@github.com:Squantor/squantorLibEmbedded.git
+[submodule "software/libraries/squantorMinUnit"]
+	path = software/libraries/squantorMinUnit
+	url = git@github.com:Squantor/squantorMinUnit.git

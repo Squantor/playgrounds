@@ -1,0 +1,28 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "make clean",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build PC template",
+      "type": "shell",
+      "command": "compiledb make PROJECT=PC CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build C++ peripheral abstraction test",
+      "type": "shell",
+      "command": "compiledb make PROJECT=peripheral_abstraction CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+  ]
+}
