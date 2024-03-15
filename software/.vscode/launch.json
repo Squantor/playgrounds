@@ -29,5 +29,30 @@
       ],
       "preLaunchTask": "build C++ peripheral abstraction test",
     },
+    {
+      "name": "debug inclusion test",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/include_test/debug/include_test.elf",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build inclusion test",
+    },
   ]
 }

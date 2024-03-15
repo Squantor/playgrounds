@@ -10,7 +10,7 @@ PROJ_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 # project settings
 NAME := include_test
 $(NAME)_TARGET := PC
-$(NAME)_DEFINES := 
+$(NAME)_DEFINES := -DTEST=florp
 $(NAME)_LIBS :=
 $(NAME)_FILES := $(PROJ_DIR)/src/main.cpp
 $(NAME)_INCLUDES := -I$(PROJ_DIR)/inc
