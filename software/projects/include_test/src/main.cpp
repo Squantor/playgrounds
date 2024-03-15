@@ -18,9 +18,11 @@ For conditions of distribution and use, see LICENSE file
 #define CAT_3(X, Y, Z) CAT(X, CAT(Y, Z))
 #define CAT_4(A, X, Y, Z) CAT(A, CAT_3(X, Y, Z))
 
-#define INCLUDE_FILE(ARGUMENT) STRINGIFY(CAT_3(ARGUMENT, ., hpp))
+#define INCLUDE_FILE(ARGUMENT) STRINGIFY(CAT2(ARGUMENT, _m.hpp))
+
+#include INCLUDE_FILE(DEVICE)
 
 int main() {
-  printf("test string %s\n", STRINGIFY(INCLUDE_FILE(broccoli)));
+  printf("test string %s\n", DEVICE_TYPE);
   return 0;
 }

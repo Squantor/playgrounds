@@ -7,4 +7,6 @@ For conditions of distribution and use, see LICENSE file
 #ifndef ZONK_HPP
 #define ZONK_HPP
 
+#define DEVICE_TYPE "far out"
+
 #endif

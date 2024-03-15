@@ -7,4 +7,6 @@ For conditions of distribution and use, see LICENSE file
 #ifndef BROCCOLI_HPP
 #define BROCCOLI_HPP
 
+#define DEVICE_TYPE "broccoli"
+
 #endif
