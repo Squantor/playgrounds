@@ -31,5 +31,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build c++ minunit",
+      "type": "shell",
+      "command": "compiledb make PROJECT=c++_minunit CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
