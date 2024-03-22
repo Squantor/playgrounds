@@ -12,7 +12,10 @@ NAME := c++_minunit
 $(NAME)_TARGET := PC
 $(NAME)_DEFINES := 
 $(NAME)_LIBS :=
-$(NAME)_FILES := $(PROJ_DIR)/src/main.cpp 
+$(NAME)_FILES := $(PROJ_DIR)/src/main.cpp \
+$(PROJ_DIR)/src/sqminunit.cpp \
+$(PROJ_DIR)/src/test_dummy.cpp
+
 $(NAME)_INCLUDES := -I$(PROJ_DIR)/inc
 $(NAME)_PREBUILD_SCRIPT := $(PROJ_DIR)/prebuild.sh
 $(NAME)_POSTBUILD_SCRIPT := $(PROJ_DIR)/postbuild.sh
