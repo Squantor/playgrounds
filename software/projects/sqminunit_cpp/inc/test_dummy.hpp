@@ -10,4 +10,8 @@ For conditions of distribution and use, see LICENSE file
 #ifndef TEST_DUMMY_HPP
 #define TEST_DUMMY_HPP
 
+struct dummy_test : minunit::test {
+  void run();
+};
+
 #endif

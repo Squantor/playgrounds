@@ -10,26 +10,20 @@ For conditions of distribution and use, see LICENSE file
 #ifndef SQMINUNIT_HPP
 #define SQMINUNIT_HPP
 
-#include <iostream>
-#include <list>
+#include <array>
+#include <cstdint>
 
-class UnitTest {
-protected:
-  UnitTest() {}
+namespace minunit {
 
-public:
-  bool isTrue{true};
-  static std::list<UnitTest *> testList;
+struct test {
+  test(){
+      // TODO register the instantiated test at a central location
+  };
+  virtual void run() = 0;
 
-  virtual ~UnitTest() {}
-  virtual void runFunc() {}
-
-  static UnitTest &getInstance() {
-    static UnitTest uTest;
-    return uTest;
-  }
-
-  void runTests();
+private:
 };
+
+} // namespace minunit
 
 #endif
