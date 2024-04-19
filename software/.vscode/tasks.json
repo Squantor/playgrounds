@@ -45,5 +45,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build inheritance fun",
+      "type": "shell",
+      "command": "compiledb make PROJECT=inheritance_fun CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }

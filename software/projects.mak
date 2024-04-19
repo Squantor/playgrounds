@@ -13,3 +13,4 @@ include $(BASE_DIR)/projects/PC_peripheral_abstraction/PC_peripheral_abstraction
 include $(BASE_DIR)/projects/include_test/include_test.mak
 include $(BASE_DIR)/projects/sqminunit_cpp/sqminunit_cpp.mak
 include $(BASE_DIR)/projects/unittest/unittest.mak
+include $(BASE_DIR)/projects/inheritance_fun/inheritance_fun.mak
