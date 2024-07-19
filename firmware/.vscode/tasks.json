@@ -13,126 +13,133 @@
     {
       "label": "build debug LPC812M101DH20 nuclone ADC demo",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812M101DH20_nuclone_ADC CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=LPC812M101DH20_nuclone_ADC CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug E-ink display example",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812_e-ink_display config=debug -j25",
+      "command": "compiledb make PROJECT=LPC812_e-ink_display config=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug OLED display example",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812_oled_display config=debug -j25",
+      "command": "compiledb make PROJECT=LPC812_oled_display config=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "sharp LCD example",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC845_sharp_lcd config=debug -j25",
+      "command": "compiledb make PROJECT=LPC845_sharp_lcd config=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug pwm modulator",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812_pwm_modulator CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=LPC812_pwm_modulator CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build CortexM0 test routines",
       "type": "shell",
-      "command": "bear -- make PROJECT=cortexM0_routines CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=cortexM0_routines CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build C systick demo",
       "type": "shell",
-      "command": "bear -- make PROJECT=systick_template_c CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=systick_template_c CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug RP2040 demo project",
       "type": "shell",
-      "command": "bear -- make PROJECT=RP2040_demo CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=RP2040_demo CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build release size RP2040 demo project",
       "type": "shell",
-      "command": "bear -- make PROJECT=RP2040_demo CONFIG=release_size -j25",
+      "command": "compiledb make PROJECT=RP2040_demo CONFIG=release_size -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build C++ systick demo",
       "type": "shell",
-      "command": "bear -- make PROJECT=systick_template_cpp CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=systick_template_cpp CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build PC template",
       "type": "shell",
-      "command": "bear -- make PROJECT=PC CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=PC CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug RP2040 oled display",
       "type": "shell",
-      "command": "bear -- make PROJECT=RP2040_oled_demo CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=RP2040_oled_demo CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build debug RP2040 flash bringup",
       "type": "shell",
-      "command": "bear -- make PROJECT=RP2040_flash_bringup CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=RP2040_flash_bringup CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build C++ peripheral abstraction test",
       "type": "shell",
-      "command": "bear -- make PROJECT=peripheral_abstraction CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=peripheral_abstraction CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build LPC812 C++ prototyping",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812_cpp_prototyping CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=LPC812_cpp_prototyping CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build RP2404 C++ prototyping",
       "type": "shell",
-      "command": "bear -- make PROJECT=RP2404_cpp CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=RP2404_cpp CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build LPC812M101DH20 blinky",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812M101DH20_blinky CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=LPC812M101DH20_blinky CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build LPC812M101DH20 coroutine blinky",
       "type": "shell",
-      "command": "bear -- make PROJECT=LPC812M101DH20_coro_blinky CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=LPC812M101DH20_coro_blinky CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build LPC845M301BD48 blinking LED",
+      "type": "shell",
+      "command": "compiledb make PROJECT=LPC845BD48_blink CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },

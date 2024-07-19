@@ -37,6 +37,7 @@ extern void (*__init_array_end[])(void);
 
 void Reset_Handler(void);
 
+// TODO: the addresss storage of the division routine should be constexprfied
 // UM11029 3.5.2 ROM-based APIs, pointer to ROM table
 #define PTR_ROM_DRIVER_TABLE ((unsigned int *)(0x0F001FF8))
 // Variables to store addresses of idiv and udiv functions within MCU ROM
@@ -62,11 +63,13 @@ __attribute__((section(".romfunc"))) void Reset_Handler(void) {
   // Copy data section from flash to RAM
   src = &_flash_data;
   dst = &_data_start;
-  while (dst < &_data_end) *dst++ = *src++;
+  while (dst < &_data_end)
+    *dst++ = *src++;
 
   // Clear the bss section
   dst = &_bss_start;
-  while (dst < &_bss_end) *dst++ = 0;
+  while (dst < &_bss_end)
+    *dst++ = 0;
 
   // execute c++ constructors
   auto preInitFunc = __preinit_array_start;
