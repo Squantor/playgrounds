@@ -9,6 +9,12 @@
  */
 #include <nuclone_LPC845BD48_small.hpp>
 
+extern "C" {
+void SysTick_Handler(void) {
+  systickPeripheral.isr();
+}
+}
+
 int main() {
   boardInit();
   while (1) {

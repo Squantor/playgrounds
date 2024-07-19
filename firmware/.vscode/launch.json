@@ -312,5 +312,27 @@
         "--command=./${workspaceFolder}/gdb_scripts/LPC812_cpp_prototyping_debug.txt"
       ],
     },
+    {
+      "name": "debug LPC845M301BD48 blinking LED",
+      "cwd": "${workspaceRoot}",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "executable": "${workspaceFolder}/bin/LPC845BD48_blink/debug/LPC845BD48_blink.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "LPC845",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      "powerOverBMP": "enable",
+      "preLaunchCommands": [],
+      "postLaunchCommands": [
+        "set {int}0x40048000 = 2",
+        "compare-sections"
+      ],
+      "preRestartCommands": [],
+      "preLaunchTask": "build LPC845M301BD48 blinking LED",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd",
+      "debuggerArgs": [],
+    },
   ]
 }

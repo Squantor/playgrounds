@@ -25,6 +25,7 @@
 using xtalInPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT0, libMcu::hw::IOpins::PIN08>;
 using xtalOutPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT0, libMcu::hw::IOpins::PIN09>;
 using testPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT1, libMcu::hw::IOpins::PIN05>;
+using ledPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT0, libMcu::hw::IOpins::PIN12>;
 
 // function types
 using xtalInFunctionType = libMcu::hw::swm::pinFunction<libMcu::hw::swm::pinFunctions::XTALIN>;
@@ -35,6 +36,7 @@ using clockOutFunctionType = libMcu::hw::swm::pinFunction<libMcu::hw::swm::pinFu
 constexpr xtalInPinType xtalInPin;
 constexpr xtalOutPinType xtalOutPin;
 constexpr testPinType testPin;
+constexpr ledPinType ledPin;
 
 // function instances
 constexpr xtalInFunctionType xtalInFunction;
@@ -46,6 +48,7 @@ extern libMcu::ll::iocon::iocon<libMcu::hw::ioconAddress> ioconPeripheral;
 extern libMcu::ll::swm::swm<libMcu::hw::swmAddress> swmPeriperhal;
 extern libMcu::ll::gpio::gpio<libMcu::hw::gpioAddress> gpioPeripheral;
 extern libMcu::ll::syscon::syscon<libMcu::hw::sysconAddress> sysconPeripheral;
+extern libMcu::ll::systick::systick<libMcu::hw::systickAddress> systickPeripheral;
 
 void boardInit(void);
 

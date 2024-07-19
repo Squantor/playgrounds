@@ -13,6 +13,11 @@ libMcu::ll::iocon::iocon<libMcu::hw::ioconAddress> ioconPeripheral;
 libMcu::ll::swm::swm<libMcu::hw::swmAddress> swmPeriperhal;
 libMcu::ll::gpio::gpio<libMcu::hw::gpioAddress> gpioPeripheral;
 libMcu::ll::syscon::syscon<libMcu::hw::sysconAddress> sysconPeripheral;
+libMcu::ll::systick::systick<libMcu::hw::systickAddress> systickPeripheral;
+
+auto systickIsrLambda = []() {
+  gpioPeripheral.toggle(ledPin);
+};
 
 void boardInit(void) {
   // clock enables and resets
@@ -21,6 +26,7 @@ void boardInit(void) {
       libMcu::ll::syscon::peripheralClocks0::GPIO0 | libMcu::ll::syscon::peripheralClocks0::GPIO1,
     0);
   // setup IOCON pins
+  ioconPeripheral.setup(ledPin, libMcu::ll::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalInPin, libMcu::ll::iocon::pullModes::INACTIVE);
   ioconPeripheral.setup(xtalOutPin, libMcu::ll::iocon::pullModes::INACTIVE);
   swmPeriperhal.setup(xtalInPin, xtalInFunction);
@@ -44,4 +50,8 @@ void boardInit(void) {
   swmPeriperhal.setup(testPin, clockOutFunction);
   // setup clock output
   sysconPeripheral.setClockOutput(libMcu::ll::syscon::clockOutSources::MAIN, 10u);
+  // setup systick
+  systickPeripheral.init(CLOCK_CPU / 2);
+  systickPeripheral.start(systickIsrLambda);
+  gpioPeripheral.output(ledPin);
 }
