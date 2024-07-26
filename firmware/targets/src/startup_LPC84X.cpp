@@ -15,7 +15,7 @@ For conditions of distribution and use, see LICENSE file
  *
  */
 
-#include <stdint.h>
+#include <cstdint>
 
 extern int main(void);
 
@@ -37,12 +37,12 @@ extern void (*__init_array_end[])(void);
 
 void Reset_Handler(void);
 
-// TODO: the addresss storage of the division routine should be constexprfied
+// TODO: Seems some kind of issue with the rom division routines, disabled for now
 // UM11029 3.5.2 ROM-based APIs, pointer to ROM table
-#define PTR_ROM_DRIVER_TABLE ((unsigned int *)(0x0F001FF8))
+// #define PTR_ROM_DRIVER_TABLE ((unsigned int *)(0x0F001FF8))
 // Variables to store addresses of idiv and udiv functions within MCU ROM
-unsigned int *pDivRom_idiv;
-unsigned int *pDivRom_uidiv;
+// unsigned int *pDivRom_idiv;
+// unsigned int *pDivRom_uidiv;
 
 #if defined(__cplusplus)
 }  // extern "C"
@@ -83,12 +83,11 @@ __attribute__((section(".romfunc"))) void Reset_Handler(void) {
     initFunc++;
   }
 
-  // Get address of Integer division routines function table in ROM
-  unsigned int *div_ptr = (unsigned int *)((unsigned int *)*(PTR_ROM_DRIVER_TABLE))[4];
+  // unsigned int *div_ptr = (unsigned int *)((unsigned int *)*(PTR_ROM_DRIVER_TABLE))[4];
   // Get addresses of integer divide routines in ROM
   // These address are then used by the code in aeabi_romdiv_patch.s
-  pDivRom_idiv = (unsigned int *)div_ptr[0];
-  pDivRom_uidiv = (unsigned int *)div_ptr[1];
+  // pDivRom_idiv = (unsigned int *)div_ptr[0];
+  // pDivRom_uidiv = (unsigned int *)div_ptr[1];
 
   // Reenable interrupts
   __asm volatile("cpsie i");
