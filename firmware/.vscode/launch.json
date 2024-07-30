@@ -323,7 +323,7 @@
       "interface": "swd",
       "device": "LPC845",
       "BMPGDBSerialPort": "/dev/ttyACM0",
-      "powerOverBMP": "enable",
+      "powerOverBMP": "disable",
       "preLaunchCommands": [],
       "postLaunchCommands": [
         "set {int}0x40048000 = 2",
