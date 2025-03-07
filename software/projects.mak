@@ -15,3 +15,4 @@ include $(BASE_DIR)/projects/sqminunit_cpp/sqminunit_cpp.mak
 include $(BASE_DIR)/projects/unittest/unittest.mak
 include $(BASE_DIR)/projects/inheritance_fun/inheritance_fun.mak
 include $(BASE_DIR)/projects/turboc/turboc.mak
+include $(BASE_DIR)/projects/cmdline/cmdline.mak

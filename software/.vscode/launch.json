@@ -130,11 +130,14 @@
       "preLaunchTask": "build inheritance fun",
     },
     {
-      "name": "debug build turbo C template",
+      "name": "debug build cmdline test",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/turboc_test/debug/turboc_test.elf",
-      "args": [],
+      "program": "${workspaceFolder}/bin/cmdline_test/debug/cmdline_test.elf",
+      "args": [
+        "test",
+        "-abcz"
+      ],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
       "environment": [],
@@ -152,7 +155,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build turbo C template",
+      "preLaunchTask": "build cmdline test",
     },
   ]
 }

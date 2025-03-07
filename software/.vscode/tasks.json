@@ -53,9 +53,9 @@
       "problemMatcher": "$gcc"
     },
     {
-      "label": "build turbo C template",
+      "label": "build cmdline test",
       "type": "shell",
-      "command": "compiledb make PROJECT=turboc_test CONFIG=debug -j25",
+      "command": "compiledb make PROJECT=cmdline_test CONFIG=debug -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
