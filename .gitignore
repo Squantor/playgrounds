@@ -22,10 +22,12 @@ Release/
 *.exe
 *.out
 *.app
+*.elf
 bin/
 
 # miscellanious generated files
 *.log
+*.d
 disassemblies/
 compile_commands.json
 
