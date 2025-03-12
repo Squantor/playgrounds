@@ -10,6 +10,7 @@ SOURCES ?= $(wildcard *.c)
 INCLUDES := -I.
 TARGET = minunit_c90
 CC = gcc
+SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
 WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
@@ -19,7 +20,7 @@ OUTPUT_OPTION = -MMD -MP -o $@
 
 
 OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(SOURCES:.c=.d)
+DEPS := $(addsuffix .d,$(SOURCES))
 EXECUTABLE := $(TARGET).elf
 -include $(DEPS)
 
@@ -29,7 +30,8 @@ run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDLIBS) $(OBJECTS) -o $(EXECUTABLE)
+	$(CC) $(LDLIBS) $(OBJECTS) -o $@
+	$(SIZE) $@
 
 %.c.o: %.c
 	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
