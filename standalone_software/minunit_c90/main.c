@@ -6,6 +6,7 @@ For conditions of distribution and use, see LICENSE file
 */
 #include "minunit.h"
 #include <stdio.h>
+#include "tests.h"
 
 void MinunitReport(const char *message)
 {
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
   (void)argc;
   (void)argv;
   MinunitInit();
-  printf("%d tests executed, %d checks, %d failed\n", minunit_state.executed, minunit_state.checks, minunit_state.failures);
+  TestSuite();
+  printf("%d checks, %d failed\n", minunit_state.checks, minunit_state.failures);
   return 0;
 }

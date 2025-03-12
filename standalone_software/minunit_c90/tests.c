@@ -6,3 +6,17 @@ For conditions of distribution and use, see LICENSE file
 */
 #include "minunit.h"
 #include "tests.h"
+
+void Test(void)
+{
+  MinunitExpect(1 == 1);
+  MinunitExpect(1 == 2);
+  MinunitAssert(1 == 1);
+  MinunitAssert(1 == 2);
+  MinunitExpect(1 == 3); /* should not be reached */
+}
+
+void TestSuite(void)
+{
+  Test();
+}

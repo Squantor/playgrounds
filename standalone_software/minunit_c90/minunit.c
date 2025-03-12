@@ -10,7 +10,6 @@ MinunitState minunit_state;
 
 void MinunitInit(void)
 {
-  minunit_state.executed = 0;
   minunit_state.failures = 0;
   minunit_state.checks = 0;
 }

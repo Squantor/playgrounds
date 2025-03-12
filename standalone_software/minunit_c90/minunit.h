@@ -23,6 +23,7 @@ For conditions of distribution and use, see LICENSE file
   MU__SAFE_BLOCK(                                                                            \
       minunit_state.checks++; if (!(test)) {                                                 \
         MinunitReport("\n" __FILE__ ":" TOSTRING(__LINE__) " failed: " TOSTRING(test) "\n"); \
+        minunit_state.failures++;                                                            \
         return;                                                                              \
       } else { MinunitReport("."); })
 
@@ -31,7 +32,7 @@ For conditions of distribution and use, see LICENSE file
   MU__SAFE_BLOCK(                                                                            \
       minunit_state.checks++; if (!(test)) {                                                 \
         MinunitReport("\n" __FILE__ ":" TOSTRING(__LINE__) " failed: " TOSTRING(test) "\n"); \
-        return;                                                                              \
+        minunit_state.failures++;                                                            \
       } else { MinunitReport("."); })
 
 /* Defines a test */
@@ -40,9 +41,8 @@ For conditions of distribution and use, see LICENSE file
 /* minunitState is used to track the state of the test suite. */
 typedef struct
 {
-  int executed; /*!< Total tests executed */
-  int failures; /*!< Total asserts failed */
-  int checks;   /*!< Total test asserts executed */
+  int checks;   /* Total test asserts executed */
+  int failures; /* Total asserts failed */
 } MinunitState;
 
 /* minunit state */

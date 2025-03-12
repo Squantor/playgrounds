@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20250410
+# Version: 20250412
 #
 # Mini project makefile for ANSI C projects
 
@@ -18,18 +18,21 @@ LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
 
-OBJECTS := $(SOURCES:.c=.o)
+OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(SOURCES:.c=.d)
 EXECUTABLE := $(TARGET).elf
 -include $(DEPS)
 
 all: $(SOURCES) $(EXECUTABLE)
 
+run: $(EXECUTABLE)
+	./$(EXECUTABLE)
+
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $(EXECUTABLE)
 
-%.o.c: %.c
-	$(CC) $(CFLAGS) $< $(OUTPUT_OPTION)
+%.c.o: %.c
+	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
 
 .PHONY: clean
 clean:
