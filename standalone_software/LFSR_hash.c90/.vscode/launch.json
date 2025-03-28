@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/lfsr_hash.elf",
       "args": [
-        "bloep.txt"
+        "foo.json"
       ],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",

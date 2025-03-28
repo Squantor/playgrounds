@@ -24,8 +24,10 @@ DEPS := $(addsuffix .d,$(SOURCES))
 EXECUTABLE := $(TARGET).elf
 -include $(DEPS)
 
-all: $(SOURCES) $(EXECUTABLE)
+.PHONY: all
+all: $(EXECUTABLE)
 
+.PHONY: run
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 

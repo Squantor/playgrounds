@@ -13,7 +13,7 @@
     {
       "label": "build lfsr hash tool",
       "type": "shell",
-      "command": "compiledb make -j25",
+      "command": "compiledb make all -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },
