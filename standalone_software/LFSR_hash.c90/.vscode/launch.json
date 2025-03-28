@@ -5,11 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug template",
+      "name": "debug LFSR hash tool",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template.elf",
-      "args": [],
+      "program": "${workspaceFolder}/lfsr_hash.elf",
+      "args": [
+        "bloep.txt"
+      ],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
       "environment": [],
@@ -27,7 +29,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build template",
+      "preLaunchTask": "build lfsr hash tool",
     },
   ]
 }

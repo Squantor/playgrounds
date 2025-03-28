@@ -11,7 +11,7 @@
       "problemMatcher": "$gcc"
     },
     {
-      "label": "build template",
+      "label": "build lfsr hash tool",
       "type": "shell",
       "command": "compiledb make -j25",
       "group": "build",
