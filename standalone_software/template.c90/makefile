@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20250412
+# Version: 20250729
 #
 # Mini project makefile for ANSI C projects
 
@@ -18,14 +18,16 @@ CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES)
 LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
-
-OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(addsuffix .d,$(SOURCES))
+OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
+DEPS := $(patsubst %.c,%.d,$(SOURCES))
 EXECUTABLE := $(TARGET).elf
+
 -include $(DEPS)
 
-all: $(SOURCES) $(EXECUTABLE)
+.PHONY: all
+all: $(SOURCES) $(EXECUTABLE) tests.mak
 
+.PHONY: run
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
@@ -33,8 +35,8 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $@
 	$(SIZE) $@
 
-%.c.o: %.c
-	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
