@@ -1,0 +1,28 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "make clean && make -f tests.mak clean",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build 8086 disassembler tests",
+      "type": "shell",
+      "command": "compiledb make -j25 -f tests.mak",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build 8086 disassembler",
+      "type": "shell",
+      "command": "compiledb make -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+  ]
+}
