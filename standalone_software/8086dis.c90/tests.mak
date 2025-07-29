@@ -6,9 +6,9 @@
 #
 # Mini project makefile for ANSI C projects
 
-SOURCES ?= testmain.c minunit.c tests.c
+SOURCES ?= testmain.c minunit.c testmov.c x86isn.c
 INCLUDES := -I.
-TARGET = minunit_c90
+TARGET = 8086dis_tests
 CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
@@ -18,13 +18,13 @@ CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES)
 LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
-
-OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(addsuffix .d,$(SOURCES))
+OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
+DEPS := $(patsubst %.c,%.d,$(SOURCES))
 EXECUTABLE := $(TARGET).elf
+
 -include $(DEPS)
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(SOURCES) $(EXECUTABLE) tests.mak
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
@@ -33,8 +33,8 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $@
 	$(SIZE) $@
 
-%.c.o: %.c
-	$(CC) $(CFLAGS) -c $< $(OUTPUT_OPTION)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:

@@ -5,6 +5,7 @@ Copyright (c) 2025 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 #include <stdio.h>
+#include "types.h"
 
 int main(int argc, char *argv[])
 {
