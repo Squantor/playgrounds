@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
   (void)argv;
   MinunitInit();
   TestMovDisassembly();
-  printf("%d checks, %d failed\n", minunit_state.checks, minunit_state.failures);
+  TestX86IsnTable();
+  TestIsnQueue();
+  printf("\n%d checks, %d failed\n", minunit_state.checks, minunit_state.failures);
   return 0;
 }

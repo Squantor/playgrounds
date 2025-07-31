@@ -12,11 +12,7 @@ Tests for MOV instructions
 
 void Test(void)
 {
-  MinunitExpect(1 == 1);
-  MinunitExpect(1 == 2);
-  MinunitAssert(1 == 1);
-  MinunitAssert(1 == 2);
-  MinunitExpect(1 == 3); /* should not be reached */
+
 }
 
 void TestMovDisassembly(void)

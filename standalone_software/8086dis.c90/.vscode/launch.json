@@ -5,10 +5,35 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug minunit template",
+      "name": "debug 8086 disassembler tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/minunit_c90.elf",
+      "program": "${workspaceFolder}/8086dis_tests.elf",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build 8086 disassembler tests",
+    },
+        {
+      "name": "debug 8086 disassembler",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/8086dis.elf",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
@@ -27,7 +52,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit template",
+      "preLaunchTask": "build 8086 disassembler tests",
     },
   ]
 }

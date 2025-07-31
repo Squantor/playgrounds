@@ -10,6 +10,8 @@ For conditions of distribution and use, see LICENSE file
 #ifndef TYPES_H
 #define TYPES_H
 
+
+
 /* basic types */
 typedef unsigned char u8;
 typedef unsigned short int u16;
@@ -22,14 +24,5 @@ typedef double f64;
 typedef unsigned long int uptr;
 typedef char byte;
 typedef long unsigned int usize;
-
-/* Entry in the instruction table to handle an instruction */
-typedef struct 
-{
-    u8 isn; /* Instruction byte */
-    u8 isn_mask; /* Instruction byte mask */
-    /* function pointer to handler */
-} ByteHandler;
-
 
 #endif

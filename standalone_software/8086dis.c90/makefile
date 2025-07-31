@@ -7,7 +7,7 @@
 # Mini project makefile for ANSI C projects
 
 SOURCES ?= main.c
-INCLUDES := -I.
+INCLUDES := -I./inc
 TARGET = 8086dis
 CC = gcc
 SIZE = size
