@@ -10,8 +10,6 @@ For conditions of distribution and use, see LICENSE file
 #ifndef TYPES_H
 #define TYPES_H
 
-
-
 /* basic types */
 typedef unsigned char u8;
 typedef unsigned short int u16;

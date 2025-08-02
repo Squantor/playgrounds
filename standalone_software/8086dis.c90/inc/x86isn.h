@@ -18,15 +18,13 @@ X86 instruction table definitions
 typedef void (*OpcodeHandler)(void);
 
 /* Entry in the instruction table to handle an instruction */
-typedef struct 
-{
-    u8 opcode_data[MAX_OPCODE_SIZE]; /* Opcode pattern */
-    u8 opcode_mask[MAX_OPCODE_SIZE]; /* Opcode mask */
-    u8 opcode_size; /* Size of the opcode */
-    OpcodeHandler handler; /* Handler function for this opcode */
+typedef struct {
+   u8 opcode_data[MAX_OPCODE_SIZE]; /* Opcode pattern */
+   u8 opcode_mask[MAX_OPCODE_SIZE]; /* Opcode mask */
+   u8 opcode_size;                  /* Size of the opcode */
+   OpcodeHandler handler;           /* Handler function for this opcode */
 } OpcodeEntry;
 
 extern OpcodeEntry OpcodeTable[MAX_INSTRUCTIONS];
-
 
 #endif

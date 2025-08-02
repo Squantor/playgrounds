@@ -12,20 +12,16 @@ Definitions of the instruction queue datastructure
 
 #include "types.h"
 
-#define MAX_ISN_QUEUE_SIZE  128
+#define MAX_ISN_QUEUE_SIZE 128
 
 /*
 TODO API:
-QIFull
-QIEmpty
-QILevel
 QIPushBack
 QIPushBackBlock
-QIPushFront
-QIPushFrontBlock
+QIPopFront
+QIPopFrontBlock
 QIPopBack
 QIPopBackBlock
-QIPopFrontBlock
 QIPeekBackBlock
 QIPeekFrontBlock
 */
@@ -41,5 +37,17 @@ int QIEmpty(void);
 
 /* Returns the current queue level */
 u8 QILevel();
+
+/* Put single element to the front of the queue */
+void QIPushFront(u8 element);
+
+/* Put an array of elements to the front of the queue */
+void QIPushFrontBlock(u8 *elements, u8 size);
+
+/* Remove single element from the back of the queue */
+void QIPopBack(u8 *element);
+
+/* Remove an array of elements from the back of the queue */
+void QIPopBackBlock(u8 *elements, u8 size);
 
 #endif
