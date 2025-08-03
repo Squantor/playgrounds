@@ -6,9 +6,7 @@
 #
 # Mini project makefile for ANSI C projects
 
-SOURCES ?= testmain.c minunit.c x86isn.c hmov.c qisn.c parseisn.c \
-$(wildcard tests/*.c)
-# tests/mov.c tests/x86isn.c tests/qisn.c
+SOURCES ?= testmain.c minunit.c $(wildcard src/*.c) $(wildcard tests/*.c)
 DEFINES := -D TESTS
 INCLUDES := -I./inc
 TARGET = 8086dis_tests
