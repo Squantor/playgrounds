@@ -30,6 +30,9 @@ bin/
 *.d
 disassemblies/
 compile_commands.json
+compile_commands.json-shm
+compile_commands.json-wal
+
 
 # doxygen output
 doxyOutput/
