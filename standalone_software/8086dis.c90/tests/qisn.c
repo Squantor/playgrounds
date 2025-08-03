@@ -69,7 +69,7 @@ void TestIQPopBack(void)
    MinunitExpect(QIEmpty() != 0);
    MinunitExpect(QILevel() == 0);
    for (i = 0; i < 126; i++) {
-      u8 currLevel = QILevel();
+      u8 curr_level = QILevel();
       MinunitAssert(QILevel() == i);
       QIPushFront(i);
    }

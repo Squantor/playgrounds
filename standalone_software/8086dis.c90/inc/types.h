@@ -13,6 +13,7 @@ For conditions of distribution and use, see LICENSE file
 #include <stddef.h>
 
 /* basic types */
+/* NOLINTBEGIN(readability-identifier-naming) */
 typedef unsigned char u8;
 typedef unsigned short int u16;
 typedef signed short int i16;
@@ -24,5 +25,6 @@ typedef double f64;
 typedef unsigned long int uptr;
 typedef char byte;
 typedef long unsigned int usize;
+/* NOLINTEND(readability-identifier-naming) */
 
 #endif
