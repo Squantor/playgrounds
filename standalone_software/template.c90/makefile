@@ -2,19 +2,20 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20250729
+# Version: 20250803
 #
 # Mini project makefile for ANSI C projects
 
 SOURCES ?= $(wildcard *.c)
+DEFINES :=
 INCLUDES := -I.
 TARGET = template
 CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
-WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES)
+WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
 LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
@@ -31,6 +32,10 @@ all: $(SOURCES) $(EXECUTABLE) tests.mak
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
+.PHONY: check
+check: $(SOURCES)
+	clang-tidy --config-file=.clang-tidy $(SOURCES) -- $(CFLAGS) 
+
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $@
 	$(SIZE) $@
@@ -45,5 +50,6 @@ clean:
 # Function used to check variables. Use on the command line:
 # make print-VARNAME
 # Useful for debugging
+.PHONY: print-%
 print-%: ; @echo $*=$($*)
-.Phony: print-%
+
