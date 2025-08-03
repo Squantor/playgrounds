@@ -25,13 +25,12 @@ void TestSorted(void)
       u16 curr_data = 0;
       u16 curr_mask;
       /* Check if size is sorted */
-      MinunitExpect(curr_opcode->opcode_size >= prev_size);
+      MinunitExpect(curr_opcode->size >= prev_size);
       /* Collect masks/data */
-      curr_mask = ~(u16) ((curr_opcode->opcode_mask[0] << 8) |
-                          curr_opcode->opcode_mask[1]);
-      for (j = 0; j < curr_opcode->opcode_size; j++) {
+      curr_mask = ~(u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
+      for (j = 0; j < curr_opcode->size; j++) {
          curr_data = (u16) (curr_data << 8);
-         curr_data |= curr_opcode->opcode_data[j];
+         curr_data |= curr_opcode->data[j];
       }
       /* check ordering */
       /* We only check data if the masks are the same */
@@ -40,7 +39,7 @@ void TestSorted(void)
       MinunitExpect(curr_mask <= prev_mask);
       prev_data = curr_data;
       prev_mask = curr_mask;
-      prev_size = curr_opcode->opcode_size;
+      prev_size = curr_opcode->size;
       curr_opcode++;
    }
 }

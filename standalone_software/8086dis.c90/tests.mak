@@ -6,9 +6,10 @@
 #
 # Mini project makefile for ANSI C projects
 
-SOURCES ?= testmain.c minunit.c x86isn.c hmov.c qisn.c \
+SOURCES ?= testmain.c minunit.c x86isn.c hmov.c qisn.c parseisn.c \
 $(wildcard tests/*.c)
 # tests/mov.c tests/x86isn.c tests/qisn.c
+DEFINES := -D TESTS
 INCLUDES := -Iinc
 TARGET = 8086dis_tests
 CC = gcc
@@ -16,7 +17,7 @@ SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
 WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES)
+CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
 LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
