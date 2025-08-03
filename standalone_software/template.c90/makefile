@@ -16,6 +16,7 @@ DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
 WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
 CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
+CHECKFLAGS := -header-filter='.*'
 LDLIBS := -lm
 OUTPUT_OPTION = -MMD -MP -o $@
 
@@ -34,7 +35,7 @@ run: $(EXECUTABLE)
 
 .PHONY: check
 check: $(SOURCES)
-	clang-tidy --config-file=.clang-tidy $(SOURCES) -- $(CFLAGS) 
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $@

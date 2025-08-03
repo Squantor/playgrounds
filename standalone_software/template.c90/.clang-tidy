@@ -1,9 +1,16 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Bart Bilos
+# For conditions of distribution and use, see LICENSE file
+# .clang-tidy file for C90 projects
+# Version: 20250803
+
 Checks: >
     performance-*,
     misc-*,
     android-cloexec-*,
     readability-duplicate-include,
     readability-misleading-indentation,
+    readability-identifier-naming,
     bugprone-assert-side-effect,
     bugprone-macro-repeated-side-effects,
     bugprone-infinite-loop,
@@ -21,7 +28,19 @@ Checks: >
 # WarningsAsErrors: '*'
 
 CheckOptions:
-  - key:             bugprone-assert-side-effect.AssertMacros
-    value:           'ASSERT'
-
-ExtraArgs: [-std=c90]
+  - key: bugprone-assert-side-effect.AssertMacros 
+    value: 'ASSERT'
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE  
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
