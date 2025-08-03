@@ -17,6 +17,13 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+        {
+      "label": "check 8086 disassembler tests",
+      "type": "shell",
+      "command": "make -j25 -f tests.mak check",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
     {
       "label": "build 8086 disassembler",
       "type": "shell",

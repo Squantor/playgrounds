@@ -8,9 +8,9 @@ For conditions of distribution and use, see LICENSE file
 Tests for Instruction Queue datastructure
 */
 #include "qisn.h"
-
 #include "minunit.h"
 #include "tests.h"
+#include "types.h"
 
 void TestIQReset(void)
 {

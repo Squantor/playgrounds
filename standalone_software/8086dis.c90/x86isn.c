@@ -8,11 +8,8 @@ For conditions of distribution and use, see LICENSE file
 X86 instruction table definitions
 */
 #include "x86isn.h"
-
-#include <string.h>
-
 #include "hisns.h"
-#include "types.h"
+#include <stddef.h>
 
 /*
 Table of X86 opcodes and their filter masks. MUST BE KEPT SORTED SMALL TO BIG!

@@ -8,7 +8,8 @@ For conditions of distribution and use, see LICENSE file
 Implementation of the instruction queue datastructure
 */
 #include "qisn.h"
-
+#include "types.h"
+#include <stddef.h>
 #include <string.h>
 
 static u8 data[MAX_ISN_QUEUE_SIZE];
@@ -48,7 +49,7 @@ int QIEmpty(void)
    return (front == back);
 }
 
-u8 QILevel()
+u8 QILevel(void)
 {
    if (front > back)
       return (u8) (front - back);

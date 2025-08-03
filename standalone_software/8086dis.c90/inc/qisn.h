@@ -36,7 +36,7 @@ int QIFull(void);
 int QIEmpty(void);
 
 /* Returns the current queue level */
-u8 QILevel();
+u8 QILevel(void);
 
 /* Put single element to the front of the queue */
 void QIPushFront(u8 element);

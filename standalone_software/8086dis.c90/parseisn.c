@@ -8,7 +8,10 @@ For conditions of distribution and use, see LICENSE file
 Instruction parser functions
 */
 #include "parseisn.h"
+#include "results.h"
+#include "types.h"
 #include "x86isn.h"
+#include <stddef.h>
 
 #ifdef TESTS
 /* Incject mocks here */
