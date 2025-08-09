@@ -8,8 +8,10 @@ For conditions of distribution and use, see LICENSE file
 Instruction parser functions
 */
 #include "parseisn.h"
+#include "que8u.h"
 #include "results.h"
 #include "types.h"
+#include "x86cpu.h"
 #include "x86isn.h"
 #include <stddef.h>
 
@@ -17,10 +19,10 @@ Instruction parser functions
 /* Incject mocks here */
 #endif
 
-Results ParseInstruction(u8 *data, u8 data_size, u8 *new_index)
+Results ParseInstruction(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
    /* Get first byte */
-   u8 opcode_byte = *data;
+   u8 opcode_byte = *(input->back);
    OpcodeEntry *opcode_entry = OpcodeTable;
    /* todo binary search? */
    /* linear scan through table with single byte opcodes */
@@ -28,11 +30,10 @@ Results ParseInstruction(u8 *data, u8 data_size, u8 *new_index)
       u8 masked_opcode = opcode_byte & opcode_entry->mask[0];
       if (masked_opcode == opcode_entry->data[0])
          if (opcode_entry->handler != NULL)
-            opcode_entry->handler();
+            return opcode_entry->handler(input, output, cpu_state);
+      opcode_entry++;
    }
    /* Linear scan through table with double byte opcodes */
-
-   /* found match? Call handler */
-   /* Not found? report error */
-   return READY;
+   /* Did not find opcode? */
+   return ISN_UNKNOWN;
 }

@@ -13,5 +13,6 @@ Definitions of the various test suites
 void TestMovDisassembly(void);
 void TestX86IsnTable(void);
 void TestQueueU8(void);
+void TestParseInstruction(void);
 
 #endif

@@ -17,7 +17,7 @@ typedef struct {
    u8 *front; /* First element of the queue */
    u8 *back;  /* Last element of the queue */
    u8 *end;   /* Last element of data storage */
-} QueueU8;
+} QueU8;
 
 /*
 TODO API:
@@ -30,33 +30,33 @@ Qu8PeekFrontBlock
 */
 
 /* Reset queue */
-void Qu8Reset(QueueU8 *const this);
+void Qu8Reset(QueU8 *const this);
 
 /* Returns non zero if the queue is full */
-int Qu8Full(QueueU8 *const this);
+int Qu8Full(QueU8 *const this);
 
 /* Returns non zero if the queue is empty */
-int Qu8Empty(QueueU8 *const this);
+int Qu8Empty(QueU8 *const this);
 
 /* Returns the current queue level */
-u16 Qu8Level(QueueU8 *const this);
+u16 Qu8Level(QueU8 *const this);
 
 /* Put single element to the front of the queue */
-void Qu8PushFront(QueueU8 *const this, u8 element);
+void Qu8PushFront(QueU8 *const this, u8 element);
 
 /* Put single element to the back of the queue */
-void Qu8PushBack(QueueU8 *const this, u8 element);
+void Qu8PushBack(QueU8 *const this, u8 element);
 
 /* Put an array of elements to the front of the queue */
-void Qu8PushFrontBlock(QueueU8 *const this, u8 *elements, u8 size);
+void Qu8PushFrontBlock(QueU8 *const this, u8 *elements, u8 size);
 
 /* Remove single element from the back of the queue */
-void Qu8PopBack(QueueU8 *const this, u8 *element);
+void Qu8PopBack(QueU8 *const this, u8 *element);
 
 /* Remove an array of elements from the back of the queue */
-void Qu8PopBackBlock(QueueU8 *const this, u8 *elements, u8 size);
+void Qu8PopBackBlock(QueU8 *const this, u8 *elements, u8 size);
 
 /* Remove single element from the front of the queue */
-void Qu8PopFront(QueueU8 *const this, u8 *element);
+void Qu8PopFront(QueU8 *const this, u8 *element);
 
 #endif

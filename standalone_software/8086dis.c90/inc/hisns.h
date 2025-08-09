@@ -7,10 +7,15 @@ For conditions of distribution and use, see LICENSE file
 #ifndef HISNS_H
 #define HISNS_H
 
-#include "x86isn.h"
+#include "que8u.h"
+#include "results.h"
+#include "x86cpu.h"
 
 /* Instruction handler prototypes */
-void HandleMovAccMem(void);
-void HandleMovMemAcc(void);
+Results HandleMovAccMem(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+Results HandleMovMemAcc(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+Results HandleDas(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+Results HandleAas(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+Results HandleAad(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 
 #endif

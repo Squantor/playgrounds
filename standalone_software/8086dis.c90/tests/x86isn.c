@@ -8,13 +8,12 @@ For conditions of distribution and use, see LICENSE file
 Tests for x86 instruction table
 */
 #include "x86isn.h"
-
 #include "minunit.h"
 #include "tests.h"
 #include "types.h"
 
 /* Check if the X86 instruction table is sorted*/
-void TestSorted(void)
+static void TestSorted(void)
 {
    u8 prev_size = 0; /* Previous size */
    u16 prev_data = 0x0000;

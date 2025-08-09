@@ -10,12 +10,16 @@ X86 instruction table definitions
 #ifndef X86ISN_H
 #define X86ISN_H
 
+#include "que8u.h"
+#include "results.h"
 #include "types.h"
+#include "x86cpu.h"
 
 #define MAX_OPCODE_SIZE 2
 #define MAX_INSTRUCTIONS 5
 
-typedef void (*OpcodeHandler)(void);
+typedef Results (*OpcodeHandler)(QueU8 *input, QueU8 *output,
+                                 X86CpuState *cpu_state);
 
 /* Entry in the instruction table to handle an instruction */
 typedef struct {

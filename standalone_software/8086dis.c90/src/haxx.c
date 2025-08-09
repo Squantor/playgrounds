@@ -5,14 +5,14 @@ Copyright (c) 2025 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /*
-Handler for all the MOV instructions
+Handler for all the ASCII adjust instructions
 */
 #include "que8u.h"
 #include "results.h"
 #include "x86cpu.h"
 
-/* Handle moves from accumulator to memory */
-Results HandleMovAccMem(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+/* Handle ASCII Adjust for Subtract */
+Results HandleAas(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
    (void) input;
    (void) output;
@@ -20,8 +20,8 @@ Results HandleMovAccMem(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    return READY;
 }
 
-/* Handle moves from memory to accumulator */
-Results HandleMovMemAcc(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+/* Handle ASCII Adjust for Divide */
+Results HandleAad(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
    (void) input;
    (void) output;

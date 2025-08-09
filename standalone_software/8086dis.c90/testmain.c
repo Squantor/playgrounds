@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
    TestMovDisassembly();
    TestX86IsnTable();
    TestQueueU8();
+   TestParseInstruction();
    printf("\n%d checks, %d failed\n", minunit_state.checks,
           minunit_state.failures);
    return 0;

@@ -13,7 +13,7 @@ Tests for Instruction Queue datastructure
 #include "types.h"
 
 static u8 buffer[33];
-static QueueU8 test_queue = {buffer, buffer, buffer, buffer + sizeof(buffer)};
+static QueU8 test_queue = {buffer, buffer, buffer, buffer + sizeof(buffer)};
 
 void TestQu8Reset(void)
 {
