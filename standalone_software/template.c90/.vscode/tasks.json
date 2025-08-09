@@ -11,6 +11,13 @@
       "problemMatcher": "$gcc"
     },
     {
+      "label": "check",
+      "type": "shell",
+      "command": "make check",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
       "label": "build template",
       "type": "shell",
       "command": "compiledb make -j25",

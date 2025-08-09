@@ -8,11 +8,10 @@ For conditions of distribution and use, see LICENSE file
 #define TEST_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-  int testfunc(void);
+int TestFunction(void);
 
 #ifdef __cplusplus
 }

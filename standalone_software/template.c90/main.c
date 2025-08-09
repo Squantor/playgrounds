@@ -9,9 +9,9 @@ For conditions of distribution and use, see LICENSE file
 
 int main(int argc, char *argv[])
 {
-  (void)argc;
-  (void)argv;
-  testfunc();
-  printf("Hello World!\n");
-  return 0;
+   (void) argc;
+   (void) argv;
+   TestFunction();
+   printf("Hello World!\n");
+   return 0;
 }
