@@ -18,6 +18,8 @@ typedef enum {
    ISN_AAD, /* AAD instruction */
    /* Operand tokens */
    /* Other tokens */
+   ADDR_16B, /* 16-bit address */
+   ADDR_20B  /* 20-bit address */
 } X86Token;
 
 #endif

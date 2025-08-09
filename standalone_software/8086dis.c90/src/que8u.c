@@ -80,6 +80,13 @@ void Qu8PopBack(QueU8 *const this, u8 *element)
    this->back = temp;
 }
 
+void Qu8DropBack(QueU8 *const this)
+{
+   if (Qu8Empty(this))
+      return;
+   this->back = Qu8Increment(this, this->back);
+}
+
 void Qu8PopFront(QueU8 *const this, u8 *element)
 {
    if (Qu8Empty(this))

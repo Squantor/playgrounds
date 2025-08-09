@@ -53,6 +53,9 @@ void Qu8PushFrontBlock(QueU8 *const this, u8 *elements, u8 size);
 /* Remove single element from the back of the queue */
 void Qu8PopBack(QueU8 *const this, u8 *element);
 
+/* Discard single element from the back of the queue */
+void Qu8DropBack(QueU8 *const this);
+
 /* Remove an array of elements from the back of the queue */
 void Qu8PopBackBlock(QueU8 *const this, u8 *elements, u8 size);
 
