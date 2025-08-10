@@ -152,7 +152,7 @@ static void TestMovImmReg(void)
 /* Tests for moves from register to register */
 static void TestMovRegReg(void)
 {
-   u8 mov_imm2reg_isns[] = {0x88, 0xEA, 0x8B, 0xF9};
+   u8 mov_imm2reg_isns[] = {0x88, 0xEA, 0x89, 0xCF};
    u8 mov_imm2reg_toks[] = {ISN_MOV, REG_DL, REG_CH, ISN_MOV, REG_DI, REG_CX};
    u8 tokens[6];
    u8 i;
