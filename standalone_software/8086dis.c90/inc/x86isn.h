@@ -16,9 +16,8 @@ X86 instruction table definitions
 #include "x86cpu.h"
 
 #define MAX_OPCODE_SIZE 2
-#define MAX_INSTRUCTIONS 6
-/* Instruction masks/constants */
-#define ISN_SIZE_MASK 0x01 /* Mask for byte/word size */
+#define MAX_INSTRUCTIONS 7
+
 
 typedef Results (*OpcodeHandler)(QueU8 *input, QueU8 *output,
                                  X86CpuState *cpu_state);

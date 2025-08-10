@@ -29,6 +29,7 @@ static QueU8 parse_isn_output = {
 
 static X86CpuState parse_isn_cpu_state;
 
+/* Helper for resetting processor state */
 static void ResetParseIsnCpuState(void)
 {
    parse_isn_cpu_state.ip = 0x0000;
@@ -37,7 +38,6 @@ static void ResetParseIsnCpuState(void)
    parse_isn_cpu_state.es = 0x0000;
    parse_isn_cpu_state.ss = 0x0000;
 }
-
 /* Tests for invalid instruction */
 static void TestInvalidInstruction(void)
 {
@@ -53,7 +53,6 @@ static void TestInvalidInstruction(void)
    MinunitExpect(Qu8Level(&parse_isn_input) == 1);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0000);
 }
-
 /* Tests for the DAS instructions */
 static void TestDas(void)
 {
@@ -71,7 +70,6 @@ static void TestDas(void)
    MinunitExpect(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0001);
 }
-
 /* Tests for moves from memory to accumulator */
 static void TestMovAccMem(void)
 {
@@ -98,7 +96,6 @@ static void TestMovAccMem(void)
       MinunitExpect(tokens[i] == mov_mem2a_toks[i]);
    }
 }
-
 /* Tests for moves from accumulator to memory */
 static void TestMovMemAcc(void)
 {
@@ -152,6 +149,32 @@ static void TestMovImmReg(void)
       MinunitExpect(tokens[i] == mov_imm2reg_toks[i]);
    }
 }
+/* Tests for moves from register to register */
+static void TestMovRegReg(void)
+{
+   u8 mov_imm2reg_isns[] = {0x88, 0xEA, 0x8B, 0xF9};
+   u8 mov_imm2reg_toks[] = {ISN_MOV, REG_DL, REG_CH, ISN_MOV, REG_DI, REG_CX};
+   u8 tokens[6];
+   u8 i;
+   memset(tokens, TOK_INVALID, sizeof(tokens));
+   Qu8Reset(&parse_isn_input);
+   Qu8Reset(&parse_isn_output);
+   Qu8PushFrontBlock(&parse_isn_input, mov_imm2reg_isns,
+                     sizeof(mov_imm2reg_isns));
+   ResetParseIsnCpuState();
+   /* Parse twice for both byte and word move register to register */
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitAssert(Qu8Level(&parse_isn_output) == 6);
+   MinunitAssert(Qu8Level(&parse_isn_input) == 0);
+   MinunitExpect(parse_isn_cpu_state.ip == 0x0004);
+   Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
+   for (i = 0; i < sizeof(tokens); i++) {
+      MinunitExpect(tokens[i] == mov_imm2reg_toks[i]);
+   }
+}
 
 void TestParseInstruction(void)
 {
@@ -160,4 +183,5 @@ void TestParseInstruction(void)
    TestMovAccMem();
    TestMovMemAcc();
    TestMovImmReg();
+   TestMovRegReg();
 }
