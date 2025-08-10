@@ -16,9 +16,10 @@ Table of X86 opcodes and their filter masks. MUST BE KEPT SORTED SMALL TO BIG!
 Sorting is first done on the mask size, then on the opcode content.
 */
 OpcodeEntry OpcodeTable[MAX_INSTRUCTIONS] = {
-    {{0xA0, 0}, {0xFE, 0}, 1, HandleMovMemAcc}, /* MOV MEM,ACC */
-    {{0xA2, 0}, {0xFE, 0}, 1, HandleMovAccMem}, /* MOV ACC,MEM */
-    {{0x2F, 0}, {0xFF, 0}, 1, HandleDas},       /* DAS */
-    {{0x3F, 0}, {0xFF, 0}, 1, HandleAas},       /* AAS */
-    {{0xD5, 0x0A}, {0xFF, 0xFF}, 2, HandleAad}, /* AAD */
+    {{0xA0, 0x00}, {0xFE, 0x00}, 1, HandleMovMemAcc}, /* MOV ACC,MEM */
+    {{0xA2, 0x00}, {0xFE, 0x00}, 1, HandleMovAccMem}, /* MOV MEM,ACC */
+    {{0xB0, 0x00}, {0xF0, 0x00}, 1, HandleMovImmReg}, /* MOV REG,IMM*/
+    {{0x2F, 0x00}, {0xFF, 0x00}, 1, HandleDas},       /* DAS */
+    {{0x3F, 0x00}, {0xFF, 0x00}, 1, HandleAas},       /* AAS */
+    {{0xD5, 0x0A}, {0xFF, 0xFF}, 2, HandleAad},       /* AAD */
 };

@@ -28,9 +28,11 @@ Results ParseInstruction(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    /* linear scan through table with single byte opcodes */
    while (opcode_entry->size == 1) {
       u8 masked_opcode = opcode_byte & opcode_entry->mask[0];
-      if (masked_opcode == opcode_entry->data[0])
+      if (masked_opcode == opcode_entry->data[0]) {
+         /* Add check if we have enough bytes in queue for this instruction */
          if (opcode_entry->handler != NULL)
             return opcode_entry->handler(input, output, cpu_state);
+      }
       opcode_entry++;
    }
    /* Linear scan through table with double byte opcodes */
