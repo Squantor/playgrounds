@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
    (void) argc;
    (void) argv;
    MinunitInit();
-   TestMovDisassembly();
    TestX86IsnTable();
    TestQueueU8();
    TestParseInstruction();
+   TestMovDisassembly();
    printf("\n%d checks, %d failed\n", minunit_state.checks,
           minunit_state.failures);
    return 0;
