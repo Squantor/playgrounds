@@ -20,6 +20,9 @@ Release/
 
 # Executables
 *.exe
+*.EXE
+*.com
+*.COM
 *.out
 *.app
 *.elf
