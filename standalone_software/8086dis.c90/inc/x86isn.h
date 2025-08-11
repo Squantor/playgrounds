@@ -15,22 +15,27 @@ X86 instruction table definitions
 #include "types.h"
 #include "x86cpu.h"
 
-#define MAX_OPCODE_SIZE 2
-#define MAX_INSTRUCTIONS 7
-
+#define MAX_OPCODE_SINGLE 6 /* Maximum single byte opcodes */
+#define MAX_OPCODE_DOUBLE 1 /* Maximum double byte opcodes */
 
 typedef Results (*OpcodeHandler)(QueU8 *input, QueU8 *output,
                                  X86CpuState *cpu_state);
 
-/* Entry in the instruction table to handle an instruction */
+/* Single byte opcode entry for the single byte instruction table */
 typedef struct {
-   u8 data[MAX_OPCODE_SIZE]; /* Opcode pattern */
-   u8 mask[MAX_OPCODE_SIZE]; /* Opcode mask */
-   u8 size;                  /* Size of the opcode */
-   /* Size of the total instruction? Not always possible to know forehand */
+   u8 data;               /* Opcode pattern */
+   u8 mask;               /* Opcode mask */
    OpcodeHandler handler; /* Handler function for this opcode */
-} OpcodeEntry;
+} Opcode1Entry;
 
-extern OpcodeEntry OpcodeTable[MAX_INSTRUCTIONS];
+/* double byte opcode entry for the two byte instruction table */
+typedef struct {
+   u8 data[2];            /* Opcode pattern */
+   u8 mask[2];            /* Opcode mask */
+   OpcodeHandler handler; /* Handler function for this opcode */
+} Opcode2Entry;
+
+extern Opcode1Entry Opcode1Table[MAX_OPCODE_SINGLE];
+extern Opcode2Entry Opcode2Table[MAX_OPCODE_DOUBLE];
 
 #endif

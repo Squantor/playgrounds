@@ -50,6 +50,6 @@ Results HandleModRegRM(u8 opcode, u8 modregrm, QueU8 *output,
    if (mod == 0xC0) {
       return HandleModRegReg(opcode, modregrm, output, cpu_state);
    } else
-      return ISN_UNKNOWN;
+      return ISN_INVALID;
    return READY;
 }

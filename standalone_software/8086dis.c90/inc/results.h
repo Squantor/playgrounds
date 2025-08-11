@@ -15,7 +15,8 @@ typedef enum {
    ERROR,        /* Unspecified error occured */
    BUSY,         /* Busy */
    READY,        /* Ready */
-   ISN_UNKNOWN   /* Uknown instruction */
+   OP_UNKNOWN,   /* Unknown opcode */
+   ISN_INVALID   /* Invalid instruction */
 } Results;
 
 #endif

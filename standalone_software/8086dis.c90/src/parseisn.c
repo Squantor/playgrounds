@@ -19,17 +19,18 @@ Instruction parser functions
 /* Incject mocks here */
 #endif
 
-Results ParseInstruction(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+/* Go through single byte opcodes to find instruction */
+static Results ParseSingleOpcode(QueU8 *input, QueU8 *output,
+                                 X86CpuState *cpu_state)
 {
-   /* Get first byte */
-   u8 opcode_byte = *(input->back);
-   OpcodeEntry *opcode_entry = OpcodeTable;
+   u8 opcode = *(input->back);
+   u16 i;
+   Opcode1Entry *opcode_entry = Opcode1Table;
    /* todo binary search? */
    /* linear scan through table with single byte opcodes */
-   while (opcode_entry->size == 1) {
-      u8 masked_opcode = opcode_byte & opcode_entry->mask[0];
-      if (masked_opcode == opcode_entry->data[0]) {
-         /* Add check if we have enough bytes in queue for this instruction */
+   for (i = 0; i < MAX_OPCODE_SINGLE; i++) {
+      u8 masked_opcode = opcode & opcode_entry->mask;
+      if (masked_opcode == opcode_entry->data) {
          if (opcode_entry->handler != NULL)
             return opcode_entry->handler(input, output, cpu_state);
       }
@@ -37,5 +38,23 @@ Results ParseInstruction(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    }
    /* Linear scan through table with double byte opcodes */
    /* Did not find opcode? */
-   return ISN_UNKNOWN;
+   return OP_UNKNOWN;
+}
+
+static Results ParseDoubleOpcode(QueU8 *input, QueU8 *output,
+                                 X86CpuState *cpu_state)
+{
+   (void) input;
+   (void) output;
+   (void) cpu_state;
+   return OP_UNKNOWN;
+}
+
+Results ParseInstruction(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+{
+   Results result = ParseSingleOpcode(input, output, cpu_state);
+   if (result != OP_UNKNOWN)
+      return result;
+   result = ParseDoubleOpcode(input, output, cpu_state);
+   return result;
 }

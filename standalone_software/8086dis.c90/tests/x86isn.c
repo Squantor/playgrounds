@@ -12,38 +12,54 @@ Tests for x86 instruction table
 #include "tests.h"
 #include "types.h"
 
-/* Check if the X86 instruction table is sorted*/
-static void TestSorted(void)
+/* Check if the single byte opcode table is sorted*/
+static void TestSortedSingle(void)
 {
-   u8 prev_size = 0; /* Previous size */
-   u16 prev_data = 0x0000;
-   u16 prev_mask = 0xFFFF;
-   u16 i, j;
-   OpcodeEntry *curr_opcode = OpcodeTable;
-   for (i = 0; i < MAX_INSTRUCTIONS; i++) {
-      u16 curr_data = 0;
-      u16 curr_mask;
-      /* Check if size is sorted */
-      MinunitExpect(curr_opcode->size >= prev_size);
-      /* Collect masks/data */
-      curr_mask = ~(u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
-      for (j = 0; j < curr_opcode->size; j++) {
-         curr_data = (u16) (curr_data << 8);
-         curr_data |= curr_opcode->data[j];
-      }
+   u8 prev_data = 0x00;
+   u8 prev_mask = 0x00;
+   u16 i;
+   Opcode1Entry *curr_opcode = Opcode1Table;
+   for (i = 0; i < MAX_OPCODE_SINGLE; i++) {
+      u8 curr_data = curr_opcode->data;
+      u8 curr_mask = curr_opcode->mask;
       /* check ordering */
+      MinunitExpect(curr_mask >= prev_mask);
       /* We only check data if the masks are the same */
       if (prev_mask == curr_mask)
          MinunitExpect(curr_data > prev_data);
-      MinunitExpect(curr_mask <= prev_mask);
+
       prev_data = curr_data;
       prev_mask = curr_mask;
-      prev_size = curr_opcode->size;
+      curr_opcode++;
+   }
+}
+
+/* Check if the double byte opcode table is sorted*/
+static void TestSortedDouble(void)
+{
+   u16 prev_data = 0x0000;
+   u16 prev_mask = 0x0000;
+   u16 i;
+   Opcode2Entry *curr_opcode = Opcode2Table;
+   for (i = 0; i < MAX_OPCODE_DOUBLE; i++) {
+      u16 curr_data = 0;
+      u16 curr_mask;
+      /* Collect masks/data */
+      curr_mask = ~(u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
+      curr_data = (u16) ((curr_opcode->data[0] << 8) | curr_opcode->data[1]);
+      /* check ordering */
+      MinunitExpect(curr_mask >= prev_mask);
+      /* We only check data if the masks are the same */
+      if (prev_mask == curr_mask)
+         MinunitExpect(curr_data > prev_data);
+      prev_data = curr_data;
+      prev_mask = curr_mask;
       curr_opcode++;
    }
 }
 
 void TestX86IsnTable(void)
 {
-   TestSorted();
+   TestSortedSingle();
+   TestSortedDouble();
 }

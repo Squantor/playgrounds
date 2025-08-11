@@ -28,7 +28,7 @@ static void TestInvalidInstruction(void)
                      sizeof(invalid_isn_bytes));
    ResetParseIsnCpuState();
    MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
-                                  &parse_isn_cpu_state) == ISN_UNKNOWN);
+                                  &parse_isn_cpu_state) == OP_UNKNOWN);
    MinunitExpect(Qu8Level(&parse_isn_output) == 0);
    MinunitExpect(Qu8Level(&parse_isn_input) == 1);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0000);
