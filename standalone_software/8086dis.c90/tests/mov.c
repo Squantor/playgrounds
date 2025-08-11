@@ -10,6 +10,7 @@ Tests for MOV instructions
 #include "minunit.h"
 #include "mocks.h"
 #include "parseisn.h"
+#include "que8u.h"
 #include "results.h"
 #include "tests.h"
 #include "types.h"

@@ -16,7 +16,6 @@ Tests for Instruction parse
 #include "types.h"
 #include "x86cpu.h"
 #include "x86tok.h"
-#include <string.h>
 
 /* Tests for invalid instruction */
 static void TestInvalidInstruction(void)

@@ -63,3 +63,71 @@ void Create8BitImmediateToken(QueU8 *input, QueU8 *output)
    Qu8PopBack(input, &immediate);
    Qu8PushFront(output, immediate);
 }
+
+void CreateRMAddressingTokens(u8 rm_field, QueU8 *output)
+{
+   switch (rm_field) {
+   case 0x00: /* Case [BX+SI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BX);
+      Qu8PushFront(output, OP_ADD);
+      Qu8PushFront(output, REG_SI);
+      break;
+   case 0x01: /* Case [BX+DI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BX);
+      Qu8PushFront(output, OP_ADD);
+      Qu8PushFront(output, REG_DI);
+      break;
+   case 0x02: /* Case [BP+SI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BP);
+      Qu8PushFront(output, OP_ADD);
+      Qu8PushFront(output, REG_SI);
+      break;
+   case 0x03: /* Case [BP+DI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BP);
+      Qu8PushFront(output, OP_ADD);
+      Qu8PushFront(output, REG_DI);
+      break;
+   case 0x04: /* Case [SI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_SI);
+      break;
+   case 0x05: /* Case [DI] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_DI);
+      break;
+   case 0x06: /* Case [BP] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BP);
+      break;
+   case 0x07: /* Case [BX] */
+      Qu8PushFront(output, ADDR_START);
+      Qu8PushFront(output, REG_BX);
+      break;
+
+   default:
+      Qu8PushFront(output, TOK_INVALID);
+      break;
+   }
+}
+
+void Create8BitDisplacementToken(QueU8 *input, QueU8 *output)
+{
+   u8 displacement;
+   Qu8PushFront(output, DISP_8B);
+   Qu8PopBack(input, &displacement);
+   Qu8PushFront(output, displacement);
+}
+
+void Create16BitDisplacementToken(QueU8 *input, QueU8 *output)
+{
+   u8 displacement;
+   Qu8PushFront(output, DISP_16B);
+   Qu8PopBack(input, &displacement);
+   Qu8PushFront(output, displacement);
+   Qu8PopBack(input, &displacement);
+   Qu8PushFront(output, displacement);
+}

@@ -16,13 +16,10 @@ Handler for all the ModRegR/M byte
 
 Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
-   u8 opcode;
-   u8 modregrm;
-   u8 to_reg;
-   u8 word_op;
-   u8 mod;
-   u8 reg;
-   u8 rm;
+   u8 opcode, modregrm;
+   u8 to_reg, word_op;
+   u8 mod, reg, rm;
+   /* todo: I miss a simpler popback here */
    Qu8PopBack(input, &opcode);
    Qu8PopBack(input, &modregrm);
    to_reg = opcode & OPCODE_DIR_MASK;
@@ -30,7 +27,6 @@ Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    mod = (u8) (modregrm & MODREGRM_MOD_MASK);
    reg = (u8) ((modregrm & MODREGRM_REG_MASK) >> 3);
    rm = modregrm & MODREGRM_RM_MASK;
-
    /* Handle mod 11: register to register operation */
    if (mod == 0xC0) {
       if (word_op) {
@@ -53,6 +49,27 @@ Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
       cpu_state->ip += 2;
       return READY;
    } else
-      return ISN_INVALID;
-   return READY;
+   /* Handle mod 00, 01, 10: addressing mode */
+   {
+      /* Special case of mod 0 with BP address, emit memory address */
+      if (mod == 0x00 && rm == 0x06) {
+         Create16BitAddrToken(input, output);
+         cpu_state->ip += 4;
+         return READY;
+      }
+      CreateRMAddressingTokens(rm, output);
+      /* Emit displacement if any */
+      if (mod == 0x00) {
+         Qu8PushFront(output, ADDR_END); /* No displacement needed */
+         cpu_state->ip += 2;
+      } else if (mod == 0x40) {
+         Create8BitDisplacementToken(input, output);
+         cpu_state->ip += 3;
+      } else if (mod == 0x80) {
+         Create16BitDisplacementToken(input, output);
+         cpu_state->ip += 4;
+      }
+      return READY;
+   }
+   return ISN_INVALID;
 }
