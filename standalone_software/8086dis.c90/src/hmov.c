@@ -16,11 +16,8 @@ Handler for all the MOV instructions
 
 Results HandleMovModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
-   u8 opcode, modregrm;
-   Qu8PopBack(input, &opcode);
-   Qu8PopBack(input, &modregrm);
    Qu8PushFront(output, ISN_MOV);
-   HandleModRegRM(opcode, modregrm, output, cpu_state);
+   HandleModRegRM(input, output, cpu_state);
    return READY;
 }
 

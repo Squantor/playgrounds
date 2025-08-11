@@ -37,7 +37,6 @@ Results HandleAad(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 
 /* Sub handlers */
 /* Handle general ModRegR/M byte */
-Results HandleModRegRM(u8 opcode, u8 modregrm, QueU8 *output,
-                       X86CpuState *cpu_state);
+Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 
 #endif
