@@ -123,10 +123,53 @@ static void TestMovRegReg(void)
    }
 }
 
+/* Tests for moves with ModRegR/M from addressing mode to register */
+/* MOV AH, [BX], MOV BL, [0x1234], MOV CX, [BP+SI+-4], MOV DX, [SI+0x1234] */
+static void TestMovMRRMRegMem(void)
+{
+   u8 mov_mrrm_reg2mem_isns[] = {0x8A, 0x27, 0x8A, 0x1E, 0x34, 0x12, 0x8B,
+                                 0x4A, 0xFC, 0x8B, 0x94, 0x34, 0x12};
+   u8 mov_mrrm_reg2mem_toks[] = {
+       ISN_MOV,    REG_AH,   ADDR_START, REG_BX,  ADDR_END, ISN_MOV,
+       REG_BL,     ADDR_16B, 0x34,       0x12,    ISN_MOV,  REG_CX,
+       ADDR_START, REG_BP,   REG_SI,     DISP_8B, 0xFC,     ADDR_END,
+       ISN_MOV,    REG_DX,   ADDR_START, REG_SI,  DISP_16B, 0x34,
+       0x12,       ADDR_END};
+   u8 tokens[26], i;
+   memset(tokens, TOK_INVALID, sizeof(tokens));
+   Qu8Reset(&parse_isn_input);
+   Qu8Reset(&parse_isn_output);
+   Qu8PushFrontBlock(&parse_isn_input, mov_mrrm_reg2mem_isns,
+                     sizeof(mov_mrrm_reg2mem_isns));
+   ResetParseIsnCpuState();
+   /* Parse four times for all instructions */
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitAssert(Qu8Level(&parse_isn_output) == 26);
+   MinunitAssert(Qu8Level(&parse_isn_input) == 0);
+   MinunitExpect(parse_isn_cpu_state.ip == 13);
+   Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
+   for (i = 0; i < sizeof(tokens); i++) {
+      MinunitExpect(tokens[i] == mov_mrrm_reg2mem_toks[i]);
+   }
+}
+/* Tests for moves with ModRegR/M from register to addressing mode */
+static void TestMovMRRMMemReg(void)
+{
+}
+
 void TestMovDisassembly(void)
 {
    TestMovAccMem();
    TestMovMemAcc();
    TestMovImmReg();
    TestMovRegReg();
+   TestMovMRRMRegMem();
+   TestMovMRRMMemReg();
 }

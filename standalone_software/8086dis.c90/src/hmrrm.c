@@ -14,6 +14,29 @@ Handler for all the ModRegR/M byte
 #include "x86cpu.h"
 #include "x86tok.h"
 
+static void HandleRMField(u8 mod, u8 rm, QueU8 *input, QueU8 *output,
+                          X86CpuState *cpu_state)
+{
+   /* Special case of mod 0 with BP address, emit memory address */
+   if (mod == 0x00 && rm == 0x06) {
+      Create16BitAddrToken(input, output);
+      cpu_state->ip += 4;
+      return;
+   }
+   CreateRMAddressingTokens(rm, output);
+   /* Emit displacement if any */
+   if (mod == 0x00) {
+      Qu8PushFront(output, ADDR_END); /* No displacement needed */
+      cpu_state->ip += 2;
+   } else if (mod == 0x40) {
+      Create8BitDisplacementToken(input, output);
+      cpu_state->ip += 3;
+   } else if (mod == 0x80) {
+      Create16BitDisplacementToken(input, output);
+      cpu_state->ip += 4;
+   }
+}
+
 Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
    u8 opcode, modregrm;
@@ -51,23 +74,22 @@ Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    } else
    /* Handle mod 00, 01, 10: addressing mode */
    {
-      /* Special case of mod 0 with BP address, emit memory address */
-      if (mod == 0x00 && rm == 0x06) {
-         Create16BitAddrToken(input, output);
-         cpu_state->ip += 4;
-         return READY;
-      }
-      CreateRMAddressingTokens(rm, output);
-      /* Emit displacement if any */
-      if (mod == 0x00) {
-         Qu8PushFront(output, ADDR_END); /* No displacement needed */
-         cpu_state->ip += 2;
-      } else if (mod == 0x40) {
-         Create8BitDisplacementToken(input, output);
-         cpu_state->ip += 3;
-      } else if (mod == 0x80) {
-         Create16BitDisplacementToken(input, output);
-         cpu_state->ip += 4;
+      if (word_op) {
+         if (to_reg) {
+            Create16BitRegisterToken(reg, output);
+            HandleRMField(mod, rm, input, output, cpu_state);
+         } else {
+            HandleRMField(mod, rm, input, output, cpu_state);
+            Create16BitRegisterToken(reg, output);
+         }
+      } else {
+         if (to_reg) {
+            Create8BitRegisterToken(reg, output);
+            HandleRMField(mod, rm, input, output, cpu_state);
+         } else {
+            HandleRMField(mod, rm, input, output, cpu_state);
+            Create8BitRegisterToken(reg, output);
+         }
       }
       return READY;
    }
