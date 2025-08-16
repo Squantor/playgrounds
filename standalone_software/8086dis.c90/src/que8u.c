@@ -118,3 +118,24 @@ void Qu8PopBackBlock(QueU8 *const this, u8 *elements, u8 size)
       count--;
    } while (count > 0);
 }
+
+void Qu8PeekBack(QueU8 *const this, u8 *element)
+{
+   if (Qu8Empty(this))
+      return;
+   *element = *this->back;
+}
+
+void Qu8PeekBackBlock(QueU8 *const this, u8 *elements, u8 size)
+{
+   u8 count = size;
+   u8 *temp = this->back;
+   do {
+      if (Qu8Empty(this))
+         return;
+      *elements = *temp;
+      elements++;
+      temp = Qu8Increment(this, temp);
+      count--;
+   } while (count > 0);
+}

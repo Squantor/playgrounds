@@ -62,4 +62,10 @@ void Qu8PopBackBlock(QueU8 *const this, u8 *elements, u8 size);
 /* Remove single element from the front of the queue */
 void Qu8PopFront(QueU8 *const this, u8 *element);
 
+/* Return back element but do not remove */
+void Qu8PeekBack(QueU8 *const this, u8 *element);
+
+/* Return back elements but do not remove */
+void Qu8PeekBackBlock(QueU8 *const this, u8 *elements, u8 size);
+
 #endif

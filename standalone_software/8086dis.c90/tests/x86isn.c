@@ -45,7 +45,7 @@ static void TestSortedDouble(void)
       u16 curr_data = 0;
       u16 curr_mask;
       /* Collect masks/data */
-      curr_mask = ~(u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
+      curr_mask = (u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
       curr_data = (u16) ((curr_opcode->data[0] << 8) | curr_opcode->data[1]);
       /* check ordering */
       MinunitExpect(curr_mask >= prev_mask);

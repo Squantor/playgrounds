@@ -111,10 +111,29 @@ void TestQu8Bidirectional(void)
    MinunitExpect(dummy == 0x56);
 }
 
+void TestQu8PeekBack(void)
+{
+   u8 dummy;
+   u8 dummy_block[2];
+   Qu8Reset(&test_queue);
+   Qu8PushFront(&test_queue, 0x12);
+   Qu8PushFront(&test_queue, 0x34);
+   Qu8PushFront(&test_queue, 0x56);
+   Qu8PeekBack(&test_queue, &dummy);
+   MinunitExpect(dummy == 0x12);
+   MinunitExpect(Qu8Level(&test_queue) == 3);
+   Qu8DropBack(&test_queue);
+   Qu8PeekBackBlock(&test_queue, dummy_block, 2);
+   MinunitExpect(dummy_block[0] == 0x34);
+   MinunitExpect(dummy_block[1] == 0x56);
+   MinunitExpect(Qu8Level(&test_queue) == 2);
+}
+
 void TestQueueU8(void)
 {
    TestQu8Reset();
    TestQu8PushFront();
    TestQu8PopBack();
    TestQu8Bidirectional();
+   TestQu8PeekBack();
 }

@@ -22,13 +22,13 @@ Opcode1Entry Opcode1Table[MAX_OPCODE_SINGLE] = {
     {0xA2, 0xFE, HandleMovAccMem}, /* MOV MEM,ACC */
     {0x2F, 0xFF, HandleDas},       /* DAS */
     {0x3F, 0xFF, HandleAas},       /* AAS */
-    {0x8C, 0xFF, HandleMovSegMrr}, /* MOV ModRegRM,SEG */
-    {0x8E, 0xFF, HandleMovMrrSeg}, /* MOV SEG,ModRegRM */
 };
 /*
 Table of X86 opcodes and their filter masks. MUST BE KEPT SORTED SMALL TO BIG!
 Sorting is first done on the mask size, then on the opcode content.
 */
 Opcode2Entry Opcode2Table[MAX_OPCODE_DOUBLE] = {
-    {{0xD5, 0x0A}, {0xFF, 0xFF}, HandleAad}, /* AAD */
+    {0x8C00, 0xFF20, HandleMovSegMrr}, /* MOV ModRegRM,SEG */
+    {0x8E00, 0xFF20, HandleMovMrrSeg}, /* MOV SEG,ModRegRM */
+    {0xD50A, 0xFFFF, HandleAad},       /* AAD */
 };

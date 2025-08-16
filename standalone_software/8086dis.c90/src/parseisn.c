@@ -23,9 +23,10 @@ Instruction parser functions
 static Results ParseSingleOpcode(QueU8 *input, QueU8 *output,
                                  X86CpuState *cpu_state)
 {
-   u8 opcode = *(input->back);
-   u16 i;
    Opcode1Entry *opcode_entry = Opcode1Table;
+   u8 opcode;
+   u16 i;
+   Qu8PeekBack(input, &opcode);
    /* todo binary search? */
    /* linear scan through table with single byte opcodes */
    for (i = 0; i < MAX_OPCODE_SINGLE; i++) {
@@ -36,17 +37,28 @@ static Results ParseSingleOpcode(QueU8 *input, QueU8 *output,
       }
       opcode_entry++;
    }
-   /* Linear scan through table with double byte opcodes */
-   /* Did not find opcode? */
    return OP_UNKNOWN;
 }
 
 static Results ParseDoubleOpcode(QueU8 *input, QueU8 *output,
                                  X86CpuState *cpu_state)
 {
-   (void) input;
-   (void) output;
-   (void) cpu_state;
+   Opcode2Entry *opcode_entry = Opcode2Table;
+   u8 opcode_buffer[2];
+   u16 opcode;
+   u16 i;
+   Qu8PeekBackBlock(input, opcode_buffer, 2);
+   opcode = (u16) ((opcode_buffer[0] << 8) | opcode_buffer[1]);
+   /* todo binary search? */
+   /* linear scan through table with single byte opcodes */
+   for (i = 0; i < MAX_OPCODE_SINGLE; i++) {
+      u16 masked_opcode = opcode & opcode_entry->mask;
+      if (masked_opcode == opcode_entry->data) {
+         if (opcode_entry->handler != NULL)
+            return opcode_entry->handler(input, output, cpu_state);
+      }
+      opcode_entry++;
+   }
    return OP_UNKNOWN;
 }
 

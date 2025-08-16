@@ -15,8 +15,8 @@ X86 instruction table definitions
 #include "types.h"
 #include "x86cpu.h"
 
-#define MAX_OPCODE_SINGLE 8 /* Maximum single byte opcodes */
-#define MAX_OPCODE_DOUBLE 1 /* Maximum double byte opcodes */
+#define MAX_OPCODE_SINGLE 6 /* Maximum single byte opcodes */
+#define MAX_OPCODE_DOUBLE 3 /* Maximum double byte opcodes */
 
 typedef Results (*OpcodeHandler)(QueU8 *input, QueU8 *output,
                                  X86CpuState *cpu_state);
@@ -30,8 +30,8 @@ typedef struct {
 
 /* double byte opcode entry for the two byte instruction table */
 typedef struct {
-   u8 data[2];            /* Opcode pattern */
-   u8 mask[2];            /* Opcode mask */
+   u16 data;              /* Opcode pattern */
+   u16 mask;              /* Opcode mask */
    OpcodeHandler handler; /* Handler function for this opcode */
 } Opcode2Entry;
 
