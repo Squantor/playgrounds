@@ -16,12 +16,14 @@ Table of X86 opcodes and their filter masks. MUST BE KEPT SORTED SMALL TO BIG!
 Sorting is first done on the mask size, then on the opcode content.
 */
 Opcode1Entry Opcode1Table[MAX_OPCODE_SINGLE] = {
-    {0xB0, 0xF0, HandleMovImmReg},   /* MOV REG,IMM */
-    {0x88, 0xFC, HandleMovModRegRM}, /* MOV ModRegRM */
-    {0xA0, 0xFE, HandleMovMemAcc},   /* MOV ACC,MEM */
-    {0xA2, 0xFE, HandleMovAccMem},   /* MOV MEM,ACC */
-    {0x2F, 0xFF, HandleDas},         /* DAS */
-    {0x3F, 0xFF, HandleAas},         /* AAS */
+    {0xB0, 0xF0, HandleMovImmReg}, /* MOV REG,IMM */
+    {0x88, 0xFC, HandleMovMrr},    /* MOV ModRegRM */
+    {0xA0, 0xFE, HandleMovMemAcc}, /* MOV ACC,MEM */
+    {0xA2, 0xFE, HandleMovAccMem}, /* MOV MEM,ACC */
+    {0x2F, 0xFF, HandleDas},       /* DAS */
+    {0x3F, 0xFF, HandleAas},       /* AAS */
+    {0x8C, 0xFF, HandleMovSegMrr}, /* MOV ModRegRM,SEG */
+    {0x8E, 0xFF, HandleMovMrrSeg}, /* MOV SEG,ModRegRM */
 };
 /*
 Table of X86 opcodes and their filter masks. MUST BE KEPT SORTED SMALL TO BIG!

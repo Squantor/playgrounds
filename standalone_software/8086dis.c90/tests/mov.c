@@ -39,7 +39,7 @@ static void TestMovAccMem(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0006);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_mem2a_toks); i++) {
       MinunitExpect(tokens[i] == mov_mem2a_toks[i]);
    }
 }
@@ -65,7 +65,7 @@ static void TestMovMemAcc(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0006);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_mem2a_toks); i++) {
       MinunitExpect(tokens[i] == mov_mem2a_toks[i]);
    }
 }
@@ -92,7 +92,7 @@ static void TestMovImmReg(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0005);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_imm2reg_toks); i++) {
       MinunitExpect(tokens[i] == mov_imm2reg_toks[i]);
    }
 }
@@ -118,14 +118,14 @@ static void TestMovRegReg(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 0x0004);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_imm2reg_toks); i++) {
       MinunitExpect(tokens[i] == mov_imm2reg_toks[i]);
    }
 }
 
 /* Tests for moves with ModRegR/M from addressing mode to register */
 /* MOV AH, [BX], MOV BL, [0x1234], MOV CX, [BP+SI+-4], MOV DX, [SI+0x1234] */
-static void TestMovMRRMMemReg(void)
+static void TestMovMrrmReg(void)
 {
    u8 mov_mrrm_mem2reg_isns[] = {0x8A, 0x27, 0x8A, 0x1E, 0x34, 0x12, 0x8B,
                                  0x4A, 0xFC, 0x8B, 0x94, 0x34, 0x12};
@@ -155,12 +155,12 @@ static void TestMovMRRMMemReg(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 13);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_mrrm_mem2reg_toks); i++) {
       MinunitExpect(tokens[i] == mov_mrrm_mem2reg_toks[i]);
    }
 }
 /* Tests for moves with ModRegR/M from register to addressing mode */
-static void TestMovMRRMRegMem(void)
+static void TestMovRegMrrm(void)
 {
    u8 mov_mrrm_reg2mem_isns[] = {0x88, 0x34, 0x88, 0x0E, 0x69, 0x25, 0x89,
                                  0xB9, 0x60, 0xF0, 0x89, 0x63, 0x2C};
@@ -189,8 +189,63 @@ static void TestMovMRRMRegMem(void)
    MinunitAssert(Qu8Level(&parse_isn_input) == 0);
    MinunitExpect(parse_isn_cpu_state.ip == 13);
    Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
-   for (i = 0; i < sizeof(tokens); i++) {
+   for (i = 0; i < sizeof(mov_mrrm_reg2mem_toks); i++) {
       MinunitExpect(tokens[i] == mov_mrrm_reg2mem_toks[i]);
+   }
+}
+
+/* Tests for moves with ModRegR/M from segment register to addressing mode */
+static void TestMovMrrmSeg(void)
+{
+   u8 mov_mrrm2seg_isns[] = {0x8E, 0xC5, 0x8E, 0x84, 0xD2, 0x04};
+   u8 mov_mrrm2seg_toks[] = {ISN_MOV, REG_ES,     REG_BP,  ISN_MOV,
+                             REG_ES,  ADDR_START, REG_SI,  DISP_16B,
+                             0xD2,    0x04,       ADDR_END};
+   u8 tokens[27], i;
+   memset(tokens, TOK_INVALID, sizeof(tokens));
+   Qu8Reset(&parse_isn_input);
+   Qu8Reset(&parse_isn_output);
+   Qu8PushFrontBlock(&parse_isn_input, mov_mrrm2seg_isns,
+                     sizeof(mov_mrrm2seg_isns));
+   ResetParseIsnCpuState();
+   /* Parse two times for all instructions */
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitAssert(Qu8Level(&parse_isn_output) == 11);
+   MinunitAssert(Qu8Level(&parse_isn_input) == 0);
+   MinunitExpect(parse_isn_cpu_state.ip == 6);
+   Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
+   for (i = 0; i < sizeof(mov_mrrm2seg_toks); i++) {
+      MinunitExpect(tokens[i] == mov_mrrm2seg_toks[i]);
+   }
+}
+
+/* Tests for moves with ModRegR/M from addressing mode to segment register */
+static void TestMovSegMrrm(void)
+{
+   u8 mov_seg2mrrm_isns[] = {0x8C, 0xDB, 0x8C, 0x0E, 0x41, 0x01};
+   u8 mov_seg2mrrm_toks[] = {ISN_MOV,  REG_BX, REG_DS, ISN_MOV,
+                             ADDR_16B, 0x41,   0x01,   REG_CS};
+   u8 tokens[27], i;
+   memset(tokens, TOK_INVALID, sizeof(tokens));
+   Qu8Reset(&parse_isn_input);
+   Qu8Reset(&parse_isn_output);
+   Qu8PushFrontBlock(&parse_isn_input, mov_seg2mrrm_isns,
+                     sizeof(mov_seg2mrrm_isns));
+   ResetParseIsnCpuState();
+   /* Parse two times for all instructions */
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitExpect(ParseInstruction(&parse_isn_input, &parse_isn_output,
+                                  &parse_isn_cpu_state) == READY);
+   MinunitAssert(Qu8Level(&parse_isn_output) == 8);
+   MinunitAssert(Qu8Level(&parse_isn_input) == 0);
+   MinunitExpect(parse_isn_cpu_state.ip == 6);
+   Qu8PopBackBlock(&parse_isn_output, tokens, sizeof(tokens));
+   for (i = 0; i < sizeof(mov_seg2mrrm_toks); i++) {
+      MinunitExpect(tokens[i] == mov_seg2mrrm_toks[i]);
    }
 }
 
@@ -200,6 +255,8 @@ void TestMovDisassembly(void)
    TestMovMemAcc();
    TestMovImmReg();
    TestMovRegReg();
-   TestMovMRRMRegMem();
-   TestMovMRRMMemReg();
+   TestMovMrrmReg();
+   TestMovRegMrrm();
+   TestMovMrrmSeg();
+   TestMovSegMrrm();
 }

@@ -30,7 +30,11 @@ Results HandleMovMemAcc(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 /* Handle move from Immediate to register */
 Results HandleMovImmReg(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 /* Handle move with Mod/Reg/RM byte */
-Results HandleMovModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+Results HandleMovMrr(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+/* Handle move from segment register to Mod/Reg/RM */
+Results HandleMovSegMrr(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+/* Handle move to segment register from Mod/Reg/RM */
+Results HandleMovMrrSeg(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 Results HandleDas(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 Results HandleAas(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 Results HandleAad(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
@@ -38,5 +42,7 @@ Results HandleAad(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 /* Sub handlers */
 /* Handle general ModRegR/M byte */
 Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
+/* Handle segment register ModRegR/M byte */
+Results HandleModSegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state);
 
 #endif

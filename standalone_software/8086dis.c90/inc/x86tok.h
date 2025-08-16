@@ -62,6 +62,8 @@ void Create8BitImmediateToken(QueU8 *input, QueU8 *output);
 void Create16BitImmediateToken(QueU8 *input, QueU8 *output);
 /* get register field and output 16 bit register token */
 void Create16BitRegisterToken(u8 reg_field, QueU8 *output);
+/* get register field and output segment register token */
+void CreateSegRegToken(u8 reg_field, QueU8 *output);
 /* get register field and output 8 bit register token */
 void Create8BitRegisterToken(u8 reg_field, QueU8 *output);
 /* Parse R/M field and generate register indexing tokens */

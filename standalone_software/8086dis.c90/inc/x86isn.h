@@ -15,7 +15,7 @@ X86 instruction table definitions
 #include "types.h"
 #include "x86cpu.h"
 
-#define MAX_OPCODE_SINGLE 6 /* Maximum single byte opcodes */
+#define MAX_OPCODE_SINGLE 8 /* Maximum single byte opcodes */
 #define MAX_OPCODE_DOUBLE 1 /* Maximum double byte opcodes */
 
 typedef Results (*OpcodeHandler)(QueU8 *input, QueU8 *output,

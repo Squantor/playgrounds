@@ -95,3 +95,42 @@ Results HandleModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    }
    return ISN_INVALID;
 }
+
+Results HandleModSegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+{
+   u8 opcode, modregrm;
+   u8 to_reg;
+   u8 mod, reg, rm;
+   /* todo: I miss a simpler popback here */
+   Qu8PopBack(input, &opcode);
+   Qu8PopBack(input, &modregrm);
+   /* we use the opcode bit difference as a direction bit */
+   to_reg = opcode & OPCODE_DIR_MASK;
+   mod = (u8) (modregrm & MODREGRM_MOD_MASK);
+   reg = (u8) ((modregrm & MODREGRM_REG_MASK) >> 3);
+   rm = modregrm & MODREGRM_RM_MASK;
+   /* Handle mod 11: register to segment register operation */
+   if (mod == 0xC0) {
+      if (to_reg) {
+         CreateSegRegToken(reg, output);
+         Create16BitRegisterToken(rm, output);
+      } else {
+         Create16BitRegisterToken(rm, output);
+         CreateSegRegToken(reg, output);
+      }
+      cpu_state->ip += 2;
+      return READY;
+   } else
+   /* Handle mod 00, 01, 10: addressing mode */
+   {
+      if (to_reg) {
+         CreateSegRegToken(reg, output);
+         HandleRMField(mod, rm, input, output, cpu_state);
+      } else {
+         HandleRMField(mod, rm, input, output, cpu_state);
+         CreateSegRegToken(reg, output);
+      }
+      return READY;
+   }
+   return ISN_INVALID;
+}

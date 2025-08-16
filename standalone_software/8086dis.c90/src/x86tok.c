@@ -16,7 +16,7 @@ static u8 lut_reg16[8] = {REG_AX, REG_CX, REG_DX, REG_BX,
                           REG_SP, REG_BP, REG_SI, REG_DI};
 static u8 lut_reg8[8] = {REG_AL, REG_CL, REG_DL, REG_BL,
                          REG_AH, REG_CH, REG_DH, REG_BH};
-/*static u8 lut_segreg[4] = {REG_ES, REG_CS, REG_SS, REG_DS};*/
+static u8 lut_segreg[4] = {REG_ES, REG_CS, REG_SS, REG_DS};
 
 void Create16BitAddrToken(QueU8 *input, QueU8 *output)
 {
@@ -35,6 +35,15 @@ void Create16BitRegisterToken(u8 reg_field, QueU8 *output)
       return;
    }
    Qu8PushFront(output, lut_reg16[reg_field]);
+}
+
+void CreateSegRegToken(u8 reg_field, QueU8 *output)
+{
+   if (reg_field > 3) {
+      Qu8PushFront(output, TOK_INVALID);
+      return;
+   }
+   Qu8PushFront(output, lut_segreg[reg_field]);
 }
 
 void Create8BitRegisterToken(u8 reg_field, QueU8 *output)

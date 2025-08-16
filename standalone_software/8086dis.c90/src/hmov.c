@@ -14,7 +14,7 @@ Handler for all the MOV instructions
 #include "x86cpu.h"
 #include "x86tok.h"
 
-Results HandleMovModRegRM(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+Results HandleMovMrr(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
 {
    Qu8PushFront(output, ISN_MOV);
    HandleModRegRM(input, output, cpu_state);
@@ -67,5 +67,19 @@ Results HandleMovMemAcc(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
    }
    Create16BitAddrToken(input, output);
    cpu_state->ip += 3;
+   return READY;
+}
+
+Results HandleMovSegMrr(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+{
+   Qu8PushFront(output, ISN_MOV);
+   HandleModSegRM(input, output, cpu_state);
+   return READY;
+}
+
+Results HandleMovMrrSeg(QueU8 *input, QueU8 *output, X86CpuState *cpu_state)
+{
+   Qu8PushFront(output, ISN_MOV);
+   HandleModSegRM(input, output, cpu_state);
    return READY;
 }

@@ -23,6 +23,11 @@ MOV [0x2569], CL
 MOV [BX+DI+-4000], DI
 MOV [BP+DI+44], SP
 NOP
+MOV ES, BP
+MOV ES,[SI+1234]
+MOV BX, DS
+MOV [testword], CS
+NOP
 MOV AH, 0x4C
 INT 21h
 testbyte:    db  0x42
