@@ -42,11 +42,9 @@ static void TestSortedDouble(void)
    u16 i;
    Opcode2Entry *curr_opcode = Opcode2Table;
    for (i = 0; i < MAX_OPCODE_DOUBLE; i++) {
-      u16 curr_data = 0;
-      u16 curr_mask;
       /* Collect masks/data */
-      curr_mask = (u16) ((curr_opcode->mask[0] << 8) | curr_opcode->mask[1]);
-      curr_data = (u16) ((curr_opcode->data[0] << 8) | curr_opcode->data[1]);
+      u16 curr_data = curr_opcode->data;
+      u16 curr_mask = curr_opcode->mask;
       /* check ordering */
       MinunitExpect(curr_mask >= prev_mask);
       /* We only check data if the masks are the same */
