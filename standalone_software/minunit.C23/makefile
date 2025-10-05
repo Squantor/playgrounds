@@ -2,9 +2,9 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20250729
+# Version: 20251005
 #
-# Mini project makefile for ANSI C projects
+# Mini project makefile for C23 C projects
 
 SOURCES ?= $(wildcard *.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
@@ -14,10 +14,10 @@ CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
-WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c2x $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
+WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS := -std=c2x $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CHECKFLAGS := -header-filter='.*'
 LDLIBS := -lm
-OUTPUT_OPTION = -MMD -MP -o $@
 
 OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
 DEPS := $(patsubst %.c,%.d,$(SOURCES))
@@ -31,6 +31,10 @@ all: $(SOURCES) $(EXECUTABLE) makefile
 .PHONY: run
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
+
+.PHONY: check
+check: $(SOURCES)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDLIBS) $(OBJECTS) -o $@
@@ -46,5 +50,6 @@ clean:
 # Function used to check variables. Use on the command line:
 # make print-VARNAME
 # Useful for debugging
+.PHONY: print-%
 print-%: ; @echo $*=$($*)
-.Phony: print-%
+

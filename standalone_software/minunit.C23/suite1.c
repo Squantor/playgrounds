@@ -5,6 +5,7 @@
  * For conditions of distribution and use, see LICENSE file
  */
 #include <minunit.h>
+#include <stddef.h>
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 MINUNIT_ADD(suite1, NULL, NULL)
