@@ -9,7 +9,7 @@
 SOURCES ?= $(wildcard *.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
-TARGET = minunit_c90
+TARGET = minunit_C23
 CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
