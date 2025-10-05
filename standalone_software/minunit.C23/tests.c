@@ -18,9 +18,9 @@ int testSetupExecuted;
  */
 MINUNIT_SETUP(minunitTestSetup)
 {
-  minUnitPass(); // added to supress warnings
-  testSetupExecuted = 123456789;
-  return;
+   MINUNIT_PASS();  // added to supress warnings
+   testSetupExecuted = 123456789;
+   return;
 }
 
 /**
@@ -28,8 +28,8 @@ MINUNIT_SETUP(minunitTestSetup)
  */
 MINUNIT_TEARDOWN(minunitTestTeardown)
 {
-  minUnitPass(); // added to supress warnings
-  return;
+   MINUNIT_PASS();  // added to supress warnings
+   return;
 }
 
 /**
@@ -37,8 +37,8 @@ MINUNIT_TEARDOWN(minunitTestTeardown)
  */
 MINUNIT_ADD(minunitTestSetupFunc, minunitTestSetup, minunitTestTeardown)
 {
-  minUnitCheck(testSetupExecuted == 123456789);
-  // I cant see how to test teardown just yet
+   MINUNIT_CHECK(testSetupExecuted == 123456789);
+   // I cant see how to test teardown just yet
 }
 
 /**
@@ -46,7 +46,7 @@ MINUNIT_ADD(minunitTestSetupFunc, minunitTestSetup, minunitTestTeardown)
  */
 void TestBodyMinUnitFail(minunitState *testResults)
 {
-  minUnitFail();
+   MINUNIT_FAIL();
 }
 
 /**
@@ -54,16 +54,16 @@ void TestBodyMinUnitFail(minunitState *testResults)
  */
 MINUNIT_ADD(minunitTestmutestFail, NULL, NULL)
 {
-  minunitState localState;
-  localState.executed = 0;
-  localState.checks = 0;
-  localState.failures = 0;
-  localState.flagFailed = 0;
-  TestBodyMinUnitFail(&localState);
-  minUnitCheck(localState.executed == 0);
-  minUnitCheck(localState.checks == 1);
-  minUnitCheck(localState.failures == 0);
-  minUnitCheck(localState.flagFailed == 1);
+   minunitState localState;
+   localState.executed = 0;
+   localState.checks = 0;
+   localState.failures = 0;
+   localState.flagFailed = 0;
+   TestBodyMinUnitFail(&localState);
+   MINUNIT_CHECK(localState.executed == 0);
+   MINUNIT_CHECK(localState.checks == 1);
+   MINUNIT_CHECK(localState.failures == 0);
+   MINUNIT_CHECK(localState.flagFailed == 1);
 }
 
 /**
@@ -71,7 +71,7 @@ MINUNIT_ADD(minunitTestmutestFail, NULL, NULL)
  */
 void TestBodyMinUnitCheckFail(minunitState *testResults)
 {
-  minUnitCheck(1 == 0);
+   MINUNIT_CHECK(1 == 0);
 }
 
 /**
@@ -79,16 +79,16 @@ void TestBodyMinUnitCheckFail(minunitState *testResults)
  */
 MINUNIT_ADD(minunitTestCheckFail, NULL, NULL)
 {
-  minunitState localState;
-  localState.executed = 0;
-  localState.checks = 0;
-  localState.failures = 0;
-  localState.flagFailed = 0;
-  TestBodyMinUnitCheckFail(&localState);
-  minUnitCheck(localState.executed == 0);
-  minUnitCheck(localState.checks == 1);
-  minUnitCheck(localState.failures == 0);
-  minUnitCheck(localState.flagFailed == 1);
+   minunitState localState;
+   localState.executed = 0;
+   localState.checks = 0;
+   localState.failures = 0;
+   localState.flagFailed = 0;
+   TestBodyMinUnitCheckFail(&localState);
+   MINUNIT_CHECK(localState.executed == 0);
+   MINUNIT_CHECK(localState.checks == 1);
+   MINUNIT_CHECK(localState.failures == 0);
+   MINUNIT_CHECK(localState.flagFailed == 1);
 }
 
 /**
@@ -96,7 +96,7 @@ MINUNIT_ADD(minunitTestCheckFail, NULL, NULL)
  */
 void TestBodyMinUnitCheckPass(minunitState *testResults)
 {
-  minUnitCheck(1 == 1);
+   MINUNIT_CHECK(1 == 1);
 }
 
 /**
@@ -104,14 +104,14 @@ void TestBodyMinUnitCheckPass(minunitState *testResults)
  */
 MINUNIT_ADD(minunitTestCheckPass, NULL, NULL)
 {
-  minunitState localState;
-  localState.executed = 0;
-  localState.checks = 0;
-  localState.failures = 0;
-  localState.flagFailed = 0;
-  TestBodyMinUnitCheckPass(&localState);
-  minUnitCheck(localState.executed == 0);
-  minUnitCheck(localState.checks == 1);
-  minUnitCheck(localState.failures == 0);
-  minUnitCheck(localState.flagFailed == 0);
+   minunitState localState;
+   localState.executed = 0;
+   localState.checks = 0;
+   localState.failures = 0;
+   localState.flagFailed = 0;
+   TestBodyMinUnitCheckPass(&localState);
+   MINUNIT_CHECK(localState.executed == 0);
+   MINUNIT_CHECK(localState.checks == 1);
+   MINUNIT_CHECK(localState.failures == 0);
+   MINUNIT_CHECK(localState.flagFailed == 0);
 }
