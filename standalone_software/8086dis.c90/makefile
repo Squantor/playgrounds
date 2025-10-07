@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251005
+# Version: 20251007
 #
 # Mini project makefile for ANSI C projects
 
@@ -20,13 +20,11 @@ CHECKFLAGS := -header-filter='.*'
 LDLIBS := -lm
 
 OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
-DEPS := $(patsubst %.c,%.d,$(SOURCES))
+DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
 
--include $(DEPS)
-
 .PHONY: all
-all: $(SOURCES) $(EXECUTABLE) makefile
+all: $(EXECUTABLE)
 
 .PHONY: run
 run: $(EXECUTABLE)
@@ -36,8 +34,8 @@ run: $(EXECUTABLE)
 check: $(SOURCES)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDLIBS) $(OBJECTS) -o $@
+$(EXECUTABLE): $(OBJECTS) makefile
+	$(CC) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
 %.o: %.c
@@ -46,6 +44,8 @@ $(EXECUTABLE): $(OBJECTS)
 .PHONY: clean
 clean:
 	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE)
+
+-include $(DEPS)
 
 # Function used to check variables. Use on the command line:
 # make print-VARNAME
