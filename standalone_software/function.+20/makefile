@@ -2,22 +2,23 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251010
+# Version: 20251011
 #
 # Mini project makefile for mixed C and C++ projects
 
 SOURCES := $(wildcard *.cpp *.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
-TARGET = delegate
+TARGET = function
 CC = gcc
+CXX = g++
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os 
 CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
 CFLAGS := -std=c2x $(DEBUG) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -fsanitize=undefined -fsanitize-trap
-CXXFLAGS := -std=c++20 $(DEBUG) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $(DEBUG) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
 
@@ -37,14 +38,14 @@ check: $(SOURCES)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CC) $(OBJECTS) -o $@ $(LDLIBS)
+	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
 %.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.cpp.o: %.cpp
-	$(CC) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:

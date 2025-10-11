@@ -4,6 +4,10 @@
  * Copyright (c) 2025 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
+/**
+ * \file minunit.c
+ * Minimal C++ unittesting framework code
+ */
 #include <minunit.h>
 #include <stddef.h>
 

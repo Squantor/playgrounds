@@ -7,7 +7,7 @@
 /**
  * \file MinUnit.hpp
  *
- * Minimal C++ unittesting framework
+ * Minimal C++ unittesting framework header
  *
  * Minimal C++ unittesting framework, based on:
  * https://github.com/siu/minunit
