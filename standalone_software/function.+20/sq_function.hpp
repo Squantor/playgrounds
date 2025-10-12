@@ -18,7 +18,20 @@ For conditions of distribution and use, see LICENSE file
 #include <stdexcept>
 #include <utility>
 
-template <typename, std::size_t = 32> struct SqFunction;
+template <typename, std::size_t = 64> struct SqFunction;
+
+template <class T> struct IsASimpleFunction : std::false_type {
+};
+
+template <class Sig, size_t C>
+struct IsASimpleFunction<SqFunction<Sig, C>> : std::true_type {
+};
+
+template <typename Function, typename Return, typename... Arguments>
+concept ValidFunctor =
+    std::is_invocable_r_v<Return, std::decay_t<Function> &, Arguments...> &&
+    !IsASimpleFunction<std::decay_t<Function>>::value &&
+    std::copy_constructible<std::decay_t<Function>>;
 
 template <typename Return, typename... Arguments, std::size_t capacity>
 struct SqFunction<Return(Arguments...), capacity> {
@@ -27,7 +40,9 @@ struct SqFunction<Return(Arguments...), capacity> {
     * @tparam Callable
     * @param function
     */
-   template <typename Callable> SqFunction(Callable &&function)
+   template <typename Callable>
+   SqFunction(Callable &&function)
+      requires ValidFunctor<Callable, Return, Arguments...>
    {
       using DecayedCallable = std::decay_t<Callable>;
       // Check that our buffer can fit F at compile time
@@ -60,7 +75,36 @@ struct SqFunction<Return(Arguments...), capacity> {
       }
    }
 
-   // TODO: Implement copy and move operations
+   SqFunction(const SqFunction &other)
+   {
+      if (other.function_pointer) {
+         function_pointer = other.cloner_function(other.function_pointer,
+                                                  this->function_buffer);
+         invoker_function = other.invoker_function;
+         deleter_function = other.deleter_function;
+         cloner_function = other.cloner_function;
+         mover_function = other.mover_function;
+      }
+   }
+
+   SqFunction &operator=(const SqFunction &other)
+   {
+      SqFunction temp(other);
+      this->swap(temp);
+      return *this;
+   }
+
+   SqFunction &operator=(SqFunction &&other)
+   {
+      SqFunction temp(std::move(other));
+      this->swap(temp);
+      return *this;
+   }
+
+   SqFunction(SqFunction &&other)
+   {
+      this->swap(other);
+   }
 
    Return operator()(Arguments... args) const
    {
@@ -68,18 +112,75 @@ struct SqFunction<Return(Arguments...), capacity> {
                               std::forward<Arguments>(args)...);
    }
 
+   // Note: not noexcept and not exception safe, can be implemented better.
+   void swap(SqFunction &other)
+   {
+      if (this == &other)
+         return;
+
+      alignas(std::max_align_t) char tmp[sizeof(function_buffer)];
+      void *tptr = nullptr;
+
+      MoverFunction this_mover = mover_function;
+      DeleterFunction this_deleter = deleter_function;
+
+      // 1) move *this -> tmp
+      if (this_mover && function_pointer) {
+         tptr = this_mover(function_pointer, tmp);
+         this_deleter(function_pointer);
+         function_pointer = nullptr;
+      }
+
+      // 2) move other -> *this
+      if (other.mover_function && other.function_pointer) {
+         function_pointer =
+             other.mover_(other.function_pointer, function_buffer);
+         other.deleter_function(other.function_pointer);
+         other.function_pointer = nullptr;
+      }
+
+      // 3) move tmp -> other
+      if (tptr) {
+         if (this_mover) {
+            other.function_pointer = this_mover(tptr, other.function_buffer);
+            this_deleter(tptr);
+         }
+      }
+      std::swap(invoker_function, other.invoker_function);
+      std::swap(deleter_function, other.deleter_function);
+      std::swap(cloner_function, other.cloner_function);
+      std::swap(mover_function, other.mover_function);
+   }
+
+   explicit operator bool() const noexcept
+   {
+      return invoker_function != nullptr;
+   }
+
+   void reset() noexcept
+   {
+      SqFunction{}.swap(*this);
+   }
+
  private:
    void *function_pointer = nullptr;
 
    using InvokerFunction = Return (*)(void *, Arguments &&...);
    using DeleterFunction = void (*)(void *);
+   using ClonerFunction = void *(*) (void *, char *);
+   using MoverFunction = void *(*) (void *, char *);
    InvokerFunction invoker_function = nullptr;
    DeleterFunction deleter_function = nullptr;
+   ClonerFunction cloner_function = nullptr;
+   MoverFunction mover_function = nullptr;
 
-   static constexpr size_t buffer_capacity =
-       capacity - sizeof(function_pointer) - sizeof(invoker_function) -
-       sizeof(deleter_function);
-   // fixed-size inplace buffer
+   static constexpr std::size_t metadata_size =
+       sizeof(decltype(function_pointer)) + sizeof(InvokerFunction) +
+       sizeof(DeleterFunction) + sizeof(ClonerFunction) + sizeof(MoverFunction);
+   static_assert(capacity >= metadata_size,
+                 "capacity is too small for metadata");
+   static constexpr size_t buffer_capacity = capacity - metadata_size;
+
    alignas(std::max_align_t) char function_buffer[buffer_capacity];
 };
 
