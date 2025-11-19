@@ -1,0 +1,259 @@
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2020-2025 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ */
+/**
+ * \file MinUnit.hpp
+ *
+ * Minimal C++ unittesting framework
+ *
+ * Minimal C++ unittesting framework, based on:
+ * https://github.com/siu/minunit
+ * Further inspiration drawn from:
+ * https://github.com/ollelogdahl/ihct
+ */
+#ifndef MINUNIT_H
+#define MINUNIT_H
+
+#ifndef NULL
+#ifndef __cplusplus
+#include <stddef.h>
+#else
+#include <cstddef>
+#endif
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef MINUNIT_MAX_TESTS
+#warning No maximum number of tests defined, defaulting to 100
+#define MINUNIT_MAX_TESTS 100
+#endif
+
+/**
+ * @brief Datastructure defining test state
+ */
+typedef struct {
+   int executed;  /*!< Total tests executed */
+   int failures;  /*!< Total tests failed */
+   int checks;    /*!< Total test asserts executed */
+   int flag_fail; /*!< did the current test fail */
+} MinunitState;
+
+/**
+ * @brief Test instance entry
+ */
+typedef struct {
+   void (*body)(MinunitState *test_results); /*!< code to test */
+   void (*setup)(
+       MinunitState *test_results); /*!< setup to run before the test */
+   void (*teardown)(
+       MinunitState *test_results); /*!< teardown to run after the test */
+} MinunitTestEntry;
+
+/**
+ * @brief Table of tests
+ */
+typedef struct {
+   int testcount; /*!< amount of tests in the table */
+   MinunitTestEntry tests[MINUNIT_MAX_TESTS]; /*!< table of tests */
+} MinunitTestsTable;
+
+/**
+ * @brief Test instance entry
+ */
+typedef void (*IntraTestCallback)(void);
+
+/**
+ * @brief Macro to define a test setup function
+ * Helper macro to create a function definition of a test setup
+ * @param[in]  name         Name of the test setup function
+ */
+#define MINUNIT_SETUP(name) void name(MinunitState *test_results)
+
+/**
+ * @brief Macro to define a test teardown function
+ * Helper macro to create a function definition of a test teardown
+ * @param[in]  name         Name of the test teardown function
+ */
+#define MINUNIT_TEARDOWN(name) void name(MinunitState *test_results)
+
+extern MinunitState minunit_test_state;      /*!< minunit global state */
+extern MinunitTestsTable default_test_table; /*!< default table of tests */
+
+/**
+ * @brief Macro to register a test
+ * Helper macro to register a test with minunit
+ * @param[in]  name         Name of the test
+ * @param[in]  setupFunc    test setup function, NULL for no setup
+ * @param[in]  teardownFunc test setup function, NULL for no setup
+ */
+#define MINUNIT_ADD(name, setupFunc, teardownFunc)                           \
+   static void minunit_##name(MinunitState *test_results);                   \
+   static void __attribute__((constructor)) __construct_minunit_##name(void) \
+   {                                                                         \
+      MinunitAddTest(&default_test_table, minunit_##name, setupFunc,         \
+                     teardownFunc);                                          \
+   }                                                                         \
+   static void minunit_##name(MinunitState *test_results)
+
+/**
+ * @brief function to add test to the test table
+ * Used internally by the macro MINUNIT_ADD
+ * @param[in]  table        Pointer to a table of tests
+ * @param[in]  body     Function pointer to the actual test
+ * @param[in]  setup    Function pointer to the test setup
+ * @param[in]  teardown Function pointer to the test teardown
+ */
+void MinunitAddTest(MinunitTestsTable *table,
+                    void (*body)(MinunitState *test_results),
+                    void (*setup)(MinunitState *test_results),
+                    void (*teardown)(MinunitState *test_results));
+
+/**
+ * @brief function execute all tests
+ * Executes all tests registered with MINUNIT_ADD
+ */
+int MinunitRun(void);
+
+/**
+ * @brief function execute all tests with a callback inbetween
+ * Executes all tests registered with MINUNIT_ADD and calls between each test
+ * a callback given by the callback argument.
+ * @param[in]   callback    Function pointer to call in between tests
+ */
+int MinunitRunCallback(IntraTestCallback callback);
+
+/**
+ * @brief function execute all tests with a in between test callback from a
+ * given table
+ * Executes all tests passed along in the tests table and calls between each
+ * test a callback given by the callback argument.
+ * @param[in]   table       Table of tests to execute
+ * @param[in]   callback    Function pointer to call in between tests
+ */
+int MinunitRunTableCallback(MinunitTestsTable *table,
+                            IntraTestCallback callback);
+
+/**
+ * @brief weak overridable callback function to report messages
+ * Used by minunit to report failing tests or just print progress. This is a
+ * weak function to be overridden by the user if he wants a different report
+ * message
+ * @param[in]  message   Message to print
+ */
+void MinunitReport(const char *message);
+
+/**
+ * @brief weak overridable callback function called when a test fails
+ * When a minunit check fails, this function is called. Useful for examining the
+ * callstack in embedded targets to see where it fails.
+ */
+void MinunitFailCallback();
+
+/**
+ * @brief Macro to wrap a safe define block
+ * Helper macro to create a safe block to be used in other C style macros
+ * @param[in]  block   Block of statements that will be wrapped in a ```do{
+ * }while(0)``` block.
+ */
+#define MU__SAFE_BLOCK(block) \
+   do {                       \
+      block                   \
+   } while (0)
+
+/**
+ * @brief Convert a macro literal to string
+ * Helper macro to convert a macro literal to a string, useful for __LINE__
+ * @param[in]  x   Macro definition to convert to a string
+ */
+#define STRINGIFY(x) #x
+
+/**
+ * @brief Convert a macro literal to string
+ * Final helper macro to convert a macro literal to a string, useful for
+ * __LINE__
+ * @param[in]  x   Macro definition to convert to a string
+ */
+#define TOSTRING(x) STRINGIFY(x)
+
+/**
+ * @brief Executes a assertion
+ * Executes a check, the argument needs to be true for passing.
+ * ```
+ * MU_TEST(myTest)
+ * {
+ *     mu_check(true == true);
+ * }
+ * ```
+ * @param[in] test Check to perform
+ */
+#ifndef MINUNIT_REPORT_DISABLE
+#define MINUNIT_ASSERT(test)                              \
+   MU__SAFE_BLOCK(                                        \
+       test_results->checks++; if (!(test)) {             \
+          MinunitFailCallback();                          \
+          test_results->flag_fail = 1;                    \
+          MinunitReport("\n" __FILE__ ":" TOSTRING(       \
+              __LINE__) " failed: " TOSTRING(test) "\n"); \
+          return;                                         \
+       } else { MinunitReport("."); })
+#else
+#define MINUNIT_ASSERT(test)                             \
+   MU__SAFE_BLOCK(test_results->checks++; if (!(test)) { \
+      MinunitFailCallback();                             \
+      test_results->flag_fail = 1;                       \
+      return;                                            \
+   })
+#endif
+
+/**
+ * @brief Executes a check
+ * Executes a check, the argument does not need to be true for passing.
+ * ```
+ * MU_TEST(myTest)
+ * {
+ *     mu_check(true == true);
+ * }
+ * ```
+ * @param[in] test Check to perform
+ */
+#ifndef MINUNIT_REPORT_DISABLE
+#define MINUNIT_CHECK(test)                               \
+   MU__SAFE_BLOCK(                                        \
+       test_results->checks++; if (!(test)) {             \
+          MinunitFailCallback();                          \
+          test_results->flag_fail = 1;                    \
+          MinunitReport("\n" __FILE__ ":" TOSTRING(       \
+              __LINE__) " failed: " TOSTRING(test) "\n"); \
+       } else { MinunitReport("."); })
+#else
+#define MINUNIT_CHECK(test)                              \
+   MU__SAFE_BLOCK(test_results->checks++; if (!(test)) { \
+      MinunitFailCallback();                             \
+      test_results->flag_fail = 1;                       \
+   })
+#endif
+
+/**
+ * @brief automatically pass test
+ * Automatically passing test, useful for the teardown and setup functions
+ */
+#define MINUNIT_PASS() MU__SAFE_BLOCK(test_results->checks++;)
+
+/**
+ * @brief automatically fail test
+ */
+#define MINUNIT_FAIL()                                           \
+   MU__SAFE_BLOCK(test_results->checks++; MinunitFailCallback(); \
+                  test_results->flag_fail = 1; return;)
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
