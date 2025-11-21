@@ -23,9 +23,9 @@ struct AsyncLL {
    {
    }
 
-   void SetCallback(AsyncCallback hal_callback)
+   void SetCallback(AsyncCallback &hal_callback)
    {
-      this->callback = hal_callback;
+      this->callback = std::move(hal_callback);
    }
 
    void Progress(void)
@@ -47,7 +47,7 @@ struct AsyncLL {
 };
 
 template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
-   AsyncHal() : current_callback(nullptr), callback_head(0), callback_tail(0)
+   AsyncHal() : current_callback{nullptr}, callback_head{0}, callback_tail{0}
    {
       callbacks.fill(nullptr);
    }
@@ -60,9 +60,9 @@ template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
       callbacks.fill(nullptr);
    }
 
-   void SetCallback(AsyncCallback driver_object)
+   void SetCallback(AsyncCallback &driver_object)
    {
-      callbacks[callback_head] = driver_object;
+      callbacks[callback_head] = std::move(driver_object);
       callback_head = (callback_head + 1) % max_callbacks;
    }
 
@@ -70,7 +70,7 @@ template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
    {
       if (current_callback == nullptr) {
          if (callback_head != callback_tail) {
-            current_callback = callbacks[callback_tail];
+            current_callback = std::move(callbacks[callback_tail]);
             ll_object.SetCallback([this]() { this->Callback(); });
             callback_tail = (callback_tail + 1) % max_callbacks;
          }
@@ -127,8 +127,10 @@ AsyncDriver2 driver2;
 
 MINUNIT_ADD(callback_test, nullptr, nullptr)
 {
-   dut_hal.SetCallback([]() { driver1.Callback(); });
-   dut_hal.SetCallback([]() { driver2.Callback(); });
+   MyFunction<void(void), 32> driver1_callback([]() { driver1.Callback(); });
+   MyFunction<void(void), 32> driver2_callback([]() { driver2.Callback(); });
+   dut_hal.SetCallback(driver1_callback);
+   dut_hal.SetCallback(driver2_callback);
    dut_hal.Progress();
    dut_hal.Progress();
    dut_hal.Progress();

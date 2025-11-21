@@ -5,35 +5,14 @@ Copyright (c) 2025 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /**
- * \file sq_function.hpp
- * Minimalist std::function replacement
+ * \file sq_mof.hpp
+ * Reimplementation of a simple in place std::move_only_function
  */
-#ifndef SQ_FUNCTION_HPP
-#define SQ_FUNCTION_HPP
+#ifndef SQ_MOF_HPP
+#define SQ_MOF_HPP
 
 #include <memory>
 #include <utility>
-
-template <typename ReturnType, typename... Args> struct MyFunctionInterface {
-   virtual ~MyFunctionInterface() = default;
-   virtual ReturnType operator()(Args...) = 0;
-};
-
-template <typename Fn, typename ReturnType, typename... Args>
-class MyFunctionImpl : public MyFunctionInterface<ReturnType, Args...>
-{
-   Fn fn;
-
- public:
-   MyFunctionImpl(Fn callable) : fn(std::move(callable))
-   {
-   }
-
-   ReturnType operator()(Args... arguments) override
-   {
-      return fn(std::forward<Args>(arguments)...);
-   }
-};
 
 struct MyFunctionSomeClass {
 };
@@ -65,7 +44,28 @@ template <typename T, std::size_t size> struct MyFunctionStorage {
    MyFunctionStorage &operator=(const MyFunctionStorage &) = delete;
 };
 
-template <typename, std::size_t = 32> class MyFunction;
+template <typename ReturnType, typename... Args> struct MyFunctionInterface {
+   virtual ~MyFunctionInterface() = default;
+   virtual ReturnType operator()(Args...) = 0;
+};
+
+template <typename Fn, typename ReturnType, typename... Args>
+class MyFunctionImpl : public MyFunctionInterface<ReturnType, Args...>
+{
+   Fn fn;
+
+ public:
+   MyFunctionImpl(Fn fn) : fn(std::move(fn))
+   {
+   }
+
+   ReturnType operator()(Args... args) override
+   {
+      return fn(std::forward<Args>(args)...);
+   }
+};
+
+template <typename, size_t = 32> class MyFunction;
 
 template <typename ReturnType, typename... Args, std::size_t size>
 class MyFunction<ReturnType(Args...), size>
@@ -75,11 +75,13 @@ class MyFunction<ReturnType(Args...), size>
  public:
    template <typename Func> MyFunction(Func function)
    {
-      using Impl = MyFunctionImpl<Func, ReturnType, Args...>;
-      static_assert(sizeof(Impl) <= fn.capacity(),
+      static_assert(sizeof(MyFunctionImpl<Func, ReturnType, Args...>) <=
+                        fn.capacity(),
                     "insufficient storage for this implementation");
-      std::construct_at(reinterpret_cast<Impl *>(fn.buffer),
-                        std::move(function));
+      std::construct_at(
+          reinterpret_cast<MyFunctionImpl<Func, ReturnType, Args...> *>(
+              fn.buffer),
+          std::move(function));
    }
 
    ~MyFunction()
@@ -87,9 +89,9 @@ class MyFunction<ReturnType(Args...), size>
       std::destroy_at(fn.ptr());
    }
 
-   ReturnType operator()(Args... arguments)
+   ReturnType operator()(Args... args)
    {
-      return fn.ptr()->operator()(std::forward<Args>(arguments)...);
+      return fn.ptr()->operator()(std::forward<Args>(args)...);
    }
 };
 

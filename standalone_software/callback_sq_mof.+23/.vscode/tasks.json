@@ -15,7 +15,15 @@
          "type": "shell",
          "command": "compiledb make -j25",
          "group": "build",
-         "problemMatcher": "$gcc"
+         "problemMatcher": "$gcc",
+         "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "new",
+            "showReuseMessage": true,
+            "clear": false
+         }
       },
    ]
 }
