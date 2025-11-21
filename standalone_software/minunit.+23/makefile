@@ -9,7 +9,7 @@
 SOURCES := $(wildcard *.cpp *.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
-TARGET = minunit_C++2
+TARGET = minunit_C++20
 CC = gcc
 CXX = g++
 SIZE = size
