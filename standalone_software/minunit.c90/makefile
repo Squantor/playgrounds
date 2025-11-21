@@ -2,9 +2,9 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251007
+# Version: 20251121
 #
-# Mini project makefile for ANSI C projects
+# Mini project makefile for mixed C and C++ projects
 
 SOURCES ?= $(wildcard *.c)
 DEFINES :=
@@ -13,9 +13,10 @@ TARGET = minunit_c90
 CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
-RELEASE = -g3 -Os 
-WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c90 $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+RELEASE = -g3 -Os
+BUILD ?= DEBUG
+WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS := -std=c90 $($(BUILD)) $(WARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 CHECKFLAGS := -header-filter='.*'
 LDLIBS := -lm
 

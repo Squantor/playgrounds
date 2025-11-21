@@ -2,24 +2,29 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251007
+# Version: 20251121
 #
-# Mini project makefile for C23 C projects
+# Mini project makefile for mixed C and C++ projects
 
-SOURCES ?= $(wildcard *.c)
+SOURCES := $(wildcard *.cpp *.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
 TARGET = minunit_C23
 CC = gcc
+CXX = g++
 SIZE = size
 DEBUG = -g3 -O0
-RELEASE = -g3 -Os 
-WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wshadow -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c2x $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+RELEASE = -g3 -Os
+BUILD ?= DEBUG
+CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
 LDLIBS := -lm
 
-OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
+OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
 
@@ -35,11 +40,14 @@ check: $(SOURCES)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CC) $(OBJECTS) -o $@ $(LDLIBS)
+	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
-%.o: %.c
+%.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+%.cpp.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:

@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251011
+# Version: 20251121
 #
 # Mini project makefile for mixed C and C++ projects
 
@@ -14,13 +14,15 @@ CC = gcc
 CXX = g++
 SIZE = size
 DEBUG = -g3 -O0
-RELEASE = -g3 -Os 
+RELEASE = -g3 -Os
+BUILD ?= DEBUG
 CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c2x $(DEBUG) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $(DEBUG) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
+LDLIBS := -lm
 
 OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
