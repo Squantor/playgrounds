@@ -9,42 +9,11 @@ For conditions of distribution and use, see LICENSE file
  * Test program to check how std::move_only_function callbacks could work
  */
 #include <array>
+#include <asyncll.hpp>
 #include <cstdint>
 #include <cstdio>
 #include <functional>
 #include <minunit.h>
-#include <sq_function.hpp>
-
-using AsyncCallback = MyFunction<void(void), 32>;
-
-struct AsyncLL {
-
-   AsyncLL() : callback_count(0), callback(nullptr)
-   {
-   }
-
-   void SetCallback(AsyncCallback hal_callback)
-   {
-      callback = std::move(hal_callback);
-   }
-
-   void Progress(void)
-   {
-      if (callback != nullptr) {
-         callback();
-         callback = nullptr;
-      }
-   }
-
-   void Callback(void)
-   {
-      // empty, nothing calls this back
-   }
-   std::uint32_t callback_count;
-
- private:
-   AsyncCallback callback;
-};
 
 template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
    AsyncHal() : current_callback{nullptr}, callback_head{0}, callback_tail{0}
@@ -57,7 +26,7 @@ template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
       callback_tail = 0;
       current_callback = nullptr;
       for (auto &c : callbacks)
-         c = MyFunction<void(void), 32>{};  // move-assign empty
+         c = AsyncCallback{};
    }
 
    void SetCallback(AsyncCallback driver_object)
@@ -127,8 +96,8 @@ AsyncDriver2 driver2;
 
 MINUNIT_ADD(callback_test, nullptr, nullptr)
 {
-   MyFunction<void(void), 32> driver1_callback([]() { driver1.Callback(); });
-   MyFunction<void(void), 32> driver2_callback([]() { driver2.Callback(); });
+   auto driver1_callback([]() { driver1.Callback(); });
+   auto driver2_callback([]() { driver2.Callback(); });
    dut_hal.SetCallback(driver1_callback);
    dut_hal.SetCallback(driver2_callback);
    dut_hal.Progress();
