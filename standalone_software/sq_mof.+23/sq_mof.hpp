@@ -74,21 +74,22 @@ template <typename, size_t = 32> class MyMoveOnlyFunction;
 template <typename ReturnType, typename... Args, std::size_t size>
 struct MyMoveOnlyFunction<ReturnType(Args...), size> {
 
-   MyMoveOnlyFunction() noexcept
+   MyMoveOnlyFunction() noexcept : is_invokable{false}
    {
    }
 
-   MyMoveOnlyFunction(std::nullptr_t) noexcept
+   MyMoveOnlyFunction(std::nullptr_t) noexcept : is_invokable{false}
    {
    }
 
    MyMoveOnlyFunction(MyMoveOnlyFunction &&move_only_function) noexcept
-       : invoker{std::exchange(move_only_function.invoker, nullptr)}
+       : is_invokable{std::exchange(move_only_function.is_invokable, false)}
    {
       std::memcpy(fn.buffer, move_only_function.fn.buffer, fn.capacity());
    }
 
-   template <typename Func> MyMoveOnlyFunction(Func function)
+   template <typename Func>
+   MyMoveOnlyFunction(Func function) noexcept : is_invokable{true}
    {
       static_assert(sizeof(MyMoveOnlyFunctionImpl<Func, ReturnType, Args...>) <=
                         fn.capacity(),
@@ -102,28 +103,32 @@ struct MyMoveOnlyFunction<ReturnType(Args...), size> {
 
    ~MyMoveOnlyFunction()
    {
-      if (fn.ptr() != nullptr)
+      if (is_invokable)
          std::destroy_at(fn.ptr());
+      is_invokable = false;
    }
 
    ReturnType operator()(Args... args)
    {
-      return fn.ptr()->operator()(std::forward<Args>(args)...);
+      if (is_invokable)
+         return fn.ptr()->operator()(std::forward<Args>(args)...);
+      else  // This is a error and should be handled differently
+         return ReturnType();
    }
 
    explicit operator bool() const noexcept
    {
-      return invoker != nullptr;
+      return is_invokable;
    }
 
    bool operator==(std::nullptr_t) const noexcept
    {
-      return invoker == nullptr;
+      return !is_invokable;
    }
 
    bool operator!=(std::nullptr_t) const noexcept
    {
-      return invoker != nullptr;
+      return is_invokable;
    }
 
    MyMoveOnlyFunction &operator=(MyMoveOnlyFunction &&other) noexcept
@@ -135,18 +140,16 @@ struct MyMoveOnlyFunction<ReturnType(Args...), size> {
 
    void swap(MyMoveOnlyFunction &other) noexcept
    {
-      std::swap(invoker, other.invoker);
+      std::swap(is_invokable, other.is_invokable);
       std::swap(this->fn.buffer, other.fn.buffer);
    }
 
  private:
-   using InvokerFn = ReturnType (*)(void *, Args &&...);
    using FnStorage = MyMoveOnlyFunctionStorage<
        MyMoveOnlyFunctionInterface<ReturnType, Args...>, size>;
 
-   InvokerFn invoker = nullptr;
-
    FnStorage fn;
+   bool is_invokable = false;
 };
 
 #endif
