@@ -68,11 +68,8 @@ class MyFunctionImpl : public MyFunctionInterface<ReturnType, Args...>
 template <typename, size_t = 32> class MyFunction;
 
 template <typename ReturnType, typename... Args, std::size_t size>
-class MyFunction<ReturnType(Args...), size>
-{
-   MyFunctionStorage<MyFunctionInterface<ReturnType, Args...>, size> fn;
+struct MyFunction<ReturnType(Args...), size> {
 
- public:
    template <typename Func> MyFunction(Func function)
    {
       static_assert(sizeof(MyFunctionImpl<Func, ReturnType, Args...>) <=
@@ -93,6 +90,9 @@ class MyFunction<ReturnType(Args...), size>
    {
       return fn.ptr()->operator()(std::forward<Args>(args)...);
    }
+
+ private:
+   MyFunctionStorage<MyFunctionInterface<ReturnType, Args...>, size> fn;
 };
 
 #endif

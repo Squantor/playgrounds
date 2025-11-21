@@ -23,9 +23,9 @@ struct AsyncLL {
    {
    }
 
-   void SetCallback(AsyncCallback &hal_callback)
+   void SetCallback(AsyncCallback hal_callback)
    {
-      this->callback = std::move(hal_callback);
+      callback = std::move(hal_callback);
    }
 
    void Progress(void)
@@ -49,7 +49,6 @@ struct AsyncLL {
 template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
    AsyncHal() : current_callback{nullptr}, callback_head{0}, callback_tail{0}
    {
-      callbacks.fill(nullptr);
    }
 
    void Reset(void)
@@ -57,10 +56,11 @@ template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
       callback_head = 0;
       callback_tail = 0;
       current_callback = nullptr;
-      callbacks.fill(nullptr);
+      for (auto &c : callbacks)
+         c = MyFunction<void(void), 32>{};  // move-assign empty
    }
 
-   void SetCallback(AsyncCallback &driver_object)
+   void SetCallback(AsyncCallback driver_object)
    {
       callbacks[callback_head] = std::move(driver_object);
       callback_head = (callback_head + 1) % max_callbacks;
