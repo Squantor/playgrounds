@@ -16,36 +16,6 @@ For conditions of distribution and use, see LICENSE file
 #include <functional>
 #include <minunit.h>
 
-using AsyncCallback = MyMoveOnlyFunction<void(void), 16>;
-
-struct AsyncLL {
-
-   AsyncLL() : callback(nullptr)
-   {
-   }
-
-   void SetCallback(AsyncCallback hal_callback)
-   {
-      callback = std::move(hal_callback);
-   }
-
-   void Progress(void)
-   {
-      if (callback != nullptr) {
-         callback();
-         callback = nullptr;
-      }
-   }
-
-   void Callback(void)
-   {
-      // empty, nothing calls this back
-   }
-
- private:
-   AsyncCallback callback;
-};
-
 template <auto &ll_object, std::size_t max_callbacks> struct AsyncHal {
    AsyncHal() : current_callback{nullptr}, callback_head{0}, callback_tail{0}
    {

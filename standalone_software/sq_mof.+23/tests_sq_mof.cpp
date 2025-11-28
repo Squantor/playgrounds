@@ -23,6 +23,10 @@ MINUNIT_SETUP(sq_mof_setup)
    MINUNIT_PASS();
 }
 
+MINUNIT_ADD(sq_mof_constructors, sq_mof_setup, sq_mof_teardown)
+{
+}
+
 MINUNIT_ADD(sq_mof_test, sq_mof_setup, sq_mof_teardown)
 {
    auto i = std::make_unique<int>(3);
