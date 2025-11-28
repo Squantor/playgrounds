@@ -15,6 +15,12 @@ For conditions of distribution and use, see LICENSE file
 #include <memory>
 #include <utility>
 
+namespace sq
+{
+
+namespace detail
+{
+
 struct MyMoveOnlyFunctionSomeClass {
 };
 
@@ -69,6 +75,8 @@ class MyMoveOnlyFunctionImpl
    }
 };
 
+}  // namespace detail
+
 template <typename, size_t = 32> class MyMoveOnlyFunction;
 
 template <typename ReturnType, typename... Args, std::size_t size>
@@ -85,18 +93,21 @@ struct MyMoveOnlyFunction<ReturnType(Args...), size> {
    MyMoveOnlyFunction(MyMoveOnlyFunction &&move_only_function) noexcept
        : is_invokable{std::exchange(move_only_function.is_invokable, false)}
    {
+      // when constructing copy data and invalidate the source
       std::memcpy(fn.buffer, move_only_function.fn.buffer, fn.capacity());
    }
 
    template <typename Func>
    MyMoveOnlyFunction(Func function) noexcept : is_invokable{true}
    {
-      static_assert(sizeof(MyMoveOnlyFunctionImpl<Func, ReturnType, Args...>) <=
-                        fn.capacity(),
-                    "insufficient storage for this implementation");
+      static_assert(
+          sizeof(detail::MyMoveOnlyFunctionImpl<Func, ReturnType, Args...>) <=
+              fn.capacity(),
+          "insufficient storage for this implementation");
 
       std::construct_at(
-          reinterpret_cast<MyMoveOnlyFunctionImpl<Func, ReturnType, Args...> *>(
+          reinterpret_cast<
+              detail::MyMoveOnlyFunctionImpl<Func, ReturnType, Args...> *>(
               fn.buffer),
           std::move(function));
    }
@@ -145,11 +156,13 @@ struct MyMoveOnlyFunction<ReturnType(Args...), size> {
    }
 
  private:
-   using FnStorage = MyMoveOnlyFunctionStorage<
-       MyMoveOnlyFunctionInterface<ReturnType, Args...>, size>;
+   using FnStorage = detail::MyMoveOnlyFunctionStorage<
+       detail::MyMoveOnlyFunctionInterface<ReturnType, Args...>, size>;
 
    FnStorage fn;
    bool is_invokable = false;
 };
+
+}  // namespace sq
 
 #endif
