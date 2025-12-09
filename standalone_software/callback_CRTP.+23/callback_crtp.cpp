@@ -19,79 +19,81 @@ For conditions of distribution and use, see LICENSE file
 #include <cstdio>
 #include <type_traits>
 
-// --- CRTP base
+enum class Status { Ok = 0, Error };
+
+/**
+ * @brief CRTP base class for callbacks/Asynchronous API
+ * @tparam Derived class to be derived
+ */
 template <typename Derived> struct AsyncBase {
-   void Progress()
+   /**
+    * @brief Progress whatever needs to be run
+    */
+   void Progress() noexcept
    {
       static_cast<Derived *>(this)->ProgressImpl();
    }
-   void Callback()
+   /**
+    * @brief Callback when something has completed
+    */
+   void Callback(Status status) noexcept
    {
-      static_cast<Derived *>(this)->CallbackImpl();
+      static_cast<Derived *>(this)->CallbackImpl(status);
    }
 };
 
-// --- Low level (LL). Does not depend on HAL type.
+/**
+ * @brief Type erasure for callbacks
+ * Helper class to do type erasure for callbacks
+ */
+struct CallbackEntry {
+   void *obj;
+   void (*fn)(void *, Status status);
+};
+
+template <typename T>
+concept HasAsyncInterface = requires(T t, Status s) {
+   { t.ProgressImpl() } noexcept;
+   { t.CallbackImpl(s) } noexcept;
+};
+
+/**
+ * @brief
+ */
 struct AsyncLL : public AsyncBase<AsyncLL> {
    AsyncLL() : callback_target(nullptr), callback_fn(nullptr)
    {
    }
 
-   template <class HalT> void SetCallbackTarget(HalT *hal)
+   template <HasAsyncInterface HalT> void SetCallbackTarget(HalT *hal)
    {
       callback_target = static_cast<void *>(hal);
       callback_fn = &CallCallback<HalT>;
    }
 
-   void ProgressImpl()
+   void ProgressImpl() noexcept
    {
       if (callback_target) {
-         callback_fn(callback_target);
+         callback_fn(callback_target, Status::Error);
          callback_target = nullptr;
       }
    }
 
-   void CallbackImpl()
-   { /* not used for LL */
+   void CallbackImpl(Status) noexcept
+   {  // LL driver is never called back
    }
 
  private:
    void *callback_target;
 
-   using CallbackFn = void (*)(void *);
+   using CallbackFn = void (*)(void *, Status);
    CallbackFn callback_fn;
 
-   template <class HalT> static void CallCallback(void *h)
+   template <HasAsyncInterface HalT>
+   static void CallCallback(void *h, Status status) noexcept
    {
-      static_cast<HalT *>(h)->Callback();
+      static_cast<HalT *>(h)->Callback(status);
    }
-};
-
-// --- Drivers (CRTP)
-struct AsyncDriver1 : public AsyncBase<AsyncDriver1> {
-   void CallbackImpl()
-   {
-      std::printf("Driver1 callback\n");
-      counter++;
-   }
-   void ProgressImpl()
-   {
-      std::printf("Driver1 progress\n");
-   }
-   std::uint32_t counter = 0;
-};
-
-struct AsyncDriver2 : public AsyncBase<AsyncDriver2> {
-   void CallbackImpl()
-   {
-      std::printf("Driver2 callback\n");
-      counter++;
-   }
-   void ProgressImpl()
-   {
-      std::printf("Driver2 progress\n");
-   }
-   std::uint32_t counter = 0;
 };
 
 // --- HAL using pointer type-erasure for heterogeneous drivers
@@ -106,14 +108,14 @@ struct AsyncHal : public AsyncBase<AsyncHal<ll_object, max_callbacks>> {
       }
    }
 
-   template <class DriverT> void SetCallback(DriverT *drv)
+   template <HasAsyncInterface DriverT> void SetCallback(DriverT *drv) noexcept
    {
       callbacks[head].obj = static_cast<void *>(drv);
       callbacks[head].fn = &CallDriver<DriverT>;
       head = (head + 1) % max_callbacks;
    }
 
-   void ProgressImpl()
+   void ProgressImpl() noexcept
    {
       if (current.obj == nullptr) {
          if (head != tail) {
@@ -127,29 +129,52 @@ struct AsyncHal : public AsyncBase<AsyncHal<ll_object, max_callbacks>> {
       ll_object.Progress();
    }
 
-   void CallbackImpl()
+   void CallbackImpl(Status status) noexcept
    {
       if (current.obj) {
-         current.fn(current.obj);
+         current.fn(current.obj, status);
          current.obj = nullptr;
          current.fn = nullptr;
       }
    }
 
  private:
-   struct Entry {
-      void *obj;
-      void (*fn)(void *);
-   };
-
    std::size_t head, tail;
-   std::array<Entry, max_callbacks> callbacks;
-   Entry current;
+   std::array<CallbackEntry, max_callbacks> callbacks;
+   CallbackEntry current;
 
-   template <class DriverT> static void CallDriver(void *d)
+   template <HasAsyncInterface DriverT>
+   static void CallDriver(void *d, Status status)
    {
-      static_cast<DriverT *>(d)->Callback();
+      static_cast<DriverT *>(d)->Callback(status);
    }
+};
+
+// --- Drivers (CRTP)
+struct AsyncDriver1 : public AsyncBase<AsyncDriver1> {
+   void CallbackImpl(Status status) noexcept
+   {
+      std::printf("Driver1 callback %d\n", static_cast<int>(status));
+      counter++;
+   }
+   void ProgressImpl() noexcept
+   {
+      std::printf("Driver1 progress\n");
+   }
+   std::uint32_t counter = 0;
+};
+
+struct AsyncDriver2 : public AsyncBase<AsyncDriver2> {
+   void CallbackImpl(Status status) noexcept
+   {
+      std::printf("Driver2 callback %d\n", static_cast<int>(status));
+      counter++;
+   }
+   void ProgressImpl() noexcept
+   {
+      std::printf("Driver2 progress\n");
+   }
+   std::uint32_t counter = 0;
 };
 
 // --- Wiring and test
