@@ -167,12 +167,10 @@ struct AsyncDriver1 : public AsyncBase<AsyncDriver1> {
 struct AsyncDriver2 : public AsyncBase<AsyncDriver2> {
    void CallbackImpl(Status status) noexcept
    {
-      std::printf("Driver2 callback %d\n", static_cast<int>(status));
       counter++;
    }
    void ProgressImpl() noexcept
    {
-      std::printf("Driver2 progress\n");
    }
    std::uint32_t counter = 0;
 };
