@@ -1,6 +1,0 @@
-{
-  "C_Cpp.default.browse.databaseFilename": "${workspaceFolder}/compile_commands.json",
-  "files.associations": {
-    "minunit.h": "c"
-  }
-}
