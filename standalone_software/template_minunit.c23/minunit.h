@@ -182,8 +182,38 @@ void MinunitFailCallback();
 #define TOSTRING(x) STRINGIFY(x)
 
 /**
+ * @brief Executes a assertion
+ * Executes a check, the argument needs to be true for passing.
+ * ```
+ * MU_TEST(myTest)
+ * {
+ *     mu_check(true == true);
+ * }
+ * ```
+ * @param[in] test Check to perform
+ */
+#ifndef MINUNIT_REPORT_DISABLE
+#define MINUNIT_ASSERT(test)                              \
+   MU__SAFE_BLOCK(                                        \
+       test_results->checks++; if (!(test)) {             \
+          MinunitFailCallback();                          \
+          test_results->flag_fail = 1;                    \
+          MinunitReport("\n" __FILE__ ":" TOSTRING(       \
+              __LINE__) " failed: " TOSTRING(test) "\n"); \
+          return;                                         \
+       } else { MinunitReport("."); })
+#else
+#define MINUNIT_ASSERT(test)                             \
+   MU__SAFE_BLOCK(test_results->checks++; if (!(test)) { \
+      MinunitFailCallback();                             \
+      test_results->flag_fail = 1;                       \
+      return;                                            \
+   })
+#endif
+
+/**
  * @brief Executes a check
- * Executes a check, the argument needs to be true for the check to pass.
+ * Executes a check, the argument does not need to be true for passing.
  * ```
  * MU_TEST(myTest)
  * {
@@ -200,14 +230,12 @@ void MinunitFailCallback();
           test_results->flag_fail = 1;                    \
           MinunitReport("\n" __FILE__ ":" TOSTRING(       \
               __LINE__) " failed: " TOSTRING(test) "\n"); \
-          return;                                         \
        } else { MinunitReport("."); })
 #else
 #define MINUNIT_CHECK(test)                              \
    MU__SAFE_BLOCK(test_results->checks++; if (!(test)) { \
       MinunitFailCallback();                             \
       test_results->flag_fail = 1;                       \
-      return;                                            \
    })
 #endif
 
