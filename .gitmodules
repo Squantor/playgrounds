@@ -8,7 +8,7 @@
 	path = firmware/libraries/squantorMinUnit
 	url = git@github.com:Squantor/squantorMinUnit.git
 [submodule "software/libMcuLL"]
-	path = firmware/libraries/libMcuLL
+	path = firmware/libraries/libMcu
 	url = git@github.com:Squantor/libMcuLL.git
 [submodule "electronics/various_PCB"]
 	path = electronics/various_PCB

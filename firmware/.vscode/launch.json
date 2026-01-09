@@ -334,5 +334,27 @@
       "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd",
       "debuggerArgs": [],
     },
+    {
+      "name": "debug LPC845 mini UI demo",
+      "cwd": "${workspaceRoot}",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "executable": "${workspaceFolder}/bin/LPC845QFP48_UI_SH1106_5btn/debug/LPC845QFP48_UI_SH1106_5btn.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "bmp",
+      "interface": "swd",
+      "device": "LPC845",
+      "BMPGDBSerialPort": "/dev/ttyACM0",
+      "powerOverBMP": "disable",
+      "preLaunchCommands": [],
+      "postLaunchCommands": [
+        "set {int}0x40048000 = 2",
+        "compare-sections"
+      ],
+      "preRestartCommands": [],
+      "preLaunchTask": "build LPC845 small UI demo",
+      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd",
+      "debuggerArgs": [],
+    },
   ]
 }

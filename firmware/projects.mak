@@ -26,3 +26,4 @@ include $(BASE_DIR)/projects/LPC812M101DH20_blinky/LPC812M101DH20_blinky.mak
 include $(BASE_DIR)/projects/LPC812M101DH20_coro_blinky/LPC812M101DH20_coro_blinky.mak
 include $(BASE_DIR)/projects/LPC812M101DH20_nuclone_ADC/LPC812M101DH20_nuclone_ADC.mak
 include $(BASE_DIR)/projects/LPC845M301BD48_blinky/LPC845M301BD48_blinky.mak
+include $(BASE_DIR)/projects/LPC845QFP48_UI_SH1106_5btn/LPC845QFP48_UI_SH1106_5btn.mak

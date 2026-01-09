@@ -143,5 +143,12 @@
       "group": "build",
       "problemMatcher": "$gcc"
     },
+    {
+      "label": "build LPC845 small UI demo",
+      "type": "shell",
+      "command": "compiledb make PROJECT=LPC845QFP48_UI_SH1106_5btn CONFIG=debug -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
   ]
 }
