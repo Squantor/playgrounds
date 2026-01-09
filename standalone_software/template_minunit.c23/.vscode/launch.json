@@ -8,7 +8,7 @@
       "name": "debug minunit template",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/minunit_c90.elf",
+      "program": "${workspaceFolder}/minunit_c23.elf",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
