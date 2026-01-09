@@ -151,36 +151,25 @@ struct AsyncHal : public AsyncBase<AsyncHal<ll_object, max_callbacks>> {
 };
 
 // --- Drivers (CRTP)
-struct AsyncDriver1 : public AsyncBase<AsyncDriver1> {
+struct AsyncDriver : public AsyncBase<AsyncDriver> {
    void CallbackImpl(Status status) noexcept
    {
-      std::printf("Driver1 callback %d\n", static_cast<int>(status));
-      counter++;
-   }
-   void ProgressImpl() noexcept
-   {
-      std::printf("Driver1 progress\n");
-   }
-   std::uint32_t counter = 0;
-};
-
-struct AsyncDriver2 : public AsyncBase<AsyncDriver2> {
-   void CallbackImpl(Status status) noexcept
-   {
+      current_status = status;
       counter++;
    }
    void ProgressImpl() noexcept
    {
    }
    std::uint32_t counter = 0;
+   Status current_status = Status::Ok;
 };
 
 // --- Wiring and test
 AsyncLL dut_ll;
 AsyncHal<dut_ll, 4> dut_hal;
 
-AsyncDriver1 driver1;
-AsyncDriver2 driver2;
+AsyncDriver driver1;
+AsyncDriver driver2;
 
 MINUNIT_ADD(callback_test, nullptr, nullptr)
 {
