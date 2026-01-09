@@ -19,7 +19,7 @@ squLib::results Contrast(std::span<const char> commandLine) {
   }
   std::int32_t contrast = 10;
   command_values.pop(contrast);
-  display.Contrast(static_cast<std::uint8_t>(contrast));
+  ui_display.Contrast(static_cast<std::uint8_t>(contrast));
   return squLib::results::ok;
 }
 

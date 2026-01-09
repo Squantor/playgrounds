@@ -25,8 +25,8 @@ squLib::results block(std::span<const char> commandLine) {
   command_values.pop(col);
   command_values.pop(row);
   pattern_buffer.fill(static_cast<std::uint8_t>(pattern));
-  display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
-  display.SendData(std::span<uint8_t>(pattern_buffer).subspan(0, length));
+  ui_display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
+  ui_display.SendData(std::span<uint8_t>(pattern_buffer).subspan(0, length));
   return squLib::results::ok;
 }
 

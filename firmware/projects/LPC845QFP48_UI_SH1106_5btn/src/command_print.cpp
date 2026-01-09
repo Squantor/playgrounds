@@ -27,11 +27,11 @@ squLib::results print(std::span<const char>) {
   command_values.pop(length);
   command_values.pop(col);
   command_values.pop(row);
-  display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
+  ui_display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
   std::array<std::uint8_t, 8> buffer = font.ascii2Bitmap(static_cast<uint8_t>(character));
   std::copy_n(buffer.begin(), buffer.size(), character_buffer.begin());
   for (int i = 0; i < length; i++) {
-    display.SendData(character_buffer);
+    ui_display.SendData(character_buffer);
   }
   return squLib::results::ok;
 }

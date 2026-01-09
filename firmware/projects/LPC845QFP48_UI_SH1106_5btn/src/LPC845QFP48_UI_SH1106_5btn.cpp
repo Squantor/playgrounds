@@ -10,6 +10,7 @@
 #include <LPC845QFP48_UI_SH1106_5btn.hpp>
 
 libmcu::I2cDeviceAddress SH1106_i2c_address{0x3C};
+libmcu::I2cDeviceAddress PCF8574_i2c_address{0x20};
 
 libmcull::iocon::Iocon<libmcuhw::IoconAddress> iocon_peripheral;
 libmcull::swm::Swm<libmcuhw::SwmAddress> swm_periperhal;
@@ -22,7 +23,8 @@ libmcull::i2c::I2cInterrupt<libmcuhw::I2c0Address> i2c_peripheral_ll;
 libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
 libMcuDriver::SH1106::Generic128x64 display_config;
-libMcuDriver::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> display;
+libMcuDriver::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> ui_display;
+libMcuDriver::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_buttons;
 
 volatile std::uint32_t ticks;
 
@@ -77,5 +79,6 @@ void BoardInit(void) {
   // delay before we turn on screen
   while (ticks < 10)
     ;
-  display.Init();
+  ui_display.Init();
+  ui_buttons.Init();
 }

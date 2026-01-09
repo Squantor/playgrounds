@@ -12,6 +12,7 @@
 
 #include <nxp/libmcu_LPC845M301BD48_hal.hpp>
 #include <drivers/SH1106_i2c.hpp>
+#include <drivers/PCF8574.hpp>
 
 // pin types
 // Crystal osillator pins
@@ -75,7 +76,7 @@ extern libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 extern libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
 extern libmcu::I2cDeviceAddress SH1106_i2c_address;
 extern libMcuDriver::SH1106::Generic128x64 display_config;
-extern libMcuDriver::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> display;
+extern libMcuDriver::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> ui_display;
 
 constexpr inline std::uint32_t ticksPerSecond{100u};
 
