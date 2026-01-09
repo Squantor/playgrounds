@@ -20,11 +20,11 @@ squLib::commandHandler hexNumHandler{"0x0?", "Any hex unsigned integer will get 
 
 squLib::results helpFunction(std::span<const char> commandLine) {
   (void)commandLine;
-  commandInterpreter.printHelp();
+  command_interpreter.printHelp();
   return squLib::results::ok;
 }
 
-std::array<squLib::commandHandler, 11> commandHandlerTable{helpHandler,      numberHandler, hexNumHandler, stkHandler,
-                                                           emptyHandler,     dropHandler,   dupHandler,    statHandler,
-                                                           contrast_handler, block_handler, print_handler};
+std::array<squLib::commandHandler, 12> commandHandlerTable{helpHandler,      numberHandler, hexNumHandler, stk_handler,
+                                                           empty_handler,    drop_handler,  dup_handler,   stat_handler,
+                                                           contrast_handler, block_handler, print_handler, command_handler_button};
 std::span<const squLib::commandHandler> commandHandlers{commandHandlerTable};

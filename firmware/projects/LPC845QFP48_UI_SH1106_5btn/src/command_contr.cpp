@@ -13,12 +13,12 @@
 
 squLib::results Contrast(std::span<const char> commandLine) {
   (void)commandLine;
-  if (commandValues.size() == 0) {
-    commandConsole.print("Stack is empty\n");
+  if (command_values.size() == 0) {
+    command_console.print("Stack is empty\n");
     return squLib::results::error;
   }
   std::int32_t contrast = 10;
-  commandValues.pop(contrast);
+  command_values.pop(contrast);
   display.Contrast(static_cast<std::uint8_t>(contrast));
   return squLib::results::ok;
 }

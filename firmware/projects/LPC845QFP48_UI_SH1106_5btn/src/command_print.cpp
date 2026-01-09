@@ -18,15 +18,15 @@ sqEmbedded::fonts::mono8x8RowFlip font;
 std::array<std::uint8_t, 8> character_buffer;
 
 squLib::results print(std::span<const char>) {
-  if (commandValues.size() < 4) {
-    commandConsole.print("Needs 4 elements from top to bottom: character, count, column, row\n");
+  if (command_values.size() < 4) {
+    command_console.print("Needs 4 elements from top to bottom: character, count, column, row\n");
     return squLib::results::error;
   }
   std::int32_t col, row, length, character;
-  commandValues.pop(character);
-  commandValues.pop(length);
-  commandValues.pop(col);
-  commandValues.pop(row);
+  command_values.pop(character);
+  command_values.pop(length);
+  command_values.pop(col);
+  command_values.pop(row);
   display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
   std::array<std::uint8_t, 8> buffer = font.ascii2Bitmap(static_cast<uint8_t>(character));
   std::copy_n(buffer.begin(), buffer.size(), character_buffer.begin());

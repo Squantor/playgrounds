@@ -15,6 +15,7 @@
 #include <command_value_stack.hpp>
 #include <command_handlers.hpp>
 #include <console.hpp>
+#include <event_dispatch.hpp>
 
 enum class ApplicationState : std::uint8_t {
   idle, /*!< idle state */
@@ -33,9 +34,10 @@ class Application {
   ApplicationState state;
 };
 
-extern squLib::console<usart_peripheral> commandConsole;
-extern squLib::commandValueStack<8, commandConsole> commandValues;
-extern squLib::commandInterpreter<commandHandlers, commandValues, commandConsole> commandInterpreter;
+extern squLib::console<usart_peripheral> command_console;
+extern squLib::commandValueStack<8, command_console> command_values;
+extern squLib::commandInterpreter<commandHandlers, command_values, command_console> command_interpreter;
 extern Application controller;
+extern EventDispatcher event_dispatcher;
 
 #endif

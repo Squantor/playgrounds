@@ -13,13 +13,14 @@
 
 #include <command_handler.hpp>
 
-extern squLib::commandHandler stkHandler;
-extern squLib::commandHandler emptyHandler;
-extern squLib::commandHandler dupHandler;
-extern squLib::commandHandler dropHandler;
-extern squLib::commandHandler statHandler;
+extern squLib::commandHandler stk_handler;
+extern squLib::commandHandler empty_handler;
+extern squLib::commandHandler dup_handler;
+extern squLib::commandHandler drop_handler;
+extern squLib::commandHandler stat_handler;
 extern squLib::commandHandler contrast_handler;
 extern squLib::commandHandler block_handler;
 extern squLib::commandHandler print_handler;
+extern squLib::commandHandler command_handler_button;
 
 #endif

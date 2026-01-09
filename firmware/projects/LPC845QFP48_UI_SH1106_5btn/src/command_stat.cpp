@@ -15,14 +15,14 @@ squLib::results stat(std::span<const char> commandLine) {
   (void)commandLine;
   switch (controller.GetState()) {
     case ApplicationState::idle:
-      commandConsole.print("Application is idle\n");
+      command_console.print("Application is idle\n");
       break;
 
     default:
-      commandConsole.print("Unknown state!\n");
+      command_console.print("Unknown state!\n");
       break;
   }
   return squLib::results::ok;
 }
 
-squLib::commandHandler statHandler{"stat", "prints the current application state\n", stat};
+squLib::commandHandler stat_handler{"stat", "prints the current application state\n", stat};

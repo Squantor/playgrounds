@@ -19,5 +19,6 @@ int main() {
     controller.Progress();
     usart_peripheral.Progress();
     i2c_peripheral.Progress();
+    event_dispatcher.Process();
   }
 }

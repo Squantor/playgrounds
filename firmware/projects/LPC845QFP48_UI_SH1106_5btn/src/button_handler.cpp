@@ -12,8 +12,6 @@ For conditions of distribution and use, see LICENSE file
 #include "button_handler.hpp"
 #include "application.hpp"
 
-namespace application {
-
 void ButtonHandler::HandleEvent(EventData event) {
   if (event.event != Events::Button)
     return;
@@ -50,5 +48,3 @@ void ButtonHandler::HandleEvent(EventData event) {
       break;
   }
 }
-
-}  // namespace application

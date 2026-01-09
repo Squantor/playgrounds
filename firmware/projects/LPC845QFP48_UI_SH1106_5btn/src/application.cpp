@@ -11,14 +11,19 @@
 #include <application.hpp>
 #include <cmdline_simple.hpp>
 #include <console.hpp>
+#include <event_dispatch.hpp>
+#include <button_handler.hpp>
 
-squLib::console<usart_peripheral> commandConsole;
-squLib::commandValueStack<8, commandConsole> commandValues;
-squLib::commandInterpreter<commandHandlers, commandValues, commandConsole> commandInterpreter;
-squLib::commandlineSimple<80, commandConsole, commandInterpreter> commandline;
+squLib::console<usart_peripheral> command_console;
+squLib::commandValueStack<8, command_console> command_values;
+squLib::commandInterpreter<commandHandlers, command_values, command_console> command_interpreter;
+squLib::commandlineSimple<80, command_console, command_interpreter> command_line;
+ButtonHandler button_handler;
+std::array<const EventHandlerPair, 1> event_handlers = {EventHandlerPair{&button_handler, Events::Button}};
+EventDispatcher event_dispatcher{event_handlers};
 
 void Application::Init() {
-  commandConsole.print("LPC845 small nuclone SH1106 test program\n");
+  command_console.print("LPC845 small nuclone SH1106 test program\n");
 }
 
 void Application::Progress() {
@@ -31,7 +36,7 @@ void Application::Progress() {
   if (usart_peripheral.GetReceiveLevel() > 0) {
     static std::array<char, 1> data;
     usart_peripheral.Receive(data);
-    commandline.input(data);
+    command_line.input(data);
   }
   // state handling
   switch (state) {
@@ -39,7 +44,7 @@ void Application::Progress() {
       break;
 
     default:
-      commandConsole.print("Unknown state!!!");
+      command_console.print("Unknown state!!!");
       break;
   }
 }
