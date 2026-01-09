@@ -3,4 +3,4 @@ Minunit is a simple series of test frameworks with minimal functionality, this v
 ## build instructions
 To build: ```make```
 To cleanup: ```make clean```
-To execute ```./minunit_c90.elf```
+To execute ```make run```
