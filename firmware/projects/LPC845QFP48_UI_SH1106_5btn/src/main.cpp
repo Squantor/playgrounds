@@ -17,8 +17,7 @@ int main() {
   controller.Init();
   while (1) {
     controller.Progress();
-    usart_peripheral.Progress();
-    i2c_peripheral.Progress();
     event_dispatcher.Process();
+    BoardProgress();
   }
 }

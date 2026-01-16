@@ -24,7 +24,7 @@
       ],
       "preRestartCommands": [],
       //"runToEntryPoint": "main",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [],
     },
     {
@@ -47,7 +47,7 @@
       ],
       "preRestartCommands": [],
       //"runToEntryPoint": "main",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [],
     },
     {
@@ -70,7 +70,7 @@
       ],
       "preRestartCommands": [],
       "runToEntryPoint": "main",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [],
     },
     {
@@ -112,7 +112,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug E-ink display example",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_e-ink_display.txt"
       ],
@@ -143,7 +143,7 @@
         "compare-sections",
       ],
       "preLaunchTask": "sharp LCD example",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd"
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC845.svd"
     },
     {
       "name": "debug pwm modulator",
@@ -159,7 +159,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug LPC812M101DH20 pwm modulator",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_pwm_modulator.txt"
       ],
@@ -178,7 +178,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build debug OLED display example",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812M101DH20_oled_display.txt"
       ],
@@ -197,7 +197,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build CortexM0 test routines",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/cortexM0_routines.txt"
       ],
@@ -221,7 +221,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build C systick demo",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
     },
     {
       "name": "Debug C++ systick template",
@@ -242,7 +242,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build C++ systick demo",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
     },
     {
       "name": "debug debug RP2040 demo",
@@ -265,7 +265,7 @@
         "load bin/RP2040_demo/debug/RP2040_demo.elf",
       ],
       "preLaunchTask": "build debug RP2040 demo project",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/raspberrypi/rp2040.svd",
       "debuggerArgs": [],
     },
     {
@@ -289,7 +289,7 @@
         "load bin/RP2040_flash_bringup/debug/RP2040_flash_bringup.elf",
       ],
       "preLaunchTask": "build debug RP2040 flash bringup",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/raspberrypi/rp2040.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/raspberrypi/rp2040.svd",
       "debuggerArgs": [],
     },
     {
@@ -307,7 +307,7 @@
       "preLaunchCommands": [],
       "preRestartCommands": [],
       "preLaunchTask": "build LPC812 C++ prototyping",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC812.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC812.svd",
       "debuggerArgs": [
         "--command=./${workspaceFolder}/gdb_scripts/LPC812_cpp_prototyping_debug.txt"
       ],
@@ -331,7 +331,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build LPC845M301BD48 blinking LED",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC845.svd",
       "debuggerArgs": [],
     },
     {
@@ -353,7 +353,7 @@
       ],
       "preRestartCommands": [],
       "preLaunchTask": "build LPC845 small UI demo",
-      "svdFile": "${workspaceFolder}/libraries/libMcuLL/svd/nxp/LPC845.svd",
+      "svdFile": "${workspaceFolder}/libraries/libMcu/svd/nxp/LPC845.svd",
       "debuggerArgs": [],
     },
   ]

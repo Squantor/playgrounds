@@ -4,7 +4,7 @@
 
 # settings for the MCU target
 #
-# Version: 20241004
+# Version: 20260116
 
 ifndef $(PROJECT)_MCU
 $(error Project MCU is not defined!)
@@ -17,12 +17,12 @@ include targets/$(MCU).mak
 CONFIGS = debug debug_size release_size release_speed
 
 # configuration specific flags
-CFLAGS += -std=gnu11 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections
+CFLAGS += -std=gnu2x -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections
 CFLAGS_debug += -O0 -g3
 CFLAGS_debug_size += -Og -g3
 CFLAGS_release_size += -Os -g -flto
 CFLAGS_release_speed += -O2 -g -flto
-CXXFLAGS += -std=gnu++2b -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -fno-threadsafe-statics
+CXXFLAGS += -std=gnu++23 -Wall -Wextra -Wno-main -fno-common -c -ffunction-sections -fdata-sections -fno-rtti -fno-exceptions -fno-threadsafe-statics
 CXXFLAGS_debug += -O0 -g3
 CXXFLAGS_debug_size += -Og -g3
 CXXFLAGS_release_size += -Os -g
