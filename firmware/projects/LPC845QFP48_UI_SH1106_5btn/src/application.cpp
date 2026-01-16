@@ -13,6 +13,7 @@
 #include <console.hpp>
 #include <event_dispatch.hpp>
 #include <button_handler.hpp>
+#include <buttons.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
@@ -21,9 +22,15 @@ squLib::commandlineSimple<80, command_console, command_interpreter> command_line
 ButtonHandler button_handler;
 std::array<const EventHandlerPair, 1> event_handlers = {EventHandlerPair{&button_handler, Events::Button}};
 EventDispatcher event_dispatcher{event_handlers};
+Buttons buttons{0xFF, event_dispatcher};
+
+auto button_call_lambda = [](std::uint8_t port_data) {
+  buttons.SetPortData(port_data);
+};
 
 void Application::Init() {
   command_console.print("LPC845 small nuclone SH1106 test program\n");
+  ui_port_expander.RegisterCallback(button_call_lambda);
 }
 
 void Application::Progress() {
