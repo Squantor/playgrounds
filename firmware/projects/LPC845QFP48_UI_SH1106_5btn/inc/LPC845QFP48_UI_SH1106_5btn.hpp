@@ -13,6 +13,7 @@
 #include <nxp/libmcu_LPC845M301BD48_hal.hpp>
 #include <drivers/SH1106_i2c.hpp>
 #include <drivers/PCF8574.hpp>
+#include <mid/char_display_wrap.hpp>
 
 // pin types
 // Crystal osillator pins
@@ -83,9 +84,9 @@ extern libmcull::usart::UartInterrupt<libmcuhw::Usart0Address, char, 64> usart_p
 extern libmcull::i2c::I2cInterrupt<libmcuhw::I2c0Address> i2c_peripheral_ll;
 extern libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 extern libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
-extern libMcuDriver::SH1106::Generic128x64 display_config;
-extern libMcuDriver::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> ui_display;
-extern libMcuDriver::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
+extern libmcudrv::SH1106::Generic128x64 display_config;
+extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> ui_display;
+extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
 
 constexpr inline std::uint32_t ticksPerSecond{100u};
 

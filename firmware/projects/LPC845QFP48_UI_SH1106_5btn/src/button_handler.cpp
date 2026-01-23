@@ -13,8 +13,6 @@ For conditions of distribution and use, see LICENSE file
 #include "application.hpp"
 
 void ButtonHandler::HandleEvent(EventData event) {
-  if (event.event != Events::Button)
-    return;
   switch (event.button) {
     case Button::Button0Down:
       command_console.print("Button 0 down\n");
