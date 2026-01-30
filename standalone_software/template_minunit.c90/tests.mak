@@ -6,10 +6,10 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-SOURCES ?= $(wildcard *.c)
+SOURCES ?= ../common.c90/minunit.c $(wildcard tests/*.c)
 DEFINES :=
-INCLUDES := -I.
-TARGET = template_minunit_c90
+INCLUDES := -I. -I../common.c90
+TARGET = template_minunit_c90_tests
 CC = gcc
 SIZE = size
 DEBUG = -g3 -O0
