@@ -6,14 +6,28 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "make clean",
+      "command": "make clean && make -ftests.mak clean",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
-      "label": "build minunit template",
+      "label": "check",
+      "type": "shell",
+      "command": "make check && make -ftests.mak check",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build minunit C++23 template",
       "type": "shell",
       "command": "compiledb make -j25",
+      "group": "build",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "build minunit C++23 tests",
+      "type": "shell",
+      "command": "compiledb make -ftests.mak -j25",
       "group": "build",
       "problemMatcher": "$gcc"
     },

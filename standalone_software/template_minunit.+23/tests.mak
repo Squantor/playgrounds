@@ -6,11 +6,11 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-CSOURCES := $(wildcard *.c)
-CPPSOURCES := $(wildcard *.cpp)
+CSOURCES := ../common.+23/minunit.c $(wildcard tests/*.c)
+CPPSOURCES := $(wildcard tests/*.cpp)
 DEFINES := -DMINUNIT_MAX_TESTS=100
-INCLUDES := -I.
-TARGET = minunit_C++23
+INCLUDES := -I. -I../common.+23
+TARGET = minunit_C++23_tests
 CC = gcc
 CPP = g++
 SIZE = size

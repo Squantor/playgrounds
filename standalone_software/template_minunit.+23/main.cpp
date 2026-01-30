@@ -6,36 +6,18 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  * \file main.cpp
- * Main entrypoint for executing minunit tests
+ * Main entrypoint for executing template application
  */
 #include <cstdio>
-#include <minunit.h>
-
-/**
- * @brief reports message when a test fails
- * @param message failure message
- */
-void MinunitReport(const char *message)
-{
-   printf("%s", message);
-}
-
-/**
- * @brief callback initiated when a test fails
- */
-void MinunitFailCallback(void)
-{
-}
 
 /**
  * @brief main entrypoint
  * @return error code to operating system
  */
-int main()
+int main(int argc, char *argv[])
 {
-   MinunitRun();
-   printf("%d tests executed\n", minunit_test_state.executed);
-   printf("%d tests failed\n", minunit_test_state.failures);
-   printf("%d checks executed\n", minunit_test_state.checks);
+   (void) argc;
+   (void) argv;
+   std::printf("Hello World!\n");
    return 0;
 }

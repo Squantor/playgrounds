@@ -2,29 +2,28 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260130
+# Version: 20251121
 #
 # Mini project makefile for mixed C and C++ projects
 
-CSOURCES := $(wildcard *.c)
-CPPSOURCES := $(wildcard *.cpp)
+SOURCES := ../common.c23/minunit.c $(wildcard tests/*.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
-INCLUDES := -I.
-TARGET = minunit_C++23
+INCLUDES := -I. -I../common.c23
+TARGET = template_minunit_c23_tests
 CC = gcc
-CPP = g++
+CXX = g++
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os
 BUILD ?= DEBUG
 CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
 CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-CPPWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CPPFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CPPWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
+LDLIBS := -lm
 
-SOURCES := $(CSOURCES) $(CPPSOURCES)
 OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
@@ -38,18 +37,17 @@ run: $(EXECUTABLE)
 
 .PHONY: check
 check: $(SOURCES)
-	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CSOURCES) -- $(CFLAGS)
-	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CPP) $(OBJECTS) -o $@ $(LDLIBS)
+	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
 %.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.cpp.o: %.cpp
-	$(CPP) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
