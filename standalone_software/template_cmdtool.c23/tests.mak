@@ -6,9 +6,9 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-SOURCES := ../common.c23/minunit.c $(wildcard tests/*.c)
+SOURCES := $(wildcard tests/*.c)
 DEFINES := -DMINUNIT_MAX_TESTS=100
-INCLUDES := -I. -I../common.c23
+INCLUDES := -I. -Itests
 TARGET = template_cmdtool_c23_tests
 CC = gcc
 CXX = g++
