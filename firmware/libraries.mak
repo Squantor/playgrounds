@@ -13,6 +13,6 @@ include $(BASE_DIR)/libraries/libMcu/libMcu.mak
 include $(BASE_DIR)/libraries/squantorLibEmbedded/squantorLibEmbedded.mak
 include $(BASE_DIR)/libraries/squantorLibEmbedded/squantorLibEmbeddedCortexM.mak
 include $(BASE_DIR)/libraries/common/common.mak
-include $(BASE_DIR)/libraries/squantorMinUnit/squantorMinUnit.mak
+include $(BASE_DIR)/libraries/squantorMinUnit/squantor_minunit.mak
 
 # --- nothing user definable below ---

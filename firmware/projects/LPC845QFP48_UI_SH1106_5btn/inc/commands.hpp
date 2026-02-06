@@ -22,5 +22,6 @@ extern squLib::commandHandler contrast_handler;
 extern squLib::commandHandler block_handler;
 extern squLib::commandHandler print_handler;
 extern squLib::commandHandler command_handler_button;
+extern squLib::commandHandler command_handler_blit;
 
 #endif

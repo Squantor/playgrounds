@@ -14,6 +14,7 @@
 #include <drivers/SH1106_i2c.hpp>
 #include <drivers/PCF8574.hpp>
 #include <mid/char_display_wrap.hpp>
+#include <mid/fonts/8x8_basic_crfo.hpp>
 
 // pin types
 // Crystal osillator pins

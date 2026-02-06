@@ -26,6 +26,7 @@ libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
 libmcudrv::SH1106::Generic128x64 display_config;
 libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::AssertBkpt> ui_display;
 libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
+libmcumid::Font8x8BasicCrfo ui_font;
 libmcumid::CharDisplayWrap<ui_display> ui_char_display;
 
 volatile std::uint32_t ticks;
