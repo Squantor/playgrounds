@@ -4,7 +4,7 @@
 # Author: Munseong Jeong <ryan.m.jeong@hotmail.com>
 
 # BasedOnStyle: LLVM
-IndentWidth: 3
+IndentWidth: 2
 UseTab: Never
 
 BreakBeforeBraces: Linux

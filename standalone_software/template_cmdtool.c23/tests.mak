@@ -7,6 +7,7 @@
 # Mini project makefile for mixed C and C++ projects
 
 SOURCES := $(wildcard tests/*.c)
+SOURCES += par_arg.c
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I. -Itests
 TARGET = template_cmdtool_c23_tests

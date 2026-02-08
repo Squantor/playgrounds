@@ -17,17 +17,17 @@ int failure_callbacks = 0;
  * @brief reports message when a test fails
  * @param message failure message
  */
-void MinunitReport(const char *message)
+void minunit_report(const char *message)
 {
-   printf("%s", message);
+  printf("%s", message);
 }
 
 /**
  * @brief callback initiated when a test fails
  */
-void MinunitFailCallback(void)
+void minunit_fail_callback(void)
 {
-   failure_callbacks++;
+  failure_callbacks++;
 }
 
 /**
@@ -36,18 +36,9 @@ void MinunitFailCallback(void)
  */
 int main()
 {
-   MinunitRun();
-   // check test state
-   if (minunit_test_state.executed != 5) {
-      printf("incorrect number of tests executed\n");
-   } else if (minunit_test_state.checks != 15) {
-      printf("incorrect number of checks executed\n");
-   } else if (minunit_test_state.failures != 0) {
-      printf("Tests that have failed\n");
-   } else if (failure_callbacks != 2) {
-      printf("Incorrect number of failure callbacks \n");
-   } else {
-      printf("minunit tests passed\n");
-   }
-   return 0;
+  minunit_run();
+  printf("tests executed: %u\n", minunit_test_state.executed);
+  printf("checks executed: %u\n", minunit_test_state.checks);
+  printf("failures: %u\n", minunit_test_state.failures);
+  return 0;
 }

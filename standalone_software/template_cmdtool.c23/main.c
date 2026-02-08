@@ -5,10 +5,13 @@ Copyright (c) 2026 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /**
- * \file main.cpp
+ * @file main.c
  * Main entrypoint for template application
  */
+#include "par_arg.h"
 #include <stdio.h>
+
+Program_state program_state;
 
 /**
  * @brief main entrypoint
@@ -16,8 +19,7 @@ For conditions of distribution and use, see LICENSE file
  */
 int main(int argc, char *argv[])
 {
-   (void) argc;
-   (void) argv;
-   printf("Hello world!\n");
-   return 0;
+  parse_program_arguments(argc, argv, &program_state);
+  printf("Hello world!\n");
+  return 0;
 }
