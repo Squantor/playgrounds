@@ -1,21 +1,18 @@
 /*
  * SPDX-License-Identifier: MIT
  *
- * Copyright (c) 2024 Bart Bilos
+ * Copyright (c) 2026 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  */
 /**
- * @file command_empty.cpp
- * @brief Empty command template file
+ * @file command_blit.cpp
+ * @brief Blits a pattern to the display
  */
 #include <commands.hpp>
 #include <application.hpp>
 #include <libmcu/bitmap/bitmap_view.hpp>
 
 std::array<std::uint32_t, 32> bitmap_buffer;
-
-libmcu::bitmap::Bitmap_view<uint32_t> bmp;
-libmcu::bitmap::Bitmap_view<const uint32_t> cbmp = bmp;  // implicit
 
 squLib::results blit(std::span<const char>) {
   if (command_values.size() < 5) {

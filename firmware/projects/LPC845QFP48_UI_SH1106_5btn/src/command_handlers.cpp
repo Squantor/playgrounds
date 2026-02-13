@@ -24,11 +24,12 @@ squLib::results helpFunction(std::span<const char> commandLine) {
   return squLib::results::ok;
 }
 
-std::array<squLib::commandHandler, 14> commandHandlerTable{helpHandler,          numberHandler,
+std::array<squLib::commandHandler, 15> commandHandlerTable{helpHandler,          numberHandler,
                                                            hexNumHandler,        stk_handler,
                                                            empty_handler,        drop_handler,
                                                            dup_handler,          stat_handler,
                                                            contrast_handler,     block_handler,
                                                            print_handler,        command_handler_button,
-                                                           command_handler_blit, command_handler_setpixel};
+                                                           command_handler_blit, command_handler_setpixel,
+                                                           command_handler_cat};
 std::span<const squLib::commandHandler> commandHandlers{commandHandlerTable};
