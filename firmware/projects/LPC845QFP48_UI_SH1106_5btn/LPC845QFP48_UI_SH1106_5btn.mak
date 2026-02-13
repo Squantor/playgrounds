@@ -27,6 +27,7 @@ $(PROJ_DIR)/src/command_block.cpp \
 $(PROJ_DIR)/src/command_print.cpp \
 $(PROJ_DIR)/src/command_button.cpp \
 $(PROJ_DIR)/src/command_blit.cpp \
+$(PROJ_DIR)/src/command_setpixel.cpp \
 $(PROJ_DIR)/src/button_handler.cpp \
 $(PROJ_DIR)/src/user_interface.cpp \
 $(PROJ_DIR)/src/application_ui.cpp \

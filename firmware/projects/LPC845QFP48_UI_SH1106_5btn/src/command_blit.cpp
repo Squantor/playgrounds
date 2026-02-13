@@ -14,6 +14,9 @@
 
 std::array<std::uint32_t, 32> bitmap_buffer;
 
+libmcu::bitmap::Bitmap_view<uint32_t> bmp;
+libmcu::bitmap::Bitmap_view<const uint32_t> cbmp = bmp;  // implicit
+
 squLib::results blit(std::span<const char>) {
   if (command_values.size() < 5) {
     command_console.print("5 arguments needed: x, y, width, height, pattern\n");
@@ -26,10 +29,9 @@ squLib::results blit(std::span<const char>) {
   command_values.pop(y);
   command_values.pop(x);
   bitmap_buffer.fill(static_cast<std::uint32_t>(pattern));
-  libmcu::bitmap::Bitmap(bitmap_buffer.data(), width, height, 1);
-  //  blit bitmap
-  //  ui_display.SetAddress(static_cast<uint32_t>(col), static_cast<uint32_t>(row));
-  //  ui_display.SendData(std::span<uint8_t>(pattern_buffer).subspan(0, length));
+  libmcu::bitmap::Bitmap bitmap(bitmap_buffer.data(), width, height, 1);
+  ui_display.blit(x, y, bitmap);
+  ui_display.flip();
   return squLib::results::ok;
 }
 

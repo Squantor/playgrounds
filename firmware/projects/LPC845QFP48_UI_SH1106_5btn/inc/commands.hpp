@@ -23,5 +23,6 @@ extern squLib::commandHandler block_handler;
 extern squLib::commandHandler print_handler;
 extern squLib::commandHandler command_handler_button;
 extern squLib::commandHandler command_handler_blit;
+extern squLib::commandHandler command_handler_setpixel;
 
 #endif
