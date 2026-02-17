@@ -2,13 +2,13 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260213
+# Version: 20260217
 #
 # Mini project makefile for mixed C and C++ projects
 
 CSOURCES := $(wildcard *.c)
 CPPSOURCES := $(wildcard *.cpp)
-DEFINES := -DMINUNIT_MAX_TESTS=100
+DEFINES :=
 INCLUDES := -I.
 TARGET = template_cmdtool_c23
 CC = gcc

@@ -2,11 +2,12 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251121
+# Version: 20260217
 #
 # Mini project makefile for mixed C and C++ projects
 
-SOURCES := $(wildcard *.cpp *.c)
+CSOURCES := $(wildcard *.c)
+CPPSOURCES := $(wildcard *.cpp)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
 TARGET = template_minunit_c23
@@ -22,8 +23,8 @@ CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sig
 CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
-LDLIBS := -lm
 
+SOURCES := $(CSOURCES) $(CPPSOURCES)
 OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
@@ -37,7 +38,12 @@ run: $(EXECUTABLE)
 
 .PHONY: check
 check: $(SOURCES)
-	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
+ifneq ($(CSOURCES),)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CSOURCES) -- $(CFLAGS)
+endif
+ifneq ($(CPPSOURCES),)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
+endif
 
 $(EXECUTABLE): $(OBJECTS) makefile
 	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)

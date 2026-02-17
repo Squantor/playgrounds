@@ -2,25 +2,30 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20251121
+# Version: 20260217
 #
 # Mini project makefile for mixed C and C++ projects
 
-SOURCES ?= $(wildcard tests/*.c)
+CSOURCES ?= $(wildcard tests/*.c)
+CPPSOURCES := 
 DEFINES :=
 INCLUDES := -I. -Itests
 TARGET = template_minunit_c90_tests
 CC = gcc
+CXX = g++
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os
 BUILD ?= DEBUG
-WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c90 $($(BUILD)) $(WARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-CHECKFLAGS := -header-filter='.*'
+CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS := -std=c90 $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
+CHECKFLAGS := -header-filter='.*'
 
-OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
+SOURCES := $(CSOURCES) $(CPPSOURCES)
+OBJECTS := $(addsuffix .o,$(SOURCES))
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
 
@@ -33,14 +38,22 @@ run: $(EXECUTABLE)
 
 .PHONY: check
 check: $(SOURCES)
-	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(SOURCES) -- $(CFLAGS) 
+ifneq ($(CSOURCES),)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CSOURCES) -- $(CFLAGS)
+endif
+ifneq ($(CPPSOURCES),)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
+endif
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CC) $(OBJECTS) -o $@ $(LDLIBS)
+	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
-%.o: %.c
+%.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+%.cpp.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:

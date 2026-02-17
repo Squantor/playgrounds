@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260213
+# Version: 20260217
 #
 # Mini project makefile for mixed C and C++ projects
 
