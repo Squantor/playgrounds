@@ -6,9 +6,10 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  * @file main.c
- * Main entrypoint for template application
+ * @brief Main entrypoint for template application
  */
 #include "par_arg.h"
+#include "program.h"
 #include <stdio.h>
 
 Program_state program_state;

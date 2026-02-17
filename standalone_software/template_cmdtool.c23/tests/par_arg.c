@@ -24,5 +24,5 @@ MINUNIT_TEARDOWN(parse_program_arguments_teardown)
 MINUNIT_ADD(parse_program_arguments, parse_program_arguments_setup,
             parse_program_arguments_teardown)
 {
-  MINUNIT_PASS();
+  MINUNIT_CHECK(1==1);
 }

@@ -6,7 +6,8 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-SOURCES := $(wildcard *.cpp *.c)
+CSOURCES := $(wildcard *.c)
+CPPSOURCES := $(wildcard *.cpp)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
 TARGET = template_cmdtool_c23
