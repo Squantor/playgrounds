@@ -14,6 +14,7 @@
 #include <libmcu/bitmap/bitmap_view.hpp>
 #include <mid/font.hpp>
 
+extern libmcu::bitmap::Const_bitmap bitmap_font;
 extern libmcumid::Font application_font;
 
 #endif
