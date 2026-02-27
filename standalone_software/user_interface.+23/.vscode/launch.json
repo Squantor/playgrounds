@@ -1,0 +1,58 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug minunit C++23 template",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/minunit_C++23.elf",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build minunit C++23 template",
+    },
+    {
+      "name": "debug minunit C++23 tests",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/minunit_C++23_tests.elf",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build minunit C++23 tests",
+    },
+  ]
+}
