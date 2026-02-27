@@ -15,6 +15,17 @@ For conditions of distribution and use, see LICENSE file
 #include <stdint.h>
 #include <string.h>
 
+typedef enum {
+  ARG_PARSE_IDLE, /*< Idle state */
+  ARG_PARSE_ERR, /*< Error state */
+  ARG_PARSE_DONE, /*< Done state */
+  ARG_PARSE_OPT_TOKEN, /*< Parse option token */
+  ARG_PARSE_OPT_OP, /*< Parse option operator */
+} Argument_parse_state;
+
+
+static Argument_parse_state arg_parse_state;
+
 char commandline_buffer[1024];
 
 /**
@@ -24,6 +35,7 @@ Result parse_program_arguments(int argc, char *argv[], Program_state *state)
 {
   (void) state;
   memset(commandline_buffer, 0, sizeof(commandline_buffer));
+  arg_parse_state = ARG_PARSE_IDLE;
   char *p = commandline_buffer;
   char *q; // pointer to current argv string
   // skip first commandline argument as that is the executable name
@@ -39,5 +51,9 @@ Result parse_program_arguments(int argc, char *argv[], Program_state *state)
     q++;
   }
   // go through the commandline_buffer and parse the arguments in a big switch case statement
+  do
+  {
+  } while ((arg_parse_state != ARG_PARSE_DONE) && (arg_parse_state != ARG_PARSE_ERR));
+  
   return RESULT_OK;
 }

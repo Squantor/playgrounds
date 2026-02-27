@@ -6,7 +6,8 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-CSOURCES := $(wildcard *.c) $(wildcard tests/*.c)
+CSOURCES := $(wildcard tests/*.c)
+CSOURCES += par_arg.c args.c
 CPPSOURCES :=
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I. -Itests

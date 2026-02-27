@@ -6,7 +6,7 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  * @file program.h
- * Application wide state structure
+ * @brief Program wide state structure
  */
 #ifndef PROGRAM_H
 #define PROGRAM_H

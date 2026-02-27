@@ -15,6 +15,15 @@ For conditions of distribution and use, see LICENSE file
 #include "results.h"
 
 /**
+ * @brief Commandline argument entry
+ */
+typedef struct {
+    char *pattern; /*!< Argument patterns */
+    // argument handler definition needed
+    char *help;    /*!< Argument help string */
+} Argument_entry;
+
+/**
  * @brief Parse commandline arguments
  * @param argc Argument count
  * @param argv array of string pointers to arguments
