@@ -1,7 +1,7 @@
 /*
 SPDX-License-Identifier: MIT
 
-Copyright (c) 2025 Bart Bilos
+Copyright (c) 2026 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /**
@@ -9,6 +9,13 @@ For conditions of distribution and use, see LICENSE file
  * Main entrypoint for executing template application
  */
 #include <cstdio>
+#include <array>
+#include "event_dispatch.hpp"
+#include "user_interface.hpp"
+
+User_interface user_interface;
+std::array<EventHandlerPair, 1> handlers = {{&user_interface, Events::Button}};
+EventDispatcher dispatcher(handlers);
 
 /**
  * @brief main entrypoint
@@ -17,6 +24,7 @@ For conditions of distribution and use, see LICENSE file
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
-  std::printf("Hello World!\n");
+  dispatcher.PostEvent({Events::Button, Button::MenuEnterPress});
+  dispatcher.Process();
   return 0;
 }
