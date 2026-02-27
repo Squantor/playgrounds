@@ -24,7 +24,18 @@ EventDispatcher dispatcher(handlers);
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
-  dispatcher.PostEvent({Events::Button, Button::MenuEnterPress});
-  dispatcher.Process();
+  printf("Press q to quit, a for left, d for enter, f for right\n");
+  int key = getchar();
+  while (key != 'q') {
+    if (key == 'a') {
+      dispatcher.PostEvent({Events::Button, Button::MenuLeftPress});
+    } else if (key == 'd') {
+      dispatcher.PostEvent({Events::Button, Button::MenuEnterPress});
+    } else if (key == 'f') {
+      dispatcher.PostEvent({Events::Button, Button::MenuRightPress});
+    }
+    dispatcher.Process();
+    key = getchar();
+  }
   return 0;
 }
