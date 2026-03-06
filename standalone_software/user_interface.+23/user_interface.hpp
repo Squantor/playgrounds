@@ -26,22 +26,37 @@ struct User_interface;
 
 template <typename Button_enum>
 struct User_interface_screen {
-  virtual void handle_button(User_interface<Button_enum> *, Button_enum) = 0;
-  virtual void enter_screen() = 0;
-  virtual void exit_screen() = 0;
-  virtual void render(Display &display) = 0;
+  /**
+   * @brief Sets up the screen with the user interface
+   */
+  virtual void setup(User_interface<Button_enum> *) = 0;
+  /**
+   * @brief Handles button events, only called when screen is active
+   */
+  virtual void handle_button(Button_enum) = 0;
+  /**
+   * @brief Activates the screen
+   */
+  virtual void activate() = 0;
+  /**
+   * @brief Deactivates the screen
+   */
+  virtual void deactivate() = 0;
 };
 
 template <typename Button_enum>
-struct User_interface : public EventHandler {
-  User_interface(Display &application_display, std::span<User_interface_screen<Button_enum> *> application_screens)
-    : current_screen_index(0), display(application_display), screens(application_screens) {}
+struct User_interface : public Event_handler {
+  User_interface(std::span<User_interface_screen<Button_enum> *> application_screens)
+    : current_screen_index(0), screens(application_screens) {}
 
   void init() {
-    screens[current_screen_index]->render(display);
+    for (auto &screen : screens) {
+      screen->setup(this);
+    }
+    screens[current_screen_index]->activate();
   }
 
-  void HandleEvent(EventData event) override {
+  void handle_event(EventData event) override {
     switch (event.event) {
       case Events::Button:
         break;
@@ -49,29 +64,27 @@ struct User_interface : public EventHandler {
         printf("Unhandled event\n");
         return;
     }
-    screens[current_screen_index]->handle_button(this, event.button);
-    screens[current_screen_index]->render(display);
+    screens[current_screen_index]->handle_button(event.button);
   }
 
   void next_screen() {
     if ((current_screen_index + 1) < screens.size()) {
-      screens[current_screen_index]->exit_screen();
+      screens[current_screen_index]->deactivate();
       current_screen_index++;
-      screens[current_screen_index]->enter_screen();
+      screens[current_screen_index]->activate();
     }
   }
 
   void previous_screen() {
     if (current_screen_index > 0) {
-      screens[current_screen_index]->exit_screen();
+      screens[current_screen_index]->deactivate();
       current_screen_index--;
-      screens[current_screen_index]->enter_screen();
+      screens[current_screen_index]->activate();
     }
   }
 
  private:
   std::size_t current_screen_index;
-  Display &display;
   std::span<User_interface_screen<Button_enum> *> screens;
 };
 

@@ -15,49 +15,49 @@
 #include "events.hpp"
 #include <span>
 
-struct EventHandler {
-  virtual void HandleEvent(EventData event) = 0;
+struct Event_handler {
+  virtual void handle_event(EventData event) = 0;
 };
 
-struct EventHandlerPair {
-  EventHandler *handler;
+struct Event_handler_pair {
+  Event_handler *handler;
   Events event;
 };
 
-class EventDispatcher {
+class Event_dispatcher {
  public:
-  EventDispatcher(std::span<const EventHandlerPair> event_handlers) : handlers(event_handlers) {}
+  Event_dispatcher(std::span<const Event_handler_pair> event_handlers) : handlers(event_handlers) {}
 
-  void Reset() {
-    queue.Reset();
+  void reset() {
+    queue.reset();
   }
 
-  std::size_t GetEventCount() {
-    return queue.GetLevel();
+  std::size_t get_event_count() {
+    return queue.get_level();
   }
 
-  void PostEvent(EventData event) {
-    queue.PushFront(event);
+  void post_event(EventData event) {
+    queue.push_front(event);
   }
 
   /**
    * @brief Processes events that are pending
    */
-  void Process() {
-    if (queue.GetLevel() > 0) {
+  void process() {
+    if (queue.get_level() > 0) {
       EventData event;
-      queue.PopBack(event);
-      for (const EventHandlerPair &handler : handlers) {
+      queue.pop_back(event);
+      for (const Event_handler_pair &handler : handlers) {
         if (handler.event == event.event) {
-          handler.handler->HandleEvent(event);
+          handler.handler->handle_event(event);
         }
       }
     }
   }
 
  private:
-  RingBuffer<EventData, 10> queue;
-  std::span<const EventHandlerPair> handlers;
+  Ringbuffer<EventData, 10> queue;
+  std::span<const Event_handler_pair> handlers;
 };
 
 #endif

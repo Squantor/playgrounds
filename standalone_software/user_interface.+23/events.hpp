@@ -16,10 +16,11 @@
 /** @brief Possible events
  */
 enum class Events : std::uint8_t {
-  None,      /*!< No event */
-  Button,    /*!< Button event */
-  PowerDown, /*!< Power down event */
-  FatalError /*!< Fatal error event */
+  None,       /*!< No event */
+  Button,     /*!< Button event */
+  PowerDown,  /*!< Power down event */
+  FatalError, /*!< Fatal error event */
+  Special,    /*!< Special event */
 };
 
 enum class Button : std::uint8_t {
@@ -39,12 +40,17 @@ enum class Error : std::uint8_t {
   Other   /*!< Other error */
 };
 
+enum class Various : std::uint8_t {
+  None, /*!< No special event */
+};
+
 struct EventData {
   Events event;
   union {
     Button button;
     PowerDown power_down;
     Error error;
+    Various special;
   };
 };
 
