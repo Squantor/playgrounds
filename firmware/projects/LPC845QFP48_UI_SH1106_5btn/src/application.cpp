@@ -15,18 +15,24 @@
 #include <button_handler.hpp>
 #include <buttons.hpp>
 #include <user_interface.hpp>
-#include <application_ui.hpp>
+#include <screen_main.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
 squLib::commandInterpreter<commandHandlers, command_values, command_console> command_interpreter;
 squLib::commandlineSimple<80, command_console, command_interpreter> command_line;
+
+Buttons buttons{0xFF, event_dispatcher};
+
+Main_screen<application_display> main_screen;
+
+std::array<User_interface_screen<Button>*, 1> screens = {&main_screen};
+User_interface<Button> user_interface{screens};
+
 ButtonHandler button_handler;
-UserInterface user_interface(main_screen);
 std::array<const EventHandlerPair, 2> event_handlers = {EventHandlerPair{&button_handler, Events::Button},
                                                         EventHandlerPair{&user_interface, Events::Button}};
 EventDispatcher event_dispatcher{event_handlers};
-Buttons buttons{0xFF, event_dispatcher};
 
 auto button_call_lambda = [](std::uint8_t port_data) {
   buttons.SetPortData(port_data);
@@ -35,7 +41,7 @@ auto button_call_lambda = [](std::uint8_t port_data) {
 void Application::Init() {
   command_console.print("LPC845 small nuclone SH1106 test program\n");
   ui_port_expander.RegisterCallback(button_call_lambda);
-  user_interface.Init();
+  user_interface.init();
 }
 
 void Application::Progress() {
@@ -59,5 +65,4 @@ void Application::Progress() {
       command_console.print("Unknown state!!!");
       break;
   }
-  user_interface.Progress();
 }

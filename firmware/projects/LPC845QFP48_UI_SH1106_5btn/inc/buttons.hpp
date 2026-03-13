@@ -24,37 +24,37 @@ class Buttons {
     std::uint8_t changed = data ^ pin_state;
     if ((changed & 0x01) != 0) {
       if (data & 0x01) {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button0Up});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button0Up});
       } else {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button0Down});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button0Down});
       }
     }
     if ((changed & 0x02) != 0) {
       if (data & 0x02) {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button1Up});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button1Up});
       } else {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button1Down});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button1Down});
       }
     }
     if ((changed & 0x04) != 0) {
       if (data & 0x04) {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button2Up});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button2Up});
       } else {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button2Down});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button2Down});
       }
     }
     if ((changed & 0x08) != 0) {
       if (data & 0x08) {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button3Up});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button3Up});
       } else {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button3Down});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button3Down});
       }
     }
     if ((changed & 0x10) != 0) {
       if (data & 0x10) {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button4Up});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button4Up});
       } else {
-        event_dispatcher.PostEvent(EventData{Events::Button, Button::Button4Down});
+        event_dispatcher.PostEvent(Event_data{Events::Button, Button::Button4Down});
       }
     }
     // update internal state

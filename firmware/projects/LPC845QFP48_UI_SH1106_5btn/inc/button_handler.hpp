@@ -14,9 +14,9 @@ For conditions of distribution and use, see LICENSE file
 #include "event_handler.hpp"
 #include "application.hpp"
 
-class ButtonHandler : public EventHandler {
+class ButtonHandler : public Event_handler {
  public:
-  void HandleEvent(EventData event);
+  void handle_event(Event_data event);
 };
 
 #endif

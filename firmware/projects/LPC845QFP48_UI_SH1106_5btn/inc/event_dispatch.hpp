@@ -15,7 +15,7 @@ For conditions of distribution and use, see LICENSE file
 #include "event_handler.hpp"
 
 struct EventHandlerPair {
-  EventHandler *handler;
+  Event_handler *handler;
   Events event;
 };
 
@@ -31,7 +31,7 @@ class EventDispatcher {
     return queue.GetLevel();
   }
 
-  void PostEvent(EventData event) {
+  void PostEvent(Event_data event) {
     queue.PushFront(event);
   }
 
@@ -40,18 +40,18 @@ class EventDispatcher {
    */
   void Process() {
     if (queue.GetLevel() > 0) {
-      EventData event;
+      Event_data event;
       queue.PopBack(event);
       for (const EventHandlerPair &handler : handlers) {
         if (handler.event == event.event) {
-          handler.handler->HandleEvent(event);
+          handler.handler->handle_event(event);
         }
       }
     }
   }
 
  private:
-  libmcu::RingBuffer<EventData, 10> queue;
+  libmcu::RingBuffer<Event_data, 10> queue;
   std::span<const EventHandlerPair> handlers;
 };
 

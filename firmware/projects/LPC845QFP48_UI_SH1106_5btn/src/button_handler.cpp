@@ -12,7 +12,7 @@ For conditions of distribution and use, see LICENSE file
 #include "button_handler.hpp"
 #include "application.hpp"
 
-void ButtonHandler::HandleEvent(EventData event) {
+void ButtonHandler::handle_event(Event_data event) {
   switch (event.button) {
     case Button::Button0Down:
       command_console.print("Button 0 down\n");

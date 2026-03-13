@@ -31,8 +31,6 @@ $(PROJ_DIR)/src/command_setpixel.cpp \
 $(PROJ_DIR)/src/command_cat.cpp \
 $(PROJ_DIR)/src/command_glyph.cpp \
 $(PROJ_DIR)/src/button_handler.cpp \
-$(PROJ_DIR)/src/user_interface.cpp \
-$(PROJ_DIR)/src/application_ui.cpp \
 $(PROJ_DIR)/src/application_font.cpp \
 $(PROJ_DIR)/src/$(BOARD).cpp
 $(NAME)_INCLUDES := -I$(PROJ_DIR)/inc -Icommon/inc

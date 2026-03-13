@@ -33,7 +33,7 @@ enum class Button : uint8_t {
   Button4Up,   /*!< Button 4 up */
 };
 
-struct EventData {
+struct Event_data {
   Events event;
   union {
     Button button;

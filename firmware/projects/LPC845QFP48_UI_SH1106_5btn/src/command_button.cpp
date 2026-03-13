@@ -19,7 +19,7 @@ squLib::results button(std::span<const char> commandLine) {
   }
   std::int32_t button = 0;
   command_values.pop(button);
-  event_dispatcher.PostEvent(EventData{Events::Button, static_cast<Button>(button)});
+  event_dispatcher.PostEvent(Event_data{Events::Button, static_cast<Button>(button)});
   return squLib::results::ok;
 }
 
