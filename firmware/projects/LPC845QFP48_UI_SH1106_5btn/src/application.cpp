@@ -41,6 +41,9 @@ auto button_call_lambda = [](std::uint8_t port_data) {
 void Application::Init() {
   command_console.print("LPC845 small nuclone SH1106 test program\n");
   ui_port_expander.RegisterCallback(button_call_lambda);
+  while (ui_display.state != libmcu::States::Idle) {
+    BoardProgress();
+  }
   user_interface.init();
 }
 

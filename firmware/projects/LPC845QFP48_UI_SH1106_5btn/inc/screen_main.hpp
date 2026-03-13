@@ -14,6 +14,7 @@
 #include "event_handler.hpp"
 #include "user_interface.hpp"
 #include "mid/gfx_display_wrap.hpp"
+#include "application_font.hpp"
 
 template <auto &display>
 class Main_screen : public User_interface_screen<Button>, public Event_handler {
@@ -59,7 +60,7 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
     if (is_active) {
       display.clear();
       // char stringbuf[64];
-      display.print("Main screen\n");
+      display.print("Main screen\nturn on \n", application_font);
       // snprintf(stringbuf, sizeof(stringbuf), "%zu entry counts\n%zu event counts\n", entry_count, event_count);
       // display.print(stringbuf);
       display.flip();

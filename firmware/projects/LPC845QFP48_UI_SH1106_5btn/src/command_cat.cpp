@@ -12,7 +12,7 @@
 #include <application.hpp>
 #include <libmcu/bitmap/bitmap_view.hpp>
 
-constexpr std::array<const std::uint32_t, 384> bitmap_cat = {
+constexpr std::array<const std::uint32_t, 384> cat_data = {
   0x90884000, 0x228140a4, 0x4a8dba0f, 0x28440d2d, 0xaa229000, 0xcc2a0a0a, 0xa42b564e, 0x4514a28b, 0xa042b800, 0x88805009,
   0x64ca564f, 0x14040515, 0x0694d000, 0xe22a8424, 0xb8798f0e, 0x42a092a4, 0x94a8a800, 0xc4022080, 0x30a97c2f, 0x08a01204,
   0x02aa1800, 0xd1548a12, 0xba35ea4d, 0xa52a14a0, 0x1aa87000, 0x92292840, 0x78775a5f, 0x80642505, 0x21550800, 0xc044812a,
@@ -53,6 +53,8 @@ constexpr std::array<const std::uint32_t, 384> bitmap_cat = {
   0x56aba56a, 0x9b361012, 0x14f2d544, 0x6db77fe1, 0xa92a4955, 0xaa6d4244, 0x26fd55c9, 0xadfffaa4, 0x56aaaaaa, 0xa4d94a95,
   0x2f6abb21, 0xb76eef50, 0x552aab6d, 0xd29655a9};
 
+libmcu::bitmap::Const_bitmap cat_bitmap(cat_data.data(), 128, 96, 1);
+
 squLib::results cat(std::span<const char>) {
   if (command_values.size() < 2) {
     command_console.print("2 arguments needed: x, y\n");
@@ -61,8 +63,7 @@ squLib::results cat(std::span<const char>) {
   std::int32_t x, y;
   command_values.pop(y);
   command_values.pop(x);
-  libmcu::bitmap::Const_bitmap bitmap(bitmap_cat.data(), 128, 96, 1);
-  ui_display.blit(x, y, bitmap);
+  ui_display.blit(x, y, cat_bitmap);
   ui_display.flip();
   return squLib::results::ok;
 }

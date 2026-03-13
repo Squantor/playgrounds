@@ -14,7 +14,7 @@
 #include <drivers/SH1106_i2c.hpp>
 #include <drivers/PCF8574.hpp>
 #include <mid/gfx_display_wrap.hpp>
-#include <mid/fonts/8x8_basic_crfo.hpp>
+#include <mid/fonts/8x8.hpp>
 
 // pin types
 // Crystal osillator pins
@@ -88,7 +88,6 @@ extern libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
 extern libmcudrv::SH1106::Generic128x64 display_config;
 extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
 extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
-extern libmcumid::Font8x8BasicCrfo ui_font;
 extern libmcumid::Gfx_display_wrap<ui_display> application_display;
 
 constexpr inline std::uint32_t ticksPerSecond{100u};
