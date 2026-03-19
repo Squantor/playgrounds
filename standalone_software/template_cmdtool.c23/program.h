@@ -18,8 +18,18 @@ typedef enum {
   /* Add additional program operations here */
 } Program_operation;
 
+typedef enum {
+  LOG_FATAL = 0,
+  LOG_ERROR = 1,
+  LOG_WARNING = 2,
+  LOG_INFO = 3,
+  LOG_DEBUG = 4,
+  LOG_NONE = 5,
+} Log_level;
+
 typedef struct {
   Program_operation operation; /*!< Program operation */
+  Log_level log_level;         /*!< Logging level */
 } Program_state;
 
 #endif

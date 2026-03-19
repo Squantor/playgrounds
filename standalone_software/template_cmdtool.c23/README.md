@@ -6,3 +6,7 @@ To cleanup: ```make clean```
 To execute ```make run```
 To run clang tidy ```make check```
 There are also unittests in tests.mak and can be run in the same way as the normal build instructions but run it as ```make -ftests.mak``` with your target of choice like all, clean, run, or check.
+## To Do's
+* Implement and test logging arguments
+* Implement and test operations
+* Implement simple logging library

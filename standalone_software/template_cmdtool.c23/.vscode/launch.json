@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug minunit C23 template",
+      "name": "debug commandline template",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_minunit_c23.elf",
-      "args": [],
+      "program": "${workspaceFolder}/template_cmdtool_c23.elf",
+      "args": ["foo","bar"],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
       "environment": [],
@@ -30,10 +30,10 @@
       "preLaunchTask": "build minunit C23 template",
     },
     {
-      "name": "debug minunit C23 tests",
+      "name": "debug commandline template tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_minunit_c23_tests.elf",
+      "program": "${workspaceFolder}/template_cmdtool_c23_tests.elf",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",

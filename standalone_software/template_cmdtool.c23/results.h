@@ -13,8 +13,9 @@ For conditions of distribution and use, see LICENSE file
 #include <stdint.h>
 
 typedef enum : uint32_t {
-   RESULT_OK = 0, /*!< Success */
-   RESULT_NOT_OK, /*!< Unspecified error */
+  RESULT_OK = 0,          /*!< Success */
+  RESULT_NOT_OK,          /*!< Unspecified error */
+  RESULT_ARG_PARSE_ERROR, /*!< Argument parse error */
 } Result;
 
 #endif
