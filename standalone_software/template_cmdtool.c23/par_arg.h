@@ -1,10 +1,9 @@
-/*
-SPDX-License-Identifier: MIT
-
-Copyright (c) 2026 Bart Bilos
-For conditions of distribution and use, see LICENSE file
-*/
 /**
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2026 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ *
  * @file par_arg.h
  * Commandline argument parser definitions
  */
@@ -18,9 +17,9 @@ For conditions of distribution and use, see LICENSE file
  * @brief Commandline argument entry
  */
 typedef struct {
-    char *pattern; /*!< Argument patterns */
-    // argument handler definition needed
-    char *help;    /*!< Argument help string */
+  char *pattern; /*!< Argument patterns */
+  // argument handler definition needed
+  char *help; /*!< Argument help string */
 } Argument_entry;
 
 /**
