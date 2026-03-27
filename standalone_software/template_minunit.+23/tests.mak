@@ -42,7 +42,7 @@ ifneq ($(CSOURCES),)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CSOURCES) -- $(CFLAGS)
 endif
 ifneq ($(CPPSOURCES),)
-	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
+	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CXXFLAGS)
 endif
 
 $(EXECUTABLE): $(OBJECTS) makefile

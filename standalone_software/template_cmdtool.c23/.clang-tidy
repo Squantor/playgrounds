@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
-# .clang-tidy file for C90 projects
-# Version: 20250803
+# .clang-tidy file for C and C++ projects
+# Version: 20260313
 
 Checks: >
     performance-*,

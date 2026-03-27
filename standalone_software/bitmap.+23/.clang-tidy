@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
-# .clang-tidy file for C90 projects
-# Version: 20250803
+# .clang-tidy file for C and C++ projects
+# Version: 20260313
 
 Checks: >
     performance-*,
@@ -31,13 +31,13 @@ CheckOptions:
   - key: bugprone-assert-side-effect.AssertMacros 
     value: 'ASSERT'
   - key: readability-identifier-naming.FunctionCase
-    value: CamelCase
+    value: lower_case
   - key: readability-identifier-naming.StructCase
-    value: CamelCase
+    value: Leading_upper_snake_case
   - key: readability-identifier-naming.TypedefCase
-    value: CamelCase
+    value: Leading_upper_snake_case
   - key: readability-identifier-naming.EnumCase
-    value: CamelCase
+    value: Leading_upper_snake_case
   - key: readability-identifier-naming.EnumConstantCase
     value: UPPER_CASE  
   - key: readability-identifier-naming.LocalVariableCase

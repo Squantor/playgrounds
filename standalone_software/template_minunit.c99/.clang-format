@@ -1,10 +1,8 @@
-# A .clang-format file to adhere to the K&R style
-# - CLANG-FORMAT STYLE OPTIONS: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-# 
-# Author: Munseong Jeong <ryan.m.jeong@hotmail.com>
+# V20260327
+# K&R style C clang-format file
 
 # BasedOnStyle: LLVM
-IndentWidth: 3
+IndentWidth: 2
 UseTab: Never
 
 BreakBeforeBraces: Linux
