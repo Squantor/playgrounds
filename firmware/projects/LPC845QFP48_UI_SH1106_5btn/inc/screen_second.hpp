@@ -4,12 +4,12 @@
  * Copyright (c) 2026 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  *
- * @file screen_main.hpp
- * @brief Main screen definition
+ * @file screen_second.hpp
+ * @brief Secondary screen definition
  *
  */
-#ifndef SCREEN_MAIN_HPP
-#define SCREEN_MAIN_HPP
+#ifndef SCREEN_SECOND_HPP
+#define SCREEN_SECOND_HPP
 
 #include "event_handler.hpp"
 #include "user_interface.hpp"
@@ -17,15 +17,16 @@
 #include "application_font.hpp"
 
 template <auto &display>
-class Main_screen : public User_interface_screen<Button>, public Event_handler {
+class Second_screen : public User_interface_screen<Button>, public Event_handler {
  public:
-  Main_screen() : entry_count(0), event_count(0), user_interface(nullptr) {}
+  Second_screen() : entry_count(0), event_count(0), enter_count(0), user_interface(nullptr) {}
   void setup(User_interface<Button> *current_user_interface) override {
     user_interface = current_user_interface;
   }
   void handle_button(Button button) override {
     switch (button) {
       case Button::Button1Down:
+        enter_count++;
         break;
 
       case Button::Button0Down:
@@ -37,7 +38,7 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
         break;
 
       default:
-        command_console.print("Main screen: Unhandled button event\n");
+        command_console.print("Main screen: Unhandled button\n");
         return;
         break;
     }
@@ -61,14 +62,15 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
     if (is_active) {
       display.clear();
       // char stringbuf[64];
-      display.print("Main screen\nturn on \n", application_font);
+      display.print("Second screen.\nIn tha house!\n", application_font);
       // snprintf(stringbuf, sizeof(stringbuf), "%zu entry counts\n%zu event counts\n", entry_count, event_count);
       // display.print(stringbuf);
       display.flip();
     }
   }
   std::size_t entry_count;
-  std::size_t event_count = 0;
+  std::size_t event_count;
+  std::size_t enter_count;
   User_interface<Button> *user_interface;
   bool is_active;
 };
