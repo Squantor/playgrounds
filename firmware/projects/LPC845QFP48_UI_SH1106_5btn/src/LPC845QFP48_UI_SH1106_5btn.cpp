@@ -92,7 +92,7 @@ void BoardInit(void) {
   while (ticks < 10)
     ;
   ui_port_expander.Init();
-  ui_display.Init();
+  ui_display.init();
 }
 
 void BoardProgress(void) {

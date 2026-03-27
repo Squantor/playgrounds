@@ -60,11 +60,12 @@ class Second_screen : public User_interface_screen<Button>, public Event_handler
  private:
   void render() {
     if (is_active) {
+      libmcumid::Dec dec_enter_count{static_cast<std::int32_t>(enter_count)};
       display.clear();
-      // char stringbuf[64];
       display.print("Second screen.\nIn tha house!\n", application_font);
-      // snprintf(stringbuf, sizeof(stringbuf), "%zu entry counts\n%zu event counts\n", entry_count, event_count);
-      // display.print(stringbuf);
+      display.print("Enter count: ", application_font);
+      display.print(dec_enter_count, application_font);
+      display.print("\n", application_font);
       display.flip();
     }
   }

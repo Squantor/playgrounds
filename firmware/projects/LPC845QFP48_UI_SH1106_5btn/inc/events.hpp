@@ -16,8 +16,9 @@ For conditions of distribution and use, see LICENSE file
 /** @brief Possible events
  */
 enum class Events : uint8_t {
-  None,   /*!< No event */
-  Button, /*!< Button event */
+  None,    /*!< No event */
+  Button,  /*!< Button event */
+  Seconds, /*!< Second event */
 };
 
 enum class Button : uint8_t {
@@ -37,6 +38,7 @@ struct Event_data {
   Events event;
   union {
     Button button;
+    uint32_t seconds;
   };
 };
 

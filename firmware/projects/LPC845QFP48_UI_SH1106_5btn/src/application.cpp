@@ -32,8 +32,11 @@ std::array<User_interface_screen<Button>*, 2> screens = {&main_screen, &second_s
 User_interface<Button> user_interface{screens};
 
 ButtonHandler button_handler;
-std::array<const EventHandlerPair, 2> event_handlers = {EventHandlerPair{&button_handler, Events::Button},
-                                                        EventHandlerPair{&user_interface, Events::Button}};
+std::array<const EventHandlerPair, 3> event_handlers = {
+  EventHandlerPair{&button_handler, Events::Button},
+  EventHandlerPair{&user_interface, Events::Button},
+  EventHandlerPair{&main_screen, Events::Seconds},
+};
 EventDispatcher event_dispatcher{event_handlers};
 
 auto button_call_lambda = [](std::uint8_t port_data) {
@@ -52,7 +55,7 @@ void Application::Init() {
 void Application::Progress() {
   static std::uint32_t currentTicks = ticks;
   if (currentTicks + 100 < ticks) {
-    // Print("test:\t", currentTicks, "\t", print::Hex{currentTicks}, "\n");
+    event_dispatcher.PostEvent(Event_data{.event = Events::Seconds, .seconds = ticks / 100});
     currentTicks = ticks;
   }
   // echo characters

@@ -19,7 +19,7 @@
 template <auto &display>
 class Main_screen : public User_interface_screen<Button>, public Event_handler {
  public:
-  Main_screen() : entry_count(0), event_count(0), user_interface(nullptr) {}
+  Main_screen() : entry_count(0), seconds(0), user_interface(nullptr) {}
   void setup(User_interface<Button> *current_user_interface) override {
     user_interface = current_user_interface;
   }
@@ -52,23 +52,31 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
     is_active = false;
   }
   void handle_event(Event_data event) {
-    (void)event;
+    switch (event.event) {
+      case Events::Seconds:
+        seconds = event.seconds;
+        break;
+
+      default:
+        break;
+    }
     render();
   }
 
  private:
   void render() {
     if (is_active) {
+      libmcumid::Dec dec_entry_count{static_cast<std::int32_t>(seconds)};
       display.clear();
-      // char stringbuf[64];
       display.print("Main screen\nturn on \n", application_font);
-      // snprintf(stringbuf, sizeof(stringbuf), "%zu entry counts\n%zu event counts\n", entry_count, event_count);
-      // display.print(stringbuf);
+      display.print("Seconds:", application_font);
+      display.print(dec_entry_count, application_font);
+      display.print("\n", application_font);
       display.flip();
     }
   }
   std::size_t entry_count;
-  std::size_t event_count = 0;
+  std::size_t seconds = 0;
   User_interface<Button> *user_interface;
   bool is_active;
 };
