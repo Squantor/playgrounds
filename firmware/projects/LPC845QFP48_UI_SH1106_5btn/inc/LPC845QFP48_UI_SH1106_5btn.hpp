@@ -90,7 +90,7 @@ extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_con
 extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
 extern libmcumid::Gfx_display_wrap<ui_display> application_display;
 
-constexpr inline std::uint32_t ticksPerSecond{100u};
+constexpr inline std::uint32_t ticks_per_second{100u};
 
 extern volatile std::uint32_t ticks;  // amount of ticks passed sinds startup
 

@@ -79,7 +79,7 @@ void BoardInit(void) {
   syscon_peripheral.ConfigureMcuClocks<nuclone_clock_config>();
   syscon_peripheral.PeripheralClockSource(libmcull::syscon::ClockSourceSelects::Uart0, libmcull::syscon::ClockSources::Main);
   syscon_peripheral.PeripheralClockSource(libmcull::syscon::ClockSourceSelects::I2c0, libmcull::syscon::ClockSources::Main);
-  systick_peripheral.Init(nuclone_clock_config.GetSystemFreq() / ticksPerSecond);
+  systick_peripheral.Init(nuclone_clock_config.GetSystemFreq() / ticks_per_second);
   systick_peripheral.Start(systickIsrLambda);
   syscon_peripheral.SetInterruptPin(pin_ui_button_int, ui_button_intpin);
   pinint_peripheral.EnableChannel(ui_button_intchan, libmcull::pin_int::EdgeSettings::Falling);

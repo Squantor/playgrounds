@@ -54,8 +54,8 @@ void Application::Init() {
 
 void Application::Progress() {
   static std::uint32_t currentTicks = ticks;
-  if (currentTicks + 100 < ticks) {
-    event_dispatcher.PostEvent(Event_data{.event = Events::Seconds, .seconds = ticks / 100});
+  if (currentTicks + ticks_per_second < ticks) {
+    event_dispatcher.PostEvent(Event_data{.event = Events::Seconds, .seconds = ticks / ticks_per_second});
     currentTicks = ticks;
   }
   // echo characters
