@@ -15,14 +15,35 @@
 #include <cstdint>
 #include <span>
 
-void blit_1d(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t bbp, std::size_t pixel_width,
-             std::size_t pixel_src, std::size_t pixel_dst) {
+/**
+ * @brief Blit operations
+ */
+enum class Blit_ops {
+  COPY,   /*!< Copy */
+  INVERT, /*!< Invert */
+  AND,    /*!< AND */
+  OR,     /*!< OR */
+  XOR,    /*!< XOR */
+};
+
+/**
+ * @brief 1D blit
+ * @param src Source array of pixels
+ * @param dst Destination array of pixels
+ * @param pixel_bits Bits per pixel
+ * @param pixel_width Width of pixels to blit
+ * @param pixel_src Source pixel index of the blit
+ * @param pixel_dst Destination pixel index of the blit
+ */
+void blit_1d(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
+             std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op = Blit_ops::COPY) {
   (void)src;
   (void)dst;
-  (void)bbp;
-  (void)width;
-  (void)src_offset;
-  (void)dst_offset;
+  (void)pixel_bits;
+  (void)pixel_width;
+  (void)pixel_src;
+  (void)pixel_dst;
+  (void)op;
 }
 
 #endif
