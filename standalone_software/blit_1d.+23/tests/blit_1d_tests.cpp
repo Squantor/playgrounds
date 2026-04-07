@@ -27,5 +27,7 @@ MINUNIT_ADD(test_blit_1d, setup_test_blit_1d, teardown_test_blit_1d) {
   src.fill(0x01234567);
   dst.fill(0x89ABCDEF);
   blit_1d(src, dst, 4, 20, 0, 0);
+  MINUNIT_CHECK(dst[0] == 0x01234567);
+  MINUNIT_CHECK(dst[1] == 0x89ABCDE7);
   (void)test_results;
 }
