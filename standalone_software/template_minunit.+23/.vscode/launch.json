@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug minunit C++23 template",
+      "name": "debug",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/minunit_C++23.elf",
@@ -27,10 +27,10 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C++23 template",
+      "preLaunchTask": "build",
     },
     {
-      "name": "debug minunit C++23 tests",
+      "name": "debug tests",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/minunit_C++23_tests.elf",
@@ -52,7 +52,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C++23 tests",
+      "preLaunchTask": "build tests",
     },
   ]
 }
