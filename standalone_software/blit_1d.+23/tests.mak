@@ -8,6 +8,7 @@
 
 CSOURCES := $(wildcard tests/*.c)
 CPPSOURCES := $(wildcard tests/*.cpp)
+CPPSOURCES += blit_1d.cpp
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I. -Itests
 TARGET = blit_1d_tests
