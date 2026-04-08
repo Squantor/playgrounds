@@ -36,6 +36,9 @@ enum class Blit_ops {
  */
 void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit_ops op);
 
+void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit_offset, size_t dst_bit_offset,
+                  size_t bit_count, Blit_ops op = Blit_ops::COPY);
+
 /**
  * @brief 1D blit
  * @param src Source array of pixels
@@ -45,7 +48,7 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit
  * @param pixel_src Source pixel index of the blit
  * @param pixel_dst Destination pixel index of the blit
  */
-void blit_1d(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
-             std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op = Blit_ops::COPY);
+void blit_1d_pixels(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
+                    std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op = Blit_ops::COPY);
 
 #endif

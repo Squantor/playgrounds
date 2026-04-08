@@ -43,23 +43,12 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit
   }
 }
 
-void blit_1d(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
-             std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op) {
-  // compute indices, assume 32 bit elements
-  std::size_t src_index = (pixel_src * pixel_bits) >> 5;
-  std::size_t dst_index = (pixel_dst * pixel_bits) >> 5;
-  std::size_t src_end_index = (((pixel_src + pixel_width) * pixel_bits) >> 5);
-  std::size_t dst_end_index = (((pixel_dst + pixel_width) * pixel_bits) >> 5);
-  std::size_t src_bit_offset = (pixel_src * pixel_bits) & 0x1F;
-  std::size_t dst_bit_offset = (pixel_dst * pixel_bits) & 0x1F;
-  // compute masks
-  std::uint32_t src_mask = 0xFFFFFFFF << src_bit_offset;
-  std::uint32_t dst_mask = 0xFFFFFFFF << dst_bit_offset;
-  std::uint32_t pixels;  // Working buffer
-  // First element start
-  pixels = src[src_index] & src_mask;
-  // Loop
-  // Do not invert source mask if offset is zero
-  // do not invert destination mask if offset is zero
-  // Last element start
+void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit_offset, size_t dst_bit_offset,
+                  size_t bit_count, Blit_ops op) {
+  std::uint32_t mask = 0xFFFFFFFF;
+}
+
+void blit_1d_pixels(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
+                    std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op) {
+  blit_1d_bits(dst, src, pixel_src * pixel_bits, pixel_dst * pixel_bits, pixel_width * pixel_bits, op);
 }
