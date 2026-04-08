@@ -11,15 +11,20 @@
  */
 #include "blit_1d.hpp"
 
-void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit_ops op) {
-  std::uint32_t mask = 0xFFFFFFFF;
+namespace detail {
+void shift_bits(std::uint32_t &mask, std::int32_t src_shift) {
   if (src_shift > 0) {
     mask <<= src_shift;
-    src <<= src_shift;
   } else if (src_shift < 0) {
     mask >>= -src_shift;
-    src >>= -src_shift;
   }
+}
+}  // namespace detail
+
+void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit_ops op) {
+  std::uint32_t mask = 0xFFFFFFFF;
+  detail::shift_bits(mask, src_shift);
+  detail::shift_bits(src, src_shift);
   mask = ~mask;
 
   switch (op) {
@@ -46,6 +51,17 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit_offset, size_t dst_bit_offset,
                   size_t bit_count, Blit_ops op) {
   std::uint32_t mask = 0xFFFFFFFF;
+  // compute indices
+  std::size_t src_index = src_bit_offset / 32;
+  std::size_t dst_index = dst_bit_offset / 32;
+  std::size_t src_end_index = (src_bit_offset + bit_count) / 32;
+  std::size_t dst_end_index = (dst_bit_offset + bit_count) / 32;
+  // leading bits
+  // compute shift offset from src to dest
+  std::size_t bit_offset = (src_bit_offset % 32) - (dst_bit_offset % 32);
+
+  // loop
+  // trailing bits
 }
 
 void blit_1d_pixels(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
