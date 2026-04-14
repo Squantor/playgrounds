@@ -31,10 +31,10 @@ enum class Blit_ops {
  * @brief Blit operation
  * @param dst
  * @param src
- * @param src_shift
+ * @param mask
  * @param op
  */
-void blit_op(std::uint32_t &dst, std::uint32_t src, std::int32_t src_shift, Blit_ops op);
+void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops op);
 
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit_offset, size_t dst_bit_offset,
                   size_t bit_count, Blit_ops op = Blit_ops::COPY);
