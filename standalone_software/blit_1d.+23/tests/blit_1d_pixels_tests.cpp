@@ -14,20 +14,37 @@
 #include <span>
 #include <blit_1d.hpp>
 
-MINUNIT_ADD(test_blit_1d_pixels_copy, nullptr, nullptr) {
-  std::array<std::uint32_t, 5> src;
-  std::array<std::uint32_t, 5> dst;
-  src.fill(0x01234567);
-  dst.fill(0x89ABCDEF);
-  blit_1d_pixels(src, dst, 4, 20, 0, 0);
-  MINUNIT_CHECK(dst[0] == 0x01234567);
-  //MINUNIT_CHECK(dst[1] == 0x01234567);
-  //MINUNIT_CHECK(dst[2] == 0x89AB4567);
-  dst.fill(0x89ABCDEF);
-  blit_1d_pixels(src, dst, 4, 16, 4, 4);
-  MINUNIT_CHECK(dst[0] == 0x0123CDEF);
-  //MINUNIT_CHECK(dst[1] == 0x01234567);
-  //MINUNIT_CHECK(dst[2] == 0x89AB4567);
+std::array<std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
+std::array<std::uint32_t, 5> dut_dst;
 
-  (void)test_results;
+MINUNIT_ADD(test_blit_1d_pixels_copy, nullptr, nullptr) {
+  /*   // trivial copy case
+    dut_dst.fill(0x89ABCDEF);
+    blit_1d_pixels(dut_dst, dut_src, 4, 16, 8, 8);
+    MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+    MINUNIT_CHECK(dut_dst[1] == 0x77665544);
+    MINUNIT_CHECK(dut_dst[2] == 0xBBAA9988);
+    MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
+    // same symmetrical offset copy case
+    dut_dst.fill(0x89ABCDEF);
+    blit_1d_pixels(dut_dst, dut_src, 4, 16, 4, 4);
+    MINUNIT_CHECK(dut_dst[0] == 0x3322CDEF);
+    MINUNIT_CHECK(dut_dst[1] == 0x77665544);
+    MINUNIT_CHECK(dut_dst[2] == 0x89AB9988); */
+  // same assymetrical offset copy case
+  /*   dut_dst.fill(0x89ABCDEF);
+    blit_1d_pixels(dut_dst, dut_src, 4, 16, 6, 6);
+    MINUNIT_CHECK(dut_dst[0] == 0x33ABCDEF);
+    MINUNIT_CHECK(dut_dst[1] == 0x77665544);
+    MINUNIT_CHECK(dut_dst[2] == 0x89AA9988); */
+  // not same offset copy case
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 16, 6, 2);
+  MINUNIT_CHECK(dut_dst[0] == 0x11ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x55443322);
+  MINUNIT_CHECK(dut_dst[2] == 0x89887766);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
 }
+
+// tests for small spans
+// tests for other operations
