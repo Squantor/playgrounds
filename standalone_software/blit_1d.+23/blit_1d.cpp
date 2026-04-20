@@ -18,6 +18,10 @@ namespace detail {
  * @param src_shift shift amount/count
  */
 void shift_bits(std::uint32_t &mask, std::int32_t src_shift) {
+  if (src_shift > 32 || src_shift < -32) {
+    mask = 0;
+    return;
+  }
   if (src_shift > 0) {
     mask = mask << src_shift;
   } else if (src_shift < 0) {
@@ -48,10 +52,100 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops
   }
 }
 
-// Todo: implement memmove semantics
-// this is a variant of blit that focuses on destination indices and bit count subtraction
+/**
+ * @brief simple blit that copies bit by bit, used for correctness checks
+ * @todo add memmove semantics
+ */
+void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit,
+                         size_t bit_width, Blit_ops op) {
+  (void)dst;
+  (void)src;
+  (void)src_bit;
+  (void)dst_bit;
+  (void)bit_width;
+  (void)op;
+  // setup source/destination masks
+  std::uint32_t src_mask = 0x00000001 << (src_bit % 32);
+  std::uint32_t dst_mask = 0x00000001 << (dst_bit % 32);
+  for (size_t i = 0; i < bit_width; i++) {
+    // extract one bit from source
+    uint32_t bit = src[src_bit / 32] & src_mask;
+    // convert bit to destination bit position
+    if (bit != 0) {
+      bit = dst_mask;
+    } else {
+      bit = 0;
+    }
+    // write one bit to destination with the operation in mind
+    blit_op(dst[dst_bit / 32], bit, dst_mask, op);
+    // shift masks
+    src_mask = src_mask << 1;
+    if (src_mask == 0) {
+      src_mask = 0x00000001;
+    }
+    dst_mask = dst_mask << 1;
+    if (dst_mask == 0) {
+      dst_mask = 0x00000001;
+    }
+    src_bit++;
+    dst_bit++;
+  }
+}
+
+/**
+ * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
+ * @todo add memmove semantics
+ */
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
                   Blit_ops op) {
+  (void)dst;
+  (void)src;
+  (void)src_bit;
+  (void)dst_bit;
+  (void)bit_width;
+  (void)op;
+  // determine left shift factor
+  std::uint32_t left_source_shift = 0;
+  if (dst_bit % 32 < src_bit % 32) {
+    left_source_shift = static_cast<std::uint32_t>(src_bit % 32 - dst_bit % 32);
+  } else if (dst_bit % 32 < src_bit % 32) {
+    left_source_shift = static_cast<std::uint32_t>(32 - (dst_bit % 32 - src_bit % 32));
+  }
+  std::size_t bit_count = bit_width;
+  std::uint32_t first_bits;
+  std::uint32_t second_bits;
+  // heading bits handling
+  std::size_t head_shift = dst_bit % 32;
+  std::size_t head_bits = 32 - head_shift;
+  if (head_shift != 0) {
+    src_bit += head_bits;
+    dst_bit += head_bits;
+    bit_count -= head_bits;
+  }
+  // loop
+  while (bit_count > 31) {
+    // handling of 32 bit sized chunks
+    first_bits = src[src_bit / 32] >> (left_source_shift);
+    src_bit += 32;
+    if (left_source_shift > 0) {
+      second_bits = src[src_bit / 32] << (32 - left_source_shift);
+    } else
+      second_bits = 0;
+    first_bits |= second_bits;
+    blit_op(dst[dst_bit / 32], first_bits, 0xFFFFFFFF, op);
+
+    dst_bit += 32;
+    bit_count -= 32;
+  }
+  // trailing bits handling
+  if (bit_count > 0) {
+  }
+}
+
+// Todo: implement memmove semantics
+// this is a variant of blit that focuses on destination indices and bit count subtraction
+void blit_1d_bits_002(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
+                      Blit_ops op) {
   (void)dst;
   (void)src;
   (void)src_bit;
@@ -110,8 +204,8 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, si
 
 // Todo: implement memmove semantics
 // this is a variant of blit that focuses on destination indices and bit count subtraction
-void blit_1d_bits_old001(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit,
-                         size_t bit_width, Blit_ops op) {
+void blit_1d_bits_001(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
+                      Blit_ops op) {
   (void)dst;
   (void)src;
   (void)src_bit;
@@ -160,8 +254,8 @@ void blit_1d_bits_old001(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
 
 // Todo: implement memmove semantics
 // older version, got overwhelmed by all the index calculations, taking a step back
-void blit_1d_bits_old000(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit,
-                         size_t bit_width, Blit_ops op) {
+void blit_1d_bits_000(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
+                      Blit_ops op) {
   std::uint32_t mask;
   std::uint32_t bits;
   // compute indices
@@ -211,7 +305,10 @@ void blit_1d_bits_old000(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
   blit_op(dst[dst_index], bits, mask, op);
 }
 
+/**
+ *  @todo bound the width to the number of bits in source/destination
+ */
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
                     std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
-  blit_1d_bits(dst, src, pixel_src * pixel_bits, pixel_dst * pixel_bits, pixel_width * pixel_bits, op);
+  blit_1d_bits_simple(dst, src, pixel_src * pixel_bits, pixel_dst * pixel_bits, pixel_width * pixel_bits, op);
 }
