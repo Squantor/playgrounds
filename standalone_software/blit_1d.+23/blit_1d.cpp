@@ -94,7 +94,6 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
 
 /**
  * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
- * @todo add memmove semantics
  */
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
                   Blit_ops op) {
@@ -305,10 +304,13 @@ void blit_1d_bits_000(std::span<std::uint32_t> dst, std::span<std::uint32_t> src
   blit_op(dst[dst_index], bits, mask, op);
 }
 
-/**
- *  @todo bound the width to the number of bits in source/destination
- */
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
                     std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
+  // clamp pixel_width
+  std::size_t dst_pixel_width = (dst.size() * 32) / pixel_bits;
+  if (pixel_dst + pixel_width > dst_pixel_width) {
+    pixel_width = dst_pixel_width - pixel_dst;
+  }
+
   blit_1d_bits_simple(dst, src, pixel_src * pixel_bits, pixel_dst * pixel_bits, pixel_width * pixel_bits, op);
 }
