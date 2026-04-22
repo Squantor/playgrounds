@@ -306,6 +306,12 @@ void blit_1d_bits_000(std::span<std::uint32_t> dst, std::span<std::uint32_t> src
 
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
                     std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
+  // check for order
+  if (dst.data() == src.data()) {
+    if (pixel_dst > pixel_src) {
+      std::swap(pixel_dst, pixel_src);
+    }
+  }
   // clamp pixel_width
   std::size_t dst_pixel_width = (dst.size() * 32) / pixel_bits;
   if (pixel_dst + pixel_width > dst_pixel_width) {

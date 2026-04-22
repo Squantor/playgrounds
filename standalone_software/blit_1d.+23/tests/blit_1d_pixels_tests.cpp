@@ -157,10 +157,10 @@ MINUNIT_ADD(test_blit_1d_xor, nullptr, nullptr) {
 MINUNIT_ADD(test_blit_backward, nullptr, nullptr) {
   dut_dst.fill(0x89ABCDEF);
   blit_1d_pixels(dut_dst, dut_dst, 4, 20, 12, 2);
-  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0xABCDCDEF);
-  MINUNIT_CHECK(dut_dst[2] == 0xCDCDEF89);
-  MINUNIT_CHECK(dut_dst[3] == 0xCDEF89AB);
+  MINUNIT_CHECK(dut_dst[0] == 0xEF89ABEF);
+  MINUNIT_CHECK(dut_dst[1] == 0xEF89ABCD);
+  MINUNIT_CHECK(dut_dst[2] == 0x8989ABCD);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[4] == 0x89ABCDEF);
 }
 
