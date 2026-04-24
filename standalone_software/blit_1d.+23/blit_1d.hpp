@@ -27,6 +27,11 @@ enum class Blit_ops {
   XOR,    /*!< XOR */
 };
 
+namespace detail {
+std::uint32_t get_bits(std::span<std::uint32_t> src, std::size_t src_bit_dst_aligned, std::int32_t offset = 0);
+std::uint32_t get_bits_simple(std::span<std::uint32_t> src, std::size_t src_bit);
+}  // namespace detail
+
 /**
  * @brief Blit operation
  * @param dst

@@ -17,6 +17,36 @@
 std::array<std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
 std::array<std::uint32_t, 5> dut_dst;
 
+MINUNIT_ADD(test_get_bits_simple, nullptr, nullptr) {
+  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 0) == 0x33221100);
+  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 4) == 0x43322110);
+  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 16) == 0x55443322);
+  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 32) == 0x77665544);
+  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 40) == 0x88776655);
+}
+
+MINUNIT_ADD(test_get_bits, nullptr, nullptr) {
+  MINUNIT_CHECK(detail::get_bits(dut_src, 0) == 0x33221100);
+  MINUNIT_CHECK(detail::get_bits(dut_src, 4) == 0x43322110);
+  MINUNIT_CHECK(detail::get_bits(dut_src, 16) == 0x55443322);
+  MINUNIT_CHECK(detail::get_bits(dut_src, 32) == 0x77665544);
+  MINUNIT_CHECK(detail::get_bits(dut_src, 40) == 0x88776655);
+}
+
+MINUNIT_ADD(test_get_bits_with_offset, nullptr, nullptr) {
+  dut_dst.fill(0x89ABCDEF);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 0) == 0xCDEF89AB);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -16) == 0x89ABCDEF);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -32) == 0xCDEF0000);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -47) == 0x80000000);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -48) == 0x00000000);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 16) == 0x89ABCDEF);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 32) == 0xCDEF89AB);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 148, 0) == 0x0000089A);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 160, 0) == 0x00000000);
+  MINUNIT_CHECK(detail::get_bits(dut_dst, 100, 60) == 0x00000000);
+}
+
 MINUNIT_ADD(test_blit_1d_pixels_start_copy, nullptr, nullptr) {
   // single element source start case
   dut_dst.fill(0x89ABCDEF);
@@ -32,9 +62,54 @@ MINUNIT_ADD(test_blit_1d_pixels_start_copy, nullptr, nullptr) {
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // shift to other direction?
   dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 2, 14, 15);
+  blit_1d_pixels(dut_dst, dut_src, 4, 6, 10, 8);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x87ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x665544EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // go over source boundary
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 6, 10, 6);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x554433EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small over source boundary
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 2, 14, 7);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x43ABCDEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+}
+
+MINUNIT_ADD(test_blit_1d_pixels_small, nullptr, nullptr) {
+  // small span inside word from inside word with no offset
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 4, 10, 10);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x896655EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span inside word from inside word with offset
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 4, 12, 10);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x6655CDEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span spanning two source words
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 4, 11, 6);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x84433DEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span spanning two destination words
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 4, 7, 12);
+  MINUNIT_CHECK(dut_dst[0] == 0x69ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x89ABC776);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small snap spanning two source/destination words
+  dut_dst.fill(0x89ABCDEF);
+  blit_1d_pixels(dut_dst, dut_src, 4, 4, 7, 15);
+  MINUNIT_CHECK(dut_dst[0] == 0x79ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x89ABC988);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
 }
 
@@ -79,39 +154,6 @@ MINUNIT_ADD(test_blit_1d_pixels_copy, nullptr, nullptr) {
   MINUNIT_CHECK(dut_dst[1] == 0x88776655);
   MINUNIT_CHECK(dut_dst[2] == 0x89BBAA99);
   MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
-}
-
-MINUNIT_ADD(test_blit_1d_pixels_small, nullptr, nullptr) {
-  // small span inside word from inside word with no offset
-  dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 4, 10, 10);
-  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x896655EF);
-  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
-  // small span inside word from inside word with offset
-  dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 4, 12, 10);
-  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x6655CDEF);
-  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
-  // small span spanning two source words
-  dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 4, 11, 6);
-  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x84433DEF);
-  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
-  // small span spanning two destination words
-  dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 4, 7, 12);
-  MINUNIT_CHECK(dut_dst[0] == 0x69ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x89ABC776);
-  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
-  // small snap spanning two source/destination words
-  dut_dst.fill(0x89ABCDEF);
-  blit_1d_pixels(dut_dst, dut_src, 4, 4, 7, 15);
-  MINUNIT_CHECK(dut_dst[0] == 0x79ABCDEF);
-  MINUNIT_CHECK(dut_dst[1] == 0x89ABC988);
-  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
 }
 
 MINUNIT_ADD(test_blit_1d_invert, nullptr, nullptr) {
