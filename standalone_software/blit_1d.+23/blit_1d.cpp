@@ -95,15 +95,10 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops
 /**
  * @brief simple blit that copies bit by bit, used for correctness checks
  * @todo add memmove semantics
+ * @note Mostly used for debugging and correctness checks, quite slow
  */
 void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit,
                          size_t bit_width, Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
   // setup source/destination masks
   std::uint32_t src_mask = 0x00000001 << (src_bit % 32);
   std::uint32_t dst_mask = 0x00000001 << (dst_bit % 32);
@@ -134,27 +129,21 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
 
 /**
  * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
- * Only writes its bitmasks!
+ * @note More optimized for size than raw speed, but still better then single bit reads
  */
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
                   Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
   std::size_t bit_count = bit_width;
   std::uint32_t bits;
   std::uint32_t mask = 0xFFFFFFFF;
   std::size_t todo_bits = 32;
   // handle starting incomplete element
   // determine if we start with an incomplete element
-  std::size_t header_bits = dst_bit % 32;
-  if (header_bits != 0) {
+  std::size_t header_offset = dst_bit % 32;
+  if (header_offset != 0) {
     // setup loop to handle first incomplete element
-    todo_bits = todo_bits - header_bits;
-    mask = 0xFFFFFFFF << header_bits;
+    todo_bits = todo_bits - header_offset;
+    mask = 0xFFFFFFFF << header_offset;
     // check if we have a very small span
     if (todo_bits > bit_count) {
       mask = mask & (0xFFFFFFFF >> (todo_bits - bit_count));
@@ -163,11 +152,11 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, si
   }
   // handle complete elements
   while (bit_count > 0) {
-    if (src_bit < header_bits) {
-      // we are going to read off the edge
-      bits = src[0] << (header_bits - src_bit);
+    if (src_bit < header_offset) {
+      // the header offset is out of bounds, fixup
+      bits = src[0] << (header_offset - src_bit);
     } else {
-      bits = detail::get_bits_simple(src, src_bit - header_bits);
+      bits = detail::get_bits_simple(src, src_bit - header_offset);
     }
 
     blit_op(dst[dst_bit / 32], bits, mask, op);
@@ -175,7 +164,7 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, si
     bit_count -= todo_bits;
     src_bit += todo_bits;
     dst_bit += todo_bits;
-    header_bits = 0;
+    header_offset = 0;  // reset header offset
 
     if (bit_count > 31) {
       mask = 0xFFFFFFFF;
@@ -186,317 +175,17 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, si
       todo_bits = bit_count;
     }
   }
-}
-
-/**
- * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
- */
-void blit_1d_bits_004(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                      Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
-  std::size_t bit_count = bit_width;
-  std::int32_t offset = static_cast<std::int32_t>(dst_bit % 32) - static_cast<std::int32_t>(src_bit % 32);
-  std::uint32_t bits;
-  std::uint32_t mask = 0xFFFFFFFF;
-  std::size_t src_bit_dst_aligned;
-  // handle starting incomplete element
-  // determine if we have an incomplete element
-  std::size_t header_shift = dst_bit % 32;
-  std::size_t todo_bits = 32 - header_shift;
-  if (header_shift != 0) {
-    // build mask to handle first incomplete element
-    mask = 0xFFFFFFFF << header_shift;
-    if ((static_cast<std::int32_t>(src_bit & ~31) - offset) < 0) {
-      bits = detail::shift_bits(src[0], offset);
-    } else {
-      src_bit_dst_aligned = (src_bit & ~31) - offset;
-      bits = detail::get_bits(src, src_bit_dst_aligned);
-    }
-    blit_op(dst[dst_bit / 32], bits, mask, op);
-    // add handled bits to bit count
-    bit_count = bit_count - todo_bits;
-    src_bit += todo_bits;
-    dst_bit += todo_bits;
-    mask = 0xFFFFFFFF;
-    todo_bits = 32;
-  }
-  // handle complete elements
-  while (bit_count > 0) {
-    if ((static_cast<std::int32_t>(src_bit & ~31) - offset) < 0) {
-      bits = detail::shift_bits(src[0], offset - 32);
-      bits = bits | detail::shift_bits(src[1], offset);
-    } else {
-      src_bit_dst_aligned = (src_bit & ~31) - offset;
-      bits = detail::get_bits(src, src_bit_dst_aligned);
-    }
-    blit_op(dst[dst_bit / 32], bits, mask, op);
-
-    bit_count = bit_count - todo_bits;
-    src_bit += todo_bits;
-    dst_bit += todo_bits;
-
-    if (bit_count > 31) {
-      mask = 0xFFFFFFFF;
-      todo_bits = 32;
-    } else if (bit_count > 0) {
-      // last incomplete element
-      mask = 0xFFFFFFFF >> (32 - bit_count);
-      todo_bits = bit_count;
-    }
-  }
-}
-
-/**
- * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
- */
-void blit_1d_bits_003(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                      Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
-  std::int32_t shift = static_cast<std::int32_t>(dst_bit % 32) - static_cast<std::int32_t>(src_bit % 32);
-  std::size_t bit_count = bit_width;
-  std::uint32_t bits;
-  std::uint32_t mask;
-  // heading bits handling
-  std::size_t head_shift = dst_bit % 32;
-  // build mask to handle first incomplete element
-  mask = 0xFFFFFFFF << head_shift;
-  std::size_t todo_bits = 32 - head_shift;
-  if (head_shift == 0) {
-    todo_bits = 32;
-  }
-  // do we have a small span that fits in one element?
-  if (todo_bits > bit_count) {
-    todo_bits = bit_count;
-    mask = mask & 0xFFFFFFFF >> (32 - todo_bits);
-  }
-
-  // loop
-  while (bit_count > 0) {
-    // handling of whole elements
-    if (shift > 0) {
-      bits = src[src_bit / 32] << shift;
-      bits = bits | src[(src_bit + 32) / 32] >> (32 - shift);
-    } else if (shift < 0) {
-      bits = src[src_bit / 32] >> -shift;
-      bits = bits | src[(src_bit + 32) / 32] << (32 - -shift);
-    } else {
-      bits = src[src_bit / 32];
-    }
-    blit_op(dst[dst_bit / 32], bits, mask, op);
-
-    /*     first_bits = src[src_bit / 32];
-        detail::shift_bits(first_bits, shift);
-        src_bit += todo_bits;
-        if (shift != 0) {
-          second_bits = src[src_bit / 32];
-          detail::shift_bits(second_bits, shift + 32);
-        } else
-          second_bits = 0;
-        first_bits |= second_bits;
-        blit_op(dst[dst_bit / 32], first_bits, mask, op); */
-    src_bit += todo_bits;
-    dst_bit += todo_bits;
-    bit_count -= todo_bits;
-    mask = 0xFFFFFFFF;
-    if (bit_count > 31) {
-      todo_bits = 32;
-    } else if (bit_count > 0) {
-      // last incomplete element
-      mask = 0xFFFFFFFF >> (32 - bit_count);
-      todo_bits = bit_count;
-    }
-  }
-}
-
-// Todo: implement memmove semantics
-// this is a variant of blit that focuses on destination indices and bit count subtraction
-void blit_1d_bits_002(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                      Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
-  // 32 bit shift factor between source and destination
-  std::int32_t shift = static_cast<std::int32_t>(dst_bit % 32) - static_cast<std::int32_t>(src_bit % 32);
-  std::size_t dst_bit_index = dst_bit;
-  std::size_t src_bit_index = src_bit;
-  std::size_t bit_count = bit_width;
-  std::uint32_t bits;
-  std::uint32_t mask;
-  // heading bits handling
-  std::size_t dst_bit_header = dst_bit % 32;
-  if (dst_bit_header != 0) {
-    bits = src[src_bit_index / 32];
-    detail::shift_bits(bits, shift);
-    mask = 0xFFFFFFFF << dst_bit_header;
-    blit_op(dst[dst_bit_index / 32], bits, mask, op);
-    dst_bit_index += (32 - dst_bit_header);
-    src_bit_index += (32 - dst_bit_header);
-    bit_count -= (32 - dst_bit_header);
-  }
-  // loop
-  std::size_t src_bit_step = src_bit_index % 32;
-  while (bit_count > 31) {
-    // handling of 32 bit sized chunks
-    if (shift == 0) {
-      bits = src[src_bit_index / 32];
-      src_bit_index = src_bit_index + 32;
-    } else {
-      bits = src[src_bit_index / 32] >> (src_bit_step);
-      src_bit_index = src_bit_index + (src_bit_step);
-      src_bit_step = 32 - src_bit_step;
-      bits = bits | src[src_bit_index / 32] << (src_bit_step);
-      src_bit_index = src_bit_index + (32 - src_bit_step);
-    }
-    blit_op(dst[dst_bit_index / 32], bits, 0xFFFFFFFF, op);
-    bit_count -= 32;
-    dst_bit_index += 32;
-  }
-  // trailing bits handling
-  if (bit_count > 0) {
-    bits = src[src_bit_index / 32];
-    bits = bits >> (src_bit_index % 32);
-    std::size_t trailing_overflow = (src_bit_index + bit_count) % 32;
-    // handling for trailing overflow
-    if (trailing_overflow != 0) {
-      // TODO: handle last bit of bits
-    }
-    mask = 0xFFFFFFFF >> (32 - bit_count);
-    blit_op(dst[dst_bit_index / 32], bits, mask, op);
-  }
-}
-
-// Todo: implement memmove semantics
-// this is a variant of blit that focuses on destination indices and bit count subtraction
-void blit_1d_bits_001(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                      Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
-  std::size_t dst_bit_index = dst_bit;
-  std::size_t src_bit_index = src_bit;
-  std::size_t dst_header_bits = dst_bit_index % 32;
-  std::size_t src_header_bits = src_bit_index % 32;
-  std::int32_t shift = static_cast<std::int32_t>(dst_header_bits) - static_cast<std::int32_t>(src_header_bits);
-  std::uint32_t bits;
-  std::size_t bit_count = bit_width;
-  // heading bits
-  // todo: handling dissimilar dst/src shifts
-  if (dst_header_bits > 0 || src_header_bits > 0) {
-    std::uint32_t src_mask = 0xFFFFFFFF << src_header_bits;
-    std::uint32_t dst_mask = 0xFFFFFFFF << dst_header_bits;
-    bits = src[src_bit_index / 32] & src_mask;
-    detail::shift_bits(bits, shift);
-    blit_op(dst[dst_bit_index / 32], bits, dst_mask, op);
-    bit_count -= dst_header_bits;
-    dst_bit_index += dst_header_bits;
-    src_bit_index += dst_header_bits;
-  }
-  // loop
-  while (bit_count > 31) {
-    // handling of 32 bit sized chunks
-    bits = src[src_bit_index / 32];
-    blit_op(dst[dst_bit_index / 32], bits, 0xFFFFFFFF, op);
-    bit_count -= 32;
-    dst_bit_index += 32;
-    src_bit_index += 32;
-  }
-  if (bit_count > 0) {
-    std::uint32_t src_mask = 0xFFFFFFFF >> (32 - src_header_bits);
-    std::uint32_t dst_mask = 0xFFFFFFFF >> (32 - dst_header_bits);
-    bits = src[src_bit_index / 32] & src_mask;
-    detail::shift_bits(bits, shift);
-    blit_op(dst[dst_bit_index / 32], bits, dst_mask, op);
-    bit_count -= dst_header_bits;
-    dst_bit_index += dst_header_bits;
-    src_bit_index += dst_header_bits;
-  }
-}
-
-// Todo: implement memmove semantics
-// older version, got overwhelmed by all the index calculations, taking a step back
-void blit_1d_bits_000(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                      Blit_ops op) {
-  std::uint32_t mask;
-  std::uint32_t bits;
-  // compute indices
-  std::size_t src_index = src_bit / 32;
-  std::size_t dst_index = dst_bit / 32;
-  std::int32_t src_dst_bit_shift = (dst_bit % 32) - (src_bit % 32);
-  // std::size_t src_end_index = (src_bit + bit_width) / 32;
-  // std::size_t dst_end_index = (dst_bit + bit_width) / 32;
-  //  leading bits
-  //  compute lead source mask
-  mask = 0xFFFFFFFF << (src_bit % 32);
-  // fetch data
-  bits = src[src_index] & mask;
-  detail::shift_bits(bits, src_dst_bit_shift);
-  // compute destination mask
-  mask = 0xFFFFFFFF << (dst_bit % 32);
-  // execute operation leading bits operation
-  blit_op(dst[dst_index], bits, mask, op);
-  bit_width = bit_width - (32 - (dst_bit % 32));
-  // loop
-  // create source mask that will be used in the loop
-  mask = 0xFFFFFFFF;
-  detail::shift_bits(mask, src_dst_bit_shift);
-  src_index++;
-  dst_index++;
-  while (bit_width >= 32) {
-    // assemble destination word
-    bits = src[src_index] & mask;
-    src_index++;
-    // write data to destination
-    blit_op(dst[dst_index], bits, 0xFFFFFFFF, op);
-    // update indices
-    bit_width -= 32;
-    dst_index++;
-  }
-  // Do we have any trailing bits?
-  if (bit_width == 0)
-    return;
-  // compute trailing source mask
-  mask = 0xFFFFFFFF >> (32 - bit_width);
-  // fetch trailing bits
-  bits = src[src_index] & mask;
-  // offset to source
-  detail::shift_bits(bits, src_dst_bit_shift);
-  detail::shift_bits(mask, src_dst_bit_shift);
-  // execute trailing bits operation
-  blit_op(dst[dst_index], bits, mask, op);
 }
 
 /**
  * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
  * Only writes its bitmasks!
+ * @note Commented out as used during development, might come in handy when debugging
  */
-void blit_1d_bits_mask(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
-                       Blit_ops op) {
-  (void)dst;
-  (void)src;
-  (void)src_bit;
-  (void)dst_bit;
-  (void)bit_width;
-  (void)op;
-  std::size_t bit_count = bit_width;
-  std::uint32_t bits;
-  std::uint32_t mask = 0xFFFFFFFF;
-  std::size_t todo_bits = 32;
+/*
+void blit_1d_bits_mask(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t
+bit_width, Blit_ops op) { std::size_t bit_count = bit_width; std::uint32_t bits; std::uint32_t mask = 0xFFFFFFFF; std::size_t
+todo_bits = 32;
   // handle starting incomplete element
   // determine if we have an incomplete element
   std::size_t header_bits = dst_bit % 32;
@@ -529,6 +218,7 @@ void blit_1d_bits_mask(std::span<std::uint32_t> dst, std::span<std::uint32_t> sr
     }
   }
 }
+*/
 
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
                     std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
