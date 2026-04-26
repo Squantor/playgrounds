@@ -6,11 +6,12 @@
 #
 # Mini project makefile for mixed C and C++ projects
 
-CSOURCES := $(wildcard *.c)
-CPPSOURCES := $(wildcard *.cpp)
+CSOURCES := $(wildcard tests/*.c)
+CPPSOURCES := $(wildcard tests/*.cpp)
+CPPSOURCES += blit_1d.cpp
 DEFINES := -DMINUNIT_MAX_TESTS=100
-INCLUDES := -I.
-TARGET = blits
+INCLUDES := -I. -Itests
+TARGET = blit_1d_tests
 CC = gcc
 CPP = g++
 SIZE = size
