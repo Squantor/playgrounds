@@ -10,7 +10,7 @@ CSOURCES := $(wildcard *.c)
 CPPSOURCES := $(wildcard *.cpp)
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
-TARGET = blit_1d
+TARGET = blits
 CC = gcc
 CPP = g++
 SIZE = size
