@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <array>
 #include <span>
-#include <blit_1d.hpp>
+#include <blits.hpp>
 
 MINUNIT_ADD(test_blit_op_copy, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;

@@ -12,39 +12,18 @@
 #include <cstdint>
 #include <array>
 #include <span>
-#include <blit_1d.hpp>
+#include <blits.hpp>
 
 std::array<std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
 std::array<std::uint32_t, 5> dut_dst;
 
 MINUNIT_ADD(test_get_bits_simple, nullptr, nullptr) {
-  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 0) == 0x33221100);
-  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 4) == 0x43322110);
-  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 16) == 0x55443322);
-  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 32) == 0x77665544);
-  MINUNIT_CHECK(detail::get_bits_simple(dut_src, 40) == 0x88776655);
-}
-
-MINUNIT_ADD(test_get_bits, nullptr, nullptr) {
   MINUNIT_CHECK(detail::get_bits(dut_src, 0) == 0x33221100);
   MINUNIT_CHECK(detail::get_bits(dut_src, 4) == 0x43322110);
   MINUNIT_CHECK(detail::get_bits(dut_src, 16) == 0x55443322);
   MINUNIT_CHECK(detail::get_bits(dut_src, 32) == 0x77665544);
   MINUNIT_CHECK(detail::get_bits(dut_src, 40) == 0x88776655);
-}
-
-MINUNIT_ADD(test_get_bits_with_offset, nullptr, nullptr) {
-  dut_dst.fill(0x89ABCDEF);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 0) == 0xCDEF89AB);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -16) == 0x89ABCDEF);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -32) == 0xCDEF0000);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -47) == 0x80000000);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, -48) == 0x00000000);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 16) == 0x89ABCDEF);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 16, 32) == 0xCDEF89AB);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 148, 0) == 0x0000089A);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 160, 0) == 0x00000000);
-  MINUNIT_CHECK(detail::get_bits(dut_dst, 100, 60) == 0x00000000);
+  //! @todo tests for positive out of bounds
 }
 
 MINUNIT_ADD(test_blit_1d_pixels_start_copy, nullptr, nullptr) {

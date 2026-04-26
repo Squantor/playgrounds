@@ -10,7 +10,7 @@
  *
  */
 #include <cmath>
-#include "blit_1d.hpp"
+#include "blits.hpp"
 
 namespace detail {
 /**
@@ -31,7 +31,7 @@ std::uint32_t shift_bits(std::uint32_t &bits, std::int32_t shift) {
   return bits;
 }
 
-std::uint32_t get_bits_simple(std::span<std::uint32_t> src, std::size_t src_bit) {
+std::uint32_t get_bits(std::span<std::uint32_t> src, std::size_t src_bit) {
   std::uint32_t bits = 0;
   std::size_t shift = src_bit % 32;
   std::size_t index = src_bit / 32;
@@ -42,29 +42,6 @@ std::uint32_t get_bits_simple(std::span<std::uint32_t> src, std::size_t src_bit)
   } else {
     bits = src[index];
   }
-  return bits;
-}
-
-std::uint32_t get_bits(std::span<std::uint32_t> src, std::size_t src_bit, std::int32_t offset) {
-  std::uint32_t bits = 0;
-  std::size_t shift = (src_bit + std::abs(offset)) % 32;
-  std::size_t index;
-  if (static_cast<std::int32_t>(src_bit) + offset < 0) {
-    if (static_cast<std::int32_t>(src_bit) + offset > -32)
-      bits = src[0] << shift;
-  } else if (src_bit + offset > src.size() * 32) {
-    return 0;
-  } else {
-    index = (src_bit + offset) / 32;
-    if (shift != 0) {
-      bits = src[index] >> shift;
-      if (index + 1 < src.size())
-        bits = bits | src[index + 1] << (32 - shift);
-    } else {
-      bits = src[index];
-    }
-  }
-
   return bits;
 }
 
@@ -131,7 +108,7 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
  * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
  * @note More optimized for size than raw speed, but still better then single bit reads
  */
-void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t bit_width,
+void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t dst_bit, size_t src_bit, size_t bit_width,
                   Blit_ops op) {
   std::size_t bit_count = bit_width;
   std::uint32_t bits;
@@ -156,7 +133,7 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, si
       // the header offset is out of bounds, fixup
       bits = src[0] << (header_offset - src_bit);
     } else {
-      bits = detail::get_bits_simple(src, src_bit - header_offset);
+      bits = detail::get_bits(src, src_bit - header_offset);
     }
 
     blit_op(dst[dst_bit / 32], bits, mask, op);
@@ -234,5 +211,5 @@ void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, 
     pixel_width = dst_pixel_width - pixel_dst;
   }
 
-  blit_1d_bits(dst, src, pixel_src * pixel_bits, pixel_dst * pixel_bits, pixel_width * pixel_bits, op);
+  blit_1d_bits(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits, op);
 }
