@@ -6,28 +6,21 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "make clean && make -ftests.mak clean",
+      "command": "make clean",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "check",
       "type": "shell",
-      "command": "make check && make -ftests.mak check",
+      "command": "make check",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build",
       "type": "shell",
-      "command": "compiledb make -j25",
-      "group": "build",
-      "problemMatcher": "$gcc"
-    },
-    {
-      "label": "build tests",
-      "type": "shell",
-      "command": "compiledb make -ftests.mak -j25",
+      "command": "compiledb make -j",
       "group": "build",
       "problemMatcher": "$gcc"
     },

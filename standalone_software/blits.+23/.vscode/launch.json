@@ -8,7 +8,7 @@
       "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/blit_1d.elf",
+      "program": "${workspaceFolder}/blits_tests.elf",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
@@ -28,31 +28,6 @@
         }
       ],
       "preLaunchTask": "build",
-    },
-    {
-      "name": "debug tests",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/blit_1d_tests.elf",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        },
-        {
-          "description": "Set Disassembly Flavor to Intel",
-          "text": "-gdb-set disassembly-flavor intel",
-          "ignoreFailures": true
-        }
-      ],
-      "preLaunchTask": "build tests",
     },
   ]
 }
