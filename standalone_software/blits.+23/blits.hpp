@@ -18,7 +18,7 @@
 /**
  * @brief Blit operations
  */
-enum class Blit_ops {
+enum class Blit_ops : std::uint8_t {
   COPY,   /*!< Copy */
   INVERT, /*!< Invert */
   AND,    /*!< AND */
@@ -27,7 +27,7 @@ enum class Blit_ops {
 };
 
 namespace detail {
-std::uint32_t get_bits(std::span<std::uint32_t> src, std::size_t src_bit);
+std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
 }  // namespace detail
 
 /**
@@ -48,20 +48,20 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops
  * @param bit_width Number of bits to blit
  * @param op Blit operation
  */
-void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t dst_bit, size_t src_bit, size_t bit_width,
-                  Blit_ops op = Blit_ops::COPY);
+void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
+                  size_t bit_width, Blit_ops op = Blit_ops::COPY);
 
 /**
  * @brief 1D blit operating on pixels, each pixel is one or more bits
- * @param src Span of uint32_t's containing the source pixels
  * @param dst Span of uint32_t's containing the destination pixels
+ * @param src Span of uint32_t's containing the source pixels
  * @param pixel_bits Bits per pixel
  * @param pixel_width Width of pixels to blit
- * @param pixel_src Source pixel index of the blit
  * @param pixel_dst Destination pixel index of the blit
+ * @param pixel_src Source pixel index of the blit
  * @param op Blit operation
  */
-void blit_1d_pixels(std::span<std::uint32_t> src, std::span<std::uint32_t> dst, std::size_t pixel_bits, std::size_t pixel_width,
-                    std::size_t pixel_src, std::size_t pixel_dst, Blit_ops op = Blit_ops::COPY);
+void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
+                    std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
 
 #endif

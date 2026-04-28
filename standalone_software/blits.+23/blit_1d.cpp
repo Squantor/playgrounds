@@ -9,7 +9,11 @@
  * @version 20260403
  *
  */
+#include <cstddef>
+#include <cstdint>
 #include <cmath>
+#include <span>
+#include <utility>
 #include "blits.hpp"
 
 namespace detail {
@@ -19,7 +23,7 @@ namespace detail {
  * @param shift shift amount/count
  * @return shifted bits
  */
-std::uint32_t shift_bits(std::uint32_t &bits, std::int32_t shift) {
+std::uint32_t shift_bits(std::uint32_t bits, std::int32_t shift) {
   if (shift > 32 || shift < -32) {
     return 0;
   }
@@ -31,10 +35,10 @@ std::uint32_t shift_bits(std::uint32_t &bits, std::int32_t shift) {
   return bits;
 }
 
-std::uint32_t get_bits(std::span<std::uint32_t> src, std::size_t src_bit) {
+std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit) {
   std::uint32_t bits = 0;
-  std::size_t shift = src_bit % 32;
-  std::size_t index = src_bit / 32;
+  const std::size_t shift = src_bit % 32;
+  const std::size_t index = src_bit / 32;
   if (shift != 0) {
     bits = src[index] >> shift;
     if (index + 1 < src.size())
@@ -107,9 +111,10 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
 /**
  * @brief this is a variant of blit that focuses on whole destination indices and bit count subtraction
  * @note More optimized for size than raw speed, but still better then single bit reads
+ * @todo reading from source can be slow, cache source element from source element+1
  */
-void blit_1d_bits(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t dst_bit, size_t src_bit, size_t bit_width,
-                  Blit_ops op) {
+void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
+                  size_t bit_width, Blit_ops op) {
   std::size_t bit_count = bit_width;
   std::uint32_t bits;
   std::uint32_t mask = 0xFFFFFFFF;
@@ -197,8 +202,8 @@ todo_bits = 32;
 }
 */
 
-void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
-                    std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
+void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
+                    std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
   // check for order
   if (dst.data() == src.data()) {
     if (pixel_dst > pixel_src) {
@@ -206,7 +211,7 @@ void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, 
     }
   }
   // clamp pixel_width
-  std::size_t dst_pixel_width = (dst.size() * 32) / pixel_bits;
+  const std::size_t dst_pixel_width = (dst.size() * 32) / pixel_bits;
   if (pixel_dst + pixel_width > dst_pixel_width) {
     pixel_width = dst_pixel_width - pixel_dst;
   }

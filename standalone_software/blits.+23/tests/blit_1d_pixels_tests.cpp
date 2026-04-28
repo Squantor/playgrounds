@@ -14,8 +14,9 @@
 #include <span>
 #include <blits.hpp>
 
-std::array<std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
+std::array<const std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
 std::array<std::uint32_t, 5> dut_dst;
+namespace {
 
 MINUNIT_ADD(test_get_bits_simple, nullptr, nullptr) {
   MINUNIT_CHECK(detail::get_bits(dut_src, 0) == 0x33221100);
@@ -187,7 +188,7 @@ MINUNIT_ADD(test_blit_backward, nullptr, nullptr) {
 
 MINUNIT_ADD(test_blit_bounded, nullptr, nullptr) {
   dut_dst.fill(0x89ABCDEF);
-  std::span dut_dst_sub = std::span<std::uint32_t>(dut_dst).first(2);
+  const std::span dut_dst_sub = std::span<std::uint32_t>(dut_dst).first(2);
   blit_1d_pixels(dut_dst_sub, dut_src, 4, 32, 4, 4);
   MINUNIT_CHECK(dut_dst[0] == 0x3322CDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x77665544);
@@ -195,3 +196,5 @@ MINUNIT_ADD(test_blit_bounded, nullptr, nullptr) {
   MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[4] == 0x89ABCDEF);
 }
+
+}  // namespace

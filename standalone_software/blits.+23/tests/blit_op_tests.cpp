@@ -10,13 +10,13 @@
  */
 #include "minunit.h"
 #include <cstdint>
-#include <array>
-#include <span>
 #include <blits.hpp>
+
+namespace {
 
 MINUNIT_ADD(test_blit_op_copy, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;
-  std::uint32_t src = 0x89ABCDEF;
+  const std::uint32_t src = 0x89ABCDEF;
   blit_op(dst, src, 0x0, Blit_ops::COPY);
   MINUNIT_CHECK(dst == 0x01234567);
   dst = 0x01234567;
@@ -32,7 +32,7 @@ MINUNIT_ADD(test_blit_op_copy, nullptr, nullptr) {
 
 MINUNIT_ADD(test_blit_op_invert, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;
-  std::uint32_t src = 0x89ABCDEF;
+  const std::uint32_t src = 0x89ABCDEF;
   blit_op(dst, src, 0x0, Blit_ops::INVERT);
   MINUNIT_CHECK(dst == 0x01234567);
   dst = 0x01234567;
@@ -48,7 +48,7 @@ MINUNIT_ADD(test_blit_op_invert, nullptr, nullptr) {
 
 MINUNIT_ADD(test_blit_op_and, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;
-  std::uint32_t src = 0x89ABCDEF;
+  const std::uint32_t src = 0x89ABCDEF;
   blit_op(dst, src, 0x0, Blit_ops::AND);
   MINUNIT_CHECK(dst == 0x01234567);
   dst = 0x01234567;
@@ -64,7 +64,7 @@ MINUNIT_ADD(test_blit_op_and, nullptr, nullptr) {
 
 MINUNIT_ADD(test_blit_op_or, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;
-  std::uint32_t src = 0x89ABCDEF;
+  const std::uint32_t src = 0x89ABCDEF;
   blit_op(dst, src, 0x0, Blit_ops::OR);
   MINUNIT_CHECK(dst == 0x01234567);
   dst = 0x01234567;
@@ -80,7 +80,7 @@ MINUNIT_ADD(test_blit_op_or, nullptr, nullptr) {
 
 MINUNIT_ADD(test_blit_op_xor, nullptr, nullptr) {
   std::uint32_t dst = 0x01234567;
-  std::uint32_t src = 0x89ABCDEF;
+  const std::uint32_t src = 0x89ABCDEF;
   blit_op(dst, src, 0x0, Blit_ops::XOR);
   MINUNIT_CHECK(dst == 0x01234567);
   dst = 0x01234567;
@@ -93,3 +93,5 @@ MINUNIT_ADD(test_blit_op_xor, nullptr, nullptr) {
   blit_op(dst, src, 0xF0F0F0F0, Blit_ops::XOR);
   MINUNIT_CHECK(dst == 0x81838587);
 }
+
+}  // namespace
