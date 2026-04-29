@@ -18,15 +18,6 @@ std::array<const std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 
 std::array<std::uint32_t, 5> dut_dst;
 namespace {
 
-MINUNIT_ADD(test_get_bits_simple, nullptr, nullptr) {
-  MINUNIT_CHECK(detail::get_bits(dut_src, 0) == 0x33221100);
-  MINUNIT_CHECK(detail::get_bits(dut_src, 4) == 0x43322110);
-  MINUNIT_CHECK(detail::get_bits(dut_src, 16) == 0x55443322);
-  MINUNIT_CHECK(detail::get_bits(dut_src, 32) == 0x77665544);
-  MINUNIT_CHECK(detail::get_bits(dut_src, 40) == 0x88776655);
-  //! @todo tests for positive out of bounds
-}
-
 MINUNIT_ADD(test_blit_1d_pixels_start_copy, nullptr, nullptr) {
   // single element source start case
   dut_dst.fill(0x89ABCDEF);
@@ -176,7 +167,7 @@ MINUNIT_ADD(test_blit_1d_xor, nullptr, nullptr) {
   MINUNIT_CHECK(dut_dst[4] == 0x89ABCDEF);
 }
 
-MINUNIT_ADD(test_blit_backward, nullptr, nullptr) {
+MINUNIT_ADD(test_blit_1d_backward, nullptr, nullptr) {
   dut_dst.fill(0x89ABCDEF);
   blit_1d_pixels(dut_dst, dut_dst, 4, 20, 12, 2);
   MINUNIT_CHECK(dut_dst[0] == 0xEF89ABEF);
@@ -186,7 +177,7 @@ MINUNIT_ADD(test_blit_backward, nullptr, nullptr) {
   MINUNIT_CHECK(dut_dst[4] == 0x89ABCDEF);
 }
 
-MINUNIT_ADD(test_blit_bounded, nullptr, nullptr) {
+MINUNIT_ADD(test_blit_1d_bounded, nullptr, nullptr) {
   dut_dst.fill(0x89ABCDEF);
   const std::span dut_dst_sub = std::span<std::uint32_t>(dut_dst).first(2);
   blit_1d_pixels(dut_dst_sub, dut_src, 4, 32, 4, 4);

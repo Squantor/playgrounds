@@ -34,7 +34,12 @@ std::uint32_t shift_bits(std::uint32_t bits, std::int32_t shift) {
   }
   return bits;
 }
-
+/**
+ * @brief Get an uint32_t worth of bits from a span
+ * @param src Span of uint32_t's that bits will be collected from
+ * @param src_bit Bit index to start from
+ * @return Bits from the span
+ */
 std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit) {
   std::uint32_t bits = 0;
   const std::size_t shift = src_bit % 32;
