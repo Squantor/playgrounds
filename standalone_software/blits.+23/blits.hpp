@@ -14,6 +14,7 @@
 
 #include <cstdint>
 #include <span>
+#include "bitmap.hpp"
 
 /**
  * @brief Blit operations
@@ -63,5 +64,10 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
  */
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
                     std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
+
+void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coord dst_x, Bitmap_coord dst_y, Blit_ops op = Blit_ops::COPY);
+
+void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coord dst_x, Bitmap_coord dst_y, Bitmap_coord src_x, Bitmap_coord src_y,
+                 Bitmap_size width, Bitmap_size height, Blit_ops op = Blit_ops::COPY);
 
 #endif
