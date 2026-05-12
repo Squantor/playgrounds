@@ -28,6 +28,12 @@ enum class Blit_ops : std::uint8_t {
 };
 
 namespace detail {
+/**
+ * @brief Get the bits object
+ * @param src
+ * @param src_bit
+ * @return std::uint32_t
+ */
 std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
 }  // namespace detail
 
@@ -39,7 +45,6 @@ std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
  * @param op Operation to perform
  */
 void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops op);
-
 /**
  * @brief 1D blit operating on bits only
  * @param dst Span of uint32_t's containing the destination bits
@@ -51,7 +56,6 @@ void blit_op(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask, Blit_ops
  */
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
                   size_t bit_width, Blit_ops op = Blit_ops::COPY);
-
 /**
  * @brief 1D blit operating on pixels, each pixel is one or more bits
  * @param dst Span of uint32_t's containing the destination pixels
@@ -64,9 +68,27 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
  */
 void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
                     std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
-
+/**
+ * @brief 2D blit operating on bitmaps with a destination coordinate
+ * @param dst Destination bitmap
+ * @param src Source bitmap
+ * @param dst_x Destination X coordinate
+ * @param dst_y Destination Y coordinate
+ * @param op Blit operation
+ */
 void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coord dst_x, Bitmap_coord dst_y, Blit_ops op = Blit_ops::COPY);
-
+/**
+ * @brief 2D blit operating on bitmaps with a source coordinate/dimension and a destination coordinate
+ * @param dst Destination bitmap
+ * @param src Source bitmap
+ * @param dst_x Destination X coordinate
+ * @param dst_y Destination Y coordinate
+ * @param src_x Source X coordinate
+ * @param src_y Source Y coordinate
+ * @param width Source width
+ * @param height Source height
+ * @param op Blit operation
+ */
 void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coord dst_x, Bitmap_coord dst_y, Bitmap_coord src_x, Bitmap_coord src_y,
                  Bitmap_size width, Bitmap_size height, Blit_ops op = Blit_ops::COPY);
 
