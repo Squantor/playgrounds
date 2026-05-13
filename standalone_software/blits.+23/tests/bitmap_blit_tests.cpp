@@ -20,10 +20,10 @@ std::array<std::uint32_t, 12> dut_bitmap_dst_data;
 namespace {
 
 MINUNIT_ADD(test_bitmap_blit_inside, nullptr, nullptr) {
-  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), 4, 4, 4);
-  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), 8, 8, 4);
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{4, 4}, 4);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 4);
   dut_bitmap_dst_data.fill(0xCCCC5555);
-  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coord{2}, Bitmap_coord{2});
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{2, 2});
   MINUNIT_CHECK(dut_bitmap_dst_data[1] == 0xCCCC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[2] == 0xCC110055);
   MINUNIT_CHECK(dut_bitmap_dst_data[3] == 0xCC332255);
@@ -33,20 +33,20 @@ MINUNIT_ADD(test_bitmap_blit_inside, nullptr, nullptr) {
 }
 
 MINUNIT_ADD(test_bitmap_blit_outside, nullptr, nullptr) {
-  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), 4, 4, 4);
-  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), 8, 8, 4);
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{4, 4}, 4);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 4);
   dut_bitmap_dst_data.fill(0xCCCC5555);
-  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coord{8}, Bitmap_coord{8});
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{8, 8});
   for (const auto &element : dut_bitmap_dst_data) {
     MINUNIT_CHECK(element == 0xCCCC5555);
   }
 }
 
 MINUNIT_ADD(test_bitmap_blit_outside_corner, nullptr, nullptr) {
-  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), 4, 4, 4);
-  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), 8, 8, 4);
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{4, 4}, 4);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 4);
   dut_bitmap_dst_data.fill(0xCCCC5555);
-  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coord{6}, Bitmap_coord{6});
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{6, 6});
   MINUNIT_CHECK(dut_bitmap_dst_data[5] == 0xCCCC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[6] == 0x00CC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[7] == 0x22CC5555);
@@ -54,11 +54,10 @@ MINUNIT_ADD(test_bitmap_blit_outside_corner, nullptr, nullptr) {
 }
 
 MINUNIT_ADD(test_bitmap_blit_src_bounded, nullptr, nullptr) {
-  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), 4, 4, 4);
-  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), 8, 8, 4);
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{4, 4}, 4);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 4);
   dut_bitmap_dst_data.fill(0xCCCC5555);
-  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coord{4}, Bitmap_coord{4}, Bitmap_coord{1}, Bitmap_coord{1}, Bitmap_size{2},
-              Bitmap_size{2});
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{4, 4}, Bitmap_coords{1, 1}, Bitmap_size{2, 2});
   MINUNIT_CHECK(dut_bitmap_dst_data[3] == 0xCCCC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[4] == 0xCC325555);
   MINUNIT_CHECK(dut_bitmap_dst_data[5] == 0xCC545555);
@@ -66,11 +65,10 @@ MINUNIT_ADD(test_bitmap_blit_src_bounded, nullptr, nullptr) {
 }
 
 MINUNIT_ADD(test_bitmap_blit_src_bounded_outside_corner, nullptr, nullptr) {
-  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), 4, 4, 4);
-  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), 8, 8, 4);
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{4, 4}, 4);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 4);
   dut_bitmap_dst_data.fill(0xCCCC5555);
-  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coord{6}, Bitmap_coord{6}, Bitmap_coord{1}, Bitmap_coord{1}, Bitmap_size{3},
-              Bitmap_size{3});
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{6, 6}, Bitmap_coords{1, 1}, Bitmap_size{3, 3});
   MINUNIT_CHECK(dut_bitmap_dst_data[5] == 0xCCCC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[6] == 0x32CC5555);
   MINUNIT_CHECK(dut_bitmap_dst_data[7] == 0x54CC5555);

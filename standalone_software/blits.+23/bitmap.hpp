@@ -17,8 +17,21 @@ For conditions of distribution and use, see LICENSE file
 namespace detail {}
 
 using Bitmap_coord = std::uint16_t; /*!< Bitmap coordinate type */
-using Bitmap_size = std::uint16_t;  /*!< Bitmap size type */
 using Bitmap_bbp = std::uint8_t;    /*!< Bitmap bits per pixel type */
+/**
+ * @brief Bitmap coordinates set
+ */
+struct Bitmap_coords {
+  std::uint16_t x{0}; /*!< X coordinate */
+  std::uint16_t y{0}; /*!< Y coordinate */
+};
+/**
+ * @brief Bitmap size
+ */
+struct Bitmap_size {
+  std::uint16_t w{0}; /*!< Width */
+  std::uint16_t h{0}; /*!< Height */
+};
 
 /**
  * @brief Class for representing a bitmap
@@ -29,23 +42,33 @@ template <typename T>
 class Bitmap_view {
  public:
   using Pixel_type = T;
-  constexpr Bitmap_view(Pixel_type *bitmap_data, Bitmap_size bitmap_width, Bitmap_size bitmap_height,
-                        Bitmap_bbp bitmap_bits_per_pixel)
-    : data_bitmap(bitmap_data), width(bitmap_width), height(bitmap_height), bits_per_pixel(bitmap_bits_per_pixel) {}
-
-  [[nodiscard]] constexpr Bitmap_size get_width() const {
-    return width;
+  constexpr Bitmap_view(Pixel_type *bitmap_data, Bitmap_size bitmap_dimensions, Bitmap_bbp bitmap_bits_per_pixel)
+    : data_bitmap(bitmap_data), dimensions(bitmap_dimensions), bits_per_pixel(bitmap_bits_per_pixel) {}
+  /**
+   * @brief Get the size of the bitmap
+   * @return Bitmap_size of the bitmap
+   */
+  [[nodiscard]] constexpr Bitmap_size get_size() const {
+    return dimensions;
   }
-  [[nodiscard]] constexpr Bitmap_size get_height() const {
-    return height;
-  }
+  /**
+   * @brief Get the bits per pixel of the bitmap
+   * @return Bits per pixel of the bitmap
+   */
   [[nodiscard]] constexpr Bitmap_bbp get_bits_per_pixel() const {
     return bits_per_pixel;
   }
+  /**
+   * @brief Get the data of the bitmap
+   * @return Data of the bitmap
+   */
   [[nodiscard]] constexpr Pixel_type *data() const {
     return data_bitmap;
   }
-
+  /**
+   * @brief Fill the bitmap with a value
+   * @param pixel Value to fill with
+   */
   constexpr void fill(Pixel_type pixel)
   requires(!std::is_const_v<Pixel_type>)
   {
@@ -54,21 +77,29 @@ class Bitmap_view {
     for (std::size_t count = 0; count < fill_count; count++) {
       fill_value = fill_value | static_cast<Pixel_type>(fill_value << bits_per_pixel);
     }
-    const std::size_t max_bitmap_index = (width * height * bits_per_pixel) / get_bits_per_pixel_type();
+    const std::size_t max_bitmap_index = (dimensions.w * dimensions.h * bits_per_pixel) / get_bits_per_pixel_type();
     for (std::size_t i = 0; i < max_bitmap_index; i++) {
       data_bitmap[i] = fill_value;
     }
   }
-
+  /**
+   * @brief Get a const version of the bitmap
+   * @return constexpr Bitmap_view<const T>
+   */
   [[nodiscard]] constexpr Bitmap_view<const T> as_const() const {
-    return Bitmap_view<const T>{data_bitmap, width, height, bits_per_pixel};
+    return Bitmap_view<const T>{data_bitmap, Bitmap_size{dimensions.w, dimensions.h}, bits_per_pixel};
   }
-
+  /**
+   * @brief Get the pixel value
+   * @param x X coordinate
+   * @param y Y coordinate
+   * @return Pixel value at location x,y
+   */
   [[nodiscard]] constexpr Pixel_type get_pixel(Bitmap_coord x, Bitmap_coord y) const {
-    if (x >= width || y >= height)
+    if (x >= dimensions.w || y >= dimensions.h)
       return 0;
     using Pixel_type_nonconst = std::remove_const_t<Pixel_type>;
-    const std::size_t pixel_index = (y * width) + x;
+    const std::size_t pixel_index = (y * dimensions.w) + x;
     const std::size_t bit_index = pixel_index * bits_per_pixel;
     const std::size_t data_index = bit_index / get_bits_per_pixel_type();
     const std::size_t lsb_shift = bit_index % get_bits_per_pixel_type();
@@ -78,13 +109,18 @@ class Bitmap_view {
     const Pixel_type_nonconst pixel = static_cast<Pixel_type_nonconst>((data_bitmap[data_index] & mask) >> lsb_shift);
     return pixel;
   }
-
+  /**
+   * @brief Set the pixel value
+   * @param x X coordinate
+   * @param y Y coordinate
+   * @param pixel Pixel value
+   */
   constexpr void set_pixel(Bitmap_coord x, Bitmap_coord y, Pixel_type pixel)
   requires(!std::is_const_v<Pixel_type>)
   {
-    if (x >= width || y >= height)
+    if (x >= dimensions.w || y >= dimensions.h)
       return;
-    const std::size_t pixel_index = (y * width) + x;
+    const std::size_t pixel_index = (y * dimensions.w) + x;
     const std::size_t bit_index = pixel_index * bits_per_pixel;
     const std::size_t data_index = bit_index / get_bits_per_pixel_type();
     const std::size_t lsb_shift = bit_index % get_bits_per_pixel_type();
@@ -95,12 +131,15 @@ class Bitmap_view {
   }
 
  private:
+  /**
+   * @brief Get the bits per pixel type
+   * @return Bits per pixel type
+   */
   [[nodiscard]] constexpr std::size_t get_bits_per_pixel_type() const {
     return (sizeof(Pixel_type) * 8);
   }
   Pixel_type *data_bitmap;
-  Bitmap_size width;
-  Bitmap_size height;
+  Bitmap_size dimensions;
   Bitmap_bbp bits_per_pixel;
 };
 
