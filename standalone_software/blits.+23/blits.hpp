@@ -52,11 +52,11 @@ template <typename Blit_op>
 void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
                          std::size_t bit_width) {
   // setup source/destination masks
-  std::uint32_t src_mask = 0x00000001 << (src_bit % 32);
-  std::uint32_t dst_mask = 0x00000001 << (dst_bit % 32);
+  std::uint32_t src_mask = 0x00000001 << (src_bit & 0x1F);
+  std::uint32_t dst_mask = 0x00000001 << (dst_bit & 0x1F);
   for (size_t i = 0; i < bit_width; i++) {
     // extract one bit from source
-    uint32_t bit = src[src_bit / 32] & src_mask;
+    uint32_t bit = src[src_bit >> 5] & src_mask;
     // convert bit to destination bit position
     if (bit != 0) {
       bit = dst_mask;
@@ -64,7 +64,7 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
       bit = 0;
     }
     // write one bit to destination with the operation in mind
-    Blit_op::run(dst[dst_bit / 32], bit, dst_mask);
+    Blit_op::run(dst[dst_bit >> 5], bit, dst_mask);
     // shift masks
     src_mask = src_mask << 1;
     if (src_mask == 0) {
@@ -164,6 +164,7 @@ struct Blit_op_xor {
  * @note More optimized for size than raw speed, but still better then single bit reads
  * @note this is a variant of blit that focuses on whole destination indices and bit count subtraction
  * @todo reading from source can be slow, cache source element from source element+1
+ * @todo Simplify loop by using a pre and post but this requires first to get rid of get_bits calls
  */
 template <typename Blit_op>
 void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
@@ -174,7 +175,7 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
   std::size_t todo_bits = 32;
   // handle starting incomplete element
   // determine if we start with an incomplete element
-  std::size_t header_offset = dst_bit % 32;
+  std::size_t header_offset = dst_bit & 0x1F;
   if (header_offset != 0) {
     // setup loop to handle first incomplete element
     todo_bits = todo_bits - header_offset;
@@ -194,7 +195,7 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
       bits = detail::get_bits(src, src_bit - header_offset);
     }
 
-    Blit_op::run(dst[dst_bit / 32], bits, mask);
+    Blit_op::run(dst[dst_bit >> 5], bits, mask);
 
     bit_count -= todo_bits;
     src_bit += todo_bits;

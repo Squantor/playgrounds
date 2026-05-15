@@ -42,8 +42,8 @@ std::uint32_t shift_bits(std::uint32_t bits, std::int32_t shift) {
  */
 std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit) {
   std::uint32_t bits = 0;
-  const std::size_t shift = src_bit % 32;
-  const std::size_t index = src_bit / 32;
+  const std::size_t shift = src_bit & 0x1F;
+  const std::size_t index = src_bit >> 5;
   if (shift != 0) {
     bits = src[index] >> shift;
     if (index + 1 < src.size())
@@ -67,7 +67,7 @@ bit_width, Blit_ops op) { std::size_t bit_count = bit_width; std::uint32_t bits;
 todo_bits = 32;
   // handle starting incomplete element
   // determine if we have an incomplete element
-  std::size_t header_bits = dst_bit % 32;
+  std::size_t header_bits = dst_bit& 0x1F;
   if (header_bits != 0) {
     // setup loop to handle incomplete element
     todo_bits = todo_bits - header_bits;
@@ -81,7 +81,7 @@ todo_bits = 32;
   // handle complete elements
   while (bit_count > 0) {
     bits = mask;
-    blit_op(dst[dst_bit / 32], bits, mask, op);
+    blit_op(dst[dst_bit >> 5], bits, mask, op);
 
     bit_count = bit_count - todo_bits;
     src_bit += todo_bits;

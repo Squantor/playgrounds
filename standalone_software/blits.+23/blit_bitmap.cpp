@@ -68,6 +68,9 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Blit_op
   blit_bitmap(dst, src, dst_coords, Bitmap_coords{0, 0}, src_bitmap_size, op);
 }
 
+/**
+ * @todo Check if bitmaps are the same bit depths
+ */
 void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_coords src_coords, Bitmap_size src_size,
                  Blit_ops op) {
   const Bitmap_size dst_bitmap_size{dst.get_size()};
