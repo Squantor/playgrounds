@@ -180,11 +180,11 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
     // setup loop to handle first incomplete element
     todo_bits = todo_bits - header_offset;
     mask = 0xFFFFFFFF << header_offset;
-    // check if we have a very small span
-    if (todo_bits > bit_count) {
-      mask = mask & (0xFFFFFFFF >> (todo_bits - bit_count));
-      todo_bits = bit_count;
-    }
+  }
+  // check if we have a very small span
+  if (todo_bits > bit_count) {
+    mask = mask & (0xFFFFFFFF >> (todo_bits - bit_count));
+    todo_bits = bit_count;
   }
   // handle complete elements
   while (bit_count > 0) {

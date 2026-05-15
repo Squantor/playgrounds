@@ -76,10 +76,10 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_
   const Bitmap_size dst_bitmap_size{dst.get_size()};
   const Bitmap_size src_bitmap_size{src.get_size()};
 
-  if (dst_coords.y > dst_bitmap_size.h || dst_coords.x > dst_bitmap_size.w) {
+  if (dst_coords.y >= dst_bitmap_size.h || dst_coords.x >= dst_bitmap_size.w) {
     return;
   }
-  if (src_coords.y > src_bitmap_size.h || src_coords.x > src_bitmap_size.w) {
+  if (src_coords.y >= src_bitmap_size.h || src_coords.x >= src_bitmap_size.w) {
     return;
   }
   // clamp bit counts depending on bitmap sizes

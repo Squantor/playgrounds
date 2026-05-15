@@ -76,5 +76,14 @@ MINUNIT_ADD(test_bitmap_blit_src_bounded_outside_corner, nullptr, nullptr) {
 }
 
 // Copy a 1 bit bitmap to a 1 bit bitmap on a specific location
+MINUNIT_ADD(test_bitmap_blit_1bit, nullptr, nullptr) {
+  const Const_bitmap dut_bitmap_src(dut_bitmap_src_data.data(), Bitmap_size{8, 32}, 1);
+  const Bitmap dut_bitmap_dst(dut_bitmap_dst_data.data(), Bitmap_size{8, 8}, 1);
+  dut_bitmap_dst_data.fill(0xCCCC5555);
+  blit_bitmap(dut_bitmap_dst, dut_bitmap_src, Bitmap_coords{0, 0}, Bitmap_coords{0, 16}, Bitmap_size{8, 8});
+  MINUNIT_CHECK(dut_bitmap_dst_data[0] == 0x1F2E3D4C);
+  MINUNIT_CHECK(dut_bitmap_dst_data[1] == 0x5F6E7D8C);
+}
+
 // Copy a bounded 1 bit bitmap to a 1 bit bitmap on a specific location
 }  // namespace
