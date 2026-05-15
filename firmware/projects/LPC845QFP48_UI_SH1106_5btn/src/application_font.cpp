@@ -245,5 +245,5 @@ inline constexpr std::array<const std::uint32_t, 190> font_8x8_data{
   0x00003b6e, 0x00000000  /*!< U+007e (~) */
 };
 
-libmcu::bitmap::Const_bitmap bitmap_font(font_8x8_data.data(), 8, 760, 1);
+libmcu::bitmap::Const_bitmap bitmap_font(font_8x8_data.data(), libmcu::bitmap::Bitmap_size{8, 760}, 1);
 libmcumid::Font application_font(map_ascii_8x8font, bitmap_font, 8, 8);

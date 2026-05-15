@@ -53,7 +53,7 @@ constexpr std::array<const std::uint32_t, 384> cat_data = {
   0x56aba56a, 0x9b361012, 0x14f2d544, 0x6db77fe1, 0xa92a4955, 0xaa6d4244, 0x26fd55c9, 0xadfffaa4, 0x56aaaaaa, 0xa4d94a95,
   0x2f6abb21, 0xb76eef50, 0x552aab6d, 0xd29655a9};
 
-libmcu::bitmap::Const_bitmap cat_bitmap(cat_data.data(), 128, 96, 1);
+libmcu::bitmap::Const_bitmap cat_bitmap(cat_data.data(), libmcu::bitmap::Bitmap_size{128, 96}, 1);
 
 squLib::results cat(std::span<const char>) {
   if (command_values.size() < 2) {

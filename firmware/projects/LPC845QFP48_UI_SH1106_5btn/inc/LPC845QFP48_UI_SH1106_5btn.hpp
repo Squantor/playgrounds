@@ -77,6 +77,7 @@ extern libmcu::I2cDeviceAddress SH1106_i2c_address;
 extern libmcu::I2cDeviceAddress PCF8574_i2c_address;
 
 // peripheral externs
+extern libmcull::systick::Systick<libmcuhw::SystickAddress> systick_peripheral;
 extern libmcull::iocon::Iocon<libmcuhw::IoconAddress> iocon_peripheral;
 extern libmcull::swm::Swm<libmcuhw::SwmAddress> swm_periperhal;
 extern libmcull::gpio::Gpio<libmcuhw::GpioAddress> gpio_peripheral;
@@ -90,7 +91,7 @@ extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_con
 extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
 extern libmcumid::Gfx_display_wrap<ui_display> application_display;
 
-constexpr inline std::uint32_t ticks_per_second{100u};
+constexpr inline std::uint32_t ticks_per_second{10u};
 
 extern volatile std::uint32_t ticks;  // amount of ticks passed sinds startup
 

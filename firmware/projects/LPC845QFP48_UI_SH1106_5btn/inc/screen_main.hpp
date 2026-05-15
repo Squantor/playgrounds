@@ -15,6 +15,7 @@
 #include "user_interface.hpp"
 #include "mid/gfx_display_wrap.hpp"
 #include "application_font.hpp"
+#include "LPC845QFP48_UI_SH1106_5btn.hpp"
 
 template <auto &display>
 class Main_screen : public User_interface_screen<Button>, public Event_handler {

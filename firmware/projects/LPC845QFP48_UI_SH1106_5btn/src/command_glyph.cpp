@@ -14,7 +14,7 @@
 #include <libmcu/bitmap/blit.hpp>
 
 std::array<std::uint32_t, 8> glyph_buffer;
-libmcu::bitmap::Bitmap bitmap_glyph(glyph_buffer.data(), 8, 8, 1);
+libmcu::bitmap::Bitmap bitmap_glyph(glyph_buffer.data(),libmcu::bitmap::Bitmap_size{8, 8}, 1);
 
 squLib::results glyph(std::span<const char>) {
   if (command_values.size() < 3) {
@@ -26,7 +26,7 @@ squLib::results glyph(std::span<const char>) {
   command_values.pop(y);
   command_values.pop(x);
   application_font.get_glyph(static_cast<char>(index), bitmap_glyph);
-  ui_display.blit(x, y, bitmap_glyph);
+  ui_display.blit(x, y, bitmap_glyph.as_const());
   ui_display.flip();
   return squLib::results::ok;
 }

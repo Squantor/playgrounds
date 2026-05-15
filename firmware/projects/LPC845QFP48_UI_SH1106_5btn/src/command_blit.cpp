@@ -26,8 +26,8 @@ squLib::results blit(std::span<const char>) {
   command_values.pop(y);
   command_values.pop(x);
   bitmap_buffer.fill(static_cast<std::uint32_t>(pattern));
-  libmcu::bitmap::Bitmap bitmap(bitmap_buffer.data(), width, height, 1);
-  ui_display.blit(x, y, bitmap);
+  libmcu::bitmap::Bitmap bitmap(bitmap_buffer.data(),libmcu::bitmap::Bitmap_size{static_cast<libmcu::bitmap::Bitmap_coord>(width), static_cast<libmcu::bitmap::Bitmap_coord>(height)}, 1);
+  ui_display.blit(x, y, bitmap.as_const());
   ui_display.flip();
   return squLib::results::ok;
 }
