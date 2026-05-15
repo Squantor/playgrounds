@@ -39,7 +39,8 @@ class EventDispatcher {
    * @brief Processes events that are pending
    */
   void Process() {
-    if (queue.get_level() > 0) {
+    std::size_t level = queue.get_level();
+    if (level > 0) {
       Event_data event;
       queue.pop_back(event);
       for (const EventHandlerPair &handler : handlers) {
@@ -51,7 +52,7 @@ class EventDispatcher {
   }
 
  private:
-  libmcu::Ring_buffer<Event_data, 10, libmcu::Assert_trap> queue;
+  libmcu::Ring_buffer<Event_data, 5, libmcu::Assert_trap> queue;
   std::span<const EventHandlerPair> handlers;
 };
 

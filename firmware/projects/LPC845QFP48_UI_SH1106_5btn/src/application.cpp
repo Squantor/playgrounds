@@ -21,7 +21,7 @@
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
 squLib::commandInterpreter<commandHandlers, command_values, command_console> command_interpreter;
-squLib::commandlineSimple<80, command_console, command_interpreter> command_line;
+squLib::commandlineSimple<40, command_console, command_interpreter> command_line;
 
 Buttons buttons{0xFF, event_dispatcher};
 
@@ -53,17 +53,20 @@ void Application::Init() {
 }
 
 void Application::Progress() {
+  // second event generator
   static std::uint32_t currentTicks = ticks;
   if (currentTicks + ticks_per_second < ticks) {
     event_dispatcher.PostEvent(Event_data{.event = Events::Seconds, .seconds = ticks / ticks_per_second});
     currentTicks = ticks;
   }
-  // echo characters
+
+  // command line
   if (usart_peripheral.GetReceiveLevel() > 0) {
     static std::array<char, 1> data;
     usart_peripheral.Receive(data);
     command_line.input(data);
   }
+
   // state handling
   switch (state) {
     case ApplicationState::idle:
