@@ -24,24 +24,24 @@ class EventDispatcher {
   EventDispatcher(std::span<const EventHandlerPair> event_handlers) : handlers(event_handlers) {}
 
   void Reset() {
-    queue.Reset();
+    queue.reset();
   }
 
   std::size_t GetEventCount() {
-    return queue.GetLevel();
+    return queue.get_level();
   }
 
   void PostEvent(Event_data event) {
-    queue.PushFront(event);
+    queue.push_front(event);
   }
 
   /**
    * @brief Processes events that are pending
    */
   void Process() {
-    if (queue.GetLevel() > 0) {
+    if (queue.get_level() > 0) {
       Event_data event;
-      queue.PopBack(event);
+      queue.pop_back(event);
       for (const EventHandlerPair &handler : handlers) {
         if (handler.event == event.event) {
           handler.handler->handle_event(event);
@@ -51,7 +51,7 @@ class EventDispatcher {
   }
 
  private:
-  libmcu::RingBuffer<Event_data, 10> queue;
+  libmcu::Ring_buffer<Event_data, 10, libmcu::Assert_trap> queue;
   std::span<const EventHandlerPair> handlers;
 };
 
