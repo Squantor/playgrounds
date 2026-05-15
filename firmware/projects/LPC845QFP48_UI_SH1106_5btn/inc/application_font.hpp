@@ -11,7 +11,7 @@
 #ifndef APPLICATION_FONT_HPP
 #define APPLICATION_FONT_HPP
 #include "LPC845QFP48_UI_SH1106_5btn.hpp"
-#include <libmcu/bitmap/bitmap_view.hpp>
+#include <libmcu/bitmap/bitmap.hpp>
 #include <mid/font.hpp>
 
 extern libmcu::bitmap::Const_bitmap bitmap_font;

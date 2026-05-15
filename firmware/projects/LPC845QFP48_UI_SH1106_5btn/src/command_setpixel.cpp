@@ -10,7 +10,7 @@
  */
 #include <commands.hpp>
 #include <application.hpp>
-#include <libmcu/bitmap/bitmap_view.hpp>
+#include <libmcu/bitmap/bitmap.hpp>
 
 squLib::results setpixel(std::span<const char>) {
   if (command_values.size() < 3) {

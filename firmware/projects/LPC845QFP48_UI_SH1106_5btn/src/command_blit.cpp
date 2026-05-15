@@ -10,7 +10,7 @@
  */
 #include <commands.hpp>
 #include <application.hpp>
-#include <libmcu/bitmap/bitmap_view.hpp>
+#include <libmcu/bitmap/bitmap.hpp>
 
 std::array<std::uint32_t, 32> bitmap_buffer;
 

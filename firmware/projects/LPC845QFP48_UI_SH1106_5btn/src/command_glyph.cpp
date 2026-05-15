@@ -11,7 +11,7 @@
 #include <commands.hpp>
 #include <application.hpp>
 #include <application_font.hpp>
-#include <libmcu/bitmap/blit.hpp>
+#include <libmcu/bitmap/blits.hpp>
 
 std::array<std::uint32_t, 8> glyph_buffer;
 libmcu::bitmap::Bitmap bitmap_glyph(glyph_buffer.data(),libmcu::bitmap::Bitmap_size{8, 8}, 1);

@@ -10,7 +10,7 @@
  */
 #include <commands.hpp>
 #include <application.hpp>
-#include <libmcu/bitmap/bitmap_view.hpp>
+#include <libmcu/bitmap/bitmap.hpp>
 
 constexpr std::array<const std::uint32_t, 384> cat_data = {
   0x90884000, 0x228140a4, 0x4a8dba0f, 0x28440d2d, 0xaa229000, 0xcc2a0a0a, 0xa42b564e, 0x4514a28b, 0xa042b800, 0x88805009,
