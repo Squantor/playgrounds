@@ -14,8 +14,6 @@ For conditions of distribution and use, see LICENSE file
 #include <cstdint>
 #include <type_traits>
 
-namespace detail {}
-
 using Bitmap_coord = std::uint16_t; /*!< Bitmap coordinate type */
 using Bitmap_bbp = std::uint8_t;    /*!< Bitmap bits per pixel type */
 /**
@@ -33,6 +31,7 @@ struct Bitmap_size {
   std::uint16_t h{0}; /*!< Height */
 };
 
+namespace detail {
 /**
  * @brief Class for representing a bitmap
  * @todo Change the data to a std::span
@@ -142,8 +141,9 @@ class Bitmap_view {
   Bitmap_size dimensions;
   Bitmap_bbp bits_per_pixel;
 };
+}  // namespace detail
 
-using Bitmap = Bitmap_view<std::uint32_t>;
-using Const_bitmap = Bitmap_view<const std::uint32_t>;
+using Bitmap = detail::Bitmap_view<std::uint32_t>;
+using Const_bitmap = detail::Bitmap_view<const std::uint32_t>;
 
 #endif  // BITMAP_HPP
