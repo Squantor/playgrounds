@@ -13,6 +13,7 @@ For conditions of distribution and use, see LICENSE file
 
 #include <cstdint>
 #include <type_traits>
+#include <concepts>
 
 using Bitmap_coord = std::uint16_t; /*!< Bitmap coordinate type */
 using Bitmap_bbp = std::uint8_t;    /*!< Bitmap bits per pixel type */
@@ -32,12 +33,15 @@ struct Bitmap_size {
 };
 
 namespace detail {
+template<typename T>
+concept Unsigned32Bit = sizeof(T) == 4 && std::unsigned_integral<T>;
+
 /**
  * @brief Class for representing a bitmap
  * @todo Change the data to a std::span
  * @tparam T
  */
-template <typename T>
+template <Unsigned32Bit T>
 class Bitmap_view {
  public:
   using Pixel_type = T;
@@ -72,11 +76,11 @@ class Bitmap_view {
   requires(!std::is_const_v<Pixel_type>)
   {
     Pixel_type fill_value = pixel;
-    const std::size_t fill_count = get_bits_per_pixel_type() / bits_per_pixel;
+    const std::size_t fill_count = 32 / bits_per_pixel;
     for (std::size_t count = 0; count < fill_count; count++) {
       fill_value = fill_value | static_cast<Pixel_type>(fill_value << bits_per_pixel);
     }
-    const std::size_t max_bitmap_index = (dimensions.w * dimensions.h * bits_per_pixel) / get_bits_per_pixel_type();
+    const std::size_t max_bitmap_index = (dimensions.w * dimensions.h * bits_per_pixel) >> 5;
     for (std::size_t i = 0; i < max_bitmap_index; i++) {
       data_bitmap[i] = fill_value;
     }
@@ -100,11 +104,10 @@ class Bitmap_view {
     using Pixel_type_nonconst = std::remove_const_t<Pixel_type>;
     const std::size_t pixel_index = (y * dimensions.w) + x;
     const std::size_t bit_index = pixel_index * bits_per_pixel;
-    const std::size_t data_index = bit_index / get_bits_per_pixel_type();
-    const std::size_t lsb_shift = bit_index % get_bits_per_pixel_type();
-    const std::size_t msb_shift = (get_bits_per_pixel_type() - lsb_shift) - bits_per_pixel;
-    Pixel_type_nonconst mask = ~0;
-    mask = static_cast<Pixel_type_nonconst>(mask >> msb_shift);
+    const std::size_t data_index = bit_index >> 5;
+    const std::size_t lsb_shift = bit_index & 31;
+    Pixel_type_nonconst mask = 0xFFFFFFFF >> (32 - bits_per_pixel);
+    mask = static_cast<Pixel_type_nonconst>(mask << lsb_shift);
     const Pixel_type_nonconst pixel = static_cast<Pixel_type_nonconst>((data_bitmap[data_index] & mask) >> lsb_shift);
     return pixel;
   }
@@ -121,22 +124,14 @@ class Bitmap_view {
       return;
     const std::size_t pixel_index = (y * dimensions.w) + x;
     const std::size_t bit_index = pixel_index * bits_per_pixel;
-    const std::size_t data_index = bit_index / get_bits_per_pixel_type();
-    const std::size_t lsb_shift = bit_index % get_bits_per_pixel_type();
-    const std::size_t msb_shift = (get_bits_per_pixel_type() - lsb_shift) - bits_per_pixel;
-    Pixel_type mask = ~0;
-    mask = static_cast<Pixel_type>(mask >> msb_shift << lsb_shift);
+    const std::size_t data_index = bit_index >> 5;
+    const std::size_t lsb_shift = bit_index & 31;
+    Pixel_type mask = 0xFFFFFFFF >> (32 - bits_per_pixel);
+    mask = static_cast<Pixel_type>(mask << lsb_shift);
     data_bitmap[data_index] = static_cast<Pixel_type>((data_bitmap[data_index] & ~mask) | (pixel << lsb_shift));
   }
 
  private:
-  /**
-   * @brief Get the bits per pixel type
-   * @return Bits per pixel type
-   */
-  [[nodiscard]] constexpr std::size_t get_bits_per_pixel_type() const {
-    return (sizeof(Pixel_type) * 8);
-  }
   Pixel_type *data_bitmap;
   Bitmap_size dimensions;
   Bitmap_bbp bits_per_pixel;
