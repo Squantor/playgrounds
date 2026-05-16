@@ -6,7 +6,6 @@
  *
  * @file blits.hpp
  * @brief Various bit blit functions
- * @version 20260403
  *
  */
 #ifndef BLITS_HPP
@@ -15,24 +14,14 @@
 #include <cstdint>
 #include <span>
 #include "bitmap.hpp"
-
-/**
- * @brief Blit operations
- */
-enum class Blit_ops : std::uint8_t {
-  COPY,   /*!< Copy */
-  INVERT, /*!< Invert */
-  AND,    /*!< AND */
-  OR,     /*!< OR */
-  XOR,    /*!< XOR */
-};
+#include "blit_ops.hpp"
 
 namespace detail {
 /**
- * @brief Get the bits object
- * @param src
- * @param src_bit
- * @return std::uint32_t
+ * @brief Get value from a span with bit a bit index
+ * @param src Source span to extract bits from
+ * @param src_bit Bit index
+ * @return 32 bit value of bits at bit position extracted from src
  */
 std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
 }  // namespace detail
@@ -49,8 +38,8 @@ std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
  * @param bit_width Number of bits to copy
  */
 template <typename Blit_op>
-void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
-                         std::size_t bit_width) {
+void blit_1d_bits_small(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
+                        std::size_t bit_width) {
   // setup source/destination masks
   std::uint32_t src_mask = 0x00000001 << (src_bit & 0x1F);
   std::uint32_t dst_mask = 0x00000001 << (dst_bit & 0x1F);
@@ -80,79 +69,6 @@ void blit_1d_bits_simple(std::span<std::uint32_t> dst, std::span<std::uint32_t> 
 }
 
 /**
- * @brief Blit operation copy
- */
-struct Blit_op_copy {
-  /**
-   * @brief Execute blit operation copy
-   * @param dst Destination word
-   * @param src Source word
-   * @param mask Mask to use for operation, set bits indicates what will be applied
-   */
-  static void run(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask) {
-    dst = ((dst & ~mask) | ((src)&mask));
-  }
-};
-/**
- * @brief Blit operation copy and invert
- */
-struct Blit_op_invert {
-  /**
-   * @brief Execute blit operation copy and invert
-   * @param dst Destination word
-   * @param src Source word
-   * @param mask Mask to use for operation, set bits indicates what will be applied
-   */
-  static void run(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask) {
-    dst = ((dst & ~mask) | ((~src) & mask));
-  }
-};
-/**
- * @brief Blit operation and
- */
-struct Blit_op_and {
-  /**
-   * @brief Execute blit operation and
-   * @param dst Destination word
-   * @param src Source word
-   * @param mask Mask to use for operation, set bits indicates what will be applied
-   */
-  static void run(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask) {
-    dst = ((dst & ~mask) | ((src & dst) & mask));
-  }
-};
-/**
- * @brief Blit operation or
- *
- */
-struct Blit_op_or {
-  /**
-   * @brief Execute blit operation or
-   * @param dst Destination word
-   * @param src Source word
-   * @param mask Mask to use for operation, set bits indicates what will be applied
-   */
-  static void run(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask) {
-    dst = ((dst & ~mask) | ((src | dst) & mask));
-  }
-};
-/**
- * @brief Blit operation xor
- *
- */
-struct Blit_op_xor {
-  /**
-   * @brief Execute blit operation xor
-   * @param dst Destination word
-   * @param src Source word
-   * @param mask Mask to use for operation, set bits indicates what will be applied
-   */
-  static void run(std::uint32_t &dst, std::uint32_t src, std::uint32_t mask) {
-    dst = ((dst & ~mask) | ((src ^ dst) & mask));
-  }
-};
-
-/**
  * @brief 1D blit operating on bits only
  * @tparam Blit_op Blit operation to use
  * @param dst Span of uint32_t's containing the destination bits
@@ -167,8 +83,8 @@ struct Blit_op_xor {
  * @todo Simplify loop by using a pre and post but this requires first to get rid of get_bits calls
  */
 template <typename Blit_op>
-void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
-                  size_t bit_width) {
+void blit_1d_bits_balanced(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
+                           size_t bit_width) {
   std::size_t bit_count = bit_width;
   std::uint32_t bits;
   std::uint32_t mask = 0xFFFFFFFF;
@@ -213,7 +129,7 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
   }
 }
 /**
- * @brief 1D blit operating on pixels, each pixel is one or more bits
+ * @brief Bit Block transfer pixels from source to destination
  * @param dst Span of uint32_t's containing the destination pixels
  * @param src Span of uint32_t's containing the source pixels
  * @param pixel_bits Bits per pixel
@@ -222,8 +138,8 @@ void blit_1d_bits(std::span<std::uint32_t> dst, std::span<const std::uint32_t> s
  * @param pixel_src Source pixel index of the blit
  * @param op Blit operation
  */
-void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
-                    std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
+void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
+          std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
 /**
  * @brief 2D blit operating on bitmaps with a destination coordinate
  * @param dst Destination bitmap

@@ -30,7 +30,8 @@
  * @param src_height Source height
  */
 template <typename Blit_op>
-void blit_bitmap_loop(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_coords src_coords, Bitmap_size src_size) {
+static void blit_bitmap_loop(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_coords src_coords,
+                             Bitmap_size src_size) {
   // prepare bounds/sizes
   const Bitmap_size dst_bitmap_size{dst.get_size()};
   const Bitmap_size src_bitmap_size{src.get_size()};
@@ -53,7 +54,7 @@ void blit_bitmap_loop(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bi
   std::size_t dst_bit_index{static_cast<std::size_t>(dst_coords.y * dst_bitmap_size.w + dst_coords.x) *
                             static_cast<std::size_t>(dst.get_bits_per_pixel())};
   while (src_bit_index < src_bit_end) {
-    blit_1d_bits<Blit_op>(dst_span, src_span, dst_bit_index, src_bit_index, src_width_bit_count);
+    blit_1d_bits_balanced<Blit_op>(dst_span, src_span, dst_bit_index, src_bit_index, src_width_bit_count);
     src_bit_index += src_bit_stride;
     dst_bit_index += dst_bit_stride;
     //! @todo adjust src_bit_end to match destination to get this check out of the loop

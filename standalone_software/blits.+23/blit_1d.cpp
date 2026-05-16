@@ -62,7 +62,7 @@ std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit) 
  * @note Commented out as used during development, might come in handy when debugging
  */
 /*
-void blit_1d_bits_mask(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t
+void blit_mask(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, size_t src_bit, size_t dst_bit, size_t
 bit_width, Blit_ops op) { std::size_t bit_count = bit_width; std::uint32_t bits; std::uint32_t mask = 0xFFFFFFFF; std::size_t
 todo_bits = 32;
   // handle starting incomplete element
@@ -99,8 +99,8 @@ todo_bits = 32;
 }
 */
 
-void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits,
-                    std::size_t pixel_width, std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
+void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
+          std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op) {
   // check for order
   if (dst.data() == src.data()) {
     if (pixel_dst > pixel_src) {
@@ -114,19 +114,19 @@ void blit_1d_pixels(std::span<std::uint32_t> dst, std::span<const std::uint32_t>
   }
   switch (op) {
     case Blit_ops::COPY:
-      blit_1d_bits<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
+      blit_1d_bits_balanced<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
       break;
     case Blit_ops::INVERT:
-      blit_1d_bits<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
+      blit_1d_bits_balanced<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
       break;
     case Blit_ops::AND:
-      blit_1d_bits<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
+      blit_1d_bits_balanced<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
       break;
     case Blit_ops::OR:
-      blit_1d_bits<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
+      blit_1d_bits_balanced<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
       break;
     case Blit_ops::XOR:
-      blit_1d_bits<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
+      blit_1d_bits_balanced<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
       break;
     default:
       break;
