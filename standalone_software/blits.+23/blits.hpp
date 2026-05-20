@@ -16,6 +16,12 @@
 #include "bitmap.hpp"
 #include "blit_ops.hpp"
 
+enum class Blit_policy : std::uint8_t {
+  SMALL,
+  BALANCED,
+  FAST
+};
+
 namespace detail {
 /**
  * @brief Get value from a span with bit a bit index
@@ -38,7 +44,7 @@ std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
  * @param bit_width Number of bits to copy
  */
 template <typename Blit_op>
-void blit_1d_bits_small(std::span<std::uint32_t> dst, std::span<std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
+void blit_1d_bits_small(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
                         std::size_t bit_width) {
   // setup source/destination masks
   std::uint32_t src_mask = 0x00000001 << (src_bit & 0x1F);
@@ -139,7 +145,7 @@ void blit_1d_bits_balanced(std::span<std::uint32_t> dst, std::span<const std::ui
  * @param op Blit operation
  */
 void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t pixel_bits, std::size_t pixel_width,
-          std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY);
+          std::size_t pixel_dst, std::size_t pixel_src, Blit_ops op = Blit_ops::COPY, Blit_policy policy = Blit_policy::BALANCED);
 /**
  * @brief 2D blit operating on bitmaps with a destination coordinate
  * @param dst Destination bitmap
@@ -147,7 +153,8 @@ void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std:
  * @param dst_coords Destination coordinate
  * @param op Blit operation
  */
-void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Blit_ops op = Blit_ops::COPY);
+void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Blit_ops op = Blit_ops::COPY,
+                 Blit_policy policy = Blit_policy::BALANCED);
 /**
  * @brief 2D blit operating on bitmaps with a source coordinate/dimension and a destination coordinate
  * @param dst Destination bitmap
@@ -158,6 +165,6 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Blit_op
  * @param op Blit operation
  */
 void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_coords src_coords, Bitmap_size src_size,
-                 Blit_ops op = Blit_ops::COPY);
+                 Blit_ops op = Blit_ops::COPY, Blit_policy policy = Blit_policy::BALANCED);
 
 #endif

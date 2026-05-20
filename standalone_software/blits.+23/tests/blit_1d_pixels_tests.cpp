@@ -18,109 +18,218 @@ std::array<const std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 
 std::array<std::uint32_t, 5> dut_dst;
 namespace {
 
-MINUNIT_ADD(test_blit_1d_pixels_start_copy, nullptr, nullptr) {
+MINUNIT_ADD(test_blit_1d_balanced_pixels_start_copy, nullptr, nullptr) {
   // single element source start case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 6, 10, 10);
+  blit(dut_dst, dut_src, 4, 6, 10, 10, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x776655EF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // double element source start case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 6, 10, 12);
+  blit(dut_dst, dut_src, 4, 6, 10, 12, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x887766EF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // shift to other direction?
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 6, 10, 8);
+  blit(dut_dst, dut_src, 4, 6, 10, 8, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x665544EF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // go over source boundary
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 6, 10, 6);
+  blit(dut_dst, dut_src, 4, 6, 10, 6, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x554433EF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // small over source boundary
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 2, 14, 7);
+  blit(dut_dst, dut_src, 4, 2, 14, 7, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x43ABCDEF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
 }
 
-MINUNIT_ADD(test_blit_1d_pixels_small, nullptr, nullptr) {
+MINUNIT_ADD(test_blit_1d_small_pixels_start_copy, nullptr, nullptr) {
+  // single element source start case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 6, 10, 10, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x776655EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // double element source start case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 6, 10, 12, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x887766EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // shift to other direction?
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 6, 10, 8, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x665544EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // go over source boundary
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 6, 10, 6, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x554433EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small over source boundary
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 2, 14, 7, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x43ABCDEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+}
+
+MINUNIT_ADD(test_blit_1d_small_pixels_small, nullptr, nullptr) {
   // small span inside word from inside word with no offset
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 4, 10, 10);
+  blit(dut_dst, dut_src, 4, 4, 10, 10, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x896655EF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // small span inside word from inside word with offset
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 4, 12, 10);
+  blit(dut_dst, dut_src, 4, 4, 12, 10, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x6655CDEF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // small span spanning two source words
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 4, 11, 6);
+  blit(dut_dst, dut_src, 4, 4, 11, 6, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x84433DEF);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // small span spanning two destination words
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 4, 7, 12);
+  blit(dut_dst, dut_src, 4, 4, 7, 12, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x69ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x89ABC776);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
   // small snap spanning two source/destination words
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 4, 7, 15);
+  blit(dut_dst, dut_src, 4, 4, 7, 15, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x79ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x89ABC988);
   MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
 }
 
-MINUNIT_ADD(test_blit_1d_pixels_copy, nullptr, nullptr) {
+MINUNIT_ADD(test_blit_1d_balanced_pixels_small, nullptr, nullptr) {
+  // small span inside word from inside word with no offset
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 4, 10, 10, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x896655EF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span inside word from inside word with offset
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 4, 12, 10, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x6655CDEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span spanning two source words
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 4, 11, 6, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x84433DEF);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small span spanning two destination words
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 4, 7, 12, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x69ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x89ABC776);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+  // small snap spanning two source/destination words
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 4, 7, 15, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x79ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x89ABC988);
+  MINUNIT_CHECK(dut_dst[2] == 0x89ABCDEF);
+}
+
+MINUNIT_ADD(test_blit_1d_small_pixels_copy, nullptr, nullptr) {
   // zero offset full word destination case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 8, 8);
+  blit(dut_dst, dut_src, 4, 16, 8, 8, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x77665544);
   MINUNIT_CHECK(dut_dst[2] == 0xBBAA9988);
   MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
   // positive offset full word destination case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 8, 6);
+  blit(dut_dst, dut_src, 4, 16, 8, 6, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x66554433);
   MINUNIT_CHECK(dut_dst[2] == 0xAA998877);
   MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
   // negative offset full word destination case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 8, 10);
+  blit(dut_dst, dut_src, 4, 16, 8, 10, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x88776655);
   MINUNIT_CHECK(dut_dst[2] == 0xCCBBAA99);
   MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
   // same symmetrical offset copy case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 4, 4);
+  blit(dut_dst, dut_src, 4, 16, 4, 4, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x3322CDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x77665544);
   MINUNIT_CHECK(dut_dst[2] == 0x89AB9988);
   // same assymetrical offset copy case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 6, 4);
+  blit(dut_dst, dut_src, 4, 16, 6, 4, Blit_ops::COPY, Blit_policy::SMALL);
   MINUNIT_CHECK(dut_dst[0] == 0x22ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x66554433);
   MINUNIT_CHECK(dut_dst[2] == 0x89998877);
   // not same offset copy case
   dut_dst.fill(0x89ABCDEF);
-  blit(dut_dst, dut_src, 4, 16, 6, 8);
+  blit(dut_dst, dut_src, 4, 16, 6, 8, Blit_ops::COPY, Blit_policy::SMALL);
+  MINUNIT_CHECK(dut_dst[0] == 0x44ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x88776655);
+  MINUNIT_CHECK(dut_dst[2] == 0x89BBAA99);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
+}
+
+MINUNIT_ADD(test_blit_1d_balanced_pixels_copy, nullptr, nullptr) {
+  // zero offset full word destination case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 8, 8, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x77665544);
+  MINUNIT_CHECK(dut_dst[2] == 0xBBAA9988);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
+  // positive offset full word destination case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 8, 6, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x66554433);
+  MINUNIT_CHECK(dut_dst[2] == 0xAA998877);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
+  // negative offset full word destination case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 8, 10, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x89ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x88776655);
+  MINUNIT_CHECK(dut_dst[2] == 0xCCBBAA99);
+  MINUNIT_CHECK(dut_dst[3] == 0x89ABCDEF);
+  // same symmetrical offset copy case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 4, 4, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x3322CDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x77665544);
+  MINUNIT_CHECK(dut_dst[2] == 0x89AB9988);
+  // same assymetrical offset copy case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 6, 4, Blit_ops::COPY, Blit_policy::BALANCED);
+  MINUNIT_CHECK(dut_dst[0] == 0x22ABCDEF);
+  MINUNIT_CHECK(dut_dst[1] == 0x66554433);
+  MINUNIT_CHECK(dut_dst[2] == 0x89998877);
+  // not same offset copy case
+  dut_dst.fill(0x89ABCDEF);
+  blit(dut_dst, dut_src, 4, 16, 6, 8, Blit_ops::COPY, Blit_policy::BALANCED);
   MINUNIT_CHECK(dut_dst[0] == 0x44ABCDEF);
   MINUNIT_CHECK(dut_dst[1] == 0x88776655);
   MINUNIT_CHECK(dut_dst[2] == 0x89BBAA99);
