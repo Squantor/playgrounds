@@ -27,11 +27,12 @@ squLib::commandlineSimple<40, command_console, command_interpreter> command_line
 
 Buttons buttons{0xFF, event_dispatcher};
 
-Menu_item first("First");
-Menu_item second("Second");
-Menu_item third("Third");
+Menu_item first_menu_item("First");
+Menu_item second_menu_item("Second");
+Menu_item third_menu_item("Third");
+Menu_item exit_menu("Exit");
 
-std::array<Menu_item* const, 3> menu_items = {&first, &second, &third};
+std::array<Menu_item* const, 4> menu_items = {&first_menu_item, &second_menu_item, &third_menu_item, &exit_menu};
 
 Main_screen<application_display> main_screen;
 Second_screen<application_display> second_screen;

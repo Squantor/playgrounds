@@ -36,11 +36,23 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
         break;
 
       case Button::Button0Down:
-        user_interface->previous_screen();
+        if (is_menu_active) {
+          if (menu_index > 0) {
+            menu_index--;
+          }
+        } else {
+          user_interface->previous_screen();
+        }
         break;
 
       case Button::Button2Down:
-        user_interface->next_screen();
+        if (is_menu_active) {
+          if (menu_index < items.size() - 1) {
+            menu_index++;
+          }
+        } else {
+          user_interface->next_screen();
+        }
         break;
 
       default:
@@ -76,9 +88,20 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
     if (is_active) {
       display.clear();
       if (is_menu_active) {
-        display.print("Menu screen active\n", application_font);
+        for (size_t i = 0; i < items.size(); i++) {
+          if (i == menu_index) {
+            display.print(items[i]->get_name(), application_font, libmcu::bitmap::Blit_ops::INVERT);
+          } else {
+            display.print(items[i]->get_name(), application_font);
+          }
+          display.print("\n", application_font);
+        }
+
       } else {
-        display.print("Menu screen inactive\n", application_font);
+        for (auto &item : items) {
+          display.print(item->get_name(), application_font);
+          display.print("\n", application_font);
+        }
       }
       display.flip();
     }
