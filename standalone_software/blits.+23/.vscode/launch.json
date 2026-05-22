@@ -25,6 +25,11 @@
           "description": "Set Disassembly Flavor to Intel",
           "text": "-gdb-set disassembly-flavor intel",
           "ignoreFailures": true
+        },
+        {
+          "description": "Disable debuginfod to prevent download hangs",
+          "text": "set debuginfod enabled off",
+          "ignoreFailures": true
         }
       ],
       "preLaunchTask": "build",

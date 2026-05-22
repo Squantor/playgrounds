@@ -10,7 +10,7 @@
  */
 #include "minunit.h"
 #include <cstdint>
-#include <blits.hpp>
+#include <blit_ops.hpp>
 
 namespace {
 

@@ -12,6 +12,7 @@
 #include <bitmap.hpp>
 #include <minunit.h>
 #include <blits.hpp>
+#include <blit_ops.hpp>
 
 std::array<const std::uint32_t, 8> dut_bitmap_src_data{
   {0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x1F2E3D4C, 0x5F6E7D8C, 0x9FAEBDBC, 0xFFEEDDCC}};

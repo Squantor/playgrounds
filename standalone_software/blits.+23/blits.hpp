@@ -31,109 +31,114 @@ namespace detail {
  */
 std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
 }  // namespace detail
-
 /**
- * @brief simple blit that copies bit by bit, used for correctness checks
- * @todo add memmove semantics
- * @note Mostly used for debugging and correctness checks, quite slow
- * @tparam Blit_op Blit operation to use
- * @param dst destination span
- * @param src source span
- * @param src_bit Source bit index
- * @param dst_bit Destination bit index
- * @param bit_width Number of bits to copy
+ * @brief 1D blit template class with size optimized blit static method
  */
-template <typename Blit_op>
-void blit_1d_bits_small(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
-                        std::size_t bit_width) {
-  // setup source/destination masks
-  std::uint32_t src_mask = 0x00000001 << (src_bit & 0x1F);
-  std::uint32_t dst_mask = 0x00000001 << (dst_bit & 0x1F);
-  for (size_t i = 0; i < bit_width; i++) {
-    // extract one bit from source
-    uint32_t bit = src[src_bit >> 5] & src_mask;
-    // convert bit to destination bit position
-    if (bit != 0) {
-      bit = dst_mask;
-    } else {
-      bit = 0;
+struct Blit_1d_bits_small_class {
+  /**
+   * @brief 1D blit operating on bits only, small but slow
+   * @todo add memmove semantics
+   * @tparam Blit_op Blit operation to use
+   * @param dst destination span
+   * @param src source span
+   * @param src_bit Source bit index
+   * @param dst_bit Destination bit index
+   * @param bit_width Number of bits to copy
+   */
+  template <typename Blit_op>
+  static void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std::size_t dst_bit, std::size_t src_bit,
+                   std::size_t bit_width) {
+    // setup source/destination masks
+    std::uint32_t src_mask = 0x00000001 << (src_bit & 0x1F);
+    std::uint32_t dst_mask = 0x00000001 << (dst_bit & 0x1F);
+    for (size_t i = 0; i < bit_width; i++) {
+      // extract one bit from source
+      uint32_t bit = src[src_bit >> 5] & src_mask;
+      // convert bit to destination bit position
+      if (bit != 0) {
+        bit = dst_mask;
+      } else {
+        bit = 0;
+      }
+      // write one bit to destination with the operation in mind
+      Blit_op::run(dst[dst_bit >> 5], bit, dst_mask);
+      // shift masks
+      src_mask = src_mask << 1;
+      if (src_mask == 0) {
+        src_mask = 0x00000001;
+      }
+      dst_mask = dst_mask << 1;
+      if (dst_mask == 0) {
+        dst_mask = 0x00000001;
+      }
+      src_bit++;
+      dst_bit++;
     }
-    // write one bit to destination with the operation in mind
-    Blit_op::run(dst[dst_bit >> 5], bit, dst_mask);
-    // shift masks
-    src_mask = src_mask << 1;
-    if (src_mask == 0) {
-      src_mask = 0x00000001;
-    }
-    dst_mask = dst_mask << 1;
-    if (dst_mask == 0) {
-      dst_mask = 0x00000001;
-    }
-    src_bit++;
-    dst_bit++;
   }
-}
-
+};
 /**
- * @brief 1D blit operating on bits only
- * @tparam Blit_op Blit operation to use
- * @param dst Span of uint32_t's containing the destination bits
- * @param src Span of uint32_t's containing the source bits
- * @param dst_bit Destination bit index for dst
- * @param src_bit Source bit index for src
- * @param bit_width Number of bits to blit
- * @param op Blit operation
- * @note More optimized for size than raw speed, but still better then single bit reads
- * @note this is a variant of blit that focuses on whole destination indices and bit count subtraction
- * @todo reading from source can be slow, cache source element from source element+1
- * @todo Simplify loop by using a pre and post but this requires first to get rid of get_bits calls
+ * @brief 1D blit template class with size and speed optimized blit static method
  */
-template <typename Blit_op>
-void blit_1d_bits_balanced(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
-                           size_t bit_width) {
-  std::size_t bit_count = bit_width;
-  std::uint32_t bits;
-  std::uint32_t mask = 0xFFFFFFFF;
-  std::size_t todo_bits = 32;
-  // handle starting incomplete element
-  // determine if we start with an incomplete element
-  std::size_t header_offset = dst_bit & 0x1F;
-  if (header_offset != 0) {
-    // setup loop to handle first incomplete element
-    todo_bits = todo_bits - header_offset;
-    mask = 0xFFFFFFFF << header_offset;
-  }
-  // check if we have a very small span
-  if (todo_bits > bit_count) {
-    mask = mask & (0xFFFFFFFF >> (todo_bits - bit_count));
-    todo_bits = bit_count;
-  }
-  // handle complete elements
-  while (bit_count > 0) {
-    if (src_bit < header_offset) {
-      // the header offset is out of bounds, fixup
-      bits = src[0] << (header_offset - src_bit);
-    } else {
-      bits = detail::get_bits(src, src_bit - header_offset);
+struct Blit_1d_bits_balanced_class {
+  /**
+   * @brief 1D blit operating on bits only, balanced between size and speed
+   * @tparam Blit_op Blit operation to use
+   * @param dst Span of uint32_t's containing the destination bits
+   * @param src Span of uint32_t's containing the source bits
+   * @param dst_bit Destination bit index for dst
+   * @param src_bit Source bit index for src
+   * @param bit_width Number of bits to blit
+   * @param op Blit operation
+   * @todo reading from source can be slow, cache source element from source element+1
+   * @todo Simplify loop by using a pre and post but this requires first to get rid of get_bits calls
+   */
+  template <typename Blit_op>
+  static void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, size_t dst_bit, size_t src_bit,
+                   size_t bit_width) {
+    std::size_t bit_count = bit_width;
+    std::uint32_t bits;
+    std::uint32_t mask = 0xFFFFFFFF;
+    std::size_t todo_bits = 32;
+    // handle starting incomplete element
+    // determine if we start with an incomplete element
+    std::size_t header_offset = dst_bit & 0x1F;
+    if (header_offset != 0) {
+      // setup loop to handle first incomplete element
+      todo_bits = todo_bits - header_offset;
+      mask = 0xFFFFFFFF << header_offset;
     }
-
-    Blit_op::run(dst[dst_bit >> 5], bits, mask);
-
-    bit_count -= todo_bits;
-    src_bit += todo_bits;
-    dst_bit += todo_bits;
-    header_offset = 0;  // reset header offset
-
-    if (bit_count > 31) {
-      mask = 0xFFFFFFFF;
-      todo_bits = 32;
-    } else if (bit_count > 0) {
-      // last incomplete element
-      mask = 0xFFFFFFFF >> (32 - bit_count);
+    // check if we have a very small span
+    if (todo_bits > bit_count) {
+      mask = mask & (0xFFFFFFFF >> (todo_bits - bit_count));
       todo_bits = bit_count;
     }
+    // handle complete elements
+    while (bit_count > 0) {
+      if (src_bit < header_offset) {
+        // the header offset is out of bounds, fixup
+        bits = src[0] << (header_offset - src_bit);
+      } else {
+        bits = detail::get_bits(src, src_bit - header_offset);
+      }
+
+      Blit_op::run(dst[dst_bit >> 5], bits, mask);
+
+      bit_count -= todo_bits;
+      src_bit += todo_bits;
+      dst_bit += todo_bits;
+      header_offset = 0;  // reset header offset
+
+      if (bit_count > 31) {
+        mask = 0xFFFFFFFF;
+        todo_bits = 32;
+      } else if (bit_count > 0) {
+        // last incomplete element
+        mask = 0xFFFFFFFF >> (32 - bit_count);
+        todo_bits = bit_count;
+      }
+    }
   }
-}
+};
 /**
  * @brief Bit Block transfer pixels from source to destination
  * @param dst Span of uint32_t's containing the destination pixels
