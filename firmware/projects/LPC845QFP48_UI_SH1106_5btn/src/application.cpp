@@ -18,6 +18,7 @@
 #include <screen_main.hpp>
 #include <screen_second.hpp>
 #include <screen_menu.hpp>
+#include <menu_item.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
@@ -26,9 +27,15 @@ squLib::commandlineSimple<40, command_console, command_interpreter> command_line
 
 Buttons buttons{0xFF, event_dispatcher};
 
+Menu_item first("First");
+Menu_item second("Second");
+Menu_item third("Third");
+
+std::array<Menu_item* const, 3> menu_items = {&first, &second, &third};
+
 Main_screen<application_display> main_screen;
 Second_screen<application_display> second_screen;
-Menu_screen<application_display> menu_screen;
+Menu_screen<application_display> menu_screen(menu_items);
 
 std::array<User_interface_screen<Button>*, 3> screens = {&main_screen, &second_screen, &menu_screen};
 User_interface<Button> user_interface{screens};

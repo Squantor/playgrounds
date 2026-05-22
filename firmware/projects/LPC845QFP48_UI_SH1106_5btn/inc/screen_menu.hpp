@@ -16,6 +16,7 @@
 #include "mid/gfx_display.hpp"
 #include "application_font.hpp"
 #include "LPC845QFP48_UI_SH1106_5btn.hpp"
+#include "menu_item.hpp"
 
 /**
  * @brief Menu screen
@@ -24,13 +25,14 @@
 template <auto &display>
 class Menu_screen : public User_interface_screen<Button>, public Event_handler {
  public:
-  Menu_screen() : user_interface(nullptr) {}
+  Menu_screen(std::span<Menu_item *const> menu_items) : is_active(false), user_interface(nullptr), items(menu_items) {}
   void setup(User_interface<Button> *current_user_interface) override {
     user_interface = current_user_interface;
   }
   void handle_button(Button button) override {
     switch (button) {
       case Button::Button1Down:
+        is_menu_active = !is_menu_active;
         break;
 
       case Button::Button0Down:
@@ -50,6 +52,8 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
   }
   void activate() override {
     is_active = true;
+    is_menu_active = false;
+    menu_index = 0;
     render();
   }
   void deactivate() override {
@@ -71,12 +75,19 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
   void render() {
     if (is_active) {
       display.clear();
-      display.print("Menu screen\n", application_font);
+      if (is_menu_active) {
+        display.print("Menu screen active\n", application_font);
+      } else {
+        display.print("Menu screen inactive\n", application_font);
+      }
       display.flip();
     }
   }
-  User_interface<Button> *user_interface;
   bool is_active;
+  bool is_menu_active;
+  std::size_t menu_index;
+  User_interface<Button> *user_interface;
+  std::span<Menu_item *const> items;
 };
 
 #endif
