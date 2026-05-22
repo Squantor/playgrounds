@@ -17,6 +17,7 @@
 #include <user_interface.hpp>
 #include <screen_main.hpp>
 #include <screen_second.hpp>
+#include <screen_menu.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
@@ -27,8 +28,9 @@ Buttons buttons{0xFF, event_dispatcher};
 
 Main_screen<application_display> main_screen;
 Second_screen<application_display> second_screen;
+Menu_screen<application_display> menu_screen;
 
-std::array<User_interface_screen<Button>*, 2> screens = {&main_screen, &second_screen};
+std::array<User_interface_screen<Button>*, 3> screens = {&main_screen, &second_screen, &menu_screen};
 User_interface<Button> user_interface{screens};
 
 ButtonHandler button_handler;

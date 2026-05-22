@@ -13,7 +13,7 @@
 
 #include "event_handler.hpp"
 #include "user_interface.hpp"
-#include "mid/gfx_display_wrap.hpp"
+#include "mid/gfx_display.hpp"
 #include "application_font.hpp"
 #include "LPC845QFP48_UI_SH1106_5btn.hpp"
 
@@ -28,13 +28,19 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
     switch (button) {
       case Button::Button1Down:
         break;
+      case Button::Button1Up:
+        break;
 
       case Button::Button0Down:
         user_interface->previous_screen();
         break;
+      case Button::Button0Up:
+        break;
 
       case Button::Button2Down:
         user_interface->next_screen();
+        break;
+      case Button::Button2Up:
         break;
 
       default:

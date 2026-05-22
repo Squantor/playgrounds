@@ -4,29 +4,33 @@
  * Copyright (c) 2026 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  *
- * @file screen_second.hpp
- * @brief Secondary screen definition
+ * @file screen_menu.hpp
+ * @brief Menu screen definition
  *
  */
-#ifndef SCREEN_SECOND_HPP
-#define SCREEN_SECOND_HPP
+#ifndef SCREEN_MENU_HPP
+#define SCREEN_MENU_HPP
 
 #include "event_handler.hpp"
 #include "user_interface.hpp"
 #include "mid/gfx_display.hpp"
 #include "application_font.hpp"
+#include "LPC845QFP48_UI_SH1106_5btn.hpp"
 
+/**
+ * @brief Menu screen
+ * @tparam &display
+ */
 template <auto &display>
-class Second_screen : public User_interface_screen<Button>, public Event_handler {
+class Menu_screen : public User_interface_screen<Button>, public Event_handler {
  public:
-  Second_screen() : entry_count(0), event_count(0), enter_count(0), user_interface(nullptr) {}
+  Menu_screen() : user_interface(nullptr) {}
   void setup(User_interface<Button> *current_user_interface) override {
     user_interface = current_user_interface;
   }
   void handle_button(Button button) override {
     switch (button) {
       case Button::Button1Down:
-        enter_count++;
         break;
 
       case Button::Button0Down:
@@ -38,7 +42,7 @@ class Second_screen : public User_interface_screen<Button>, public Event_handler
         break;
 
       default:
-        command_console.print("Main screen: Unhandled button\n");
+        command_console.print("Main screen: Unhandled button event\n");
         return;
         break;
     }
@@ -46,32 +50,31 @@ class Second_screen : public User_interface_screen<Button>, public Event_handler
   }
   void activate() override {
     is_active = true;
-    entry_count++;
     render();
   }
   void deactivate() override {
     is_active = false;
   }
   void handle_event(Event_data event) {
-    (void)event;
+    switch (event.event) {
+      case Events::Seconds:
+
+        break;
+
+      default:
+        break;
+    }
     render();
   }
 
  private:
   void render() {
     if (is_active) {
-      libmcumid::Dec dec_enter_count{static_cast<std::int32_t>(enter_count)};
       display.clear();
-      display.print("Second screen.\nIn tha house!\n", application_font);
-      display.print("Enter count: ", application_font);
-      display.print(dec_enter_count, application_font);
-      display.print("\n", application_font);
+      display.print("Menu screen\n", application_font);
       display.flip();
     }
   }
-  std::size_t entry_count;
-  std::size_t event_count;
-  std::size_t enter_count;
   User_interface<Button> *user_interface;
   bool is_active;
 };

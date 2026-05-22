@@ -13,7 +13,7 @@
 #include <nxp/libmcu_LPC845M301BD48_hal.hpp>
 #include <drivers/SH1106_i2c.hpp>
 #include <drivers/PCF8574.hpp>
-#include <mid/gfx_display_wrap.hpp>
+#include <mid/gfx_display.hpp>
 #include <mid/fonts/8x8.hpp>
 
 // pin types
@@ -82,14 +82,14 @@ extern libmcull::iocon::Iocon<libmcuhw::IoconAddress> iocon_peripheral;
 extern libmcull::swm::Swm<libmcuhw::SwmAddress> swm_periperhal;
 extern libmcull::gpio::Gpio<libmcuhw::GpioAddress> gpio_peripheral;
 extern libmcull::syscon::Syscon<libmcuhw::SysconAddress> syscon_peripheral;
-extern libmcull::usart::UartInterrupt<libmcuhw::Usart0Address, char, 64> usart_peripheral_ll;
+extern libmcull::usart::UartInterrupt<libmcuhw::Usart0Address, char, 1024> usart_peripheral_ll;
 extern libmcull::i2c::I2cInterrupt<libmcuhw::I2c0Address> i2c_peripheral_ll;
 extern libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 extern libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
 extern libmcudrv::SH1106::Generic128x64 display_config;
 extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
 extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
-extern libmcumid::Gfx_display_wrap<ui_display> application_display;
+extern libmcumid::Gfx_display<ui_display> application_display;
 
 constexpr inline std::uint32_t ticks_per_second{1000u};
 
