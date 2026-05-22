@@ -15,6 +15,7 @@
 #include <span>
 #include "blits.hpp"
 #include "bitmap.hpp"
+#include "blit_ops.hpp"
 
 /**
  * @brief Blit bitmap loop
@@ -90,6 +91,9 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_
   }
   if (dst_coords.x + src_size.w > dst_bitmap_size.w) {
     src_size.w = dst_bitmap_size.w - dst_coords.x;
+  }
+  if (src_size.w == 0 || src_size.h == 0) {
+    return;
   }
   switch (policy) {
     case Blit_policy::SMALL:

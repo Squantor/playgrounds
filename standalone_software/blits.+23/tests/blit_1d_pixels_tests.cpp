@@ -13,6 +13,7 @@
 #include <array>
 #include <span>
 #include <blits.hpp>
+#include <blit_ops.hpp>
 
 std::array<const std::uint32_t, 5> dut_src{{0x33221100, 0x77665544, 0xBBAA9988, 0xFFEEDDCC, 0x11223344}};
 std::array<std::uint32_t, 5> dut_dst;
