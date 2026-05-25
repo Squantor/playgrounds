@@ -99,19 +99,19 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_
     case Blit_policy::SMALL:
       switch (op) {
         case Blit_ops::COPY:
-          blit_bitmap_loop<Blit_op_copy, Blit_1d_bits_small_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_copy, Blit_small>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::INVERT:
-          blit_bitmap_loop<Blit_op_invert, Blit_1d_bits_small_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_invert, Blit_small>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::AND:
-          blit_bitmap_loop<Blit_op_and, Blit_1d_bits_small_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_and, Blit_small>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::OR:
-          blit_bitmap_loop<Blit_op_or, Blit_1d_bits_small_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_or, Blit_small>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::XOR:
-          blit_bitmap_loop<Blit_op_xor, Blit_1d_bits_small_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_xor, Blit_small>(dst, src, dst_coords, src_coords, src_size);
           break;
         default:
           break;
@@ -121,19 +121,19 @@ void blit_bitmap(Bitmap dst, Const_bitmap src, Bitmap_coords dst_coords, Bitmap_
     case Blit_policy::FAST:
       switch (op) {
         case Blit_ops::COPY:
-          blit_bitmap_loop<Blit_op_copy, Blit_1d_bits_balanced_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_copy, Blit_balanced>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::INVERT:
-          blit_bitmap_loop<Blit_op_invert, Blit_1d_bits_balanced_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_invert, Blit_balanced>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::AND:
-          blit_bitmap_loop<Blit_op_and, Blit_1d_bits_balanced_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_and, Blit_balanced>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::OR:
-          blit_bitmap_loop<Blit_op_or, Blit_1d_bits_balanced_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_or, Blit_balanced>(dst, src, dst_coords, src_coords, src_size);
           break;
         case Blit_ops::XOR:
-          blit_bitmap_loop<Blit_op_xor, Blit_1d_bits_balanced_class>(dst, src, dst_coords, src_coords, src_size);
+          blit_bitmap_loop<Blit_op_xor, Blit_balanced>(dst, src, dst_coords, src_coords, src_size);
           break;
         default:
           break;

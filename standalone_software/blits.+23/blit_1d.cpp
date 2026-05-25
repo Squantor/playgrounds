@@ -120,24 +120,23 @@ void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std:
     case Blit_policy::SMALL:
       switch (op) {
         case Blit_ops::COPY:
-          Blit_1d_bits_small_class::template blit<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                pixel_width * pixel_bits);
+          Blit_small::template blit<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                  pixel_width * pixel_bits);
           break;
         case Blit_ops::INVERT:
-          Blit_1d_bits_small_class::template blit<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                  pixel_width * pixel_bits);
+          Blit_small::template blit<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                    pixel_width * pixel_bits);
           break;
         case Blit_ops::AND:
-          Blit_1d_bits_small_class::template blit<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                               pixel_width * pixel_bits);
+          Blit_small::template blit<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                 pixel_width * pixel_bits);
           break;
         case Blit_ops::OR:
-          Blit_1d_bits_small_class::template blit<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                              pixel_width * pixel_bits);
+          Blit_small::template blit<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits, pixel_width * pixel_bits);
           break;
         case Blit_ops::XOR:
-          Blit_1d_bits_small_class::template blit<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                               pixel_width * pixel_bits);
+          Blit_small::template blit<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                 pixel_width * pixel_bits);
           break;
         default:
           break;
@@ -147,24 +146,24 @@ void blit(std::span<std::uint32_t> dst, std::span<const std::uint32_t> src, std:
     case Blit_policy::FAST:  // Fallthrough
       switch (op) {
         case Blit_ops::COPY:
-          Blit_1d_bits_balanced_class::template blit<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                   pixel_width * pixel_bits);
+          Blit_balanced::template blit<Blit_op_copy>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                     pixel_width * pixel_bits);
           break;
         case Blit_ops::INVERT:
-          Blit_1d_bits_balanced_class::template blit<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                     pixel_width * pixel_bits);
+          Blit_balanced::template blit<Blit_op_invert>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                       pixel_width * pixel_bits);
           break;
         case Blit_ops::AND:
-          Blit_1d_bits_balanced_class::template blit<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                  pixel_width * pixel_bits);
+          Blit_balanced::template blit<Blit_op_and>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                    pixel_width * pixel_bits);
           break;
         case Blit_ops::OR:
-          Blit_1d_bits_balanced_class::template blit<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                 pixel_width * pixel_bits);
+          Blit_balanced::template blit<Blit_op_or>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                   pixel_width * pixel_bits);
           break;
         case Blit_ops::XOR:
-          Blit_1d_bits_balanced_class::template blit<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
-                                                                  pixel_width * pixel_bits);
+          Blit_balanced::template blit<Blit_op_xor>(dst, src, pixel_dst * pixel_bits, pixel_src * pixel_bits,
+                                                    pixel_width * pixel_bits);
           break;
         default:
           break;

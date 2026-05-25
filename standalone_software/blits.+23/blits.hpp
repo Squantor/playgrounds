@@ -16,12 +16,14 @@
 #include "bitmap.hpp"
 #include "blit_ops.hpp"
 
+/**
+ * @brief Blit policies for speed or size
+ */
 enum class Blit_policy : std::uint8_t {
   SMALL,
   BALANCED,
   FAST
 };
-
 namespace detail {
 /**
  * @brief Get value from a span with bit a bit index
@@ -34,7 +36,7 @@ std::uint32_t get_bits(std::span<const std::uint32_t> src, std::size_t src_bit);
 /**
  * @brief 1D blit template class with size optimized blit static method
  */
-struct Blit_1d_bits_small_class {
+struct Blit_small {
   /**
    * @brief 1D blit operating on bits only, small but slow
    * @todo add memmove semantics
@@ -79,7 +81,7 @@ struct Blit_1d_bits_small_class {
 /**
  * @brief 1D blit template class with size and speed optimized blit static method
  */
-struct Blit_1d_bits_balanced_class {
+struct Blit_balanced {
   /**
    * @brief 1D blit operating on bits only, balanced between size and speed
    * @tparam Blit_op Blit operation to use
