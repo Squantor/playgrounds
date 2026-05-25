@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260217
+# Version: 20260403
 #
 # Mini project makefile for mixed C and C++ projects
 
@@ -12,15 +12,15 @@ DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I.
 TARGET = minunit_C++23
 CC = gcc
-CXX = g++
+CPP = g++
 SIZE = size
 DEBUG = -g3 -O0
 RELEASE = -g3 -Os
 BUILD ?= DEBUG
 CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
 CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CPPWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CPPFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CPPWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
 LDLIBS := -lm
 CHECKFLAGS := -header-filter='.*'
 
@@ -46,14 +46,14 @@ ifneq ($(CPPSOURCES),)
 endif
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
+	$(CPP) $(OBJECTS) -o $@ $(LDLIBS)
 	$(SIZE) $@
 
 %.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
