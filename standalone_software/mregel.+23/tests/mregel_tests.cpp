@@ -10,6 +10,7 @@
 #include "mregel.hpp"
 #include <cstring>
 
+std::array<char, 12> hello_world = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd', '!'};
 std::array<char, 15> test_array;
 
 MINUNIT_ADD(mregel_test_size, nullptr, nullptr) {
@@ -29,4 +30,7 @@ MINUNIT_ADD(mregel_test_size, nullptr, nullptr) {
   mregel_non_empty.add("!");
   MINUNIT_CHECK(mregel_non_empty.size() == 12);
   MINUNIT_CHECK(strcmp(mregel_non_empty.c_str(), "Hello World!") == 0);
+  std::span mregel_span = mregel_non_empty.span();
+  MINUNIT_CHECK(mregel_span.size() == 12);
+  MINUNIT_CHECK(memcmp(mregel_span.data(), hello_world.data(), 12) == 0);
 }

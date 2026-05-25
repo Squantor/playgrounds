@@ -56,6 +56,11 @@ class mregel {
     }
     return mregel_data.data();
   }
+  std::span<char> span() {
+    if (mregel_data_size == 0)
+      return std::span<char>();
+    return std::span<char>(mregel_data.data(), mregel_data_size);
+  }
   /**
    * @brief Add C string to mregel
    * @note will copy up to mregel_data.size()
