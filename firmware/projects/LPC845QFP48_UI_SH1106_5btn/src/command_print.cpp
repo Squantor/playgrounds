@@ -22,7 +22,7 @@ squLib::results print(std::span<const char>) {
     command_console.print("Needs 4 elements from top to bottom: character, count, column, row\n");
     return squLib::results::error;
   }
-  std::int32_t col, row, length, character;
+  std::int32_t col{0}, row{0}, length{0}, character{0};
   command_values.pop(character);
   command_values.pop(length);
   command_values.pop(col);

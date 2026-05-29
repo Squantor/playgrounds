@@ -60,7 +60,7 @@ squLib::results cat(std::span<const char>) {
     command_console.print("2 arguments needed: x, y\n");
     return squLib::results::error;
   }
-  std::int32_t x, y;
+  std::int32_t x{0}, y{0};
   command_values.pop(y);
   command_values.pop(x);
   ui_display.blit(x, y, cat_bitmap);

@@ -17,7 +17,7 @@ squLib::results setpixel(std::span<const char>) {
     command_console.print("3 arguments needed: x, y, pixel value\n");
     return squLib::results::error;
   }
-  std::int32_t x, y, pixel;
+  std::int32_t x{0}, y{0}, pixel{0};
   command_values.pop(pixel);
   command_values.pop(y);
   command_values.pop(x);

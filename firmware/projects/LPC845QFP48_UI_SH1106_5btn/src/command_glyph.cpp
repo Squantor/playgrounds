@@ -14,14 +14,14 @@
 #include <libmcu/bitmap/blits.hpp>
 
 std::array<std::uint32_t, 8> glyph_buffer;
-libmcu::bitmap::Bitmap bitmap_glyph(glyph_buffer.data(),libmcu::bitmap::Bitmap_size{8, 8}, 1);
+libmcu::bitmap::Bitmap bitmap_glyph(glyph_buffer.data(), libmcu::bitmap::Bitmap_size{8, 8}, 1);
 
 squLib::results glyph(std::span<const char>) {
   if (command_values.size() < 3) {
     command_console.print("3 arguments needed: x, y, glyph index\n");
     return squLib::results::error;
   }
-  std::int32_t x, y, index;
+  std::int32_t x{0}, y{0}, index{0};
   command_values.pop(index);
   command_values.pop(y);
   command_values.pop(x);

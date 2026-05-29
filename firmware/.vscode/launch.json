@@ -338,7 +338,7 @@
       "name": "debug LPC845 mini UI demo",
       "cwd": "${workspaceRoot}",
       "gdbPath": "/usr/bin/gdb-multiarch",
-      "executable": "${workspaceFolder}/bin/LPC845QFP48_UI_SH1106_5btn/debug/LPC845QFP48_UI_SH1106_5btn.elf",
+      "executable": "${workspaceFolder}/bin/LPC845QFP48_UI_SH1106_5btn/debug_size/LPC845QFP48_UI_SH1106_5btn.elf",
       "request": "launch",
       "type": "cortex-debug",
       "servertype": "bmp",

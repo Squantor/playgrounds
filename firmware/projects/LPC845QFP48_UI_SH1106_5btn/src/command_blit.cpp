@@ -19,14 +19,17 @@ squLib::results blit(std::span<const char>) {
     command_console.print("5 arguments needed: x, y, width, height, pattern\n");
     return squLib::results::error;
   }
-  std::int32_t x, y, width, height, pattern;
+  std::int32_t x{0}, y{0}, width{0}, height{0}, pattern{0};
   command_values.pop(pattern);
   command_values.pop(height);
   command_values.pop(width);
   command_values.pop(y);
   command_values.pop(x);
   bitmap_buffer.fill(static_cast<std::uint32_t>(pattern));
-  libmcu::bitmap::Bitmap bitmap(bitmap_buffer.data(),libmcu::bitmap::Bitmap_size{static_cast<libmcu::bitmap::Bitmap_coord>(width), static_cast<libmcu::bitmap::Bitmap_coord>(height)}, 1);
+  libmcu::bitmap::Bitmap bitmap(bitmap_buffer.data(),
+                                libmcu::bitmap::Bitmap_size{static_cast<libmcu::bitmap::Bitmap_coord>(width),
+                                                            static_cast<libmcu::bitmap::Bitmap_coord>(height)},
+                                1);
   ui_display.blit(x, y, bitmap.as_const());
   ui_display.flip();
   return squLib::results::ok;

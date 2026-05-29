@@ -19,7 +19,7 @@ squLib::results block(std::span<const char> commandLine) {
     command_console.print("Needs 4 elements from top to bottom: pattern, length, column, row\n");
     return squLib::results::error;
   }
-  std::int32_t col, row, length, pattern;
+  std::int32_t col{0}, row{0}, length{0}, pattern{0};
   command_values.pop(pattern);
   command_values.pop(length);
   command_values.pop(col);
