@@ -19,6 +19,9 @@
 #include <screen_second.hpp>
 #include <screen_menu.hpp>
 #include <menu_item.hpp>
+#include <menu_item_value_dummy.hpp>
+#include <menu_item_exit.hpp>
+#include <menu_item_contrast.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
@@ -27,12 +30,14 @@ squLib::commandlineSimple<40, command_console, command_interpreter> command_line
 
 Buttons buttons{0xFF, event_dispatcher};
 
-Menu_item first_menu_item("First");
-Menu_item second_menu_item("Second");
-Menu_item third_menu_item("Third");
-Menu_item exit_menu("Exit");
+Menu_item_contrast contrast_menu_item;
+Menu_item_value_dummy first_menu_item(Menu_item_type::value, "First", 1);
+Menu_item_value_dummy second_menu_item(Menu_item_type::value, "Second", 2);
+Menu_item_value_dummy third_menu_item(Menu_item_type::value, "Third", 3);
+Menu_item_exit exit_menu;
 
-std::array<Menu_item* const, 4> menu_items = {&first_menu_item, &second_menu_item, &third_menu_item, &exit_menu};
+std::array<Menu_item* const, 5> menu_items = {&contrast_menu_item, &first_menu_item, &second_menu_item, &third_menu_item,
+                                              &exit_menu};
 
 Main_screen<application_display> main_screen;
 Second_screen<application_display> second_screen;

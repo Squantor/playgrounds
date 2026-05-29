@@ -11,17 +11,24 @@
 #ifndef MENU_ITEM_HPP
 #define MENU_ITEM_HPP
 
+#include <span>
+
+enum class Menu_item_type : std::uint8_t {
+  value, /*!< value item */
+  exit,  /*!< exit item */
+};
+
 class Menu_item {
  public:
-  Menu_item(const char *menu_item_name) : name(menu_item_name) {}
-  // button handler for increment/modify value
-  // get menu item string
-  const char *get_name() {
-    return name;
-  }
+  [[nodiscard]] virtual Menu_item_type get_type() const noexcept = 0;
+
+  [[nodiscard]] virtual const char *render(std::span<char> buffer) const noexcept = 0;
+
+  virtual void increment() noexcept = 0;
+
+  virtual void decrement() noexcept = 0;
 
  private:
-  const char *name;
 };
 
 #endif
