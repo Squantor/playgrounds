@@ -5,6 +5,11 @@
  * For conditions of distribution and use, see LICENSE file
  * @file mregel.hpp
  * @brief Mregel class definitions
+ * @todo Add Justification enum to be used by Hex and Dec definitions and variants
+ * @todo Add Hex definition that will add 0x prefix to the hex value
+ * @todo Add Hex definition that will add h suffix to the hex value
+ * @todo Add Dec definition that will limit the string size right justified
+ * @todo Add Dec definition that will limit the string size left justified
  */
 #ifndef MREGEL_HPP
 #define MREGEL_HPP
@@ -15,26 +20,31 @@
  * @brief Defines a hex value, used to convert a hex value to a string
  */
 struct Hex {
-  std::uint32_t v;
+  std::uint32_t v; /*!< Hex value to convert */
 };
 /**
  * @brief Defines a decimal value, used to convert a decimal value to a string
  */
 struct Dec {
-  std::int32_t v;
+  std::int32_t v; /*!< Decimal value to convert */
 };
-/**
- * @brief
- */
 namespace detail {
 const char hextab[] = "0123456789ABCDEF"; /*!< Hexadecimal digits table */
 }
+/**
+ * @brief Class that provides a minimal string data store
+ * @todo Let add methods return amount of characters added to string?
+ */
 class Mregel {
  public:
   /**
    * @brief Default empty constructor
    */
   Mregel() : mregel_data(std::span<char>()), mregel_data_size(0) {}
+  /**
+   * @brief Construct a new Mregel object with a non owning data store
+   * @param data data store to use
+   */
   Mregel(std::span<char> data) : mregel_data(data), mregel_data_size(0) {}
   // constructor for initializing the span
   /**
@@ -52,6 +62,7 @@ class Mregel {
     if (mregel_data.size() == 0) {
       return 0;
     }
+    // subtract one to keep compatibility with C strings
     return mregel_data.size() - 1;
   }
   /**
@@ -63,7 +74,6 @@ class Mregel {
   }
   /**
    * @brief Reset Mregel size
-   *
    */
   constexpr void reset() noexcept {
     mregel_data_size = 0;

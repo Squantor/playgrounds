@@ -6,14 +6,14 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "make clean && make -ftests.mak clean",
+      "command": "make clean",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "check",
       "type": "shell",
-      "command": "make check && make -ftests.mak check",
+      "command": "make check",
       "group": "build",
       "problemMatcher": "$gcc"
     },
