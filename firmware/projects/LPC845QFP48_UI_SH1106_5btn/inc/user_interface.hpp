@@ -16,72 +16,62 @@
 #include <cstdint>
 #include "display.hpp"
 #include "event_dispatch.hpp"
+#include "user_interface_screen.hpp"
+#include "user_interface_actions.hpp"
+#include "user_interface_events.hpp"
 
-/**
- * @brief User interface forward declaration
- * @tparam Button_enum Enumeration used for button events
- */
-template <typename Button_enum>
-struct User_interface;
-
-template <typename Button_enum>
-struct User_interface_screen {
-  /**
-   * @brief Sets up the screen with the user interface
-   */
-  virtual void setup(User_interface<Button_enum> *) = 0;
-  /**
-   * @brief Handles button events, only called when screen is active
-   */
-  virtual void handle_button(Button_enum) = 0;
-  /**
-   * @brief Activates the screen
-   */
-  virtual void activate() = 0;
-  /**
-   * @brief Deactivates the screen
-   */
-  virtual void deactivate() = 0;
-};
-
-template <typename Button_enum>
+template <typename Button_enum, typename User_interface_event_enum>
 struct User_interface : public Event_handler {
-  User_interface(std::span<User_interface_screen<Button_enum> *> application_screens)
+  User_interface(std::span<User_interface_screen<User_interface_events>*> application_screens)
     : current_screen_index(0), screens(application_screens) {}
 
   void init() {
-    for (auto &screen : screens) {
-      screen->setup(this);
-    }
     screens[current_screen_index]->activate();
   }
 
   void handle_event(Event_data event) override {
-    if (event.event != Events::Button) {
+    User_interface_event_enum interface_event = User_interface_events::none;
+    if (event.event == Events::Button) {
+      switch (event.button) {
+        case Button_enum::Button0Down:
+          interface_event = User_interface_events::left_button_pressed;
+          break;
+        case Button_enum::Button1Down:
+          interface_event = User_interface_events::enter_button_pressed;
+          break;
+        case Button_enum::Button2Down:
+          interface_event = User_interface_events::right_button_pressed;
+          break;
+        default:
+          break;
+      }
+    } else {
       return;
     }
-    screens[current_screen_index]->handle_button(event.button);
-  }
 
-  void next_screen() {
-    if ((current_screen_index + 1) < screens.size()) {
+    User_interface_actions action = screens[current_screen_index]->handle_event(interface_event);
+    if (action == User_interface_actions::previous_screen) {
       screens[current_screen_index]->deactivate();
-      current_screen_index++;
+      if (current_screen_index > 0) {
+        current_screen_index--;
+      } else {
+        current_screen_index = screens.size() - 1;
+      }
       screens[current_screen_index]->activate();
-    }
-  }
-
-  void previous_screen() {
-    if (current_screen_index > 0) {
+    } else if (action == User_interface_actions::next_screen) {
       screens[current_screen_index]->deactivate();
-      current_screen_index--;
+      if ((current_screen_index + 1) < screens.size()) {
+        current_screen_index++;
+      } else {
+        current_screen_index = 0;
+      }
       screens[current_screen_index]->activate();
     }
   }
 
  private:
   std::size_t current_screen_index;
-  std::span<User_interface_screen<Button_enum> *> screens;
+  std::span<User_interface_screen<User_interface_events>*> screens;
 };
 
 #endif

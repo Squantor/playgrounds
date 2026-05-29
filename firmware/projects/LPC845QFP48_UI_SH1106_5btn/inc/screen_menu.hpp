@@ -12,6 +12,7 @@
 #define SCREEN_MENU_HPP
 
 #include "event_handler.hpp"
+#include "user_interface_events.hpp"
 #include "user_interface.hpp"
 #include "mid/gfx_display.hpp"
 #include "application_font.hpp"
@@ -32,20 +33,18 @@ enum class Menu_screen_state : std::uint8_t {
  * @tparam &display
  */
 template <auto &display>
-class Menu_screen : public User_interface_screen<Button>, public Event_handler {
+class Menu_screen : public User_interface_screen<User_interface_events>, public Event_handler {
  public:
-  Menu_screen(std::span<Menu_item *const> menu_items)
-    : state(detail::Menu_screen_state::inactive), user_interface(nullptr), items(menu_items) {}
-  void setup(User_interface<Button> *current_user_interface) override {
-    user_interface = current_user_interface;
-  }
-  void handle_button(Button button) override {
-    switch (button) {
-      case Button::Button1Down:
+  Menu_screen(std::span<Menu_item *const> menu_items) : state(detail::Menu_screen_state::inactive), items(menu_items) {}
+
+  User_interface_actions handle_event(User_interface_events event) override {
+    User_interface_actions action = User_interface_actions::none;
+
+    switch (event) {
+      case User_interface_events::enter_button_pressed:
         if (state == detail::Menu_screen_state::active) {
           state = detail::Menu_screen_state::selecting;
         } else if (state == detail::Menu_screen_state::selecting) {
-          // logic for entering exit item
           if (items[item_index]->get_type() == Menu_item_type::exit) {
             state = detail::Menu_screen_state::active;
           } else {
@@ -54,12 +53,10 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
         } else if (state == detail::Menu_screen_state::entered) {
           state = detail::Menu_screen_state::selecting;
         }
-
         break;
-
-      case Button::Button0Down:
+      case User_interface_events::left_button_pressed:
         if (state == detail::Menu_screen_state::active) {
-          user_interface->previous_screen();
+          action = User_interface_actions::previous_screen;
         } else if (state == detail::Menu_screen_state::selecting) {
           if (item_index > 0) {
             item_index--;
@@ -70,10 +67,9 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
           items[item_index]->decrement();
         }
         break;
-
-      case Button::Button2Down:
+      case User_interface_events::right_button_pressed:
         if (state == detail::Menu_screen_state::active) {
-          user_interface->next_screen();
+          action = User_interface_actions::next_screen;
         } else if (state == detail::Menu_screen_state::selecting) {
           if (item_index < items.size() - 1) {
             item_index++;
@@ -84,13 +80,12 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
           items[item_index]->increment();
         }
         break;
-
       default:
-        command_console.print("Main screen: Unhandled button event\n");
-        return;
         break;
     }
+
     render();
+    return action;
   }
   void activate() override {
     state = detail::Menu_screen_state::active;
@@ -138,7 +133,6 @@ class Menu_screen : public User_interface_screen<Button>, public Event_handler {
   }
   detail::Menu_screen_state state;
   std::size_t item_index;
-  User_interface<Button> *user_interface;
   std::span<Menu_item *const> items;
 };
 

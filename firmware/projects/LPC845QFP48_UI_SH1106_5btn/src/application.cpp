@@ -22,6 +22,7 @@
 #include <menu_item_value_dummy.hpp>
 #include <menu_item_exit.hpp>
 #include <menu_item_contrast.hpp>
+#include <user_interface_events.hpp>
 
 squLib::console<usart_peripheral> command_console;
 squLib::commandValueStack<8, command_console> command_values;
@@ -43,8 +44,8 @@ Main_screen<application_display> main_screen;
 Second_screen<application_display> second_screen;
 Menu_screen<application_display> menu_screen(menu_items);
 
-std::array<User_interface_screen<Button>*, 3> screens = {&main_screen, &second_screen, &menu_screen};
-User_interface<Button> user_interface{screens};
+std::array<User_interface_screen<User_interface_events>*, 3> screens = {&main_screen, &second_screen, &menu_screen};
+User_interface<Button, User_interface_events> user_interface{screens};
 
 ButtonHandler button_handler;
 std::array<const EventHandlerPair, 3> event_handlers = {

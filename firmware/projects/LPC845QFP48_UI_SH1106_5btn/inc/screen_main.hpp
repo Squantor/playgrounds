@@ -11,6 +11,7 @@
 #ifndef SCREEN_MAIN_HPP
 #define SCREEN_MAIN_HPP
 
+#include "user_interface_events.hpp"
 #include "event_handler.hpp"
 #include "user_interface.hpp"
 #include "mid/gfx_display.hpp"
@@ -18,37 +19,23 @@
 #include "LPC845QFP48_UI_SH1106_5btn.hpp"
 
 template <auto &display>
-class Main_screen : public User_interface_screen<Button>, public Event_handler {
+class Main_screen : public User_interface_screen<User_interface_events>, public Event_handler {
  public:
-  Main_screen() : entry_count(0), seconds(0), user_interface(nullptr) {}
-  void setup(User_interface<Button> *current_user_interface) override {
-    user_interface = current_user_interface;
-  }
-  void handle_button(Button button) override {
-    switch (button) {
-      case Button::Button1Down:
+  Main_screen() : entry_count(0), seconds(0) {}
+  User_interface_actions handle_event(User_interface_events event) override {
+    User_interface_actions action = User_interface_actions::none;
+    switch (event) {
+      case User_interface_events::left_button_pressed:
+        action = User_interface_actions::previous_screen;
         break;
-      case Button::Button1Up:
+      case User_interface_events::right_button_pressed:
+        action = User_interface_actions::next_screen;
         break;
-
-      case Button::Button0Down:
-        user_interface->previous_screen();
-        break;
-      case Button::Button0Up:
-        break;
-
-      case Button::Button2Down:
-        user_interface->next_screen();
-        break;
-      case Button::Button2Up:
-        break;
-
       default:
-        command_console.print("Main screen: Unhandled button event\n");
-        return;
         break;
     }
     render();
+    return action;
   }
   void activate() override {
     is_active = true;
@@ -84,7 +71,6 @@ class Main_screen : public User_interface_screen<Button>, public Event_handler {
   }
   std::size_t entry_count;
   std::size_t seconds = 0;
-  User_interface<Button> *user_interface;
   bool is_active;
 };
 

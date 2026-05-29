@@ -12,37 +12,34 @@
 #define SCREEN_SECOND_HPP
 
 #include "event_handler.hpp"
+#include "user_interface_events.hpp"
 #include "user_interface.hpp"
 #include "mid/gfx_display.hpp"
 #include "application_font.hpp"
 
 template <auto &display>
-class Second_screen : public User_interface_screen<Button>, public Event_handler {
+class Second_screen : public User_interface_screen<User_interface_events>, public Event_handler {
  public:
-  Second_screen() : entry_count(0), event_count(0), enter_count(0), user_interface(nullptr) {}
-  void setup(User_interface<Button> *current_user_interface) override {
-    user_interface = current_user_interface;
-  }
-  void handle_button(Button button) override {
-    switch (button) {
-      case Button::Button1Down:
+  Second_screen() : entry_count(0), event_count(0), enter_count(0) {}
+
+  User_interface_actions handle_event(User_interface_events event) override {
+    User_interface_actions action = User_interface_actions::none;
+
+    switch (event) {
+      case User_interface_events::enter_button_pressed:
         enter_count++;
         break;
-
-      case Button::Button0Down:
-        user_interface->previous_screen();
+      case User_interface_events::left_button_pressed:
+        action = User_interface_actions::previous_screen;
         break;
-
-      case Button::Button2Down:
-        user_interface->next_screen();
+      case User_interface_events::right_button_pressed:
+        action = User_interface_actions::next_screen;
         break;
-
       default:
-        command_console.print("Main screen: Unhandled button\n");
-        return;
         break;
     }
     render();
+    return action;
   }
   void activate() override {
     is_active = true;
@@ -72,7 +69,6 @@ class Second_screen : public User_interface_screen<Button>, public Event_handler
   std::size_t entry_count;
   std::size_t event_count;
   std::size_t enter_count;
-  User_interface<Button> *user_interface;
   bool is_active;
 };
 
