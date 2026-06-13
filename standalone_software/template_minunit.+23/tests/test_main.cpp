@@ -1,12 +1,11 @@
-/*
-SPDX-License-Identifier: MIT
-
-Copyright (c) 2025 Bart Bilos
-For conditions of distribution and use, see LICENSE file
-*/
 /**
- * \file main.cpp
- * Main entrypoint for executing minunit tests
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2025 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ *
+ * @file test_main.cpp
+ * @brief Main entrypoint for executing minunit tests
  */
 #include <cstdio>
 #include <minunit.h>
@@ -15,14 +14,14 @@ For conditions of distribution and use, see LICENSE file
  * @brief reports message when a test fails
  * @param message failure message
  */
-void MinunitReport(const char *message) {
+void minunit_report(const char *message) {
   printf("%s", message);
 }
 
 /**
  * @brief callback initiated when a test fails
  */
-void MinunitFailCallback(void) {}
+void minunit_fail_callback(void) {}
 
 /**
  * @brief main entrypoint
