@@ -8,6 +8,7 @@
 
 CSOURCES := $(wildcard tests/*.c)
 CPPSOURCES := $(wildcard tests/*.cpp)
+CPPSOURCES += cobs.cpp
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I. -Itests
 TARGET = COBS_tests

@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/COBS_tests.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,

@@ -6,32 +6,28 @@
  *
  * @file cobs.hpp
  * @brief COBS encoder/decoder definitions
+ * @note Based on the code from wikipedia.org
  */
 #ifndef COBS_HPP
 #define COBS_HPP
 
 #include <cstdint>
-#include <array>
+#include <span>
 
 /**
- * @brief COBS encoder/decoder
+ * @brief Encodes data using COBS
+ * @param dst Where to put encoded data
+ * @param src Decoded data to encode
+ * @return Encoded buffer length in bytes
  */
-class Cobs {
- public:
-  /**
-   * @brief COBS encoder/decoder constructor
-   */
-  Cobs() : index(0) {}
-  /**
-   * @brief Reset COBS encoder/decoder
-   */
-  void reset(void) {
-    index = 0;
-  }
+std::size_t cobs_encode(std::span<uint8_t> dst, std::span<const uint8_t> src);
 
- private:
-  std::size_t index;
-  std::array<std::uint8_t, 256> data;
-};
+/**
+ * @brief Decodes data using COBS
+ * @param dst Where to put decoded data
+ * @param src Encoded data to decode
+ * @return std::size_t 
+ */
+std::size_t cobs_decode(std::span<uint8_t> dst, std::span<const uint8_t> src);
 
 #endif
