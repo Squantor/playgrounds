@@ -66,3 +66,9 @@ plots-*/
 
 #cortex debug temporaries
 .cortex-debug*
+
+# gcov temporaries
+*.gcda
+*.gcno
+*.css
+*.html

@@ -2,7 +2,7 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260403
+# Version: 20260623
 #
 # Mini project makefile for mixed C and C++ projects
 
@@ -14,26 +14,39 @@ TARGET = minunit_C++23_tests
 CC = gcc
 CPP = g++
 SIZE = size
-DEBUG = -g3 -O0
-RELEASE = -g3 -Os
-BUILD ?= DEBUG
-CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-CPPWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CPPFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CPPWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-LDLIBS := -lm
-CHECKFLAGS := -header-filter='.*'
+DEBUG_CFLAGS = -g3 -O0
+RELEASE_CFLAGS = -g3 -Os -flto
+RELEASE_LFLAGS = -flto
+COVERAGE_CFLAGS = -g0 -O0 --coverage
+COVERAGE_LFLAGS = --coverage
+CWARNINGS = -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS = -std=c2x $($(BUILD)_CFLAGS) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CPPWARNINGS = -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CPPFLAGS = -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)_CFLAGS) $(CPPWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+LDLIBS = -lm
+LDFLAGS = $($(BUILD)_LFLAGS) $(LDLIBS) -fsanitize=undefined
+CHECKFLAGS = -header-filter='.*'
 
 SOURCES := $(CSOURCES) $(CPPSOURCES)
 OBJECTS := $(addsuffix .o,$(SOURCES))
+COVOBJ := $(addsuffix .gcno,$(SOURCES)) $(addsuffix .gcda,$(SOURCES)) coverage.*
 DEPS := $(patsubst %.o,%.d,$(OBJECTS))
 EXECUTABLE := $(TARGET).elf
 
 .PHONY: all
+all: BUILD=DEBUG
 all: $(EXECUTABLE)
 
+.PHONY: debug
+debug: BUILD=DEBUG
+debug: clean $(EXECUTABLE)
+
+.PHONY: release
+release: BUILD=RELEASE
+release: clean $(EXECUTABLE)
+
 .PHONY: run
-run: $(EXECUTABLE)
+run: all
 	./$(EXECUTABLE)
 
 .PHONY: check
@@ -45,8 +58,17 @@ ifneq ($(CPPSOURCES),)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
 endif
 
+.PHONY: coverage
+coverage: BUILD=COVERAGE
+coverage: clean $(EXECUTABLE)
+	./$(EXECUTABLE)
+	gcovr -r . \
+		--exclude tests/ \
+		--html-details coverage.html
+
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CPP) $(OBJECTS) -o $@ $(LDLIBS)
+	@echo This build is a $(BUILD) build
+	$(CPP) $(OBJECTS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
 
 %.c.o: %.c
@@ -57,7 +79,7 @@ $(EXECUTABLE): $(OBJECTS) makefile
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE)
+	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE) $(COVOBJ)
 
 -include $(DEPS)
 

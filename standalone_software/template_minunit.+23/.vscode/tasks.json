@@ -20,14 +20,14 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "compiledb make -j25",
+      "command": "compiledb make -j25 debug",
       "group": "build",
       "problemMatcher": "$gcc"
     },
     {
       "label": "build tests",
       "type": "shell",
-      "command": "compiledb make -ftests.mak -j25",
+      "command": "compiledb make -ftests.mak -j25 debug",
       "group": "build",
       "problemMatcher": "$gcc"
     },
