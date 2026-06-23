@@ -45,7 +45,7 @@ MINUNIT_ADD(minunitTestSetupFunc, minunitTestSetup, minunitTestTeardown)
 /**
  * \brief helper function to test automatic failure
  */
-void TestBodyMinUnitFail(MinunitState *test_results)
+void testbody_minunit_fail(Minunit_state *test_results)
 {
    MINUNIT_FAIL();
 }
@@ -55,12 +55,12 @@ void TestBodyMinUnitFail(MinunitState *test_results)
  */
 MINUNIT_ADD(minunitTestmutestFail, NULL, NULL)
 {
-   MinunitState local_state;
+   Minunit_state local_state;
    local_state.executed = 0;
    local_state.checks = 0;
    local_state.failures = 0;
    local_state.flag_fail = 0;
-   TestBodyMinUnitFail(&local_state);
+   testbody_minunit_fail(&local_state);
    MINUNIT_CHECK(local_state.executed == 0);
    MINUNIT_CHECK(local_state.checks == 1);
    MINUNIT_CHECK(local_state.failures == 0);
@@ -70,7 +70,7 @@ MINUNIT_ADD(minunitTestmutestFail, NULL, NULL)
 /**
  * \brief helper function to test passing mutest check
  */
-void TestBodyMinUnitCheckFail(MinunitState *test_results)
+void testbody_minunit_check_fail(Minunit_state *test_results)
 {
    MINUNIT_CHECK(1 == 0);
 }
@@ -80,12 +80,12 @@ void TestBodyMinUnitCheckFail(MinunitState *test_results)
  */
 MINUNIT_ADD(minunitTestCheckFail, NULL, NULL)
 {
-   MinunitState local_state;
+   Minunit_state local_state;
    local_state.executed = 0;
    local_state.checks = 0;
    local_state.failures = 0;
    local_state.flag_fail = 0;
-   TestBodyMinUnitCheckFail(&local_state);
+   testbody_minunit_check_fail(&local_state);
    MINUNIT_CHECK(local_state.executed == 0);
    MINUNIT_CHECK(local_state.checks == 1);
    MINUNIT_CHECK(local_state.failures == 0);
@@ -95,7 +95,7 @@ MINUNIT_ADD(minunitTestCheckFail, NULL, NULL)
 /**
  * \brief helper function to test passing mutest check
  */
-void TestBodyMinUnitCheckPass(MinunitState *test_results)
+void testbody_minunit_check_pass(Minunit_state *test_results)
 {
    MINUNIT_CHECK(1 == 1);
 }
@@ -105,12 +105,12 @@ void TestBodyMinUnitCheckPass(MinunitState *test_results)
  */
 MINUNIT_ADD(minunitTestCheckPass, NULL, NULL)
 {
-   MinunitState local_state;
+   Minunit_state local_state;
    local_state.executed = 0;
    local_state.checks = 0;
    local_state.failures = 0;
    local_state.flag_fail = 0;
-   TestBodyMinUnitCheckPass(&local_state);
+   testbody_minunit_check_pass(&local_state);
    MINUNIT_CHECK(local_state.executed == 0);
    MINUNIT_CHECK(local_state.checks == 1);
    MINUNIT_CHECK(local_state.failures == 0);
