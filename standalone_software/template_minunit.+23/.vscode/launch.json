@@ -8,7 +8,7 @@
       "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/minunit_C++23.elf",
+      "program": "${workspaceFolder}/build/DEBUG/minunit_C++23.elf",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
@@ -27,13 +27,13 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build",
+      "preLaunchTask": "build debug",
     },
     {
       "name": "debug tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/minunit_C++23_tests.elf",
+      "program": "${workspaceFolder}/build/DEBUG/minunit_C++23_tests.elf",
       "args": [],
       "stopAtEntry": true,
       "cwd": "${workspaceFolder}",

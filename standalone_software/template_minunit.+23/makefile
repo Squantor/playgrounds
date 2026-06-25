@@ -2,10 +2,11 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260623
+# Version: 20260624
 #
 # Mini project makefile for mixed C and C++ projects
 
+BUILD ?= RELEASE
 CSOURCES := $(wildcard *.c)
 CPPSOURCES := $(wildcard *.cpp)
 DEFINES := -DMINUNIT_MAX_TESTS=100
@@ -25,22 +26,25 @@ LDLIBS = -lm
 LDFLAGS = $($(BUILD)_LFLAGS) $(LDLIBS) -fsanitize=undefined
 CHECKFLAGS = -header-filter='.*'
 
+BUILDDIR := build
+MAKEFILE_NAME := $(lastword $(MAKEFILE_LIST))
+OBJDIR = $(BUILDDIR)/$(BUILD)
 SOURCES := $(CSOURCES) $(CPPSOURCES)
-OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(patsubst %.o,%.d,$(OBJECTS))
-EXECUTABLE := $(TARGET).elf
+OBJECTS = $(addprefix $(OBJDIR)/,$(addsuffix .o,$(SOURCES)))
+
+DEPS = $(OBJECTS:.o=.d)
+EXECUTABLE := $(OBJDIR)/$(TARGET).elf
 
 .PHONY: all
-all: BUILD=DEBUG
 all: $(EXECUTABLE)
 
 .PHONY: debug
-debug: BUILD=DEBUG
-debug: clean $(EXECUTABLE)
+debug:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=DEBUG all
 
 .PHONY: release
-release: BUILD=RELEASE
-release: clean $(EXECUTABLE)
+release:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=RELEASE all
 
 .PHONY: run
 run: all
@@ -60,15 +64,17 @@ $(EXECUTABLE): $(OBJECTS) makefile
 	$(CPP) $(OBJECTS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
 
-%.c.o: %.c
+$(OBJDIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.cpp.o: %.cpp
+$(OBJDIR)/%.cpp.o: %.cpp
+	mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE)
+	rm -rf $(BUILDDIR)
 
 -include $(DEPS)
 
@@ -77,4 +83,3 @@ clean:
 # Useful for debugging
 .PHONY: print-%
 print-%: ; @echo $*=$($*)
-
