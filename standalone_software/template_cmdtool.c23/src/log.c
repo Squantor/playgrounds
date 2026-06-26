@@ -57,3 +57,13 @@ void log_log(Log_level level, const char *file, int line, const char *fmt, ...)
     }
   }
 }
+
+int print_stdout(const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  int ret = vsnprintf(log_line, sizeof(log_line), fmt, args);
+  va_end(args);
+  stdout_output(log_line);
+  return ret;
+}

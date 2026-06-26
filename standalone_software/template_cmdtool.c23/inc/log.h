@@ -29,10 +29,12 @@ typedef enum {
 #define LOG_FATAL(...) log_log(LOG_FATAL, __FILE__, __LINE__, __VA_ARGS__)
 /* Log a message */
 void log_log(Log_level Log_level, const char *file, int line, const char *fmt,
-             ...);
+             ...) __attribute__((format(printf, 4, 5)));
 /* Initialize the logger */
 void log_init(void);
 /* Set the logging level */
 void log_set_level(Log_level Log_level);
+/* Print a message to stdout */
+int print_stdout(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 #endif

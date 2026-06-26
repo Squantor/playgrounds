@@ -6,9 +6,6 @@
  *
  * @file par_arg.c
  * @brief Tests for commandline argument parser
- * @todo test logging on with no level should error
- * @todo test logging on with invalid level should error
- * @todo test command which is an option without a minus in front
  */
 #include "log.h"
 #include "stdout_stub.h"
@@ -16,7 +13,7 @@
 #include <string.h>
 
 static const char *output_info_line =
-    "   INFO:         tests/log.c:  37: This is a test log line";
+    "   INFO:         tests/log.c:  34: This is a test log line";
 
 MINUNIT_SETUP(log_setup)
 {
