@@ -6,12 +6,13 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  * @file program.h
- * @brief Program wide state structure
+ * @brief Main program declarations
  */
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
 #include "log.h"
+#include "results.h"
 
 typedef enum {
   P_OP_NONE = 0,    /*!< No program operation */
@@ -23,5 +24,8 @@ typedef enum {
 typedef struct {
   Program_operation operation; /*!< Program operation */
 } Program_state;
+
+/* Main program operation to execute */
+Result program(Program_state *state);
 
 #endif

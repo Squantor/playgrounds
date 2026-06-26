@@ -4,8 +4,8 @@
  * Copyright (c) 2026 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  *
- * @file par_arg.c
- * @brief Tests for commandline argument parser
+ * @file log.c
+ * @brief Tests for simple logger
  */
 #include "log.h"
 #include "stdout_stub.h"

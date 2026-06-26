@@ -5,7 +5,7 @@ Copyright (c) 2025 Bart Bilos
 For conditions of distribution and use, see LICENSE file
 */
 /**
- * \file main.cpp
+ * \file main.c
  * Main entrypoint for executing minunit tests
  */
 #include <minunit.h>
