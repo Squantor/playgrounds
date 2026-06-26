@@ -33,7 +33,7 @@ void log_set_level(Log_level Log_level)
 }
 
 /* Overridable log output function */
-__attribute__((weak)) void log_output(const char *)
+__attribute__((weak)) void stdout_output(const char *)
 {
 }
 
@@ -53,7 +53,7 @@ void log_log(Log_level level, const char *file, int line, const char *fmt, ...)
       va_start(args, fmt);
       vsnprintf(log_line + stamplen, sizeof(log_line) - stamplen, fmt, args);
       va_end(args);
-      log_output(log_line);
+      stdout_output(log_line);
     }
   }
 }

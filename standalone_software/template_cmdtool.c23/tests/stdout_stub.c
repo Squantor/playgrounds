@@ -7,23 +7,23 @@
  * @file log_out_stub.c
  * @brief Log output stub definition used for unittests
  */
-#include "log_out_stub.h"
+#include "stdout_stub.h"
 #include "log.h"
 #include <memory.h>
 
 static char log_line_stub_buffer[LOG_LINE_SIZE];
 
-void log_out_stub_init(void)
+void stdout_stub_init(void)
 {
   memset(log_line_stub_buffer, 0, sizeof(log_line_stub_buffer));
 }
 
-void log_output(const char *str)
+void stdout_output(const char *str)
 {
   memcpy(log_line_stub_buffer, str, strlen(str));
 }
 
-char *log_out_stub_get(void)
+char *stdout_stub_get(void)
 {
   return log_line_stub_buffer;
 }
