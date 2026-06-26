@@ -22,7 +22,6 @@ typedef enum {
 
 typedef struct {
   Program_operation operation; /*!< Program operation */
-  Log_level log_level;         /*!< Logging level */
 } Program_state;
 
 #endif

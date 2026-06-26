@@ -8,9 +8,10 @@
  * @brief Commandline argument parser
  */
 #include "par_arg.h"
+#include "log.h"
 #include "program.h"
 #include "results.h"
-// #include "types.h"
+#include "types.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -80,11 +81,16 @@ Result parse_program_arguments(int argc, char *argv[], Program_state *state)
       } else if (*p == 'L') {
         p++;
         if (*p >= '0' && *p <= '5') {
-          state->log_level = (*p - '0');
+          log_set_level(*p - '0');
         } else {
           arg_parse_state = ARG_PARSE_ERR;
           continue;
         }
+        // add more options here
+      } else {
+        LOG_FATAL("Unknown option %c", *p);
+        arg_parse_state = ARG_PARSE_ERR;
+        continue;
       }
       p++;
     }

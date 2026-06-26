@@ -24,12 +24,17 @@ static struct {
 
 void log_init(void)
 {
-  Log_state.log_level = LOG_WARNING;
+  Log_state.log_level = LOGVAL_WARNING;
 }
 
 void log_set_level(Log_level Log_level)
 {
   Log_state.log_level = Log_level;
+}
+
+Log_level log_get_level(void)
+{
+  return Log_state.log_level;
 }
 
 /* Overridable log output function */

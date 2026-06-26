@@ -30,7 +30,7 @@ MINUNIT_ADD(log_info_line_ignored, log_setup, nullptr)
 
 MINUNIT_ADD(log_info_line_written, log_setup, nullptr)
 {
-  log_set_level(LOG_INFO);
+  log_set_level(LOGVAL_INFO);
   LOG_INFO("This is a test log line");
   MINUNIT_CHECK(strcmp(stdout_stub_get(), output_info_line) == 0);
 }
