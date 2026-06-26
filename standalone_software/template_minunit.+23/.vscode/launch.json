@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/DEBUG/minunit_C++23.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,

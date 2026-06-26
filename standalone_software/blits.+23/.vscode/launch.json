@@ -8,7 +8,7 @@
       "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/blits_tests.elf",
+      "program": "${workspaceFolder}/build/DEBUG/blits_tests.elf",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

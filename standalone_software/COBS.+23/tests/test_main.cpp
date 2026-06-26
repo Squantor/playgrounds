@@ -4,7 +4,7 @@
  * Copyright (c) 2025 Bart Bilos
  * For conditions of distribution and use, see LICENSE file
  *
- * @file main.cpp
+ * @file test_main.cpp
  * @brief Main entrypoint for executing minunit tests
  */
 #include <cstdio>

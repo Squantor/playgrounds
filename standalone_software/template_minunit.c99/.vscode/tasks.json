@@ -18,18 +18,49 @@
       "problemMatcher": "$gcc"
     },
     {
-      "label": "build minunit C99 template",
+      "label": "build",
       "type": "shell",
       "command": "compiledb make -j25",
       "group": "build",
-      "problemMatcher": "$gcc"
+      "problemMatcher": "$gcc",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
     },
     {
-      "label": "build minunit C99 tests",
+      "label": "build debug",
       "type": "shell",
-      "command": "compiledb make -ftests.mak -j25",
+      "command": "compiledb make -j25 debug",
       "group": "build",
-      "problemMatcher": "$gcc"
+      "problemMatcher": "$gcc",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+    },
+    {
+      "label": "build tests",
+      "type": "shell",
+      "command": "compiledb make -ftests.mak -j25 debug",
+      "group": "build",
+      "problemMatcher": "$gcc",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
     },
   ]
 }

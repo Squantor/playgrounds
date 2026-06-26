@@ -5,12 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug minunit C99 template",
+      "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_minunit_c99.elf",
+      "program": "${workspaceFolder}/build/DEBUG/template_minunit_c99.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
@@ -27,15 +27,15 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C99 template",
+      "preLaunchTask": "build debug",
     },
     {
-      "name": "debug minunit C99 tests",
+      "name": "debug tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_minunit_c99_tests.elf",
+      "program": "${workspaceFolder}/build/DEBUG/template_minunit_c99_tests.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
@@ -52,7 +52,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C99 tests",
+      "preLaunchTask": "build tests",
     },
   ]
 }

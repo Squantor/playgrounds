@@ -8,7 +8,7 @@
       "name": "debug bitmap tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/bitmap.elf",
+      "program": "${workspaceFolder}/build/DEBUG/bitmap_tests.elf",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

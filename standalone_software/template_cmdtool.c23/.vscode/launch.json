@@ -5,12 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug commandline template",
+      "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_cmdtool_c23.elf",
-      "args": ["foo","bar"],
-      "stopAtEntry": true,
+      "program": "${workspaceFolder}/build/DEBUG/template_cmdtool_c23.elf",
+      "args": ["-?"],
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
@@ -27,15 +27,15 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C23 template",
+      "preLaunchTask": "build debug",
     },
     {
-      "name": "debug commandline template tests",
+      "name": "debug tests",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/template_cmdtool_c23_tests.elf",
+      "program": "${workspaceFolder}/build/DEBUG/template_cmdtool_c23_tests.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
@@ -52,7 +52,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit C23 tests",
+      "preLaunchTask": "build tests",
     },
   ]
 }

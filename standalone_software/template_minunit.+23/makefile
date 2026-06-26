@@ -9,7 +9,7 @@
 BUILD ?= RELEASE
 CSOURCES := $(wildcard *.c)
 CPPSOURCES := $(wildcard *.cpp)
-DEFINES := -DMINUNIT_MAX_TESTS=100
+DEFINES :=
 INCLUDES := -I.
 TARGET = minunit_C++23
 CC = gcc
@@ -83,3 +83,4 @@ clean:
 # Useful for debugging
 .PHONY: print-%
 print-%: ; @echo $*=$($*)
+

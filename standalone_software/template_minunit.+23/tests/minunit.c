@@ -14,6 +14,7 @@
  * https://github.com/ollelogdahl/ihct
  */
 #include <minunit.h>
+#include <stddef.h>
 
 Minunit_tests_table default_test_table = {0};
 

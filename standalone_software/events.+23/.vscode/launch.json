@@ -5,12 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug minunit template",
+      "name": "debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/events_C++23.elf",
+      "program": "${workspaceFolder}/build/DEBUG/events_C++23.elf",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
@@ -27,7 +27,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build minunit template",
+      "preLaunchTask": "build",
     },
   ]
 }

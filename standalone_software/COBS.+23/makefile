@@ -2,16 +2,17 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260623
+# Version: 20260624
 #
-# Mini project makefile for mixed C and C++ projects
+# Mini project makefile for mixed C and C++ tests with coverage
 
+BUILD ?= RELEASE
 CSOURCES := $(wildcard tests/*.c)
 CPPSOURCES := $(wildcard tests/*.cpp)
 CPPSOURCES += cobs.cpp
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -I. -Itests
-TARGET = minunit_C++23_tests
+TARGET = COBS_tests
 CC = gcc
 CPP = g++
 SIZE = size
@@ -28,22 +29,29 @@ LDLIBS = -lm
 LDFLAGS = $($(BUILD)_LFLAGS) $(LDLIBS) -fsanitize=undefined
 CHECKFLAGS = -header-filter='.*'
 
+BUILDDIR := build
+MAKEFILE_NAME := $(lastword $(MAKEFILE_LIST))
+OBJDIR = $(BUILDDIR)/$(BUILD)
 SOURCES := $(CSOURCES) $(CPPSOURCES)
-OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(patsubst %.o,%.d,$(OBJECTS))
-EXECUTABLE := $(TARGET).elf
+OBJECTS = $(addprefix $(OBJDIR)/,$(addsuffix .o,$(SOURCES)))
+COVOBJS = $(addsuffix .gcno,$(SOURCES)) $(addsuffix .gcda,$(SOURCES)) coverage.*
+DEPS = $(OBJECTS:.o=.d)
+EXECUTABLE := $(OBJDIR)/$(TARGET).elf
 
 .PHONY: all
 all: $(EXECUTABLE)
-all: BUILD=DEBUG
 
 .PHONY: debug
-debug: BUILD=DEBUG
-debug: clean $(EXECUTABLE)
+debug:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=DEBUG all
 
 .PHONY: release
-release: BUILD=RELEASE
-release: clean $(EXECUTABLE)
+release:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=RELEASE all
+
+.PHONY: coverage
+coverage:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=COVERAGE coverage-run
 
 .PHONY: run
 run: all
@@ -58,31 +66,27 @@ ifneq ($(CPPSOURCES),)
 	clang-tidy --config-file=.clang-tidy $(CHECKFLAGS) $(CPPSOURCES) -- $(CPPFLAGS)
 endif
 
-.PHONY: coverage
-coverage: BUILD=COVERAGE
-coverage: clean $(EXECUTABLE)
-	@echo BUILD=$(BUILD)
+.PHONY: coverage-run
+coverage-run: $(EXECUTABLE)
 	./$(EXECUTABLE)
-	gcovr -r . \
-		--exclude tests/ \
-		--html-details coverage.html
+	gcovr -r . --exclude tests/ --html-details coverage.html
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	@echo BUILD=$(BUILD)
+	@echo This build is a $(BUILD) build
 	$(CPP) $(OBJECTS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
 
-%.c.o: %.c
+$(OBJDIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.cpp.o: %.cpp
+$(OBJDIR)/%.cpp.o: %.cpp
+	mkdir -p $(dir $@)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE) coverage.*
-	-find . -name '*.gcda' -delete
-	-find . -name '*.gcno' -delete
+	rm -rf $(BUILDDIR) coverage.*
 
 -include $(DEPS)
 

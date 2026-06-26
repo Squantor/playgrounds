@@ -20,7 +20,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "compiledb make -j",
+      "command": "compiledb make -j debug",
       "group": "build",
       "presentation": {
         "echo": true,

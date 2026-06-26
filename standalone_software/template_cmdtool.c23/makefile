@@ -2,38 +2,52 @@
 # Copyright (c) 2025 Bart Bilos
 # For conditions of distribution and use, see LICENSE file
 
-# Version: 20260217
+# Version: 20260624
 #
 # Mini project makefile for mixed C and C++ projects
 
+BUILD ?= RELEASE
 CSOURCES := $(wildcard *.c)
 CPPSOURCES := $(wildcard *.cpp)
 DEFINES :=
 INCLUDES := -I.
 TARGET = template_cmdtool_c23
 CC = gcc
-CXX = g++
+CPP = g++
 SIZE = size
-DEBUG = -g3 -O0
-RELEASE = -g3 -Os
-BUILD ?= DEBUG
-CWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
-CFLAGS := -std=c2x $($(BUILD)) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-CXXWARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
-CXXFLAGS := -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)) $(CXXWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
-LDLIBS := -lm
-CHECKFLAGS := -header-filter='.*'
+DEBUG_CFLAGS = -g3 -O0
+RELEASE_CFLAGS = -g3 -Os -flto
+RELEASE_LFLAGS = -flto
+CWARNINGS = -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -Wstrict-prototypes -Wvla -fsanitize=undefined -fsanitize-trap
+CFLAGS = -std=c2x $($(BUILD)_CFLAGS) $(CWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+CPPWARNINGS = -Wall -Wextra -Wpedantic -Wconversion -Wdouble-promotion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap
+CPPFLAGS = -std=c++20 -fno-rtti -fno-exceptions $($(BUILD)_CFLAGS) $(CPPWARNINGS) $(INCLUDES) $(DEFINES) -MMD -MP
+LDLIBS = -lm
+LDFLAGS = $($(BUILD)_LFLAGS) $(LDLIBS) -fsanitize=undefined
+CHECKFLAGS = -header-filter='.*'
 
+BUILDDIR := build
+MAKEFILE_NAME := $(lastword $(MAKEFILE_LIST))
+OBJDIR = $(BUILDDIR)/$(BUILD)
 SOURCES := $(CSOURCES) $(CPPSOURCES)
-OBJECTS := $(addsuffix .o,$(SOURCES))
-DEPS := $(patsubst %.o,%.d,$(OBJECTS))
-EXECUTABLE := $(TARGET).elf
+OBJECTS = $(addprefix $(OBJDIR)/,$(addsuffix .o,$(SOURCES)))
+
+DEPS = $(OBJECTS:.o=.d)
+EXECUTABLE := $(OBJDIR)/$(TARGET).elf
 
 .PHONY: all
 all: $(EXECUTABLE)
 
+.PHONY: debug
+debug:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=DEBUG all
+
+.PHONY: release
+release:
+	$(MAKE) -f$(MAKEFILE_NAME) BUILD=RELEASE all
+
 .PHONY: run
-run: $(EXECUTABLE)
+run: all
 	./$(EXECUTABLE)
 
 .PHONY: check
@@ -46,18 +60,21 @@ ifneq ($(CPPSOURCES),)
 endif
 
 $(EXECUTABLE): $(OBJECTS) makefile
-	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
+	@echo This build is a $(BUILD) build
+	$(CPP) $(OBJECTS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
 
-%.c.o: %.c
+$(OBJDIR)/%.c.o: %.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJDIR)/%.cpp.o: %.cpp
+	mkdir -p $(dir $@)
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJECTS) $(DEPS) $(EXECUTABLE)
+	rm -rf $(BUILDDIR)
 
 -include $(DEPS)
 
