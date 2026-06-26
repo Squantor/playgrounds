@@ -12,7 +12,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 
 static char log_line[LOG_LINE_SIZE];
 
@@ -27,9 +26,9 @@ void log_init(void)
   Log_state.log_level = LOGVAL_WARNING;
 }
 
-void log_set_level(Log_level Log_level)
+void log_set_level(Log_level log_level)
 {
-  Log_state.log_level = Log_level;
+  Log_state.log_level = log_level;
 }
 
 Log_level log_get_level(void)
@@ -49,26 +48,31 @@ static int log_stamp(Log_level level, const char *file, int line)
                   "%7s:%20s:%4d: ", log_level_names[level], file, line);
 }
 
-void log_log(Log_level level, const char *file, int line, const char *fmt, ...)
+// NOLINTBEGIN(clang-analyzer-valist.Uninitialized)
+__attribute__((format(printf, 4, 5))) void
+log_log(Log_level level, const char *file, int line, const char *fmt, ...)
+
 {
   if (level <= Log_state.log_level) {
     int stamplen = log_stamp(level, file, line);
-    if (stamplen > 0) {
+    if ((unsigned) stamplen < LOG_LINE_SIZE) {
       va_list args;
       va_start(args, fmt);
-      vsnprintf(log_line + stamplen, sizeof(log_line) - stamplen, fmt, args);
+      vsnprintf(log_line + stamplen, LOG_LINE_SIZE - stamplen, fmt, args);
       va_end(args);
       stdout_output(log_line);
     }
   }
 }
-
-int print_stdout(const char *fmt, ...)
+// NOLINTEND(clang-analyzer-valist.Uninitialized)
+// NOLINTBEGIN(clang-analyzer-valist.Uninitialized)
+__attribute__((format(printf, 1, 2))) int print_stdout(const char *fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  int ret = vsnprintf(log_line, sizeof(log_line), fmt, args);
+  int ret = vsnprintf(log_line, LOG_LINE_SIZE, fmt, args);
   va_end(args);
   stdout_output(log_line);
   return ret;
 }
+// NOLINTEND(clang-analyzer-valist.Uninitialized)

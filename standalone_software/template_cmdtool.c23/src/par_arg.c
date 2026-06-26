@@ -11,9 +11,7 @@
 #include "log.h"
 #include "program.h"
 #include "results.h"
-#include "types.h"
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 
 typedef enum {

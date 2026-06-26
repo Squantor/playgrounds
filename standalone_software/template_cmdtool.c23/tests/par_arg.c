@@ -11,9 +11,12 @@
  * @todo test command which is an option without a minus in front
  */
 #include "par_arg.h"
+#include "log.h"
+#include "program.h"
+#include "results.h"
 #include "stdout_stub.h"
-#include <memory.h>
 #include <minunit.h>
+#include <string.h>
 
 MINUNIT_SETUP(parse_program_setup)
 {

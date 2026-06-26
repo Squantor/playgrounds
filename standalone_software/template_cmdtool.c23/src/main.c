@@ -10,8 +10,9 @@
  */
 #include "par_arg.h"
 #include "program.h"
-#include <memory.h>
+#include "results.h"
 #include <stdio.h>
+#include <string.h>
 
 Program_state program_state;
 

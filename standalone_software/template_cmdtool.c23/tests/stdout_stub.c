@@ -9,7 +9,7 @@
  */
 #include "stdout_stub.h"
 #include "log.h"
-#include <memory.h>
+#include <string.h>
 
 static char log_line_stub_buffer[LOG_LINE_SIZE];
 

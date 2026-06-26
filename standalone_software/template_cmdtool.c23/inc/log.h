@@ -11,7 +11,7 @@
 #define LOG_H
 
 /* Logging line size */
-#define LOG_LINE_SIZE (256u)
+#define LOG_LINE_SIZE (256)
 /* Logging levels */
 typedef enum {
   LOGVAL_FATAL = 0,
@@ -22,19 +22,22 @@ typedef enum {
   LOGVAL_NONE = 5,
 } Log_level;
 /* Log a message */
-#define LOG_DEBUG(...) log_log(LOGVAL_DEBUG, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_INFO(...) log_log(LOGVAL_INFO, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_DEBUG(...) \
+  log_log(LOGVAL_DEBUG, __FILE_NAME__, __LINE__, __VA_ARGS__)
+#define LOG_INFO(...) log_log(LOGVAL_INFO, __FILE_NAME__, __LINE__, __VA_ARGS__)
 #define LOG_WARNING(...) \
-  log_log(LOGVAL_WARNING, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_ERROR(...) log_log(LOGVAL_ERROR, __FILE__, __LINE__, __VA_ARGS__)
-#define LOG_FATAL(...) log_log(LOGVAL_FATAL, __FILE__, __LINE__, __VA_ARGS__)
+  log_log(LOGVAL_WARNING, __FILE_NAME__, __LINE__, __VA_ARGS__)
+#define LOG_ERROR(...) \
+  log_log(LOGVAL_ERROR, __FILE_NAME__, __LINE__, __VA_ARGS__)
+#define LOG_FATAL(...) \
+  log_log(LOGVAL_FATAL, __FILE_NAME__, __LINE__, __VA_ARGS__)
 /* Log a message */
-void log_log(Log_level Log_level, const char *file, int line, const char *fmt,
+void log_log(Log_level log_level, const char *file, int line, const char *fmt,
              ...) __attribute__((format(printf, 4, 5)));
 /* Initialize the logger */
 void log_init(void);
 /* Set the logging level */
-void log_set_level(Log_level Log_level);
+void log_set_level(Log_level log_level);
 /* Get the logging level */
 Log_level log_get_level(void);
 /* Print a message to stdout */

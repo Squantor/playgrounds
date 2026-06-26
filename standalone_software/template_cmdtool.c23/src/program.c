@@ -9,6 +9,7 @@
  * @brief Main program definition for template application
  */
 #include "program.h"
+#include "results.h"
 
 Result program(Program_state *state)
 {
