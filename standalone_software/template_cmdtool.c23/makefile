@@ -7,10 +7,10 @@
 # Mini project makefile for mixed C and C++ projects
 
 BUILD ?= RELEASE
-CSOURCES := $(wildcard *.c)
+CSOURCES := $(wildcard src/*.c)
 CPPSOURCES := $(wildcard *.cpp)
 DEFINES :=
-INCLUDES := -I.
+INCLUDES := -Iinc
 TARGET = template_cmdtool_c23
 CC = gcc
 CPP = g++

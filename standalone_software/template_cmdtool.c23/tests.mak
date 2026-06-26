@@ -8,10 +8,10 @@
 
 BUILD ?= RELEASE
 CSOURCES := $(wildcard tests/*.c)
-CSOURCES += par_arg.c args.c
+CSOURCES += src/par_arg.c src/args.c
 CPPSOURCES :=
 DEFINES := -DMINUNIT_MAX_TESTS=100
-INCLUDES := -I. -Itests
+INCLUDES := -Iinc -Itests
 TARGET = template_cmdtool_c23_tests
 CC = gcc
 CPP = g++
