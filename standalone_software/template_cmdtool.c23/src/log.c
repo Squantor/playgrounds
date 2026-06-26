@@ -6,33 +6,54 @@
  *
  * @file log.c
  * @brief Simple logger
- *
  */
 #include "log.h"
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+static char log_line[LOG_LINE_SIZE];
+
+static char *log_level_names[] = {"FATAL", "ERROR", "WARNING", "INFO", "DEBUG"};
 
 static struct {
   Log_level log_level;
 } Log_state;
+
+void log_init(void)
+{
+  Log_state.log_level = LOG_WARNING;
+}
 
 void log_set_level(Log_level Log_level)
 {
   Log_state.log_level = Log_level;
 }
 
-// overridable function for writing log output
+/* Overridable log output function */
 __attribute__((weak)) void log_output(const char *)
 {
-  // empty body, as this is a weak function, no action should be taken
 }
 
-// function for setting the current log level
-// defining weak log outputter string
-
-void log_log(Log_level Log_level, const char *file, int line, const char *fmt,
-             ...)
+/* Write the first part of the log line to the buffer */
+static int log_stamp(Log_level level, const char *file, int line)
 {
-  (void) file;
-  (void) line;
-  (void) fmt;
-  if (Log_level < Log_state.log_level) {}
+  return snprintf(log_line, LOG_LINE_SIZE,
+                  "%7s:%20s:%4d: ", log_level_names[level], file, line);
+}
+
+void log_log(Log_level level, const char *file, int line, const char *fmt, ...)
+{
+  if (level <= Log_state.log_level) {
+    int stamplen = log_stamp(level, file, line);
+    if (stamplen > 0) {
+      va_list args;
+      va_start(args, fmt);
+      vsnprintf(log_line + stamplen, sizeof(log_line) - stamplen, fmt, args);
+      va_end(args);
+      log_output(log_line);
+    }
+  }
 }

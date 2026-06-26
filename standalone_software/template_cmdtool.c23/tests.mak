@@ -8,7 +8,7 @@
 
 BUILD ?= RELEASE
 CSOURCES := $(wildcard tests/*.c)
-CSOURCES += src/par_arg.c src/args.c
+CSOURCES += src/par_arg.c src/args.c src/log.c
 CPPSOURCES :=
 DEFINES := -DMINUNIT_MAX_TESTS=100
 INCLUDES := -Iinc -Itests

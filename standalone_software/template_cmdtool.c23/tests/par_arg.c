@@ -1,10 +1,9 @@
-/*
-SPDX-License-Identifier: MIT
-
-Copyright (c) 2026 Bart Bilos
-For conditions of distribution and use, see LICENSE file
-*/
 /**
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2026 Bart Bilos
+ * For conditions of distribution and use, see LICENSE file
+ *
  * @file par_arg.c
  * @brief Tests for commandline argument parser
  * @todo test logging on with no level should error
