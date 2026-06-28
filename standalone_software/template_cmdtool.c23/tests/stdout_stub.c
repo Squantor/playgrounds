@@ -14,16 +14,13 @@
 static char log_line_stub_buffer[LOG_LINE_SIZE];
 
 void stdout_stub_init(void)
-{
-  memset(log_line_stub_buffer, 0, sizeof(log_line_stub_buffer));
-}
+{ memset(log_line_stub_buffer, 0, sizeof(log_line_stub_buffer)); }
 
 void stdout_output(const char *str)
-{
-  memcpy(log_line_stub_buffer, str, strlen(str));
-}
+{ memcpy(log_line_stub_buffer, str, strlen(str)); }
+
+void stdout_output_line(const char *str)
+{ memcpy(log_line_stub_buffer, str, strlen(str)); }
 
 char *stdout_stub_get(void)
-{
-  return log_line_stub_buffer;
-}
+{ return log_line_stub_buffer; }

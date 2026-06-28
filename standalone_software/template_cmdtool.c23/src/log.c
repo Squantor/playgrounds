@@ -22,22 +22,21 @@ static struct {
 } Log_state;
 
 void log_init(void)
-{
-  Log_state.log_level = LOGVAL_WARNING;
-}
+{ Log_state.log_level = LOGVAL_WARNING; }
 
 void log_set_level(Log_level log_level)
-{
-  Log_state.log_level = log_level;
-}
+{ Log_state.log_level = log_level; }
 
 Log_level log_get_level(void)
-{
-  return Log_state.log_level;
-}
+{ return Log_state.log_level; }
 
 /* Overridable log output function */
 __attribute__((weak)) void stdout_output(const char *)
+{
+}
+
+/* Overridable log output function */
+__attribute__((weak)) void stdout_output_line(const char *)
 {
 }
 
@@ -60,7 +59,7 @@ log_log(Log_level level, const char *file, int line, const char *fmt, ...)
       va_start(args, fmt);
       vsnprintf(log_line + stamplen, LOG_LINE_SIZE - stamplen, fmt, args);
       va_end(args);
-      stdout_output(log_line);
+      stdout_output_line(log_line);
     }
   }
 }
