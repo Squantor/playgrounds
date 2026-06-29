@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     LOG_FATAL("Argument parse error");
     return 1;
   }
-  result = program(&program_state);
+  result = program_run(&program_state);
   if (result != RESULT_OK) {
     LOG_FATAL("Program error");
     return 1;

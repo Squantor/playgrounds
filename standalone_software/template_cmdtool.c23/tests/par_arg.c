@@ -73,7 +73,7 @@ MINUNIT_ADD(parse_program_help_version, parse_program_setup, nullptr)
   Program_state program_state = {P_OP_NONE};
   MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
                 RESULT_OK);
-  MINUNIT_CHECK(program_state.operation == P_OP_HELP);
+  MINUNIT_CHECK(program_state.operation == P_OP_VERSION);
 }
 
 MINUNIT_ADD(parse_program_logging, parse_program_setup, nullptr)

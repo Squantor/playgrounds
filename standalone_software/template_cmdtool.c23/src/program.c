@@ -11,15 +11,30 @@
 #include "program.h"
 #include "log.h"
 #include "results.h"
+#include <stddef.h>
 
+/* Application name */
 const char *str_program_name = "Template commandline tool";
+/* Application version */
 const char *str_version = "version 0.0.0";
+/* Application help */
 const char *str_help = "Template program help\n"
                        "-?  Print this help\n"
                        "-v  Print version";
+/* Program operation strings */
+const char *str_table_prg_op[] = {"None", "Help", "Version"};
 
-Result program(Program_state *state)
+void program_set_operation(Program_state *state, Program_operation operation)
 {
+  if (state->operation == P_OP_NONE) {
+    state->operation = operation;
+  }
+}
+
+Result program_run(Program_state *state)
+{
+  LOG_DEBUG("Program operation: %s",
+            str_table_prg_op[(size_t) state->operation]);
   switch (state->operation) {
   case P_OP_NONE:
     print_stdout("%s %s\n", str_program_name, str_version);

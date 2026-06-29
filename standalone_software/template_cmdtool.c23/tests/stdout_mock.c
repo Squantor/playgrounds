@@ -53,3 +53,6 @@ const char *stdout_mock_get(void)
 
   return str_return;
 }
+
+int stdout_mock_is_empty(void)
+{ return log_line_head == log_line_tail; }

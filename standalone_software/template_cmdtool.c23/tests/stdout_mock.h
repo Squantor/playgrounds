@@ -40,4 +40,10 @@ void stdout_output_line(const char *str);
  */
 const char *stdout_mock_get(void);
 
+/**
+ * @brief Check if the mock buffer is empty
+ * @return 1 if empty, 0 if not
+ */
+int stdout_mock_is_empty(void);
+
 #endif

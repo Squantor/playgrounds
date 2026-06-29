@@ -25,7 +25,18 @@ typedef struct {
   Program_operation operation; /*!< Program operation */
 } Program_state;
 
-/* Main program operation to execute */
-Result program(Program_state *state);
+/**
+ * @brief Set program operation
+ * @param state Program state
+ * @param operation Operation to execute
+ */
+void program_set_operation(Program_state *state, Program_operation operation);
+
+/**
+ * @brief Main program entrypoint
+ * @param state Program state to execute
+ * @return Result of the execution
+ */
+Result program_run(Program_state *state);
 
 #endif

@@ -71,11 +71,9 @@ Result parse_program_arguments(int argc, char *argv[], Program_state *state)
 
     if (arg_parse_state == ARG_PARSE_OPT_TOKENS) {
       if (*p == '?') {
-        state->operation = P_OP_HELP;
-        arg_parse_state = ARG_PARSE_DONE;
-        continue;  // help request, we are done
+        program_set_operation(state, P_OP_HELP);
       } else if (*p == 'v') {
-        state->operation = P_OP_VERSION;
+        program_set_operation(state, P_OP_VERSION);
       } else if (*p == 'L') {
         p++;
         if (*p >= '0' && *p <= '5') {
@@ -86,7 +84,7 @@ Result parse_program_arguments(int argc, char *argv[], Program_state *state)
         }
         // add more options here
       } else {
-        LOG_FATAL("Unknown option %c", *p);
+        LOG_FATAL("Unknown option -%c", *p);
         arg_parse_state = ARG_PARSE_ERR;
         continue;
       }
