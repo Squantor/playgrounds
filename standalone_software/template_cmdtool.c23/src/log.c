@@ -22,13 +22,19 @@ static struct {
 } Log_state;
 
 void log_init(void)
-{ Log_state.log_level = LOGVAL_WARNING; }
+{
+  Log_state.log_level = LOGVAL_WARNING;
+}
 
 void log_set_level(Log_level log_level)
-{ Log_state.log_level = log_level; }
+{
+  Log_state.log_level = log_level;
+}
 
 Log_level log_get_level(void)
-{ return Log_state.log_level; }
+{
+  return Log_state.log_level;
+}
 
 /* Overridable log output function */
 __attribute__((weak)) void stdout_output(const char *)

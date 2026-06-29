@@ -14,14 +14,14 @@
 #include "log.h"
 #include "program.h"
 #include "results.h"
-#include "stdout_stub.h"
+#include "stdout_mock.h"
 #include <minunit.h>
 #include <string.h>
 
 MINUNIT_SETUP(parse_program_setup)
 {
   log_init();
-  stdout_stub_init();
+  stdout_mock_init();
   MINUNIT_PASS();
 }
 

@@ -9,7 +9,7 @@
  */
 #include "program.h"
 #include "log.h"
-#include "stdout_stub.h"
+#include "stdout_mock.h"
 #include <minunit.h>
 #include <stdio.h>
 #include <string.h>
@@ -22,7 +22,7 @@ const char *str_help_test = "Template program help\n"
 MINUNIT_SETUP(program_setup)
 {
   log_init();
-  stdout_stub_init();
+  stdout_mock_init();
   MINUNIT_PASS();
 }
 
@@ -32,7 +32,7 @@ MINUNIT_ADD(program_empty, program_setup, nullptr)
   state.operation = P_OP_NONE;
   Result result = program(&state);
   MINUNIT_CHECK(result == RESULT_OK);
-  char *str_out = stdout_stub_get();
+  const char *str_out = stdout_mock_get();
   MINUNIT_ASSERT(strlen(str_out) == 40);
   MINUNIT_CHECK(strncmp(str_out, str_none_test, strlen(str_out)) == 0);
 }
@@ -43,7 +43,7 @@ MINUNIT_ADD(program_version, program_setup, nullptr)
   state.operation = P_OP_VERSION;
   Result result = program(&state);
   MINUNIT_CHECK(result == RESULT_OK);
-  char *str_out = stdout_stub_get();
+  const char *str_out = stdout_mock_get();
   MINUNIT_ASSERT(strlen(str_out) == 14);
   MINUNIT_CHECK(strncmp(str_out, "version 0.0.0\n", strlen(str_out)) == 0);
 }
@@ -54,7 +54,7 @@ MINUNIT_ADD(program_help, program_setup, nullptr)
   state.operation = P_OP_HELP;
   Result result = program(&state);
   MINUNIT_CHECK(result == RESULT_OK);
-  char *str_out = stdout_stub_get();
+  const char *str_out = stdout_mock_get();
   MINUNIT_ASSERT(strlen(str_out) == 60);
   MINUNIT_CHECK(strncmp(str_out, str_help_test, strlen(str_out)) == 0);
 }
