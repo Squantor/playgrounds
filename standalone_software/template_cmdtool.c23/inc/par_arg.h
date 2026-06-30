@@ -5,7 +5,7 @@
  * For conditions of distribution and use, see LICENSE file
  *
  * @file par_arg.h
- * Commandline argument parser definitions
+ * @brief Commandline argument parser declarations
  */
 #ifndef PAR_ARG_H
 #define PAR_ARG_H
@@ -13,14 +13,17 @@
 #include "program.h"
 #include "results.h"
 
+#define MAX_COMMAND_HANDLERS 2u
+
 /**
  * @brief Commandline argument entry
  */
 typedef struct {
   char *pattern; /*!< Argument patterns */
-  // argument handler definition needed
-  char *help; /*!< Argument help string */
-} Argument_entry;
+  char *help;    /*!< Help string */
+  Result (*handler)(Program_state *state, int argc,
+                    char *argv[]); /*!< Handler */
+} Argument_command;
 
 /**
  * @brief Parse commandline arguments
@@ -29,6 +32,11 @@ typedef struct {
  * @param state Filled in program state
  * @return Result of the parsing
  */
-Result parse_program_arguments(int argc, char *argv[], Program_state *state);
+Result parse_program_arguments(Program_state *state,int argc, char *argv[]);
+
+/**
+ * @brief Commandline argument handlers
+ */
+extern Argument_command command_handlers[];
 
 #endif

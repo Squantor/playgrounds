@@ -14,11 +14,16 @@ For conditions of distribution and use, see LICENSE file
 #include "log.h"
 #include "results.h"
 
+/**
+ * @brief Different program operations
+ * @note The numbering determines the priority
+ */
 typedef enum {
-  P_OP_NONE = 0,    /*!< No program operation */
-  P_OP_HELP = 1,    /*!< Print help */
-  P_OP_VERSION = 2, /*!< Print version */
+  P_OP_NONE,    /*!< No program operation */
+  P_OP_VERSION, /*!< Print version */
+  P_OP_HELP,    /*!< Print help */
   /* Add additional program operations here */
+  P_OP_MAX, /*!< Maximum number of program operations */
 } Program_operation;
 
 typedef struct {
@@ -27,6 +32,7 @@ typedef struct {
 
 /**
  * @brief Set program operation
+ * @note Checks if some operations are already set or override others
  * @param state Program state
  * @param operation Operation to execute
  */

@@ -6,7 +6,7 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  * @file results.h
- * Application wide results enum
+ * @brief Application wide results enum declarations
  */
 #ifndef RESULTS_H
 #define RESULTS_H

@@ -26,7 +26,7 @@ const char *str_table_prg_op[] = {"None", "Help", "Version"};
 
 void program_set_operation(Program_state *state, Program_operation operation)
 {
-  if (state->operation == P_OP_NONE) {
+  if (state->operation < operation) {
     state->operation = operation;
   }
 }

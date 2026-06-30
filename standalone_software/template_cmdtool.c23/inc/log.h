@@ -5,7 +5,7 @@
  * For conditions of distribution and use, see LICENSE file
  *
  * @file log.h
- * @brief Simple logger
+ * @brief Simple logger declarations
  */
 #ifndef LOG_H
 #define LOG_H

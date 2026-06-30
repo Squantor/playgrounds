@@ -9,6 +9,7 @@
  * @todo test logging on with no level should error
  * @todo test logging on with invalid level should error
  * @todo test command which is an option without a minus in front
+ * @todo check logging output
  */
 #include "par_arg.h"
 #include "log.h"
@@ -31,8 +32,8 @@ MINUNIT_ADD(parse_program_empty, parse_program_setup, nullptr)
   char *test_argv[] = {"test_program"};
   Program_state program_state;
   memset(&program_state, 0, sizeof(program_state));
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
-                RESULT_OK);
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
+                RESULT_ARG_PARSE_ERROR);
   MINUNIT_CHECK(program_state.operation == P_OP_NONE);
 }
 
@@ -41,17 +42,17 @@ MINUNIT_ADD(parse_program_no_true_args, parse_program_setup, nullptr)
   int test_argc = 3;
   char *test_argv[] = {"test_program", "-", "-"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
-                RESULT_OK);
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
+                RESULT_ARG_PARSE_ERROR);
   MINUNIT_CHECK(program_state.operation == P_OP_NONE);
 }
 
 MINUNIT_ADD(parse_program_help, parse_program_setup, nullptr)
 {
   int test_argc = 2;
-  char *test_argv[] = {"test_program", "-?"};
+  char *test_argv[] = {"test_program", "help"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
                 RESULT_OK);
   MINUNIT_CHECK(program_state.operation == P_OP_HELP);
 }
@@ -59,9 +60,9 @@ MINUNIT_ADD(parse_program_help, parse_program_setup, nullptr)
 MINUNIT_ADD(parse_program_version, parse_program_setup, nullptr)
 {
   int test_argc = 2;
-  char *test_argv[] = {"test_program", "-v"};
+  char *test_argv[] = {"test_program", "version"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
                 RESULT_OK);
   MINUNIT_CHECK(program_state.operation == P_OP_VERSION);
 }
@@ -69,11 +70,11 @@ MINUNIT_ADD(parse_program_version, parse_program_setup, nullptr)
 MINUNIT_ADD(parse_program_help_version, parse_program_setup, nullptr)
 {
   int test_argc = 3;
-  char *test_argv[] = {"test_program", "-v", "-?"};
+  char *test_argv[] = {"test_program", "version", "help"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
-                RESULT_OK);
-  MINUNIT_CHECK(program_state.operation == P_OP_VERSION);
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
+                RESULT_ARG_PARSE_ERROR);
+  MINUNIT_CHECK(program_state.operation == P_OP_NONE);
 }
 
 MINUNIT_ADD(parse_program_logging, parse_program_setup, nullptr)
@@ -81,8 +82,8 @@ MINUNIT_ADD(parse_program_logging, parse_program_setup, nullptr)
   int test_argc = 2;
   char *test_argv[] = {"test_program", "-L4"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
-                RESULT_OK);
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
+                RESULT_ARG_PARSE_ERROR);
   MINUNIT_CHECK(program_state.operation == P_OP_NONE);
   MINUNIT_CHECK(log_get_level() == LOGVAL_DEBUG);
 }
@@ -92,7 +93,7 @@ MINUNIT_ADD(parse_program_logging_empty_error, parse_program_setup, nullptr)
   int test_argc = 2;
   char *test_argv[] = {"test_program", "-L"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
                 RESULT_ARG_PARSE_ERROR);
   MINUNIT_CHECK(program_state.operation == P_OP_NONE);
   MINUNIT_CHECK(log_get_level() == LOGVAL_WARNING);
@@ -103,7 +104,7 @@ MINUNIT_ADD(parse_program_logging_invalid_error, parse_program_setup, nullptr)
   int test_argc = 2;
   char *test_argv[] = {"test_program", "-L9"};
   Program_state program_state = {P_OP_NONE};
-  MINUNIT_CHECK(parse_program_arguments(test_argc, test_argv, &program_state) ==
+  MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
                 RESULT_ARG_PARSE_ERROR);
   MINUNIT_CHECK(program_state.operation == P_OP_NONE);
   MINUNIT_CHECK(log_get_level() == LOGVAL_WARNING);

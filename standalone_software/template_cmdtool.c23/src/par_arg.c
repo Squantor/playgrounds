@@ -11,6 +11,7 @@
 #include "log.h"
 #include "program.h"
 #include "results.h"
+#include <ctype.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -23,78 +24,79 @@ typedef enum {
   ARG_PARSE_CMD,        /*< Parsing command */
 } Argument_parse_state;
 
-static Argument_parse_state arg_parse_state;
-
-char commandline_buffer[1024];
-
 /**
- * @todo switch from fixed buffer to an arena
- * @todo test the -v option, test -? and -v
- * @todo switch from buffer gathering to argc/argv stepping
- * @todo print/forward an error message
+ * @todo change some options to commands, a command is an option without a minus
+ * @todo When one argument is a command other commands are an error
+ * @todo There needs to be at least one command present
+ * @todo When there is a command, other command shaped things could be arguments
  */
-Result parse_program_arguments(int argc, char *argv[], Program_state *state)
+Result parse_program_arguments(Program_state *state, int argc, char *argv[])
 {
-  (void) state;
-  memset(commandline_buffer, 0, sizeof(commandline_buffer));
-  arg_parse_state = ARG_PARSE_IDLE;
-  char *p = commandline_buffer;
-  char *q;  // pointer to current argv string
+  Argument_parse_state arg_parse_state = ARG_PARSE_IDLE;
+  size_t cmd_index = MAX_COMMAND_HANDLERS;
   // skip first commandline argument as that is the executable name
   for (int i = 1; i < argc; i++) {
-    q = argv[i];
-    while (*q != '\0') {
-      *p = *q;
-      p++;
-      q++;
-    }
-    *p = ' ';
-    p++;
-    q++;
-  }
-  *p = '\0';
-  // go through commandline buffer
-  p = commandline_buffer;
-  do {
-    // initial tokens to check
-    if (*p == '\0') {
-      arg_parse_state = ARG_PARSE_DONE;
-    } else if (*p == '-') {
+    char *p = argv[i];
+    // determine what type of argument we have
+    if (*p == '-') {
       arg_parse_state = ARG_PARSE_OPT_TOKENS;
       p++;
-      continue;
-    } else if (*p == ' ') {
-      arg_parse_state = ARG_PARSE_IDLE;
-      p++;
-      continue;
+    } else if (isalpha(*p)) {
+      arg_parse_state = ARG_PARSE_CMD;
+    } else {
+      LOG_FATAL("Cant determine argument class of \"%s\"", p);
+      arg_parse_state = ARG_PARSE_ERR;
     }
-
+    // We have some additional work to do
     if (arg_parse_state == ARG_PARSE_OPT_TOKENS) {
-      if (*p == '?') {
+      // parse options
+      if (*p == '?') {  // move this into a command
         program_set_operation(state, P_OP_HELP);
-      } else if (*p == 'v') {
+      } else if (*p == 'v') {  // move this into a command
         program_set_operation(state, P_OP_VERSION);
       } else if (*p == 'L') {
         p++;
         if (*p >= '0' && *p <= '5') {
           log_set_level(*p - '0');
-        } else {
+        } else {  // add more options here
+          LOG_FATAL("Unknown Logging level %c", *p);
           arg_parse_state = ARG_PARSE_ERR;
-          continue;
         }
-        // add more options here
       } else {
         LOG_FATAL("Unknown option -%c", *p);
         arg_parse_state = ARG_PARSE_ERR;
-        continue;
       }
-      p++;
+    } else if (arg_parse_state == ARG_PARSE_CMD) {
+      // parse command
+      size_t j = 0;
+      for (; j < MAX_COMMAND_HANDLERS; j++) {
+        // loop until we find the command
+        if (strcmp(command_handlers[j].pattern, p) == 0) {
+          if (cmd_index == MAX_COMMAND_HANDLERS) {
+            cmd_index = j;
+          } else {
+            LOG_FATAL("Multiple commands found");
+            arg_parse_state = ARG_PARSE_ERR;
+          }
+          break;
+        }
+      }
+      if (j == MAX_COMMAND_HANDLERS) {
+        // argument is not a command nor an option, add it to the list
+      }
     }
-
-  } while ((arg_parse_state != ARG_PARSE_DONE) &&
-           (arg_parse_state != ARG_PARSE_ERR));
-  if (arg_parse_state == ARG_PARSE_ERR) {
+    if (arg_parse_state == ARG_PARSE_ERR) {
+      return RESULT_ARG_PARSE_ERROR;
+    }
+  }
+  // did we have a command?
+  if (cmd_index == MAX_COMMAND_HANDLERS) {
+    LOG_FATAL("No command found");
     return RESULT_ARG_PARSE_ERROR;
+  }
+  else
+  { 
+    command_handlers[cmd_index].handler(state, argc, argv);
   }
   return RESULT_OK;
 }

@@ -6,7 +6,7 @@ For conditions of distribution and use, see LICENSE file
 */
 /**
  *  @file types.h
- *  @brief Basic types
+ *  @brief Basic types definitions
  */
 #ifndef TYPES_H
 #define TYPES_H

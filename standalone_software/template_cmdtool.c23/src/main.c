@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 {
   memset(&program_state, 0, sizeof(program_state));
   Result result;
-  result = parse_program_arguments(argc, argv, &program_state);
+  result = parse_program_arguments(&program_state,argc, argv);
   if (result != RESULT_OK) {
     LOG_FATAL("Argument parse error");
     return 1;

@@ -35,7 +35,7 @@ MINUNIT_ADD(program_set_operation, program_setup, nullptr)
   program_set_operation(&state, P_OP_VERSION);
   MINUNIT_CHECK(state.operation == P_OP_VERSION);
   program_set_operation(&state, P_OP_HELP);
-  MINUNIT_CHECK(state.operation == P_OP_VERSION);
+  MINUNIT_CHECK(state.operation == P_OP_HELP);
   state.operation = P_OP_NONE;
   program_set_operation(&state, P_OP_HELP);
   MINUNIT_CHECK(state.operation == P_OP_HELP);
