@@ -6,6 +6,8 @@
  *
  * @file par_arg.c
  * @brief Commandline argument parser
+ * @todo When we encounter our first command, rest of the commands are arguments
+ * @todo
  */
 #include "par_arg.h"
 #include "log.h"
@@ -16,12 +18,12 @@
 #include <string.h>
 
 typedef enum {
-  ARG_PARSE_IDLE,       /*< Idle state */
-  ARG_PARSE_ERR,        /*< Error state */
-  ARG_PARSE_DONE,       /*< Done state */
-  ARG_PARSE_OPT_TOKENS, /*< Parsing option token */
-  ARG_PARSE_OPT_ARG,    /*< Parsing option operator */
-  ARG_PARSE_CMD,        /*< Parsing command */
+  ARG_PARSE_IDLE,    /*< Idle state */
+  ARG_PARSE_ERR,     /*< Error state */
+  ARG_PARSE_DONE,    /*< Done state */
+  ARG_IS_OPT,        /*< Parsing option token */
+  ARG_PARSE_OPT_ARG, /*< Parsing option operator */
+  ARG_NON_OPT,       /*< Parsing command */
 } Argument_parse_state;
 
 /**
@@ -32,6 +34,8 @@ typedef enum {
  */
 Result parse_program_arguments(Program_state *state, int argc, char *argv[])
 {
+  size_t cmd_arg_max_index = 0;
+  char *cmd_arg_list[MAX_COMMAND_ARGS];
   Argument_parse_state arg_parse_state = ARG_PARSE_IDLE;
   size_t cmd_index = MAX_COMMAND_HANDLERS;
   // skip first commandline argument as that is the executable name
@@ -39,22 +43,18 @@ Result parse_program_arguments(Program_state *state, int argc, char *argv[])
     char *p = argv[i];
     // determine what type of argument we have
     if (*p == '-') {
-      arg_parse_state = ARG_PARSE_OPT_TOKENS;
+      arg_parse_state = ARG_IS_OPT;
       p++;
     } else if (isalpha(*p)) {
-      arg_parse_state = ARG_PARSE_CMD;
+      arg_parse_state = ARG_NON_OPT;
     } else {
       LOG_FATAL("Cant determine argument class of \"%s\"", p);
       arg_parse_state = ARG_PARSE_ERR;
     }
     // We have some additional work to do
-    if (arg_parse_state == ARG_PARSE_OPT_TOKENS) {
+    if (arg_parse_state == ARG_IS_OPT) {
       // parse options
-      if (*p == '?') {  // move this into a command
-        program_set_operation(state, P_OP_HELP);
-      } else if (*p == 'v') {  // move this into a command
-        program_set_operation(state, P_OP_VERSION);
-      } else if (*p == 'L') {
+      if (*p == 'L') {
         p++;
         if (*p >= '0' && *p <= '5') {
           log_set_level(*p - '0');
@@ -66,8 +66,7 @@ Result parse_program_arguments(Program_state *state, int argc, char *argv[])
         LOG_FATAL("Unknown option -%c", *p);
         arg_parse_state = ARG_PARSE_ERR;
       }
-    } else if (arg_parse_state == ARG_PARSE_CMD) {
-      // parse command
+    } else if (arg_parse_state == ARG_NON_OPT) {
       size_t j = 0;
       for (; j < MAX_COMMAND_HANDLERS; j++) {
         // loop until we find the command
@@ -83,6 +82,11 @@ Result parse_program_arguments(Program_state *state, int argc, char *argv[])
       }
       if (j == MAX_COMMAND_HANDLERS) {
         // argument is not a command nor an option, add it to the list
+        cmd_arg_list[cmd_arg_max_index++] = p;
+        if (cmd_arg_max_index == MAX_COMMAND_ARGS) {
+          LOG_FATAL("Too many arguments");
+          arg_parse_state = ARG_PARSE_ERR;
+        }
       }
     }
     if (arg_parse_state == ARG_PARSE_ERR) {
@@ -93,10 +97,8 @@ Result parse_program_arguments(Program_state *state, int argc, char *argv[])
   if (cmd_index == MAX_COMMAND_HANDLERS) {
     LOG_FATAL("No command found");
     return RESULT_ARG_PARSE_ERROR;
-  }
-  else
-  { 
-    command_handlers[cmd_index].handler(state, argc, argv);
+  } else {
+    command_handlers[cmd_index].handler(state, cmd_arg_max_index, cmd_arg_list);
   }
   return RESULT_OK;
 }

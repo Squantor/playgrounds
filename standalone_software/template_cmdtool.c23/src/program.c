@@ -7,6 +7,10 @@
  *
  * @file program.c
  * @brief Main program definition for template application
+ * @todo Make operation for copying a file, requires two non command arguments
+ * @todo Make operation for moving a file
+ * @todo Make operation for deleting a file
+ * @todo make operation for xoring a file with an value
  */
 #include "program.h"
 #include "log.h"
@@ -17,12 +21,8 @@
 const char *str_program_name = "Template commandline tool";
 /* Application version */
 const char *str_version = "version 0.0.0";
-/* Application help */
-const char *str_help = "Template program help\n"
-                       "-?  Print this help\n"
-                       "-v  Print version";
-/* Program operation strings */
-const char *str_table_prg_op[] = {"None", "Help", "Version"};
+/* Program operation strings, needs to match Program_operation enum */
+const char *str_table_prg_op[] = {"None", "Version", "Copy"};
 
 void program_set_operation(Program_state *state, Program_operation operation)
 {
@@ -37,13 +37,9 @@ Result program_run(Program_state *state)
             str_table_prg_op[(size_t) state->operation]);
   switch (state->operation) {
   case P_OP_NONE:
-    print_stdout("%s %s\n", str_program_name, str_version);
     break;
   case P_OP_VERSION:
     print_stdout("%s\n", str_version);
-    break;
-  case P_OP_HELP:
-    print_stdout("%s\n", str_help);
     break;
   default:
     break;

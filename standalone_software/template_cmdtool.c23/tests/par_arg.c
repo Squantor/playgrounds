@@ -6,10 +6,8 @@
  *
  * @file par_arg.c
  * @brief Tests for commandline argument parser
- * @todo test logging on with no level should error
- * @todo test logging on with invalid level should error
- * @todo test command which is an option without a minus in front
  * @todo check logging output
+ * @todo check help output as par_arg generates help messages
  */
 #include "par_arg.h"
 #include "log.h"
@@ -54,7 +52,7 @@ MINUNIT_ADD(parse_program_help, parse_program_setup, nullptr)
   Program_state program_state = {P_OP_NONE};
   MINUNIT_CHECK(parse_program_arguments(&program_state, test_argc, test_argv) ==
                 RESULT_OK);
-  MINUNIT_CHECK(program_state.operation == P_OP_HELP);
+  MINUNIT_CHECK(program_state.operation == P_OP_NONE);
 }
 
 MINUNIT_ADD(parse_program_version, parse_program_setup, nullptr)

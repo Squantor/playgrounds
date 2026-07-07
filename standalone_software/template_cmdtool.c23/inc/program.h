@@ -21,7 +21,7 @@ For conditions of distribution and use, see LICENSE file
 typedef enum {
   P_OP_NONE,    /*!< No program operation */
   P_OP_VERSION, /*!< Print version */
-  P_OP_HELP,    /*!< Print help */
+  P_OP_COPY,    /*!< Copy file */
   /* Add additional program operations here */
   P_OP_MAX, /*!< Maximum number of program operations */
 } Program_operation;

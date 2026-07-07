@@ -12,8 +12,10 @@
 
 #include "program.h"
 #include "results.h"
+#include <stddef.h>
 
-#define MAX_COMMAND_HANDLERS 2u
+#define MAX_COMMAND_HANDLERS 3u
+#define MAX_COMMAND_ARGS 8u
 
 /**
  * @brief Commandline argument entry
@@ -21,7 +23,7 @@
 typedef struct {
   char *pattern; /*!< Argument patterns */
   char *help;    /*!< Help string */
-  Result (*handler)(Program_state *state, int argc,
+  Result (*handler)(Program_state *state, size_t argc,
                     char *argv[]); /*!< Handler */
 } Argument_command;
 
@@ -32,7 +34,7 @@ typedef struct {
  * @param state Filled in program state
  * @return Result of the parsing
  */
-Result parse_program_arguments(Program_state *state,int argc, char *argv[]);
+Result parse_program_arguments(Program_state *state, int argc, char *argv[]);
 
 /**
  * @brief Commandline argument handlers
