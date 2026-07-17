@@ -12,8 +12,10 @@
 #include <minunit.h>
 #include <string.h>
 
-static const char *output_info_line =
-    "   INFO:               log.c:  35: This is a test log line\n";
+static const char *output_info_line = "INFO This is a test log line\n";
+
+static const char *output_debug_line =
+    "  DEBUG:               log.c:  46: This is a test log line\n";
 
 MINUNIT_SETUP(log_setup)
 {
@@ -34,5 +36,15 @@ MINUNIT_ADD(log_info_line_written, log_setup, nullptr)
   log_set_level(LOGVAL_INFO);
   LOG_INFO("This is a test log line");
   const char *str_out = stdout_mock_get();
+  MINUNIT_ASSERT(str_out != NULL);
   MINUNIT_CHECK(strcmp(str_out, output_info_line) == 0);
+}
+
+MINUNIT_ADD(log_debug_line_written, log_setup, nullptr)
+{
+  log_set_level(LOGVAL_DEBUG);
+  LOG_DEBUG("This is a test log line");
+  const char *str_out = stdout_mock_get();
+  MINUNIT_ASSERT(str_out != NULL);
+  MINUNIT_CHECK(strcmp(str_out, output_debug_line) == 0);
 }

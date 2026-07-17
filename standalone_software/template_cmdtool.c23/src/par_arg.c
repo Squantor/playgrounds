@@ -56,7 +56,7 @@ Result parse_program_arguments(Program_state *state, int argc, char *argv[])
       // parse options
       if (*p == 'L') {
         p++;
-        if (*p >= '0' && *p <= '5') {
+        if (*p >= '0' && *p <= '4') {
           log_set_level(*p - '0');
         } else {  // add more options here
           LOG_FATAL("Unknown Logging level %c", *p);

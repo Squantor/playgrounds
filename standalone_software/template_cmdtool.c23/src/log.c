@@ -47,19 +47,28 @@ __attribute__((weak)) void stdout_output_line(const char *)
 }
 
 /* Write the first part of the log line to the buffer */
-static int log_stamp(Log_level level, const char *file, int line)
+static int log_stamp_full(Log_level level, const char *file, int line)
 {
   return snprintf(log_line, LOG_LINE_SIZE,
                   "%7s:%20s:%4d: ", log_level_names[level], file, line);
 }
 
+static int log_stamp_level(Log_level level)
+{
+  return snprintf(log_line, LOG_LINE_SIZE, "%s ", log_level_names[level]);
+}
+
 // NOLINTBEGIN(clang-analyzer-valist.Uninitialized)
 __attribute__((format(printf, 4, 5))) void
 log_log(Log_level level, const char *file, int line, const char *fmt, ...)
-
 {
   if (level <= Log_state.log_level) {
-    int stamplen = log_stamp(level, file, line);
+    int stamplen = 0;
+    if (Log_state.log_level > LOGVAL_INFO)
+      stamplen = log_stamp_full(level, file, line);
+    else
+      stamplen = log_stamp_level(level);
+
     if ((unsigned) stamplen < LOG_LINE_SIZE) {
       va_list args;
       va_start(args, fmt);

@@ -19,7 +19,7 @@ typedef enum {
   LOGVAL_WARNING = 2,
   LOGVAL_INFO = 3,
   LOGVAL_DEBUG = 4,
-  LOGVAL_NONE = 5,
+  LOGVAL_END = 5,
 } Log_level;
 /* Log a message */
 #define LOG_DEBUG(...) \
