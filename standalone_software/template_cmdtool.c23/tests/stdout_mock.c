@@ -22,7 +22,7 @@ void stdout_mock_init(void)
   log_line_head = log_line_tail = 0;
 }
 
-void stdout_output(const char *str)
+void std_print(const char *str)
 {
   while (*str != '\0') {
     log_line_mock_buffer[log_line_head++] = *str;
@@ -31,7 +31,7 @@ void stdout_output(const char *str)
   log_line_mock_buffer[log_line_head++] = '\0';
 }
 
-void stdout_output_line(const char *str)
+void std_print_line(const char *str)
 {
   while (*str != '\0') {
     log_line_mock_buffer[log_line_head++] = *str;
@@ -55,4 +55,6 @@ const char *stdout_mock_get(void)
 }
 
 int stdout_mock_is_empty(void)
-{ return log_line_head == log_line_tail; }
+{
+  return log_line_head == log_line_tail;
+}

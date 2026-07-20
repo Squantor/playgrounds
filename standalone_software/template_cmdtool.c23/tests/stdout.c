@@ -26,7 +26,7 @@ MINUNIT_ADD(stdout_init, stdout_setup, nullptr)
 
 MINUNIT_ADD(stdout_insert_single_string, stdout_setup, nullptr)
 {
-  stdout_output("Hello world");
+  std_print("Hello world");
   const char *str_out = stdout_mock_get();
   MINUNIT_CHECK(str_out != NULL);
   MINUNIT_CHECK(strcmp(str_out, "Hello world") == 0);
@@ -34,7 +34,7 @@ MINUNIT_ADD(stdout_insert_single_string, stdout_setup, nullptr)
 
 MINUNIT_ADD(stdout_line_insert_single_string, stdout_setup, nullptr)
 {
-  stdout_output_line("Hello world");
+  std_print_line("Hello world");
   const char *str_out = stdout_mock_get();
   MINUNIT_CHECK(str_out != NULL);
   MINUNIT_CHECK(strcmp(str_out, "Hello world\n") == 0);
@@ -42,8 +42,8 @@ MINUNIT_ADD(stdout_line_insert_single_string, stdout_setup, nullptr)
 
 MINUNIT_ADD(stdout_insert_multi_string, stdout_setup, nullptr)
 {
-  stdout_output("Hello ");
-  stdout_output_line("world");
+  std_print("Hello ");
+  std_print_line("world");
   const char *str_out = stdout_mock_get();
   MINUNIT_CHECK(str_out != NULL);
   MINUNIT_CHECK(strcmp(str_out, "Hello ") == 0);

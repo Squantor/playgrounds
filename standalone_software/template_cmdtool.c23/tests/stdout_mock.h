@@ -23,13 +23,13 @@ void stdout_mock_init(void);
  * @brief Write a string to mock buffer
  * @param str Pointer to the string to write
  */
-void stdout_output(const char *str);
+void std_print(const char *str);
 
 /**
  * @brief Write a string to mock buffer and add newline
  * @param str Pointer to the string to write
  */
-void stdout_output_line(const char *str);
+void std_print_line(const char *str);
 
 /* Get the last log output from buffer */
 /**

@@ -18,18 +18,24 @@
 Program_state program_state;
 
 /**
- * @brief Output string to stdout
- * @param str string to send to stdout
+ * @brief Output a string to output terminal, usual stderr
+ * The standard output is usually stderr
+ * @param str string to send to the terminal
  */
-void stdout_output(const char *str)
-{ printf("%s", str); }
+void std_print(const char *str)
+{
+  fprintf(stderr, "%s", str);
+}
 
 /**
- * @brief Output string to stdout and add newline
- * @param str string to send to stdout
+ * @brief Output a string to output terminal and add newline
+ * The standard output is usually stderr
+ * @param str string to send to the terminal
  */
-void stdout_output_line(const char *str)
-{ printf("%s\n", str); }
+void std_print_line(const char *str)
+{
+  fprintf(stderr, "%s\n", str);
+}
 
 /**
  * @brief main entrypoint
@@ -39,7 +45,7 @@ int main(int argc, char *argv[])
 {
   memset(&program_state, 0, sizeof(program_state));
   Result result;
-  result = parse_program_arguments(&program_state,argc, argv);
+  result = parse_program_arguments(&program_state, argc, argv);
   if (result != RESULT_OK) {
     LOG_FATAL("Argument parse error");
     return 1;

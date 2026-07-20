@@ -37,12 +37,12 @@ Log_level log_get_level(void)
 }
 
 /* Overridable log output function */
-__attribute__((weak)) void stdout_output(const char *)
+__attribute__((weak)) void std_print(const char *)
 {
 }
 
 /* Overridable log output function */
-__attribute__((weak)) void stdout_output_line(const char *)
+__attribute__((weak)) void std_print_line(const char *)
 {
 }
 
@@ -74,7 +74,7 @@ log_log(Log_level level, const char *file, int line, const char *fmt, ...)
       va_start(args, fmt);
       vsnprintf(log_line + stamplen, LOG_LINE_SIZE - stamplen, fmt, args);
       va_end(args);
-      stdout_output_line(log_line);
+      std_print_line(log_line);
     }
   }
 }
@@ -86,7 +86,7 @@ __attribute__((format(printf, 1, 2))) int print_stdout(const char *fmt, ...)
   va_start(args, fmt);
   int ret = vsnprintf(log_line, LOG_LINE_SIZE, fmt, args);
   va_end(args);
-  stdout_output(log_line);
+  std_print(log_line);
   return ret;
 }
 // NOLINTEND(clang-analyzer-valist.Uninitialized)
