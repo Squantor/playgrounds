@@ -10,7 +10,7 @@ BOARD := dummy_board
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := LPC812M101DH20
 
-$(NAME)_LIBS := libMcuLL
+$(NAME)_LIBS := libMcu
 
 # current makefile base dir relative to Makefile
 PROJ_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))

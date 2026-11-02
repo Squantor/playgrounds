@@ -186,7 +186,7 @@ void minunit_fail_callback();
  */
 #ifndef MINUNIT_REPORT_DISABLE
 #define MINUNIT_ASSERT(test)                                                                \
-  MU_SAFE_BLOCK(                                                                           \
+  MU_SAFE_BLOCK(                                                                            \
     test_results->checks++; if (!(test)) {                                                  \
       minunit_fail_callback();                                                              \
       test_results->flag_fail = 1;                                                          \
@@ -195,7 +195,7 @@ void minunit_fail_callback();
     } else { minunit_report("."); })
 #else
 #define MINUNIT_ASSERT(test)                            \
-  MU_SAFE_BLOCK(test_results->checks++; if (!(test)) { \
+  MU_SAFE_BLOCK(test_results->checks++; if (!(test)) {  \
     minunit_fail_callback();                            \
     test_results->flag_fail = 1;                        \
     return;                                             \
@@ -215,7 +215,7 @@ void minunit_fail_callback();
  */
 #ifndef MINUNIT_REPORT_DISABLE
 #define MINUNIT_CHECK(test)                                                                 \
-  MU_SAFE_BLOCK(                                                                           \
+  MU_SAFE_BLOCK(                                                                            \
     test_results->checks++; if (!(test)) {                                                  \
       minunit_fail_callback();                                                              \
       test_results->flag_fail = 1;                                                          \
@@ -223,7 +223,7 @@ void minunit_fail_callback();
     } else { minunit_report("."); })
 #else
 #define MINUNIT_CHECK(test)                             \
-  MU_SAFE_BLOCK(test_results->checks++; if (!(test)) { \
+  MU_SAFE_BLOCK(test_results->checks++; if (!(test)) {  \
     minunit_fail_callback();                            \
     test_results->flag_fail = 1;                        \
   })

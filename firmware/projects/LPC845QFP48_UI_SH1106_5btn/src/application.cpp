@@ -61,8 +61,8 @@ auto button_call_lambda = [](std::uint8_t port_data) {
 
 void Application::Init() {
   command_console.print("LPC845 small nuclone SH1106 test program\n");
-  ui_port_expander.RegisterCallback(button_call_lambda);
-  while (ui_display.state != libmcu::States::Idle) {
+  ui_port_expander.register_callback(button_call_lambda);
+  while (ui_display.state != libmcu::States::idle) {
     BoardProgress();
   }
   user_interface.init();
@@ -77,9 +77,9 @@ void Application::Progress() {
   }
 
   // command line
-  if (usart_peripheral.GetReceiveLevel() > 0) {
+  if (usart_peripheral.get_receive_level() > 0) {
     static std::array<char, 1> data;
-    usart_peripheral.Receive(data);
+    usart_peripheral.receive(data);
     command_line.input(data);
   }
 

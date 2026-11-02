@@ -13,7 +13,7 @@ BOARD := nuclone_LPC845M301BD48
 $(NAME)_TARGET := MCU
 $(NAME)_MCU := LPC845M301BD48
 $(NAME)_DEFINES := 
-$(NAME)_LIBS := libMcuLL squantorLibC squantorLibEmbedded common
+$(NAME)_LIBS := libMcu squantorLibC squantorLibEmbedded common
 $(NAME)_FILES := $(PROJ_DIR)/src/main.cpp \
 $(PROJ_DIR)/src/$(BOARD).cpp \
 $(PROJ_DIR)/src/font.cpp

@@ -30,7 +30,7 @@ using PinI2cSda = libmcuhw::Pin<libmcuhw::IoPorts::Port0, libmcuhw::IoPins::Pin1
 // SCL pin with 2.2K pull up resistor
 using PinI2cScl = libmcuhw::Pin<libmcuhw::IoPorts::Port0, libmcuhw::IoPins::Pin10>;
 // User interface button change interrupt pin with pull up resistor
-using PinUiButtonInt = libmcuhw::Pin<libmcuhw::IoPorts::Port1, libmcuhw::IoPins::Pin00>;
+using Pin_button_expander_type = libmcuhw::Pin<libmcuhw::IoPorts::Port0, libmcuhw::IoPins::Pin28>;
 
 // pin function types
 using FunctionXtalIn = libmcuhw::swm::PinFunction<libmcuhw::swm::PinFunctions::XtalIn>;
@@ -48,7 +48,7 @@ constexpr PinDebugUartTx pin_debug_uart_tx;
 constexpr PinDebugUartRx pin_debug_uart_rx;
 constexpr PinI2cScl pin_i2c_scl;
 constexpr PinI2cSda pin_i2c_sda;
-constexpr PinUiButtonInt pin_ui_button_int;
+constexpr Pin_button_expander_type pin_ui_button_int;
 
 // function instances
 constexpr FunctionXtalIn function_xtal_in;
@@ -63,21 +63,21 @@ constexpr libmcull::syscon::InterruptPins ui_button_intpin = libmcull::syscon::I
 constexpr libmcull::pin_int::InterruptPins ui_button_intchan = libmcull::pin_int::InterruptPins::PintSel0;
 
 // clock configs
-constexpr inline libmcuhw::clock::McuClockConfig<libmcuhw::clock::ClockInputSources::XTAL, 12'000'000u, 30'000'000u>
+constexpr inline libmcuhw::clock::Mcu_clock_config<libmcuhw::clock::Clock_input_sources::crystal, 12'000'000u, 30'000'000u>
   nuclone_clock_config;
-constexpr inline libmcuhw::clock::PeriClockConfig<nuclone_clock_config, libmcuhw::clock::PeriSelect::UART0,
-                                                  libmcuhw::clock::PeriSource::MAIN>
+constexpr inline libmcuhw::clock::Peripheral_clock_config<nuclone_clock_config, libmcuhw::clock::Peripheral_select::uart0,
+                                                          libmcuhw::clock::Peripheral_source::main>
   uart0_clock_config;
-constexpr inline libmcuhw::clock::PeriClockConfig<nuclone_clock_config, libmcuhw::clock::PeriSelect::I2C0,
-                                                  libmcuhw::clock::PeriSource::MAIN>
+constexpr inline libmcuhw::clock::Peripheral_clock_config<nuclone_clock_config, libmcuhw::clock::Peripheral_select::i2c0,
+                                                          libmcuhw::clock::Peripheral_source::main>
   i2c0_clock_config;
 
 // I2C device addresses
-extern libmcu::I2cDeviceAddress SH1106_i2c_address;
-extern libmcu::I2cDeviceAddress PCF8574_i2c_address;
+extern libmcu::I2c_address SH1106_i2c_address;
+extern libmcu::I2c_address PCF8574_i2c_address;
 
 // peripheral externs
-extern libmcull::systick::Systick<libmcuhw::SystickAddress> systick_peripheral;
+extern libmcull::systick::Systick<libmcuhw::systick_address> systick_peripheral;
 extern libmcull::iocon::Iocon<libmcuhw::IoconAddress> iocon_peripheral;
 extern libmcull::swm::Swm<libmcuhw::SwmAddress> swm_periperhal;
 extern libmcull::gpio::Gpio<libmcuhw::GpioAddress> gpio_peripheral;
@@ -86,9 +86,9 @@ extern libmcull::usart::UartInterrupt<libmcuhw::Usart0Address, char, 1024> usart
 extern libmcull::i2c::I2cInterrupt<libmcuhw::I2c0Address> i2c_peripheral_ll;
 extern libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 extern libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
-extern libmcudrv::SH1106::Generic128x64 display_config;
-extern libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
-extern libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
+extern libmcudrv::sh1106::Generic128x64 display_config;
+extern libmcudrv::sh1106::Sh1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
+extern libmcudrv::pcf8574::Pcf8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
 extern libmcumid::Gfx_display<ui_display> application_display;
 
 constexpr inline std::uint32_t ticks_per_second{1000u};

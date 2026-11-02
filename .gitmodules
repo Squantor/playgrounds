@@ -1,24 +1,24 @@
 [submodule "software/squantorLibC"]
 	path = firmware/libraries/squantorLibC
-	url = git@github.com:Squantor/squantorLibC.git
+	url = ssh://git@codeberg.org/Squantor/squantorLibC.git
 [submodule "software/squantorLibEmbedded"]
 	path = firmware/libraries/squantorLibEmbedded
-	url = git@github.com:Squantor/squantorLibEmbedded.git
+	url = ssh://git@codeberg.org/Squantor/squantorLibEmbedded.git
 [submodule "software/squantorMinUnit"]
 	path = firmware/libraries/squantorMinUnit
-	url = git@github.com:Squantor/squantorMinUnit.git
+	url = ssh://git@codeberg.org/Squantor/squantorMinUnit.git
 [submodule "software/libMcuLL"]
 	path = firmware/libraries/libMcu
-	url = git@github.com:Squantor/libMcuLL.git
+	url = ssh://git@codeberg.org/Squantor/libMcu.git
 [submodule "electronics/various_PCB"]
 	path = electronics/various_PCB
-	url = git@github.com:Squantor/various_PCB.git
+	url = ssh://git@codeberg.org/Squantor/various_PCB.git
 [submodule "software/libraries/squantorLibC"]
 	path = software/libraries/squantorLibC
-	url = git@github.com:Squantor/squantorLibC.git
+	url = ssh://git@codeberg.org/Squantor/squantorLibC.git
 [submodule "software/libraries/squantorLibEmbedded"]
 	path = software/libraries/squantorLibEmbedded
-	url = git@github.com:Squantor/squantorLibEmbedded.git
+	url = ssh://git@codeberg.org/Squantor/squantorLibEmbedded.git
 [submodule "software/libraries/squantorMinUnit"]
 	path = software/libraries/squantorMinUnit
-	url = git@github.com:Squantor/squantorMinUnit.git
+	url = ssh://git@codeberg.org/Squantor/squantorMinUnit.git

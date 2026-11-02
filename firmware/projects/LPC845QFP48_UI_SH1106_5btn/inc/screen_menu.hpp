@@ -115,7 +115,7 @@ class Menu_screen : public User_interface_screen<User_interface_events>, public 
       if (state == detail::Menu_screen_state::selecting || state == detail::Menu_screen_state::entered) {
         for (size_t i = 0; i < items.size(); i++) {
           if (i == item_index) {
-            display.print(items[i]->render(menu_item_buffer), application_font, libmcu::bitmap::Blit_ops::INVERT);
+            display.print(items[i]->render(menu_item_buffer), application_font, libmcu::bitmap::Blit_ops::op_inv);
           } else {
             display.print(items[i]->render(menu_item_buffer), application_font);
           }

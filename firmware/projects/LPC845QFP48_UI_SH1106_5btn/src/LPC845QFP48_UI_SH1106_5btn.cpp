@@ -9,34 +9,34 @@
  */
 #include <LPC845QFP48_UI_SH1106_5btn.hpp>
 
-libmcu::I2cDeviceAddress SH1106_i2c_address{0x3C};
-libmcu::I2cDeviceAddress PCF8574_i2c_address{0x27};
+libmcu::I2c_address SH1106_i2c_address{0x3C};
+libmcu::I2c_address PCF8574_i2c_address{0x27};
 
 libmcull::iocon::Iocon<libmcuhw::IoconAddress> iocon_peripheral;
 libmcull::swm::Swm<libmcuhw::SwmAddress> swm_periperhal;
 libmcull::gpio::Gpio<libmcuhw::GpioAddress> gpio_peripheral;
 libmcull::syscon::Syscon<libmcuhw::SysconAddress> syscon_peripheral;
-libmcull::systick::Systick<libmcuhw::SystickAddress> systick_peripheral;
-libmcull::nvic::Nvic<libmcuhw::NvicAddress, libmcuhw::ScbAddress> nvic_peripheral;
+libmcull::systick::Systick<libmcuhw::systick_address> systick_peripheral;
+libmcull::nvic::Nvic<libmcuhw::nvic_address, libmcuhw::scb_address> nvic_peripheral;
 libmcull::usart::UartInterrupt<libmcuhw::Usart0Address, char, 1024> usart_peripheral_ll;
 libmcull::i2c::I2cInterrupt<libmcuhw::I2c0Address> i2c_peripheral_ll;
 libmcull::pin_int::Pinint<libmcuhw::PinintAddress> pinint_peripheral;
 libmcuhal::usart::Uart<usart_peripheral_ll, char> usart_peripheral;
 libmcuhal::i2c::I2c<i2c_peripheral_ll, 40> i2c_peripheral;
-libmcudrv::SH1106::Generic128x64 display_config;
-libmcudrv::SH1106::SH1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
-libmcudrv::PCF8574::PCF8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
+libmcudrv::sh1106::Generic128x64 display_config;
+libmcudrv::sh1106::Sh1106<i2c_peripheral, SH1106_i2c_address, display_config, libmcull::Assert_bkpt> ui_display;
+libmcudrv::pcf8574::Pcf8574<i2c_peripheral, PCF8574_i2c_address> ui_port_expander;
 libmcumid::Gfx_display<ui_display> application_display;
 
 volatile std::uint32_t ticks;
 
 extern "C" {
 void SysTick_Handler(void) {
-  systick_peripheral.Isr();
+  systick_peripheral.isr();
 }
 
 void USART0_IRQHandler(void) {
-  usart_peripheral_ll.InterruptHandler();
+  usart_peripheral_ll.interrupt_handler();
 }
 
 void I2C0_IRQHandler(void) {
@@ -45,7 +45,7 @@ void I2C0_IRQHandler(void) {
 
 void PIN_INT0_IRQHandler(void) {
   pinint_peripheral.ClearChannel(ui_button_intchan);
-  ui_port_expander.Isr();
+  ui_port_expander.isr();
 }
 }
 
@@ -79,25 +79,25 @@ void BoardInit(void) {
   syscon_peripheral.ConfigureMcuClocks<nuclone_clock_config>();
   syscon_peripheral.PeripheralClockSource(libmcull::syscon::ClockSourceSelects::Uart0, libmcull::syscon::ClockSources::Main);
   syscon_peripheral.PeripheralClockSource(libmcull::syscon::ClockSourceSelects::I2c0, libmcull::syscon::ClockSources::Main);
-  systick_peripheral.Init(nuclone_clock_config.GetSystemFreq() / ticks_per_second);
-  systick_peripheral.Start(systickIsrLambda);
+  systick_peripheral.init(nuclone_clock_config.get_system_freq() / ticks_per_second);
+  systick_peripheral.start(systickIsrLambda);
   syscon_peripheral.SetInterruptPin(pin_ui_button_int, ui_button_intpin);
   pinint_peripheral.EnableChannel(ui_button_intchan, libmcull::pin_int::EdgeSettings::Falling);
-  nvic_peripheral.Enable(libmcuhw::Interrupts::Uart0);
-  nvic_peripheral.Enable(libmcuhw::Interrupts::I2c0);
-  nvic_peripheral.Enable(libmcuhw::Interrupts::Pinint0);
-  usart_peripheral.Init<uart0_clock_config>(115200);
-  i2c_peripheral.Init<i2c0_clock_config>(400000, 1000);
+  nvic_peripheral.enable(libmcuhw::Interrupts::Uart0);
+  nvic_peripheral.enable(libmcuhw::Interrupts::I2c0);
+  nvic_peripheral.enable(libmcuhw::Interrupts::Pinint0);
+  usart_peripheral.init<uart0_clock_config>(115200);
+  i2c_peripheral.init<i2c0_clock_config>(400000, 1000);
   // delay before we turn on screen
   while (ticks < 10)
     ;
-  ui_port_expander.Init();
+  ui_port_expander.init();
   ui_display.init();
 }
 
 void BoardProgress(void) {
-  usart_peripheral.Progress();
-  i2c_peripheral.Progress();
-  ui_display.Progress();
-  ui_port_expander.Progress();
+  usart_peripheral.progress();
+  i2c_peripheral.progress();
+  ui_display.progress();
+  ui_port_expander.progress();
 }

@@ -16,21 +16,21 @@
 #define CLOCK_AHB (30'000'000u)
 #define CLOCK_MAIN (60'000'000u)
 
-#include <nxp/libmcu_LPC845M301BD48.hpp>
+#include <nxp/libmcu_LPC845M301BD48_hal.hpp>
 
 #define TICKS_PER_S 10
 
 // pin types
 // Crystal osillator pins
-using xtalInPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT0, libMcu::hw::IOpins::PIN08>;
-using xtalOutPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT0, libMcu::hw::IOpins::PIN09>;
-using testPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT1, libMcu::hw::IOpins::PIN05>;
-using ledPinType = libMcu::hw::pin<libMcu::hw::IOports::PORT1, libMcu::hw::IOpins::PIN04>;
+using xtalInPinType = libmcuhw::pin<libmcuhw::IOports::PORT0, libmcuhw::IOpins::PIN08>;
+using xtalOutPinType = libmcuhw::pin<libmcuhw::IOports::PORT0, libmcuhw::IOpins::PIN09>;
+using testPinType = libmcuhw::pin<libmcuhw::IOports::PORT1, libmcuhw::IOpins::PIN05>;
+using ledPinType = libmcuhw::pin<libmcuhw::IOports::PORT1, libmcuhw::IOpins::PIN04>;
 
 // function types
-using xtalInFunctionType = libMcu::hw::swm::pinFunction<libMcu::hw::swm::pinFunctions::XTALIN>;
-using xtalOutFunctionType = libMcu::hw::swm::pinFunction<libMcu::hw::swm::pinFunctions::XTALOUT>;
-using clockOutFunctionType = libMcu::hw::swm::pinFunction<libMcu::hw::swm::pinFunctions::CLKOUT_O>;
+using xtalInFunctionType = libmcuhw::swm::PinFunction<libmcuhw::swm::PinFunctions::XTALIN>;
+using xtalOutFunctionType = libmcuhw::swm::PinFunction<libmcuhw::swm::PinFunctions::XTALOUT>;
+using clockOutFunctionType = libmcuhw::swm::PinFunction<libmcuhw::swm::PinFunctions::CLKOUT_O>;
 
 // pin instances
 constexpr xtalInPinType xtalInPin;
@@ -44,11 +44,11 @@ constexpr xtalOutFunctionType xtalOutFunction;
 constexpr clockOutFunctionType clockOutFunction;
 
 // peripheral externs
-extern libMcu::ll::iocon::iocon<libMcu::hw::ioconAddress> ioconPeripheral;
-extern libMcu::ll::swm::swm<libMcu::hw::swmAddress> swmPeriperhal;
-extern libMcu::ll::gpio::gpio<libMcu::hw::gpioAddress> gpioPeripheral;
-extern libMcu::ll::syscon::syscon<libMcu::hw::sysconAddress> sysconPeripheral;
-extern libMcu::ll::systick::systick<libMcu::hw::systickAddress> systickPeripheral;
+extern libmcull::iocon::Iocon<libmcuhw::IoconAddress> ioconPeripheral;
+extern libmcull::swm::Swm<libmcuhw::SwmAddress> swmPeriperhal;
+extern libmcull::gpio::Gpio<libmcuhw::GpioAddress> gpioPeripheral;
+extern libmcull::syscon::Syscon<libmcuhw::SysconAddress> sysconPeripheral;
+extern libmcull::systick::Systick<libmcuhw::systick_address> systickPeripheral;
 
 void boardInit(void);
 

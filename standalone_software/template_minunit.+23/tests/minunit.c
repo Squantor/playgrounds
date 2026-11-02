@@ -6,7 +6,7 @@
  *
  * @file minunit.c
  * @brief Minimal C/C++ unittesting framework
- * @version 20260206
+ * @version 20260622
  *
  * Minimal C++ unittesting framework, based on:
  * https://github.com/siu/minunit
