@@ -1,3 +1,5 @@
+# Migrated
+This project/repository has been migrated to [Codeberg](https://codeberg.org/Squantor/playgrounds). Please file any issues and pull requests there.
 # Playground
 This repository is a playground of various experiments and try outs that I want to keep. It might build, it might not.
 ## Structure
